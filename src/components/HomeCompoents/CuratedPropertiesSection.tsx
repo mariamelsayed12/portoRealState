@@ -29,7 +29,7 @@ const CuratedPropertiesSection = () => {
     <section className="bg-background py-10 sm:py-14">
       <div className="mx-auto max-w-7xl px-6 sm:px-8 lg:px-12">
         <div className="flex items-center justify-between gap-4">
-          <h2 className="text-[22px] font-semibold tracking-tight text-text-darker sm:text-[24px]">
+          <h2 className="lg:text-[40px] font-semibold tracking-tight text-text-secondary text-[24px]">
             {curatedPropertiesHeading.title}
           </h2>
 
