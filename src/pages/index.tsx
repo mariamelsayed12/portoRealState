@@ -2,6 +2,7 @@ import HeaderSection from "../components/HomeCompoents/HeaderSection";
 import WhatWeOffer from "../components/HomeCompoents/WhatWeOffer";
 import CuratedPropertiesSection from "../components/HomeCompoents/CuratedPropertiesSection";
 import NorthCoastInvestmentSection from "../components/HomeCompoents/NorthCoastInvestmentSection";
+import ContactUsSection from "../components/HomeCompoents/ContactUsSection";
 import PrestigiousDestinations from "../components/HomeCompoents/PrestigiousDestinations";
 
 const HomePage = () => {
@@ -12,6 +13,7 @@ const HomePage = () => {
       <PrestigiousDestinations />
       <CuratedPropertiesSection />
       <NorthCoastInvestmentSection />
+      <ContactUsSection />
     </div>
   );
 };

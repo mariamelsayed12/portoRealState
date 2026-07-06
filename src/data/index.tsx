@@ -3,6 +3,8 @@ import CartIcon from "../components/icons/CartIcon";
 import HomeInvestmentIcon from "../components/icons/HomeInvestmentIcon";
 import defualtImage from "../assets/HomePage/default.png";
 import type { InvestmentCardData, PropertyCardData } from "../interfaces";
+import northcost from "../assets/HomePage/northcost.jpg";
+import { Mail, Phone } from "lucide-react";
 
 
  export const destinations = [
@@ -166,7 +168,7 @@ export const northCoastInvestmentCards: InvestmentCardData[] = [
     title: "North Coast Landscape",
     description: "",
     variant: "image",
-    image: defualtImage,
+    image: northcost,
     alt: "North Coast landscape",
   },
   {
@@ -184,3 +186,61 @@ export const northCoastInvestmentCards: InvestmentCardData[] = [
     variant: "text",
   },
 ];
+export type ContactFieldConfig =
+  | {
+    name: "fullName";
+    label: string;
+    placeholder: string;
+    type: "text";
+    isTextarea?: false;
+  }
+  | {
+    name: "phoneNumber";
+    label: string;
+    placeholder: string;
+    type: "tel";
+    isTextarea?: false;
+  }
+  | {
+    name: "description";
+    label: string;
+    placeholder: string;
+    type: "text";
+    isTextarea: true;
+  };
+
+export const contactItems = [
+  {
+    icon: Phone,
+    label: "+20113333333",
+    href: "tel:+20113333333",
+  },
+  {
+    icon: Mail,
+    label: "elahdd@email.com",
+    href: "mailto:elahdd@email.com",
+  },
+];
+
+export const contactFields: ContactFieldConfig[] = [
+  {
+    name: "fullName",
+    label: "Full Name*",
+    placeholder: "Input text",
+    type: "text",
+  },
+  {
+    name: "phoneNumber",
+    label: "Phone Number*",
+    placeholder: "Input text",
+    type: "tel",
+  },
+  {
+    name: "description",
+    label: "Description",
+    placeholder: "Tell us more about your request..",
+    type: "text",
+    isTextarea: true,
+  },
+];
+

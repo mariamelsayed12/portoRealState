@@ -28,3 +28,10 @@ export interface SectionHeadingData {
 	title: string;
 	actionLabel?: string;
 }
+
+export interface ContactUsFormValues {
+	fullName: string;
+	phoneCountryCode: string;
+	phoneNumber: string;
+	description: string;
+}
