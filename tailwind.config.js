@@ -20,6 +20,9 @@ export default {
         darker: "var(--text-darker)",
       },
     },
+    borderRadius: {
+      'md': '12px',
+    }
     },
   },
   plugins: [],
