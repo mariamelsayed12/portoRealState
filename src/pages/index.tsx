@@ -1,19 +1,27 @@
-import HeaderSection from "../components/HomeCompoents/HeaderSection";
-import WhatWeOffer from "../components/HomeCompoents/WhatWeOffer";
-import CuratedPropertiesSection from "../components/HomeCompoents/CuratedPropertiesSection";
-import NorthCoastInvestmentSection from "../components/HomeCompoents/NorthCoastInvestmentSection";
-import ContactUsSection from "../components/HomeCompoents/ContactUsSection";
-import PrestigiousDestinations from "../components/HomeCompoents/PrestigiousDestinations";
+import { useEffect } from "react";
+import { Outlet, useLocation } from "react-router-dom";
+import { AnimatePresence, motion } from "framer-motion";
 
 const HomePage = () => {
+  const location = useLocation();
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [location.pathname]);
+
   return (
     <div className="pb-24">
-      <HeaderSection />
-      <WhatWeOffer />
-      <PrestigiousDestinations />
-      <CuratedPropertiesSection />
-      <NorthCoastInvestmentSection />
-      <ContactUsSection />
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={location.pathname}
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -10 }}
+          transition={{ duration: 0.25 }}
+        >
+          <Outlet />
+        </motion.div>
+      </AnimatePresence>
     </div>
   );
 };

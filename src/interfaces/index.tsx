@@ -35,3 +35,15 @@ export interface ContactUsFormValues {
 	phoneNumber: string;
 	description: string;
 }
+
+export interface DestinationData {
+	id: number;
+	slug: string;
+	title: string;
+	breadcrumbLabel?: string;
+	image: string;
+	description: string;
+	developer: string;
+	price: string;
+	hasArrowBadge: boolean;
+}

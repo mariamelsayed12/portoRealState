@@ -48,11 +48,10 @@ const WaveFooter = ({ variant }: { variant: number }) => {
 
 const InvestmentTextCard = ({ card, waveVariant }: { card: InvestmentCardData; waveVariant: number }) => {
   return (
-    <article className="relative min-h-[158px] overflow-hidden rounded-[12px] border border-[#E1E8EB] bg-white px-4 py-4">
+    <article className="relative min-h-[185px] overflow-hidden rounded-[12px] border border-[#E1E8EB] bg-white px-4 py-4">
       <div className="relative z-10 flex h-full flex-col items-center text-center">
         <h3
-          className="max-w-[170px] text-[19px] font-medium text-[#141414]"
-          style={{ fontFamily: "Poppins", lineHeight: "normal", textAlign: "center" }}
+          className="max-w-[200px] text-[19px] font-medium text-text-secondary"
         >
           {card.title}
         </h3>

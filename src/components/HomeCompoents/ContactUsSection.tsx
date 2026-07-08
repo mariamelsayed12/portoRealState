@@ -45,7 +45,7 @@ const ContactUsSection = () => {
 	return (
 			<section className="bg-background py-16 sm:py-20">
 				<div className="mx-auto max-w-[1152px] px-6 sm:px-8 lg:px-12">
-					<div className="grid items-start gap-8 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] lg:gap-6">
+					<div className="grid items-start gap-5 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] lg:gap-6">
 						<div className="max-w-[420px] pt-6 lg:pt-8">
 							<h2 className="text-[28px] font-medium tracking-tight text-text-secondary sm:text-[32px] lg:text-[34px]">
 							Need Expert Advice ?

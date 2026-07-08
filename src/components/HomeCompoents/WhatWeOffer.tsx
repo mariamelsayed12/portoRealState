@@ -4,7 +4,7 @@ import { FaWhatsapp } from "react-icons/fa";
 
 const WhatWeOffer = () => {
   return (
-  <section className="relative max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-24 ">
+  <section className="relative max-w-7xl mx-auto px-6 md:px-8 lg:px-12 py-24 md:py-28 lg:py-36 ">
       {/* Header section with floating WhatsApp */}
       <div className="flex items-center justify-between mb-12">
         <h2 className="text-3xl md:text-[40px] font-semibold text-gray-900 tracking-tight">
