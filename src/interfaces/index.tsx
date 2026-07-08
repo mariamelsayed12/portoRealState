@@ -45,5 +45,8 @@ export interface DestinationData {
 	description: string;
 	developer: string;
 	price: string;
+	startingPrice: string;
+	rentalYield: string;
+	availableListings: string;
 	hasArrowBadge: boolean;
 }

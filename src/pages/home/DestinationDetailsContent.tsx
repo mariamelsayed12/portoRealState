@@ -1,6 +1,6 @@
 import type { DestinationData } from "../../interfaces";
-import { destinations } from "../../data/destinations";
 import DestinationCard from "../../components/HomeCompoents/DestinationCard";
+import { destinations } from "../../data";
 
 interface DestinationDetailsContentProps {
 	destinationSlug: string;

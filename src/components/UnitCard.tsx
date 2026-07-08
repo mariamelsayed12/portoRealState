@@ -9,10 +9,7 @@ const statIconMap = {
   area: Ruler,
 } as const;
 
-
-
-
-const BaseCard = ({ card }: { card: PropertyCardData }) => {
+const UnitCard = ({ card }: { card: PropertyCardData }) => {
   return (
     <article className="w-[286px] sm:w-[296px] shrink-0 rounded-[12px] border border-border bg-white shadow-[0_2px_10px_rgba(73,95,104,0.06)] overflow-hidden">
       <div className="relative h-[198px] overflow-hidden bg-[#dfeef1]">
@@ -52,24 +49,33 @@ const BaseCard = ({ card }: { card: PropertyCardData }) => {
           <span>{card.location}</span>
         </div>
 
-        <h3 className="text-[13px] font-semibold leading-tight text-text-darker">{card.title}</h3>
+        <h3 className="text-[13px] font-semibold leading-tight text-text-darker">
+          {card.title}
+        </h3>
 
         <div className="mt-2 flex items-center gap-2 text-[11px] text-[#7D8D93]">
           {card.stats.map((stat, index) => {
             const Icon = statIconMap[stat.icon];
 
             return (
-              <div key={`${card.id}-${stat.icon}`} className="flex items-center gap-1">
+              <div
+                key={`${card.id}-${stat.icon}`}
+                className="flex items-center gap-1"
+              >
                 <Icon className="h-3.5 w-3.5 text-primary" />
                 <span>{stat.value}</span>
-                {index < card.stats.length - 1 ? <span className="text-[#C3CCCF]">•</span> : null}
+                {index < card.stats.length - 1 ? (
+                  <span className="text-[#C3CCCF]">•</span>
+                ) : null}
               </div>
             );
           })}
         </div>
 
         <div className="mt-3 flex items-center justify-between gap-2">
-          <p className="text-[12px] font-semibold text-text-darker">{card.price}</p>
+          <p className="text-[12px] font-semibold text-text-darker">
+            {card.price}
+          </p>
           <div className="flex flex-wrap items-center gap-1.5">
             {card.paymentModes.map((mode) => (
               <span
@@ -82,10 +88,12 @@ const BaseCard = ({ card }: { card: PropertyCardData }) => {
           </div>
         </div>
 
-        <p className="mt-2 text-[10px] font-medium text-[#7D8D93]">{card.paymentNote}</p>
+        <p className="mt-2 text-[10px] font-medium text-[#7D8D93]">
+          {card.paymentNote}
+        </p>
       </div>
     </article>
   );
 };
 
-export default BaseCard;
+export default UnitCard;

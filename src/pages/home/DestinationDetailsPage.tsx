@@ -1,8 +1,8 @@
 import { lazy, Suspense, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { destinations } from "../../data/destinations";
 import DestinationHero from "../../components/HomeCompoents/DestinationHero";
 import DestinationNotFound from "../../components/HomeCompoents/DestinationNotFound";
+import { destinations } from "../../data";
 
 const DestinationDetailsContent = lazy(() => import("./DestinationDetailsContent"));
 

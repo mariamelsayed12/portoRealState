@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import type { DestinationData } from "../../interfaces";
-import DestinationBreadcrumb from "./DestinationBreadcrumb";
+import DestinationStats from "../DestinationStats";
+import Breadcrumb from "./DestinationBreadcrumb";
 
 interface DestinationHeroProps {
 	destination: DestinationData;
@@ -28,15 +29,20 @@ const DestinationHero = ({ destination }: DestinationHeroProps) => {
 					transition={{ duration: 0.3 }}
 					className="max-w-3xl"
 				>
-					<DestinationBreadcrumb label={destination.breadcrumbLabel ?? destination.title} />
+					<Breadcrumb title={destination.breadcrumbLabel ?? destination.title} />
 
 					<h1 className="mt-4 text-4xl font-extrabold tracking-tight text-white sm:text-5xl lg:text-[68px] leading-[1.1]">
 						{destination.title}
 					</h1>
 
-					<p className="mt-5 max-w-2xl text-sm font-medium leading-relaxed text-white/90 sm:text-base lg:text-lg">
-						{destination.description}
-					</p>
+					<div className="mt-10">
+						<DestinationStats
+							startingPrice={destination.startingPrice}
+							rentalYield={destination.rentalYield}
+							availableListings={destination.availableListings}
+							developer={destination.developer}
+						/>
+					</div>
 				</motion.div>
 			</div>
 		</section>

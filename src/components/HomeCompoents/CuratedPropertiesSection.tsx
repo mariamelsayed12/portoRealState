@@ -1,11 +1,7 @@
 import { useMemo, useRef } from "react";
-import { ArrowUpRight, ChevronLeft, ChevronRight} from "lucide-react";
+import { ArrowUpRight, ChevronLeft, ChevronRight } from "lucide-react";
 import { curatedProperties, curatedPropertiesHeading } from "../../data";
-import BaseCard from "../BaseCard";
-
-
-
-
+import UnitCard from "../UnitCard";
 
 const CuratedPropertiesSection = () => {
   const scrollerRef = useRef<HTMLDivElement | null>(null);
@@ -42,16 +38,15 @@ const CuratedPropertiesSection = () => {
           </button>
         </div>
 
-       
         <div
           ref={scrollerRef}
           className="mt-3 flex gap-4 overflow-x-auto pb-2 pt-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
         >
           {curatedProperties.map((card) => (
-            <BaseCard key={card.id} card={card} />
+            <UnitCard key={card.id} card={card} />
           ))}
         </div>
-         <div className="mt-4 flex items-center gap-2">
+        <div className="mt-4 flex items-center gap-2">
           <div className="hidden sm:flex items-center gap-2">
             <button
               type="button"
@@ -73,7 +68,6 @@ const CuratedPropertiesSection = () => {
             </button>
           </div>
         </div>
-
       </div>
     </section>
   );
