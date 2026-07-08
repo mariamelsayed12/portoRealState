@@ -10,7 +10,7 @@ const WhatWeOffer = () => {
         <h2 className="text-3xl md:text-[40px] font-semibold text-gray-900 tracking-tight">
           What We Offer ?
         </h2>
-        
+
         {/* WhatsApp Float Icon */}
         <a
           href="https://wa.me/#"

@@ -31,7 +31,7 @@ const DestinationHero = ({ destination }: DestinationHeroProps) => {
 				>
 					<Breadcrumb title={destination.breadcrumbLabel ?? destination.title} />
 
-					<h1 className="mt-4 text-4xl font-extrabold tracking-tight text-white sm:text-5xl lg:text-[68px] leading-[1.1]">
+					<h1 className="mt-4 text-4xl font-bold tracking-tight text-white sm:text-5xl lg:text-[68px] leading-[1.1]">
 						{destination.title}
 					</h1>
 

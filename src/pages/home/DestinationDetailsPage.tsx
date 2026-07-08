@@ -18,6 +18,7 @@ const DestinationDetailsPage = () => {
 		return <DestinationNotFound />;
 	}
 
+	
 	return (
 		<div>
 			<DestinationHero destination={destination} />

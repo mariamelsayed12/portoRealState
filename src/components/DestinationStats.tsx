@@ -8,7 +8,7 @@ interface DestinationStatsProps {
 }
 
 const StatCard = ({ label, value }: { label: string; value: string }) => (
-  <div className="flex flex-col justify-center px-4 py-3 rounded-xl bg-black/40 backdrop-blur-md border border-white/20 hover:bg-black/50 transition-colors duration-300">
+  <div className="flex flex-col justify-center px-4 py-3 rounded-xl bg-white/20 backdrop-blur-md border border-white/20 hover:bg-black/50 transition-colors duration-300">
     <span className="text-sm text-gray-300 mb-1">{label}</span>
     <span className="text-lg font-medium text-white">{value}</span>
   </div>

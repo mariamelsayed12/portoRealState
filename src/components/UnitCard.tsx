@@ -9,9 +9,9 @@ const statIconMap = {
   area: Ruler,
 } as const;
 
-const UnitCard = ({ card }: { card: PropertyCardData }) => {
+const UnitCard = ({ card, className = "w-[286px] sm:w-[296px] shrink-0" }: { card: PropertyCardData; className?: string }) => {
   return (
-    <article className="w-[286px] sm:w-[296px] shrink-0 rounded-[12px] border border-border bg-white shadow-[0_2px_10px_rgba(73,95,104,0.06)] overflow-hidden">
+    <article className={`${className} rounded-[12px] border border-border bg-white shadow-[0_2px_10px_rgba(73,95,104,0.06)] overflow-hidden`}>
       <div className="relative h-[198px] overflow-hidden bg-[#dfeef1]">
         <Image
           imageurl={card.image}
@@ -88,7 +88,7 @@ const UnitCard = ({ card }: { card: PropertyCardData }) => {
           </div>
         </div>
 
-        <p className="mt-2 text-[10px] font-medium text-[#7D8D93]">
+        <p className="mt-2 text-[10px] font-medium text-[#7D8D93] whitespace-pre-line">
           {card.paymentNote}
         </p>
       </div>

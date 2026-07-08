@@ -13,6 +13,9 @@ export interface PropertyCardData {
 	price: string;
 	paymentModes: string[];
 	paymentNote: string;
+	destination: {
+		slug: string;
+	};
 }
 
 export interface InvestmentCardData {
