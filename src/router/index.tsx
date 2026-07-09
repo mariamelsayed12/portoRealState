@@ -9,6 +9,7 @@ import RentPage from "../pages/rent";
 import ManagementPage from "../pages/management";
 import HomeOverviewPage from "../pages/home/HomeOverviewPage";
 import DestinationDetails from "../pages/DestinationDetails";
+import PropertyDetails from "../pages/PropertyDetails";
 import FavoritesPage from "../pages/favorites";
 
 
@@ -31,6 +32,11 @@ const router = createBrowserRouter(
                     <DestinationDetails/>
                 </Suspense>
             } />
+            <Route path=":destinationSlug/properties/:propertySlug" element={
+                <Suspense fallback={<div className="mx-auto max-w-7xl px-6 py-16 sm:px-8 lg:px-12 text-text-darker">Loading property...</div>}>
+                    <PropertyDetails/>
+                </Suspense>
+            } />
         </Route>
 
                         <Route path="buy" element={<BuyPage/>} />
@@ -38,6 +44,11 @@ const router = createBrowserRouter(
                         <Route path="rent" element={<RentPage/>} />
                         <Route path="management" element={<ManagementPage/>} />
                         <Route path="destination/:slug" element={<DestinationDetails/>} />
+                        <Route path="destination/:destinationSlug/properties/:propertySlug" element={
+                            <Suspense fallback={<div className="mx-auto max-w-7xl px-6 py-16 sm:px-8 lg:px-12 text-text-darker">Loading property...</div>}>
+                                <PropertyDetails/>
+                            </Suspense>
+                        } />
                         <Route path="/favorites" element={<FavoritesPage />} />
 
     </Route>

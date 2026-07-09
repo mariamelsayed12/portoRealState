@@ -30,6 +30,15 @@ export interface PropertyUnitCardData {
   destination: {
     slug: string;
   };
+  description?: string;
+  finishing?: string;
+  delivery?: string;
+  orientation?: string;
+  downPayment?: string;
+  monthlyInstallment?: string;
+  installmentYears?: string;
+  images?: string[];
+  amenities?: string[];
 }
 
 export interface InvestmentCardData {
