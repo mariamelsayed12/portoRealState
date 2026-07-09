@@ -5,6 +5,9 @@ import DestinationDetailsContent from "./home/DestinationDetailsContent";
 import DestinationNotFound from "../components/HomeCompoents/DestinationNotFound";
 import DestinationBreadcrumb from "../components/HomeCompoents/DestinationBreadcrumb";
 import AmenitiesSection from "../components/Ui/AmenitiesSection";
+import Image from "../components/Ui/Image";
+import northcost from "../assets/HomePage/northcost.jpg";
+
 
 const DestinationDetails = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -54,7 +57,20 @@ const DestinationDetails = () => {
           {/* You could render destination specific content here, or reuse existing home sections */}
           <DestinationDetailsContent destinationSlug={destination.slug} />
       </div>
+     
       <AmenitiesSection/>
+
+       {/* AmenitiesSection */}
+      
+      <section className="container py-10 ">
+  <div className="overflow-hidden">
+    <Image
+      alt="village image"
+      imageurl={northcost}
+      className="h-[250px] w-full  md:h-[400px] object-cover lg:h-[526px]"
+    />
+  </div>
+</section>
     </div>
   );
 };
