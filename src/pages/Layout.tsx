@@ -9,10 +9,12 @@ const RootLayout = () => {
     location.pathname.startsWith("/home") ||
     location.pathname.startsWith("/destination");
 
+  const isPropertyDetails = location.pathname.includes("/properties/");
+
   return (
     <div className="bg-background text-text-darker min-h-screen flex flex-col">
       {/* Navbar floats over the page via absolute positioning */}
-      <Navbar />
+      <Navbar variant={isPropertyDetails ? "light" : "transparent"} />
 
       {/* Page content — simple block flow, never clipped */}
       <main className={isHomePage ? "flex-1" : "pt-36 px-5 max-w-7xl mx-auto w-full flex-1"}>

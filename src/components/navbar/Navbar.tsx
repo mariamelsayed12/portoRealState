@@ -5,7 +5,11 @@ import { useSelector } from "react-redux";
 import type { RootState } from "../../app/store";
 import { HeartIcon } from "lucide-react";
 
-const Navbar = () => {
+interface NavbarProps {
+  variant?: "transparent" | "light";
+}
+
+const Navbar = ({ variant = "transparent" }: NavbarProps) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const navLinks = [
@@ -20,10 +24,17 @@ const Navbar = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
   const { favUnite } = useSelector((state: RootState) => state.favUnit);
+  const isLight = variant === "light";
 
   return (
     <>
-      <nav className="absolute top-4 md:top-8 left-1/2 transform -translate-x-1/2 w-[calc(100%-2rem)] md:w-[calc(100%-4rem)] max-w-7xl z-40 transition-all duration-300 backdrop-blur-md bg-black/20 border border-white/10 rounded-2xl md:rounded-3xl shadow-lg">
+      <nav
+        className={`absolute top-4 md:top-8 left-1/2 transform -translate-x-1/2 w-[calc(100%-2rem)] md:w-[calc(100%-4rem)] max-w-7xl z-40 transition-all duration-300 backdrop-blur-md rounded-2xl md:rounded-3xl ${
+          isLight
+            ? "bg-white border border-[#E8EFF1] shadow-md"
+            : "bg-black/20 border border-white/10 shadow-lg"
+        }`}
+      >
         <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
           {/* Logo Section */}
           <Link to="/" className="flex items-center space-x-2 flex-shrink-0">
@@ -40,6 +51,8 @@ const Navbar = () => {
                   `text-sm font-medium tracking-wide transition-colors duration-200 relative py-1 after:absolute after:bottom-0 after:left-0 after:w-full after:h-[2px] after:bg-primary after:transform after:scale-x-0 hover:after:scale-x-100 after:transition-transform after:duration-300 ${
                     isActive
                       ? "text-primary after:scale-x-100 font-semibold"
+                      : isLight
+                      ? "text-[#58696F] hover:text-primary"
                       : "text-text-primary hover:text-primary"
                   }`
                 }
@@ -52,7 +65,13 @@ const Navbar = () => {
           {/* Right Action Items (Desktop) */}
           <div className="hidden lg:flex items-center space-x-6">
             {/* Language Selector */}
-            <div className="flex items-center space-x-1 cursor-pointer text-text-primary hover:text-primary transition-colors duration-200">
+            <div
+              className={`flex items-center space-x-1 cursor-pointer transition-colors duration-200 ${
+                isLight
+                  ? "text-[#58696F] hover:text-primary"
+                  : "text-text-primary hover:text-primary"
+              }`}
+            >
               <span className="text-sm font-medium tracking-wide">English</span>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -70,7 +89,7 @@ const Navbar = () => {
 
             {/* Favorites (Heart) Icon */}
             <Link to="/favorites" className="relative">
-              <HeartIcon  className="text-primary"/>
+              <HeartIcon className="text-primary" />
 
               {favUnite.length > 0 && (
                 <span className="absolute -top-2 -right-2 w-4 h-4 rounded-full bg-red-700 text-white text-xs flex items-center justify-center">
@@ -80,7 +99,13 @@ const Navbar = () => {
             </Link>
 
             {/* Need Help Button */}
-            <button className="px-5 py-2 border border-white/20 hover:border-primary text-text-primary bg-white/5 hover:bg-primary transition-all duration-300 rounded-full text-xs font-semibold tracking-wider uppercase shadow-sm">
+            <button
+              className={`px-5 py-2 border hover:border-primary transition-all duration-300 rounded-full text-xs font-semibold tracking-wider uppercase shadow-sm cursor-pointer ${
+                isLight
+                  ? "border-[#D9E1E4] text-text-secondary bg-[#F5F9FA] hover:bg-primary hover:text-white"
+                  : "border-white/20 text-text-primary bg-white/5 hover:bg-primary"
+              }`}
+            >
               Need Help
             </button>
           </div>
@@ -90,7 +115,9 @@ const Navbar = () => {
             <button
               onClick={toggleMobileMenu}
               aria-label="Toggle menu"
-              className="text-text-primary hover:text-primary transition-colors duration-200 focus:outline-none"
+              className={`transition-colors duration-200 focus:outline-none ${
+                isLight ? "text-text-secondary hover:text-primary" : "text-text-primary hover:text-primary"
+              }`}
             >
               <svg
                 className="w-7 h-7"
