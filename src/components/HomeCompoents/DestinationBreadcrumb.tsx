@@ -3,16 +3,45 @@ import { ChevronRight } from "lucide-react";
 
 interface BreadcrumbProps {
   title: string;
+  propertyTitle?: string;
+  destinationSlug?: string;
+  variant?: "light" | "dark";
 }
 
-const Breadcrumb = ({ title }: BreadcrumbProps) => {
+const Breadcrumb = ({
+  title,
+  propertyTitle,
+  destinationSlug,
+  variant = "dark",
+}: BreadcrumbProps) => {
+  const isLight = variant === "light";
+  
+  const textClass = isLight ? "text-[#7D8D93] hover:text-text-secondary" : "text-gray-300 hover:text-white";
+  const activeClass = isLight ? "text-text-secondary font-semibold" : "text-white font-medium";
+  const chevronClass = isLight ? "w-4 h-4 text-[#C3CCCF]" : "w-4 h-4 text-gray-400";
+
   return (
-    <nav className="flex items-center space-x-2 text-sm text-gray-300">
-      <Link to="/" className="hover:text-white transition-colors">
+    <nav className="flex items-center space-x-2 text-sm">
+      <Link to="/home" className={`${textClass} transition-colors`}>
         Home
       </Link>
-      <ChevronRight className="w-4 h-4 text-gray-400" />
-      <span className="text-white font-medium">{title}</span>
+      <ChevronRight className={chevronClass} />
+      
+      {propertyTitle ? (
+        <>
+          {destinationSlug ? (
+            <Link to={`/home/${destinationSlug}`} className={`${textClass} transition-colors`}>
+              {title}
+            </Link>
+          ) : (
+            <span className={textClass}>{title}</span>
+          )}
+          <ChevronRight className={chevronClass} />
+          <span className={activeClass}>{propertyTitle}</span>
+        </>
+      ) : (
+        <span className={activeClass}>{title}</span>
+      )}
     </nav>
   );
 };

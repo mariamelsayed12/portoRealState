@@ -19,12 +19,10 @@ import {
   Layers,
   ArrowLeft,
   ArrowRight,
-  ShieldCheck,
-  Building,
-  Anchor,
 } from "lucide-react";
 import { FaHeart, FaRegHeart, FaWhatsapp } from "react-icons/fa6";
 import AmenitiesSection from "../components/Ui/AmenitiesSection";
+import DestinationBreadcrumb from "../components/HomeCompoents/DestinationBreadcrumb";
 
 const PropertyDetails: React.FC = () => {
   const { destinationSlug, propertySlug } = useParams<{
@@ -140,40 +138,19 @@ const PropertyDetails: React.FC = () => {
     { value: orientationSpec, label: "Orientation", icon: Compass },
   ];
 
-  // Map raw amenities to structured items with icons
-  const propertyAmenities = useMemo(() => {
-    const rawAmenities = property.amenities || ["Hotels", "Golf", "Private Beach", "Pools", "24/7 Security"];
-    const iconMap: Record<string, React.ComponentType<any>> = {
-      hotels: Building,
-      golf: ShieldCheck,
-      "private beach": Anchor,
-      pools: Bath,
-      "24/7 security": ShieldCheck,
-    };
-    return rawAmenities.map((am) => {
-      const name = typeof am === "string" ? am : (am as any).title;
-      const lower = name.toLowerCase();
-      return {
-        title: name,
-        icon: iconMap[lower] || ShieldCheck,
-      };
-    });
-  }, [property]);
+
 
   return (
-    <div className="w-full flex flex-col min-h-screen bg-background pt-8 pb-0">
+    <div className="w-full flex flex-col min-h-screen bg-background lg:pt-36 pt-24 md:pt-36 pb-0">
       <div className="mx-auto max-w-7xl px-6 sm:px-8 lg:px-12 w-full flex-1">
         {/* Breadcrumb Navigation */}
-        <div className="flex items-center gap-2 text-xs font-semibold text-[#7D8D93] mb-6">
-          <Link to="/home" className="hover:text-primary transition-colors">
-            Home
-          </Link>
-          <span>&gt;</span>
-          <Link to={`/home/${destination.slug}`} className="hover:text-primary transition-colors">
-            {destination.title}
-          </Link>
-          <span>&gt;</span>
-          <span className="text-text-darker">{property.title}</span>
+        <div className="mb-6">
+          <DestinationBreadcrumb
+            title={destination.title}
+            propertyTitle={property.title}
+            destinationSlug={destination.slug}
+            variant="light"
+          />
         </div>
 
         {/* Gallery Section */}
