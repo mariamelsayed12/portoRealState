@@ -4,6 +4,7 @@ import DestinationStats from "../components/DestinationStats";
 import DestinationDetailsContent from "./home/DestinationDetailsContent";
 import DestinationNotFound from "../components/HomeCompoents/DestinationNotFound";
 import DestinationBreadcrumb from "../components/HomeCompoents/DestinationBreadcrumb";
+import AmenitiesSection from "../components/Ui/AmenitiesSection";
 
 const DestinationDetails = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -53,6 +54,7 @@ const DestinationDetails = () => {
           {/* You could render destination specific content here, or reuse existing home sections */}
           <DestinationDetailsContent destinationSlug={destination.slug} />
       </div>
+      <AmenitiesSection/>
     </div>
   );
 };

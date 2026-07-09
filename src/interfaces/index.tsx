@@ -1,6 +1,24 @@
+
+import type { ComponentType } from "react";
+import type { IconBaseProps } from "react-icons/lib";
+
 export interface PropertyStat {
   icon: "location" | "bed" | "bath" | "area";
   value: string;
+}
+
+
+
+/**
+ * A single village/village-amenity feature shown in the marquee.
+ */
+export interface Feature {
+  /** Stable unique id — used as the React key and for add/remove/reorder. */
+  id: string;
+  /** Card label. Can wrap to two lines (e.g. "Medical Service"). */
+  title: string;
+  /** Icon component rendered inside the card's accent shape. */
+  icon: ComponentType<IconBaseProps>;
 }
 
 export interface PropertyUnitCardData {

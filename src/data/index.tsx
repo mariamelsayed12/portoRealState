@@ -4,11 +4,18 @@ import HomeInvestmentIcon from "../components/icons/HomeInvestmentIcon";
 import defualtImage from "../assets/HomePage/default.png";
 import type {
   DestinationData,
+  Feature,
   InvestmentCardData,
   PropertyUnitCardData,
 } from "../interfaces";
 import northcost from "../assets/HomePage/northcost.jpg";
 import { Mail, Phone } from "lucide-react";
+import HotelsIcon from "../components/icons/hotels";
+import GolfIcon from "../components/icons/golf";
+import PoolIcon from "../components/icons/pools";
+import Security from "../components/icons/security";
+import MediacalServiceIcon from "../components/icons/MedicalService";
+import Marina from "../components/icons/marina";
 
 export const destinations: DestinationData[] = [
   {
@@ -650,5 +657,69 @@ export const contactFields: ContactFieldConfig[] = [
     placeholder: "Tell us more about your request..",
     type: "text",
     isTextarea: true,
+  },
+];
+
+/**
+ * Design tokens for the Village Features marquee.
+ * Centralised so the visual design can be tuned in one place without
+ * touching component logic.
+ */
+export const FEATURE_MARQUEE_TOKENS = {
+  colors: {
+    cardBg: "#FFFFFF",
+    accent: "#B9DBE5",
+    title: "#141414",
+    pageBg: "#F4F8FA",
+  },
+  card: {
+    // Desktop
+    width: 300,
+    height: 132,
+    // Tablet
+    widthTablet: 240,
+    heightTablet: 112,
+    // Mobile
+    widthMobile: 190,
+    heightMobile: 100,
+    radius: 28,
+    gap: 4,
+  },
+  marquee: {
+    /** px per second — constant speed regardless of item count. */
+    speedPxPerSecond: 60,
+  },
+} as const;
+
+export const villageFeatures: Feature[] = [
+  {
+    id: "Hotels",
+    title: "Hotels",
+    icon: HotelsIcon,
+  },
+  {
+    id: "Golf",
+    title: "Golf",
+    icon: GolfIcon,
+  },
+  {
+    id: "Pools",
+    title: "Pools",
+    icon: PoolIcon,
+  },
+  {
+    id: "Security",
+    title: "24/7 Security",
+    icon: Security,
+  },
+  {
+    id: "Marina",
+    title: "Marina",
+    icon: Marina,
+  },
+  {
+    id: "Medical-Service",
+    title: "Medical Service",
+    icon: MediacalServiceIcon,
   },
 ];
