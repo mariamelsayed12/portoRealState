@@ -45,17 +45,17 @@ const DestinationDetailsContent = ({ destinationSlug }: DestinationDetailsConten
 						<button
 							type="button"
 							onClick={() => setIsFilterOpen(true)}
-							className="inline-flex items-center gap-2 rounded-lg border border-[#D9E1E4] bg-white px-4 py-2 text-xs font-semibold text-[#58696F] shadow-sm hover:bg-gray-50 transition-colors"
+							className="inline-flex items-center gap-2 rounded-lg border border-[#D9E1E4] bg-white px-4 py-2 text-xs font-semibold text-primary shadow-sm hover:bg-gray-50 transition-colors"
 						>
-							<SlidersHorizontal className="h-4 w-4 text-[#58696F]" />
+							<SlidersHorizontal className="h-4 w-4 text-primary" />
 							<span>Filter</span>
 						</button>
 						<button
 							type="button"
-							className="inline-flex items-center gap-2 rounded-lg border border-[#D9E1E4] bg-white px-4 py-2 text-xs font-semibold text-[#58696F] shadow-sm hover:bg-gray-50 transition-colors"
+							className="inline-flex items-center gap-2 rounded-lg border border-[#D9E1E4] bg-white px-4 py-2 text-xs font-semibold text-primary shadow-sm hover:bg-gray-50 transition-colors"
 						>
 							<span>Sort</span>
-							<ArrowUpDown className="h-4 w-4 text-[#58696F]" />
+							<ArrowUpDown className="h-4 w-4 text-primary" />
 						</button>
 					</div>
 				</div>

@@ -1,6 +1,11 @@
 import { Bath, BedDouble, Heart, MapPin, Ruler } from "lucide-react";
-import type { PropertyCardData } from "../interfaces";
+import type { PropertyUnitCardData } from "../interfaces";
 import Image from "./Ui/Image";
+import { useAppDispatch, type RootState } from "../app/store";
+import { useSelector } from "react-redux";
+import { addToFavAction, removeFromFavAction } from "../app/feature/favoriteUnitSlice";
+import { FaHeart, FaRegHeart } from "react-icons/fa6";
+
 
 const statIconMap = {
   location: MapPin,
@@ -9,9 +14,34 @@ const statIconMap = {
   area: Ruler,
 } as const;
 
-const UnitCard = ({ card, className = "w-[286px] sm:w-[296px] shrink-0" }: { card: PropertyCardData; className?: string }) => {
+const UnitCard = ({
+  card,
+  className = "w-[286px] sm:w-[296px] shrink-0",
+}: {
+  card: PropertyUnitCardData;
+  className?: string;
+}) => {
+
+  const dispatch = useAppDispatch();
+
+  const {favUnite } = useSelector((state: RootState) => state.favUnit);
+
+
+const isFavorite = favUnite.some(item => item.id === card.id);
+
+
+const handleFavorite = () => {
+    if (isFavorite) {
+        dispatch(removeFromFavAction(card.id));
+    } else {
+        dispatch(addToFavAction(card));
+    }
+};
+
   return (
-    <article className={`${className} rounded-[12px] border border-border bg-white shadow-[0_2px_10px_rgba(73,95,104,0.06)] overflow-hidden`}>
+    <article
+      className={`${className} rounded-[12px] border border-border bg-white shadow-[0_2px_10px_rgba(73,95,104,0.06)] overflow-hidden`}
+    >
       <div className="relative h-[198px] overflow-hidden bg-[#dfeef1]">
         <Image
           imageurl={card.image}
@@ -31,12 +61,16 @@ const UnitCard = ({ card, className = "w-[286px] sm:w-[296px] shrink-0" }: { car
             ))}
           </div>
 
-          <button
+          {/* <button
             type="button"
             aria-label="Save property"
             className="grid h-7 w-7 place-items-center rounded-full bg-white/85 text-primary shadow-sm backdrop-blur-sm transition-transform hover:scale-105"
           >
             <Heart className="h-3.5 w-3.5" />
+          </button> */}
+
+          <button onClick={handleFavorite}>
+            {isFavorite ? <FaHeart className="text-primary h-4 w-4" /> : <FaRegHeart className="text-primary h-4 w-4" />}
           </button>
         </div>
 

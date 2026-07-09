@@ -2,10 +2,13 @@ import BuildingIcon from "../components/icons/BuildingIcon";
 import CartIcon from "../components/icons/CartIcon";
 import HomeInvestmentIcon from "../components/icons/HomeInvestmentIcon";
 import defualtImage from "../assets/HomePage/default.png";
-import type { DestinationData, InvestmentCardData, PropertyCardData } from "../interfaces";
+import type {
+  DestinationData,
+  InvestmentCardData,
+  PropertyUnitCardData,
+} from "../interfaces";
 import northcost from "../assets/HomePage/northcost.jpg";
 import { Mail, Phone } from "lucide-react";
-
 
 export const destinations: DestinationData[] = [
   {
@@ -14,14 +17,14 @@ export const destinations: DestinationData[] = [
     title: "Porto Golf",
     breadcrumbLabel: "Village",
     image: defualtImage,
-    description: "A calm residential destination with signature coastal living and private leisure spaces.",
+    description:
+      "A calm residential destination with signature coastal living and private leisure spaces.",
     developer: "Amer Group",
     price: "2M EGP",
     startingPrice: "2,000,000 EGP",
     rentalYield: "Up to 8%",
     availableListings: "More than 1000",
     hasArrowBadge: false,
-    
   },
   {
     id: 2,
@@ -33,7 +36,8 @@ export const destinations: DestinationData[] = [
     rentalYield: "Up to 10%",
     availableListings: "More than 3000",
     image: defualtImage,
-    description: "Porto Marina is the ultimate seaside resort, providing endless entertainment and pristine beaches.",
+    description:
+      "Porto Marina is the ultimate seaside resort, providing endless entertainment and pristine beaches.",
     hasArrowBadge: true,
   },
   {
@@ -42,7 +46,8 @@ export const destinations: DestinationData[] = [
     title: "Porto Golf",
     breadcrumbLabel: "Beach",
     image: defualtImage,
-    description: "A beachfront destination designed for relaxed everyday access to the sea.",
+    description:
+      "A beachfront destination designed for relaxed everyday access to the sea.",
     developer: "Amer Group",
     price: "2M EGP",
     startingPrice: "2,000,000 EGP",
@@ -50,13 +55,14 @@ export const destinations: DestinationData[] = [
     availableListings: "More than 1000",
     hasArrowBadge: false,
   },
-   {
+  {
     id: 4,
     slug: "lagoon",
     title: "Porto Golf",
     breadcrumbLabel: "Lagoon",
     image: defualtImage,
-    description: "Waterfront escapes and family-friendly leisure framed by lush landscapes.",
+    description:
+      "Waterfront escapes and family-friendly leisure framed by lush landscapes.",
     developer: "Amer Group",
     price: "2.5M EGP",
     startingPrice: "2,500,000 EGP",
@@ -64,13 +70,14 @@ export const destinations: DestinationData[] = [
     availableListings: "More than 2000",
     hasArrowBadge: false,
   },
-   {
-    id: 5,    
+  {
+    id: 5,
     slug: "marina",
     title: "Porto Golf",
     breadcrumbLabel: "Marina",
     image: defualtImage,
-    description: "A marina lifestyle with an elegant promenade and curated amenities.",
+    description:
+      "A marina lifestyle with an elegant promenade and curated amenities.",
     developer: "Amer Group",
     price: "3M EGP",
     startingPrice: "3,000,000 EGP",
@@ -78,13 +85,14 @@ export const destinations: DestinationData[] = [
     availableListings: "More than 1500",
     hasArrowBadge: false,
   },
-   {
+  {
     id: 6,
     slug: "coast",
     title: "Porto Golf",
     breadcrumbLabel: "Coast",
     image: defualtImage,
-    description: "A coastal destination with a modern resort rhythm and timeless appeal.",
+    description:
+      "A coastal destination with a modern resort rhythm and timeless appeal.",
     developer: "Amer Group",
     price: "4M EGP",
     startingPrice: "4,000,000 EGP",
@@ -95,7 +103,6 @@ export const destinations: DestinationData[] = [
 ];
 
 export const LOCATION_OPTIONS = ["Item 1", "Item 1", "Item 1", "Item 1"];
-
 
 export const offerItems = [
   {
@@ -129,7 +136,7 @@ export const curatedPropertiesHeading = {
   actionLabel: "View All",
 };
 
-export const curatedProperties: PropertyCardData[] = [
+export const curatedProperties: PropertyUnitCardData[] = [
   {
     id: "sea-view-chalet-1",
     image: defualtImage,
@@ -196,7 +203,7 @@ export const curatedProperties: PropertyCardData[] = [
   },
 ];
 
-export const units: PropertyCardData[] = [
+export const units: PropertyUnitCardData[] = [
   // Village / Porto Golf units (6 units as shown in grid)
   {
     id: "village-unit-1",
@@ -590,26 +597,26 @@ export const northCoastInvestmentCards: InvestmentCardData[] = [
 ];
 export type ContactFieldConfig =
   | {
-    name: "fullName";
-    label: string;
-    placeholder: string;
-    type: "text";
-    isTextarea?: false;
-  }
+      name: "fullName";
+      label: string;
+      placeholder: string;
+      type: "text";
+      isTextarea?: false;
+    }
   | {
-    name: "phoneNumber";
-    label: string;
-    placeholder: string;
-    type: "tel";
-    isTextarea?: false;
-  }
+      name: "phoneNumber";
+      label: string;
+      placeholder: string;
+      type: "tel";
+      isTextarea?: false;
+    }
   | {
-    name: "description";
-    label: string;
-    placeholder: string;
-    type: "text";
-    isTextarea: true;
-  };
+      name: "description";
+      label: string;
+      placeholder: string;
+      type: "text";
+      isTextarea: true;
+    };
 
 export const contactItems = [
   {
@@ -645,4 +652,3 @@ export const contactFields: ContactFieldConfig[] = [
     isTextarea: true,
   },
 ];
-
