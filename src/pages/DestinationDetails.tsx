@@ -5,6 +5,7 @@ import DestinationDetailsContent from "./home/DestinationDetailsContent";
 import DestinationNotFound from "../components/HomeCompoents/DestinationNotFound";
 import DestinationBreadcrumb from "../components/HomeCompoents/DestinationBreadcrumb";
 import AmenitiesSection from "../components/Ui/AmenitiesSection";
+import LocationSection from "../components/Location/LocationSection";
 import Image from "../components/Ui/Image";
 import northcost from "../assets/HomePage/northcost.jpg";
 
@@ -60,17 +61,20 @@ const DestinationDetails = () => {
         {/* AmenitiesSection */}
       <AmenitiesSection/>
 
-    
-      
-      <section className="container lg:py-10 md:py-8 py-5">
-  <div className="overflow-hidden">
-    <Image
-      alt="village image"
-      imageurl={northcost}
-      className="h-[250px] w-full  md:h-[400px] object-cover lg:h-[526px]"
-    />
+      <section className="container lg:pt-10 md:pt-8 pt-5">
+        <div className="overflow-hidden">
+          <Image
+            alt="village image"
+            imageurl={northcost}
+            className="h-[250px] w-full  md:h-[400px] object-cover lg:h-[526px]"
+          />
   </div>
 </section>
+
+      {/* Location Section */}
+      <LocationSection destination={destination} />
+      
+      
     </div>
   );
 };

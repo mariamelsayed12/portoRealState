@@ -32,6 +32,11 @@ export const destinations: DestinationData[] = [
     rentalYield: "Up to 8%",
     availableListings: "More than 1000",
     hasArrowBadge: false,
+    address: "almansoura st, north coast",
+    phone: "+20113333333",
+    email: "elahdd@email.com",
+    coordinates: { lat: 30.8247, lng: 28.9892 },
+    googleMapsUrl: "https://www.google.com/maps/search/?api=1&query=30.8247,28.9892",
   },
   {
     id: 2,
@@ -46,6 +51,11 @@ export const destinations: DestinationData[] = [
     description:
       "Porto Marina is the ultimate seaside resort, providing endless entertainment and pristine beaches.",
     hasArrowBadge: true,
+    address: "KM 105, Alex-Matrouh Road, Marina, North Coast",
+    phone: "+20113333333",
+    email: "elahdd@email.com",
+    coordinates: { lat: 30.8284, lng: 29.0028 },
+    googleMapsUrl: "https://www.google.com/maps/search/?api=1&query=30.8284,29.0028",
   },
   {
     id: 3,
@@ -61,6 +71,11 @@ export const destinations: DestinationData[] = [
     rentalYield: "Up to 8%",
     availableListings: "More than 1000",
     hasArrowBadge: false,
+    address: "beachfront sector, north coast",
+    phone: "+20113333333",
+    email: "elahdd@email.com",
+    coordinates: { lat: 30.8210, lng: 28.9750 },
+    googleMapsUrl: "https://www.google.com/maps/search/?api=1&query=30.8210,28.9750",
   },
   {
     id: 4,
@@ -76,6 +91,11 @@ export const destinations: DestinationData[] = [
     rentalYield: "Up to 9%",
     availableListings: "More than 2000",
     hasArrowBadge: false,
+    address: "lagoon parkway, north coast",
+    phone: "+20113333333",
+    email: "elahdd@email.com",
+    coordinates: { lat: 30.8300, lng: 28.9950 },
+    googleMapsUrl: "https://www.google.com/maps/search/?api=1&query=30.8300,28.9950",
   },
   {
     id: 5,
@@ -91,6 +111,11 @@ export const destinations: DestinationData[] = [
     rentalYield: "Up to 7%",
     availableListings: "More than 1500",
     hasArrowBadge: false,
+    address: "yacht promenade, north coast",
+    phone: "+20113333333",
+    email: "elahdd@email.com",
+    coordinates: { lat: 30.8270, lng: 28.9850 },
+    googleMapsUrl: "https://www.google.com/maps/search/?api=1&query=30.8270,28.9850",
   },
   {
     id: 6,
@@ -106,6 +131,11 @@ export const destinations: DestinationData[] = [
     rentalYield: "Up to 11%",
     availableListings: "More than 500",
     hasArrowBadge: false,
+    address: "coastal bypass, north coast",
+    phone: "+20113333333",
+    email: "elahdd@email.com",
+    coordinates: { lat: 30.8230, lng: 28.9650 },
+    googleMapsUrl: "https://www.google.com/maps/search/?api=1&query=30.8230,28.9650",
   },
 ];
 

@@ -1,5 +1,4 @@
 import type { ComponentType } from "react";
-import type { IconBaseProps } from "react-icons/lib";
 
 export interface PropertyStat {
   icon: "location" | "bed" | "bath" | "area";
@@ -15,7 +14,7 @@ export interface Feature {
   /** Card label. Can wrap to two lines (e.g. "Medical Service"). */
   title: string;
   /** Icon component rendered inside the card's accent shape. */
-  icon: ComponentType<IconBaseProps>;
+  icon: ComponentType<any>;
 }
 
 export interface PropertyUnitCardData {
@@ -67,4 +66,12 @@ export interface DestinationData {
   rentalYield: string;
   availableListings: string;
   hasArrowBadge: boolean;
+  address?: string;
+  phone?: string;
+  email?: string;
+  coordinates?: {
+    lat: number;
+    lng: number;
+  };
+  googleMapsUrl?: string;
 }

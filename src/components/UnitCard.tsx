@@ -1,4 +1,4 @@
-import { Bath, BedDouble, Heart, MapPin, Ruler } from "lucide-react";
+import { Bath, BedDouble, MapPin, Ruler } from "lucide-react";
 import type { PropertyUnitCardData } from "../interfaces";
 import Image from "./Ui/Image";
 import { useAppDispatch, type RootState } from "../app/store";

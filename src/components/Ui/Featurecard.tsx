@@ -9,7 +9,7 @@ export interface FeatureCardProps {
   className?: string;
 }
 
-const { colors, card } = FEATURE_MARQUEE_TOKENS;
+const { colors } = FEATURE_MARQUEE_TOKENS;
 
 /**
  * A single feature card: white rounded card with a curved light-blue

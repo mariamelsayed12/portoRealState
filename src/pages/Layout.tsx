@@ -4,7 +4,10 @@ import Footer from "../components/footer/Footer";
 
 const RootLayout = () => {
   const location = useLocation();
-  const isHomePage = location.pathname === "/" || location.pathname.startsWith("/home");
+  const isHomePage =
+    location.pathname === "/" ||
+    location.pathname.startsWith("/home") ||
+    location.pathname.startsWith("/destination");
 
   return (
     <div className="bg-background text-text-darker min-h-screen flex flex-col">

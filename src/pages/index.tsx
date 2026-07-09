@@ -9,8 +9,10 @@ const HomePage = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, [location.pathname]);
 
+  const isDetailsPage = location.pathname !== "/home" && location.pathname !== "/";
+
   return (
-    <div className="pb-24">
+    <div className={isDetailsPage ? "pb-0" : "pb-24"}>
       <AnimatePresence mode="wait">
         <motion.div
           key={location.pathname}
