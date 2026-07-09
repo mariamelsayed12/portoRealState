@@ -1,6 +1,9 @@
 import { useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import Logo from "../icons/Logo";
+import { useSelector } from "react-redux";
+import type { RootState } from "../../app/store";
+import { HeartIcon } from "lucide-react";
 
 const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -16,6 +19,7 @@ const Navbar = () => {
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
+  const { favUnite } = useSelector((state: RootState) => state.favUnit);
 
   return (
     <>
@@ -33,9 +37,10 @@ const Navbar = () => {
                 key={link.name}
                 to={link.path}
                 className={({ isActive }) =>
-                  `text-sm font-medium tracking-wide transition-colors duration-200 relative py-1 after:absolute after:bottom-0 after:left-0 after:w-full after:h-[2px] after:bg-primary after:transform after:scale-x-0 hover:after:scale-x-100 after:transition-transform after:duration-300 ${isActive
-                    ? "text-primary after:scale-x-100 font-semibold"
-                    : "text-text-primary hover:text-primary"
+                  `text-sm font-medium tracking-wide transition-colors duration-200 relative py-1 after:absolute after:bottom-0 after:left-0 after:w-full after:h-[2px] after:bg-primary after:transform after:scale-x-0 hover:after:scale-x-100 after:transition-transform after:duration-300 ${
+                    isActive
+                      ? "text-primary after:scale-x-100 font-semibold"
+                      : "text-text-primary hover:text-primary"
                   }`
                 }
               >
@@ -64,25 +69,15 @@ const Navbar = () => {
             </div>
 
             {/* Favorites (Heart) Icon */}
-            <button
-              aria-label="Favorites"
-              className="text-text-primary hover:text-primary transition-colors duration-200 hover:scale-110 transform"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth="1.8"
-                stroke="currentColor"
-                className="w-5 h-5"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z"
-                />
-              </svg>
-            </button>
+            <Link to="/favorites" className="relative">
+              <HeartIcon />
+
+              {favUnite.length > 0 && (
+                <span className="absolute -top-2 -right-2 w-5 h-5 rounded-full bg-red-500 text-white text-xs flex items-center justify-center">
+                  {favUnite.length}
+                </span>
+              )}
+            </Link>
 
             {/* Need Help Button */}
             <button className="px-5 py-2 border border-white/20 hover:border-primary text-text-primary bg-white/5 hover:bg-primary transition-all duration-300 rounded-full text-xs font-semibold tracking-wider uppercase shadow-sm">
@@ -125,8 +120,9 @@ const Navbar = () => {
 
       {/* Mobile Drawer Panel */}
       <div
-        className={`fixed top-0 right-0 bottom-0 z-50 w-[80%] max-w-sm bg-[#0e1617]/95 backdrop-blur-md border-l border-white/10 shadow-2xl p-6 flex flex-col justify-between transform transition-transform duration-300 ease-in-out lg:hidden ${isMobileMenuOpen ? "translate-x-0" : "translate-x-full"
-          }`}
+        className={`fixed top-0 right-0 bottom-0 z-50 w-[80%] max-w-sm bg-[#0e1617]/95 backdrop-blur-md border-l border-white/10 shadow-2xl p-6 flex flex-col justify-between transform transition-transform duration-300 ease-in-out lg:hidden ${
+          isMobileMenuOpen ? "translate-x-0" : "translate-x-full"
+        }`}
       >
         <div>
           {/* Drawer Header */}
@@ -161,7 +157,10 @@ const Navbar = () => {
                 to={link.path}
                 onClick={toggleMobileMenu}
                 className={({ isActive }) =>
-                  `text-lg font-medium tracking-wide transition-colors duration-200 ${isActive ? "text-primary font-bold" : "text-text-primary hover:text-primary"
+                  `text-lg font-medium tracking-wide transition-colors duration-200 ${
+                    isActive
+                      ? "text-primary font-bold"
+                      : "text-text-primary hover:text-primary"
                   }`
                 }
               >
@@ -175,7 +174,9 @@ const Navbar = () => {
         <div className="space-y-6 border-t border-white/10 pt-6">
           {/* Mobile Language Selector */}
           <div className="flex items-center space-x-2 text-text-primary hover:text-primary transition-colors duration-200 cursor-pointer">
-            <span className="text-sm font-medium tracking-wide">Language: English</span>
+            <span className="text-sm font-medium tracking-wide">
+              Language: English
+            </span>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 20 20"
@@ -192,21 +193,15 @@ const Navbar = () => {
 
           {/* Mobile Favorites link */}
           <div className="flex items-center space-x-2 text-text-primary hover:text-primary transition-colors duration-200 cursor-pointer">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth="1.8"
-              stroke="currentColor"
-              className="w-5 h-5"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z"
-              />
-            </svg>
-            <span className="text-sm font-medium tracking-wide">Favorites</span>
+            <Link to="/favorites" className="relative">
+              <HeartIcon />
+
+              {favUnite.length > 0 && (
+                <span className="absolute -top-2 -right-2 w-5 h-5 rounded-full bg-red-500 text-white text-xs flex items-center justify-center">
+                  {favUnite.length}
+                </span>
+              )}
+            </Link>
           </div>
 
           {/* Mobile Need Help Button */}

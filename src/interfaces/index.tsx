@@ -1,4 +1,3 @@
-
 import type { ComponentType } from "react";
 import type { IconBaseProps } from "react-icons/lib";
 
@@ -6,8 +5,6 @@ export interface PropertyStat {
   icon: "location" | "bed" | "bath" | "area";
   value: string;
 }
-
-
 
 /**
  * A single village/village-amenity feature shown in the marquee.

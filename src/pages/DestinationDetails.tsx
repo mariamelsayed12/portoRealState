@@ -57,12 +57,12 @@ const DestinationDetails = () => {
           {/* You could render destination specific content here, or reuse existing home sections */}
           <DestinationDetailsContent destinationSlug={destination.slug} />
       </div>
-     
+        {/* AmenitiesSection */}
       <AmenitiesSection/>
 
-       {/* AmenitiesSection */}
+    
       
-      <section className="container py-10 ">
+      <section className="container lg:py-10 md:py-8 py-5">
   <div className="overflow-hidden">
     <Image
       alt="village image"
