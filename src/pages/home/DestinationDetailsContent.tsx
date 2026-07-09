@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import type { DestinationData } from "../../interfaces";
 import { destinations, units } from "../../data";
 import UnitCard from "../../components/UnitCard";
 import { SlidersHorizontal, ArrowUpDown } from "lucide-react";
 import FilterDrawer from "../../components/FilterDrawer";
+import { useUnitsFilter } from "../../hooks/useUnitsFilter";
 
 interface DestinationDetailsContentProps {
 	destinationSlug: string;
@@ -14,17 +15,30 @@ const DestinationDetailsContent = ({ destinationSlug }: DestinationDetailsConten
 	const [activeTab, setActiveTab] = useState("All");
 	const [isFilterOpen, setIsFilterOpen] = useState(false);
 
+	// First filter units by destination and active tab
+	const activeTabUnits = useMemo(() => {
+		return units.filter((unit) => {
+			const matchesDestination = unit.destination.slug === destinationSlug;
+			if (!matchesDestination) return false;
+
+			if (activeTab === "All") return true;
+			return unit.badges.some((badge) => badge.toLowerCase() === activeTab.toLowerCase());
+		});
+	}, [destinationSlug, activeTab]);
+
+	// Apply sidebar filters on top of destination and tab filtered units
+	const {
+		tempFilters,
+		setTempFilters,
+		applyFilters,
+		resetFilters,
+		filteredUnits,
+		tempFilteredCount,
+	} = useUnitsFilter(activeTabUnits);
+
 	if (!destination) {
 		return null;
 	}
-
-	const filteredUnits = units.filter((unit) => {
-		const matchesDestination = unit.destination.slug === destinationSlug;
-		if (!matchesDestination) return false;
-
-		if (activeTab === "All") return true;
-		return unit.badges.some((badge) => badge.toLowerCase() === activeTab.toLowerCase());
-	});
 
 	return (
 		<section className="bg-background py-14 sm:py-16">
@@ -96,7 +110,15 @@ const DestinationDetailsContent = ({ destinationSlug }: DestinationDetailsConten
 					</div>
 				)}
 			</div>
-			<FilterDrawer isOpen={isFilterOpen} onClose={() => setIsFilterOpen(false)} />
+			<FilterDrawer
+				isOpen={isFilterOpen}
+				onClose={() => setIsFilterOpen(false)}
+				tempFilters={tempFilters}
+				setTempFilters={setTempFilters}
+				applyFilters={applyFilters}
+				resetFilters={resetFilters}
+				tempFilteredCount={tempFilteredCount}
+			/>
 		</section>
 	);
 };

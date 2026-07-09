@@ -9,6 +9,7 @@ import RentPage from "../pages/rent";
 import ManagementPage from "../pages/management";
 import HomeOverviewPage from "../pages/home/HomeOverviewPage";
 import DestinationDetails from "../pages/DestinationDetails";
+import FavoritesPage from "../pages/favorites";
 
 
 
@@ -37,6 +38,7 @@ const router = createBrowserRouter(
                         <Route path="rent" element={<RentPage/>} />
                         <Route path="management" element={<ManagementPage/>} />
                         <Route path="destination/:slug" element={<DestinationDetails/>} />
+                        <Route path="/favorites" element={<FavoritesPage />} />
 
     </Route>
 

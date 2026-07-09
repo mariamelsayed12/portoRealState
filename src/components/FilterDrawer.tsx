@@ -1,28 +1,29 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { X } from "lucide-react";
 import Button from "./Ui/Button";
 import Input from "./Ui/Input";
+import type { FilterState } from "../hooks/useUnitsFilter";
 
 interface FilterDrawerProps {
 	isOpen: boolean;
 	onClose: () => void;
+	tempFilters: FilterState;
+	setTempFilters: React.Dispatch<React.SetStateAction<FilterState>>;
+	applyFilters: () => void;
+	resetFilters: () => void;
+	tempFilteredCount: number;
 }
 
-const FilterDrawer = ({ isOpen, onClose }: FilterDrawerProps) => {
-	// Local state to make the UI fully interactive and showcase state changes
-	const [propertyType, setPropertyType] = useState("Chalet");
-	const [bedrooms, setBedrooms] = useState("3");
-	const [bathrooms, setBathrooms] = useState("2");
-	const [areaFrom, setAreaFrom] = useState("100");
-	const [areaTo, setAreaTo] = useState("130");
-	const [priceFrom, setPriceFrom] = useState("1000000");
-	const [priceTo, setPriceTo] = useState("1000000");
-	const [downPayment, setDownPayment] = useState("1000000");
-	const [monthlyInstallment, setMonthlyInstallment] = useState("1000000");
-	const [deliveryDate, setDeliveryDate] = useState("Ready");
-	const [finishing, setFinishing] = useState("Not finished");
-
+const FilterDrawer = ({
+	isOpen,
+	onClose,
+	tempFilters,
+	setTempFilters,
+	applyFilters,
+	resetFilters,
+	tempFilteredCount,
+}: FilterDrawerProps) => {
 	const drawerRef = useRef<HTMLDivElement>(null);
 
 	// Handle Escape key to close the drawer
@@ -44,21 +45,47 @@ const FilterDrawer = ({ isOpen, onClose }: FilterDrawerProps) => {
 	}, [isOpen, onClose]);
 
 	const handleReset = () => {
-		setPropertyType("");
-		setBedrooms("");
-		setBathrooms("");
-		setAreaFrom("");
-		setAreaTo("");
-		setPriceFrom("");
-		setPriceTo("");
-		setDownPayment("");
-		setMonthlyInstallment("");
-		setDeliveryDate("");
-		setFinishing("");
+		resetFilters();
 	};
 
 	const handleApply = () => {
+		applyFilters();
 		onClose();
+	};
+
+	const handleTogglePropertyType = (type: string) => {
+		setTempFilters((prev) => ({
+			...prev,
+			propertyType: prev.propertyType === type ? "" : type,
+		}));
+	};
+
+	const handleToggleBedrooms = (num: string) => {
+		setTempFilters((prev) => ({
+			...prev,
+			bedrooms: prev.bedrooms === num ? "" : num,
+		}));
+	};
+
+	const handleToggleBathrooms = (num: string) => {
+		setTempFilters((prev) => ({
+			...prev,
+			bathrooms: prev.bathrooms === num ? "" : num,
+		}));
+	};
+
+	const handleToggleDeliveryDate = (date: string) => {
+		setTempFilters((prev) => ({
+			...prev,
+			deliveryDate: prev.deliveryDate === date ? "" : date,
+		}));
+	};
+
+	const handleToggleFinishing = (finish: string) => {
+		setTempFilters((prev) => ({
+			...prev,
+			finishing: prev.finishing === finish ? "" : finish,
+		}));
 	};
 
 	return (
@@ -103,12 +130,12 @@ const FilterDrawer = ({ isOpen, onClose }: FilterDrawerProps) => {
 								<h3 className="text-[15px] font-bold text-text-secondary mb-3">Property type</h3>
 								<div className="flex flex-wrap gap-2">
 									{["Chalet", "Villa", "Apartment", "Twin house"].map((type) => {
-										const isSelected = propertyType.toLowerCase() === type.toLowerCase();
+										const isSelected = (tempFilters.propertyType || "").toLowerCase() === type.toLowerCase();
 										return (
 											<button
 												key={type}
 												type="button"
-												onClick={() => setPropertyType(type)}
+												onClick={() => handleTogglePropertyType(type)}
 												className={`rounded-full px-4 py-2 text-xs font-semibold border transition-all ${
 													isSelected
 														? "bg-[#E9F4F7] border-primary text-[#141414]"
@@ -127,12 +154,12 @@ const FilterDrawer = ({ isOpen, onClose }: FilterDrawerProps) => {
 								<h3 className="text-[15px] font-bold text-text-secondary mb-3">Bedrooms</h3>
 								<div className="flex flex-wrap gap-2">
 									{["1", "2", "3", "4", "5+"].map((num) => {
-										const isSelected = bedrooms === num;
+										const isSelected = tempFilters.bedrooms === num;
 										return (
 											<button
 												key={num}
 												type="button"
-												onClick={() => setBedrooms(num)}
+												onClick={() => handleToggleBedrooms(num)}
 												className={`h-10 min-w-10 rounded-full flex items-center justify-center text-xs font-semibold border transition-all ${
 													isSelected
 														? "bg-[#E9F4F7] border-primary text-[#141414]"
@@ -151,12 +178,12 @@ const FilterDrawer = ({ isOpen, onClose }: FilterDrawerProps) => {
 								<h3 className="text-[15px] font-bold text-text-secondary mb-3">Bathrooms</h3>
 								<div className="flex flex-wrap gap-2">
 									{["1", "2", "3+"].map((num) => {
-										const isSelected = bathrooms === num;
+										const isSelected = tempFilters.bathrooms === num;
 										return (
 											<button
 												key={num}
 												type="button"
-												onClick={() => setBathrooms(num)}
+												onClick={() => handleToggleBathrooms(num)}
 												className={`h-10 min-w-10 rounded-full flex items-center justify-center text-xs font-semibold border transition-all ${
 													isSelected
 														? "bg-[#E9F4F7] border-primary text-[#141414]"
@@ -178,8 +205,8 @@ const FilterDrawer = ({ isOpen, onClose }: FilterDrawerProps) => {
 										<label className="block text-[11px] font-semibold text-[#7D8D93] mb-1.5">From</label>
 										<Input
 											type="number"
-											value={areaFrom}
-											onChange={(e) => setAreaFrom(e.target.value)}
+											value={tempFilters.areaFrom}
+											onChange={(e) => setTempFilters(prev => ({ ...prev, areaFrom: e.target.value }))}
 											className="h-10 text-xs border-[#D9E1E4]"
 											placeholder="0"
 										/>
@@ -188,8 +215,8 @@ const FilterDrawer = ({ isOpen, onClose }: FilterDrawerProps) => {
 										<label className="block text-[11px] font-semibold text-[#7D8D93] mb-1.5">To</label>
 										<Input
 											type="number"
-											value={areaTo}
-											onChange={(e) => setAreaTo(e.target.value)}
+											value={tempFilters.areaTo}
+											onChange={(e) => setTempFilters(prev => ({ ...prev, areaTo: e.target.value }))}
 											className="h-10 text-xs border-[#D9E1E4]"
 											placeholder="Any"
 										/>
@@ -218,8 +245,8 @@ const FilterDrawer = ({ isOpen, onClose }: FilterDrawerProps) => {
 										<label className="block text-[11px] font-semibold text-[#7D8D93] mb-1.5">From</label>
 										<Input
 											type="number"
-											value={priceFrom}
-											onChange={(e) => setPriceFrom(e.target.value)}
+											value={tempFilters.priceFrom}
+											onChange={(e) => setTempFilters(prev => ({ ...prev, priceFrom: e.target.value }))}
 											className="h-10 text-xs border-[#D9E1E4]"
 											placeholder="Min"
 										/>
@@ -228,8 +255,8 @@ const FilterDrawer = ({ isOpen, onClose }: FilterDrawerProps) => {
 										<label className="block text-[11px] font-semibold text-[#7D8D93] mb-1.5">To</label>
 										<Input
 											type="number"
-											value={priceTo}
-											onChange={(e) => setPriceTo(e.target.value)}
+											value={tempFilters.priceTo}
+											onChange={(e) => setTempFilters(prev => ({ ...prev, priceTo: e.target.value }))}
 											className="h-10 text-xs border-[#D9E1E4]"
 											placeholder="Max"
 										/>
@@ -258,8 +285,8 @@ const FilterDrawer = ({ isOpen, onClose }: FilterDrawerProps) => {
 										<label className="block text-[11px] font-semibold text-[#7D8D93] mb-1.5">Down Payment</label>
 										<Input
 											type="number"
-											value={downPayment}
-											onChange={(e) => setDownPayment(e.target.value)}
+											value={tempFilters.downPayment}
+											onChange={(e) => setTempFilters(prev => ({ ...prev, downPayment: e.target.value }))}
 											className="h-10 text-xs border-[#D9E1E4]"
 											placeholder="0"
 										/>
@@ -268,8 +295,8 @@ const FilterDrawer = ({ isOpen, onClose }: FilterDrawerProps) => {
 										<label className="block text-[11px] font-semibold text-[#7D8D93] mb-1.5">Monthly Installments</label>
 										<Input
 											type="number"
-											value={monthlyInstallment}
-											onChange={(e) => setMonthlyInstallment(e.target.value)}
+											value={tempFilters.monthlyInstallment}
+											onChange={(e) => setTempFilters(prev => ({ ...prev, monthlyInstallment: e.target.value }))}
 											className="h-10 text-xs border-[#D9E1E4]"
 											placeholder="0"
 										/>
@@ -282,12 +309,12 @@ const FilterDrawer = ({ isOpen, onClose }: FilterDrawerProps) => {
 								<h3 className="text-[15px] font-bold text-text-secondary mb-3">Delivery Date</h3>
 								<div className="flex flex-wrap gap-2">
 									{["Ready", "2027", "2028", "2029", "2030", "2031", "2032"].map((date) => {
-										const isSelected = deliveryDate.toLowerCase() === date.toLowerCase();
+										const isSelected = (tempFilters.deliveryDate || "").toLowerCase() === date.toLowerCase();
 										return (
 											<button
 												key={date}
 												type="button"
-												onClick={() => setDeliveryDate(date)}
+												onClick={() => handleToggleDeliveryDate(date)}
 												className={`rounded-full px-4 py-2 text-xs font-semibold border transition-all ${
 													isSelected
 														? "bg-[#E9F4F7] border-primary text-[#141414]"
@@ -306,12 +333,12 @@ const FilterDrawer = ({ isOpen, onClose }: FilterDrawerProps) => {
 								<h3 className="text-[15px] font-bold text-text-secondary mb-3">Finishing</h3>
 								<div className="flex flex-wrap gap-2">
 									{["Not finished", "Semi finished", "Finished", "Fully furnished"].map((finish) => {
-										const isSelected = finishing.toLowerCase() === finish.toLowerCase();
+										const isSelected = (tempFilters.finishing || "").toLowerCase() === finish.toLowerCase();
 										return (
 											<button
 												key={finish}
 												type="button"
-												onClick={() => setFinishing(finish)}
+												onClick={() => handleToggleFinishing(finish)}
 												className={`rounded-full px-4 py-2 text-xs font-semibold border transition-all ${
 													isSelected
 														? "bg-[#E9F4F7] border-primary text-[#141414]"
@@ -340,7 +367,7 @@ const FilterDrawer = ({ isOpen, onClose }: FilterDrawerProps) => {
 								onClick={handleApply}
 								className="w-1/2 rounded-xl bg-primary text-white font-bold hover:opacity-95 h-12 text-sm"
 							>
-								Apply Filter (8)
+								Apply Filter ({tempFilteredCount})
 							</Button>
 						</div>
 					</motion.div>
