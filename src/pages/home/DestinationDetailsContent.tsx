@@ -5,15 +5,25 @@ import UnitCard from "../../components/UnitCard";
 import { SlidersHorizontal, ArrowUpDown } from "lucide-react";
 import FilterDrawer from "../../components/FilterDrawer";
 import { useUnitsFilter } from "../../hooks/useUnitsFilter";
+import { useUnitsSort, type SortOption } from "../../hooks/useUnitsSort";
 
 interface DestinationDetailsContentProps {
 	destinationSlug: string;
 }
 
+const SORT_OPTIONS: { label: string; value: SortOption }[] = [
+	{ label: "Maximum Price", value: "max-price" },
+	{ label: "Minimum Price", value: "min-price" },
+	{ label: "Ready By", value: "ready-by" },
+	{ label: "Minimum Installments", value: "min-installments" },
+	{ label: "Maximum Installments", value: "max-installments" },
+];
+
 const DestinationDetailsContent = ({ destinationSlug }: DestinationDetailsContentProps) => {
 	const destination = destinations.find((item) => item.slug === destinationSlug) as DestinationData | undefined;
 	const [activeTab, setActiveTab] = useState("All");
 	const [isFilterOpen, setIsFilterOpen] = useState(false);
+	const [isSortOpen, setIsSortOpen] = useState(false);
 
 	// First filter units by destination and active tab
 	const activeTabUnits = useMemo(() => {
@@ -35,6 +45,13 @@ const DestinationDetailsContent = ({ destinationSlug }: DestinationDetailsConten
 		filteredUnits,
 		tempFilteredCount,
 	} = useUnitsFilter(activeTabUnits);
+
+	// Sort the currently filtered units
+	const {
+		activeSort,
+		setActiveSort,
+		sortedUnits,
+	} = useUnitsSort(filteredUnits);
 
 	if (!destination) {
 		return null;
@@ -64,13 +81,46 @@ const DestinationDetailsContent = ({ destinationSlug }: DestinationDetailsConten
 							<SlidersHorizontal className="h-4 w-4 text-primary" />
 							<span>Filter</span>
 						</button>
-						<button
-							type="button"
-							className="inline-flex items-center gap-2 rounded-lg border border-[#D9E1E4] bg-white px-4 py-2 text-xs font-semibold text-primary shadow-sm hover:bg-gray-50 transition-colors"
-						>
-							<span>Sort</span>
-							<ArrowUpDown className="h-4 w-4 text-primary" />
-						</button>
+						<div className="relative">
+							<button
+								type="button"
+								onClick={() => setIsSortOpen(!isSortOpen)}
+								className="inline-flex items-center gap-2 rounded-lg border border-[#D9E1E4] bg-white px-4 py-2 text-xs font-semibold text-primary shadow-sm hover:bg-gray-50 transition-colors"
+							>
+								<span>
+									Sort{activeSort ? `: ${SORT_OPTIONS.find((o) => o.value === activeSort)?.label}` : ""}
+								</span>
+								<ArrowUpDown className="h-4 w-4 text-primary" />
+							</button>
+							{isSortOpen && (
+								<>
+									<div className="fixed inset-0 z-10" onClick={() => setIsSortOpen(false)} />
+									<div className="absolute right-0 top-full mt-2 z-20 w-52 bg-white rounded-xl shadow-xl border border-[#E8EFF1] py-1">
+										{SORT_OPTIONS.map((opt) => {
+											const isSelected = activeSort === opt.value;
+											return (
+												<button
+													key={opt.value}
+													type="button"
+													onClick={() => {
+														setActiveSort(isSelected ? "" : opt.value);
+														setIsSortOpen(false);
+													}}
+													className={`w-full text-left px-4 py-2 text-xs font-semibold transition-colors flex items-center justify-between ${
+														isSelected
+															? "bg-[#E9F4F7] text-primary"
+															: "text-[#58696F] hover:bg-gray-50"
+													}`}
+												>
+													<span>{opt.label}</span>
+													{isSelected && <span className="w-1.5 h-1.5 rounded-full bg-primary" />}
+												</button>
+											);
+										})}
+									</div>
+								</>
+							)}
+						</div>
 					</div>
 				</div>
 
@@ -98,9 +148,9 @@ const DestinationDetailsContent = ({ destinationSlug }: DestinationDetailsConten
 				</div>
 
 				{/* Units Grid */}
-				{filteredUnits.length > 0 ? (
+				{sortedUnits.length > 0 ? (
 					<div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 justify-items-center sm:justify-items-stretch">
-						{filteredUnits.map((unit) => (
+						{sortedUnits.map((unit) => (
 							<UnitCard key={unit.id} card={unit} className="w-full" />
 						))}
 					</div>
