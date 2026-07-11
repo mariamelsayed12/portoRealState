@@ -59,7 +59,7 @@ const BuyPage = () => {
           />
 
 					{/* Units Grid */}
-					<div className="flex-1 w-full overflow-hidden">
+					<div className="flex-1 w-full overflow-hidden lg:pb-7 md:pb-5 pb-3">
 						{filteredUnits.length > 0 ? (
 							<motion.div
 								layout
