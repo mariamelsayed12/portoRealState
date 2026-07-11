@@ -263,7 +263,7 @@ const PropertyDetails: React.FC = () => {
                 return (
                   <div
                     key={index}
-                    className="bg-white border border-[#E8EFF1] rounded-[20px] p-5 flex flex-col justify-between h-[100px] shadow-[0_4px_12px_rgba(73,95,104,0.02)]"
+                    className="bg-white border border-[#E8EFF1] rounded-md p-5 flex flex-col justify-between h-[100px] shadow-[0_4px_12px_rgba(73,95,104,0.02)]"
                   >
                     <div className="flex items-center justify-between">
                       <span className="text-[15px] sm:text-base font-semibold text-text-secondary">

@@ -39,9 +39,9 @@ const UnitCard = ({
   return (
     <Link
       to={`/home/${card.destination.slug}/properties/${card.id}`}
-      className={`${className} block text-left rounded-[12px] overflow-hidden hover:shadow-[0_4px_20px_rgba(73,95,104,0.12)] transition-all duration-300 group`}
+      className={`${className} block text-left rounded-md overflow-hidden hover:shadow-[0_4px_20px_rgba(73,95,104,0.12)] transition-all duration-300 group`}
     >
-      <article className="w-full h-full rounded-[12px] border border-border bg-white shadow-[0_2px_10px_rgba(73,95,104,0.06)] overflow-hidden">
+      <article className="w-full h-full rounded-md border border-border bg-white shadow-[0_2px_10px_rgba(73,95,104,0.06)] overflow-hidden">
         <div className="relative h-[198px] overflow-hidden bg-[#dfeef1]">
           <Image
             imageurl={card.image}
