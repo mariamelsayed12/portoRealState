@@ -1,6 +1,6 @@
 const RentPage  = () => {
   return (
-    <div className='bg-primary'>Rent Page</div>
+    <div className=''>Rent Page</div>
   )
 }
 
