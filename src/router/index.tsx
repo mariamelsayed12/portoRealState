@@ -11,6 +11,7 @@ import HomeOverviewPage from "../pages/home/HomeOverviewPage";
 import DestinationDetails from "../pages/DestinationDetails";
 import PropertyDetails from "../pages/PropertyDetails";
 import FavoritesPage from "../pages/favorites";
+import AboutPage from "../pages/about";
 
 
 
@@ -50,6 +51,7 @@ const router = createBrowserRouter(
                             </Suspense>
                         } />
                         <Route path="/favorites" element={<FavoritesPage />} />
+                        <Route path="about" element={<AboutPage/>} />
 
     </Route>
 

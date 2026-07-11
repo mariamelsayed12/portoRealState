@@ -9,7 +9,8 @@ const RootLayout = () => {
     location.pathname.startsWith("/home") ||
     location.pathname.startsWith("/destination") ||
     location.pathname === "/sell" ||
-    location.pathname === "/management";
+    location.pathname === "/management" ||
+    location.pathname === "/about";
 
   const isPropertyDetails = location.pathname.includes("/properties/");
   const isFavoritesPage = location.pathname === "/favorites";

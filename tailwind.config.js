@@ -11,6 +11,7 @@ export default {
       secondary: "var(--secondary)",
       border: "var(--border)",
       "light-primary": "var(--light-primary)",
+      "light-gray": "var(--light-gray)",
 
       background: "var(--background)",
       "surface-overlay": "var(--surface-overlay)",
