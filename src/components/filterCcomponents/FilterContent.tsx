@@ -11,7 +11,7 @@ interface FilterContentProps {
   tempFilteredCount: number;
   /** Whether the footer buttons should be visually "sticky" (drawer) or in normal flow (static). */
   stickyFooter?: boolean;
-  
+  displayMode?: "drawer" | "static";
 }
  
 const FilterContent = ({
@@ -21,11 +21,19 @@ const FilterContent = ({
   handleApply,
   tempFilteredCount,
   stickyFooter = true,
+  displayMode = "drawer",
 }: FilterContentProps) => {
   const handleTogglePropertyType = (type: string) => {
     setTempFilters((prev) => ({
       ...prev,
       propertyType: prev.propertyType === type ? "" : type,
+    }));
+  };
+
+  const handleToggleLocation = (loc: string) => {
+    setTempFilters((prev) => ({
+      ...prev,
+      location: prev.location === loc ? "" : loc,
     }));
   };
  
@@ -59,6 +67,21 @@ const FilterContent = ({
  
   return (
     <>
+      {displayMode === "static" && (
+        <div className="flex justify-between items-center px-6 py-4 border-b border-[#E8EFF1] bg-[#F5F9FA]">
+          <span className="text-sm font-semibold text-[#141414]">
+            Filters <span className="text-xs font-normal text-[#7D8D93]">({tempFilteredCount} Result)</span>
+          </span>
+          <button
+            type="button"
+            onClick={handleReset}
+            className="text-xs font-semibold text-[#1E8CAB] hover:underline cursor-pointer"
+          >
+            Reset All
+          </button>
+        </div>
+      )}
+
       {/* Scrollable Content */}
       <div
         className={`flex-1 overflow-y-auto px-6 py-5 space-y-4 ${
@@ -67,9 +90,20 @@ const FilterContent = ({
       >
         {/* Property Type Card */}
         <div className="bg-white rounded-md border border-border p-5 shadow-[0_2px_8px_rgba(73,95,104,0.04)]">
-          <h3 className="text-[15px] font-bold text-text-secondary mb-3">
-            Property type
-          </h3>
+          <div className="flex justify-between items-center mb-3">
+            <h3 className="text-[15px] font-bold text-text-secondary">
+              Property type
+            </h3>
+            {displayMode === "static" && (
+              <button
+                type="button"
+                onClick={() => setTempFilters((prev) => ({ ...prev, propertyType: "" }))}
+                className="text-xs font-semibold text-[#1E8CAB] hover:underline cursor-pointer"
+              >
+                Reset
+              </button>
+            )}
+          </div>
           <div className="flex flex-wrap gap-2">
             {["Chalet", "Villa", "Apartment", "Twin house"].map((type) => {
               const isSelected =
@@ -96,9 +130,20 @@ const FilterContent = ({
 
         {/* location */}
         <div className="bg-white rounded-md border border-border p-5 shadow-[0_2px_8px_rgba(73,95,104,0.04)]">
-          <h3 className="text-[15px] font-bold text-text-secondary mb-3">
-           Location
-          </h3>
+          <div className="flex justify-between items-center mb-3">
+            <h3 className="text-[15px] font-bold text-text-secondary">
+             Location
+            </h3>
+            {displayMode === "static" && (
+              <button
+                type="button"
+                onClick={() => setTempFilters((prev) => ({ ...prev, location: "" }))}
+                className="text-xs font-semibold text-[#1E8CAB] hover:underline cursor-pointer"
+              >
+                Reset
+              </button>
+            )}
+          </div>
           <div className="flex flex-wrap gap-2">
             {destinations.map(({title}) => {
               const isSelected =
@@ -108,7 +153,7 @@ const FilterContent = ({
                 <button
                   key={title}
                   type="button"
-                  onClick={() => handleTogglePropertyType(title)}
+                  onClick={() => handleToggleLocation(title)}
                   className={`rounded-full px-4 py-2 text-xs font-semibold border transition-all ${
                     isSelected
                       ? "bg-[#E9F4F7] border-primary text-[#141414]"
@@ -125,9 +170,20 @@ const FilterContent = ({
 
         {/* Bedrooms Card */}
         <div className="bg-white rounded-md border border-border p-5 shadow-[0_2px_8px_rgba(73,95,104,0.04)]">
-          <h3 className="text-[15px] font-bold text-text-secondary mb-3">
-            Bedrooms
-          </h3>
+          <div className="flex justify-between items-center mb-3">
+            <h3 className="text-[15px] font-bold text-text-secondary">
+              Bedrooms
+            </h3>
+            {displayMode === "static" && (
+              <button
+                type="button"
+                onClick={() => setTempFilters((prev) => ({ ...prev, bedrooms: "" }))}
+                className="text-xs font-semibold text-[#1E8CAB] hover:underline cursor-pointer"
+              >
+                Reset
+              </button>
+            )}
+          </div>
           <div className="flex flex-wrap gap-2">
             {["1", "2", "3", "4", "5+"].map((num) => {
               const isSelected = tempFilters.bedrooms === num;
@@ -151,9 +207,20 @@ const FilterContent = ({
  
         {/* Bathrooms Card */}
         <div className="bg-white rounded-md border border-border p-5 shadow-[0_2px_8px_rgba(73,95,104,0.04)]">
-          <h3 className="text-[15px] font-bold text-text-secondary mb-3">
-            Bathrooms
-          </h3>
+          <div className="flex justify-between items-center mb-3">
+            <h3 className="text-[15px] font-bold text-text-secondary">
+              Bathrooms
+            </h3>
+            {displayMode === "static" && (
+              <button
+                type="button"
+                onClick={() => setTempFilters((prev) => ({ ...prev, bathrooms: "" }))}
+                className="text-xs font-semibold text-[#1E8CAB] hover:underline cursor-pointer"
+              >
+                Reset
+              </button>
+            )}
+          </div>
           <div className="flex flex-wrap gap-2">
             {["1", "2", "3+"].map((num) => {
               const isSelected = tempFilters.bathrooms === num;
@@ -177,10 +244,21 @@ const FilterContent = ({
  
         {/* Area Card */}
         <div className="bg-white rounded-md border border-border p-5 shadow-[0_2px_8px_rgba(73,95,104,0.04)]">
-          <h3 className="text-[15px] font-bold text-text-secondary mb-4">
-            Area{" "}
-            <span className="text-xs font-normal text-[#7D8D93]">(m2)</span>
-          </h3>
+          <div className="flex justify-between items-center mb-4">
+            <h3 className="text-[15px] font-bold text-text-secondary">
+              Area{" "}
+              <span className="text-xs font-normal text-[#7D8D93]">(m2)</span>
+            </h3>
+            {displayMode === "static" && (
+              <button
+                type="button"
+                onClick={() => setTempFilters((prev) => ({ ...prev, areaFrom: "", areaTo: "" }))}
+                className="text-xs font-semibold text-[#1E8CAB] hover:underline cursor-pointer"
+              >
+                Reset
+              </button>
+            )}
+          </div>
           <div className="grid grid-cols-2 gap-4">
             <div>
               <label className="block text-[11px] font-semibold text-[#7D8D93] mb-1.5">
@@ -234,10 +312,21 @@ const FilterContent = ({
  
         {/* Price Range Card */}
         <div className="bg-white rounded-md border border-border p-5 shadow-[0_2px_8px_rgba(73,95,104,0.04)]">
-          <h3 className="text-[15px] font-bold text-text-secondary mb-4">
-            Price range{" "}
-            <span className="text-xs font-normal text-[#7D8D93]">(EGP)</span>
-          </h3>
+          <div className="flex justify-between items-center mb-4">
+            <h3 className="text-[15px] font-bold text-text-secondary">
+              Price range{" "}
+              <span className="text-xs font-normal text-[#7D8D93]">(EGP)</span>
+            </h3>
+            {displayMode === "static" && (
+              <button
+                type="button"
+                onClick={() => setTempFilters((prev) => ({ ...prev, priceFrom: "", priceTo: "" }))}
+                className="text-xs font-semibold text-[#1E8CAB] hover:underline cursor-pointer"
+              >
+                Reset
+              </button>
+            )}
+          </div>
           <div className="grid grid-cols-2 gap-4">
             <div>
               <label className="block text-[11px] font-semibold text-[#7D8D93] mb-1.5">
@@ -291,10 +380,21 @@ const FilterContent = ({
  
         {/* Payments Card */}
         <div className="bg-white rounded-md border border-border p-5 shadow-[0_2px_8px_rgba(73,95,104,0.04)]">
-          <h3 className="text-[15px] font-bold text-text-secondary mb-4">
-            Payments{" "}
-            <span className="text-xs font-normal text-[#7D8D93]">(EGP)</span>
-          </h3>
+          <div className="flex justify-between items-center mb-4">
+            <h3 className="text-[15px] font-bold text-text-secondary">
+              Payments{" "}
+              <span className="text-xs font-normal text-[#7D8D93]">(EGP)</span>
+            </h3>
+            {displayMode === "static" && (
+              <button
+                type="button"
+                onClick={() => setTempFilters((prev) => ({ ...prev, downPayment: "", monthlyInstallment: "" }))}
+                className="text-xs font-semibold text-[#1E8CAB] hover:underline cursor-pointer"
+              >
+                Reset
+              </button>
+            )}
+          </div>
           <div className="grid grid-cols-2 gap-4">
             <div>
               <label className="block text-[11px] font-semibold text-[#7D8D93] mb-1.5">
@@ -335,9 +435,20 @@ const FilterContent = ({
  
         {/* Delivery Date Card */}
         <div className="bg-white rounded-md border border-border p-5 shadow-[0_2px_8px_rgba(73,95,104,0.04)]">
-          <h3 className="text-[15px] font-bold text-text-secondary mb-3">
-            Delivery Date
-          </h3>
+          <div className="flex justify-between items-center mb-3">
+            <h3 className="text-[15px] font-bold text-text-secondary">
+              Delivery Date
+            </h3>
+            {displayMode === "static" && (
+              <button
+                type="button"
+                onClick={() => setTempFilters((prev) => ({ ...prev, deliveryDate: "" }))}
+                className="text-xs font-semibold text-[#1E8CAB] hover:underline cursor-pointer"
+              >
+                Reset
+              </button>
+            )}
+          </div>
           <div className="flex flex-wrap gap-2">
             {["Ready", "2027", "2028", "2029", "2030", "2031", "2032"].map(
               (date) => {
@@ -365,9 +476,20 @@ const FilterContent = ({
  
         {/* Finishing Card */}
         <div className="bg-white rounded-md border border-border p-5 shadow-[0_2px_8px_rgba(73,95,104,0.04)]">
-          <h3 className="text-[15px] font-bold text-text-secondary mb-3">
-            Finishing
-          </h3>
+          <div className="flex justify-between items-center mb-3">
+            <h3 className="text-[15px] font-bold text-text-secondary">
+              Finishing
+            </h3>
+            {displayMode === "static" && (
+              <button
+                type="button"
+                onClick={() => setTempFilters((prev) => ({ ...prev, finishing: "" }))}
+                className="text-xs font-semibold text-[#1E8CAB] hover:underline cursor-pointer"
+              >
+                Reset
+              </button>
+            )}
+          </div>
           <div className="flex flex-wrap gap-2">
             {[
               "Not finished",
@@ -398,26 +520,28 @@ const FilterContent = ({
       </div>
  
       {/* Footer (Reset / Apply) */}
-      <div
-        className={`${
-          stickyFooter ? "absolute bottom-0 inset-x-0" : "relative mt-4"
-        } bg-white border-t border-[#E8EFF1] p-4 flex gap-4`}
-      >
-        <Button
-          type="button"
-          onClick={handleReset}
-          className="w-1/2 rounded-md border border-border bg-white text-primary font-bold hover:bg-gray-50 h-12 text-sm"
+      {displayMode !== "static" && (
+        <div
+          className={`${
+            stickyFooter ? "absolute bottom-0 inset-x-0" : "relative mt-4"
+          } bg-white border-t border-[#E8EFF1] p-4 flex gap-4`}
         >
-          Reset All
-        </Button>
-        <Button
-          type="button"
-          onClick={handleApply}
-          className="w-1/2 rounded-xl bg-primary text-white font-bold hover:opacity-95 h-12 text-sm"
-        >
-          Apply Filter ({tempFilteredCount})
-        </Button>
-      </div>
+          <Button
+            type="button"
+            onClick={handleReset}
+            className="w-1/2 rounded-md border border-border bg-white text-primary font-bold hover:bg-gray-50 h-12 text-sm"
+          >
+            Reset All
+          </Button>
+          <Button
+            type="button"
+            onClick={handleApply}
+            className="w-1/2 rounded-xl bg-primary text-white font-bold hover:opacity-95 h-12 text-sm"
+          >
+            Apply Filter ({tempFilteredCount})
+          </Button>
+        </div>
+      )}
     </>
   );
 };

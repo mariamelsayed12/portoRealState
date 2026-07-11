@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import UnitCard from "../components/UnitCard";
 import { AnimatePresence, motion } from "framer-motion";
 import { useUnitsFilter } from "../hooks/useUnitsFilter";
@@ -45,8 +45,19 @@ const BuyPage = () => {
 						</motion.button>
             </div>
       
-        {/* Layout container: Sidebar & Grid inline on desktop */}
 				<div className="flex flex-col lg:flex-row gap-8 items-start relative">
+          {/* Sidebar (Overlay on mobile/tablet, sticky inline on desktop) */}
+          {/* Desktop: static sidebar always visible */}
+          <FilterDrawer
+            displayMode="static"
+            className="hidden lg:flex w-[370px]"
+            tempFilters={tempFilters}
+            setTempFilters={setTempFilters}
+            applyFilters={applyFilters}
+            resetFilters={resetFilters}
+            tempFilteredCount={tempFilteredCount}
+          />
+
 					{/* Units Grid */}
 					<div className="flex-1 w-full overflow-hidden">
 						{filteredUnits.length > 0 ? (
@@ -79,30 +90,18 @@ const BuyPage = () => {
 						)}
 					</div>
 
-          {/* Sidebar (Overlay on mobile/tablet, sticky inline on desktop) */}
-					{/* Desktop: static sidebar always visible */}
-<FilterDrawer
-	displayMode="static"
-	className="hidden lg:flex w-[370px]"
-	tempFilters={tempFilters}
-	setTempFilters={setTempFilters}
-	applyFilters={applyFilters}
-	resetFilters={resetFilters}
-	tempFilteredCount={tempFilteredCount}
-/>
-
-{/* Mobile/Tablet: drawer that opens on button click */}
-    <FilterDrawer
-	displayMode="drawer"
-	isOpen={isFilterOpen}
-	onClose={() => setIsFilterOpen(false)}
-	tempFilters={tempFilters}
-	setTempFilters={setTempFilters}
-	applyFilters={applyFilters}
-	resetFilters={resetFilters}
-	tempFilteredCount={tempFilteredCount}
-/>
-          </div>
+          {/* Mobile/Tablet: drawer that opens on button click */}
+          <FilterDrawer
+            displayMode="drawer"
+            isOpen={isFilterOpen}
+            onClose={() => setIsFilterOpen(false)}
+            tempFilters={tempFilters}
+            setTempFilters={setTempFilters}
+            applyFilters={applyFilters}
+            resetFilters={resetFilters}
+            tempFilteredCount={tempFilteredCount}
+          />
+        </div>
 
     </div>
   )

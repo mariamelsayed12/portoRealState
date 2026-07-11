@@ -217,8 +217,6 @@ const FavoritesPage = () => {
           <AmenitiesSection />
         </div>
 
-        
-
         {/* Recommended Properties Slider Section */}
         {recommendedProperties.length > 0 && (
           <div className="  w-full pt-12 ">

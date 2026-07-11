@@ -45,6 +45,13 @@ const FilterDrawer = ({
     onClose?.();
   };
  
+  // Auto-apply filters when tempFilters changes in static mode.
+  useEffect(() => {
+    if (displayMode === "static") {
+      applyFilters();
+    }
+  }, [tempFilters, applyFilters, displayMode]);
+ 
   // Handle Escape key to close the drawer + lock background scroll.
   // Only relevant in "drawer" mode.
   useEffect(() => {
@@ -69,31 +76,29 @@ const FilterDrawer = ({
   /* ---------------------------- Static Mode ---------------------------- */
   if (displayMode === "static") {
     return (
-<div
-  className={`
-    bg-[#F5F9FA] 
-    rounded-2xl 
-    flex 
-    flex-col 
-    h-fit
-    max-h-[calc(100vh-40px)]
-    sticky
-    top-5
-    overflow-hidden
-    ${className}
-  `}
->
-  <div className="overflow-y-auto">
-    <FilterContent
-      tempFilters={tempFilters}
-      setTempFilters={setTempFilters}
-      handleReset={handleReset}
-      handleApply={handleApply}
-      tempFilteredCount={tempFilteredCount}
-      stickyFooter={false}
-    />
-  </div>
-</div>
+      <div
+        className={`
+          bg-[#F5F9FA] 
+          rounded-2xl 
+          flex 
+          flex-col 
+          h-[calc(100vh-48px)]
+          sticky
+          top-6
+          overflow-hidden
+          ${className}
+        `}
+      >
+        <FilterContent
+          tempFilters={tempFilters}
+          setTempFilters={setTempFilters}
+          handleReset={handleReset}
+          handleApply={handleApply}
+          tempFilteredCount={tempFilteredCount}
+          stickyFooter={false}
+          displayMode={displayMode}
+        />
+      </div>
     );
   }
  
@@ -142,6 +147,7 @@ const FilterDrawer = ({
               handleApply={handleApply}
               tempFilteredCount={tempFilteredCount}
               stickyFooter
+              displayMode={displayMode}
             />
           </motion.div>
         </>
