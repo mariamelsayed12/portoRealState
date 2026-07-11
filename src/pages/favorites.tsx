@@ -10,12 +10,12 @@ import {
 } from "lucide-react";
 import type { RootState } from "../app/store";
 import UnitCard from "../components/UnitCard";
-import FilterDrawer from "../components/FilterDrawer";
 import { useUnitsFilter } from "../hooks/useUnitsFilter";
 import { useUnitsSort, type SortOption } from "../hooks/useUnitsSort";
 import AmenitiesSection from "../components/Ui/AmenitiesSection";
 import { units } from "../data";
 import { getRecommendedProperties } from "../utils/recommendations";
+import FilterDrawer from "../components/filterCcomponents/FilterDrawer";
 
 const SORT_OPTIONS: { label: string; value: SortOption }[] = [
   { label: "Maximum Price", value: "max-price" },
@@ -170,7 +170,7 @@ const FavoritesPage = () => {
             {sortedUnits.length > 0 ? (
               <motion.div
                 layout
-                className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 justify-items-center sm:justify-items-stretch transition-all duration-300"
+                className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 justify-items-center sm:justify-items-stretch transition-all duration-300"
               >
                 <AnimatePresence mode="popLayout">
                   {sortedUnits.map((unit) => (

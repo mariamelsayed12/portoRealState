@@ -29,6 +29,7 @@ export interface PropertyUnitCardData {
   paymentNote: string;
   destination: {
     slug: string;
+    name:string
   };
   description?: string;
   finishing?: string;

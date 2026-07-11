@@ -4,9 +4,9 @@ import type { DestinationData } from "../../interfaces";
 import { destinations, units } from "../../data";
 import UnitCard from "../../components/UnitCard";
 import { SlidersHorizontal, ArrowUpDown } from "lucide-react";
-import FilterDrawer from "../../components/FilterDrawer";
 import { useUnitsFilter } from "../../hooks/useUnitsFilter";
 import { useUnitsSort, type SortOption } from "../../hooks/useUnitsSort";
+import FilterDrawer from "../../components/filterCcomponents/FilterDrawer";
 
 interface DestinationDetailsContentProps {
 	destinationSlug: string;

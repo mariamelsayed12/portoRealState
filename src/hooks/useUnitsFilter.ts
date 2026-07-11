@@ -13,6 +13,7 @@ export interface FilterState {
   monthlyInstallment: string;
   deliveryDate: string;
   finishing: string;
+  location?:string
 }
 
 export const initialFilterState: FilterState = {
@@ -27,6 +28,7 @@ export const initialFilterState: FilterState = {
   monthlyInstallment: "",
   deliveryDate: "",
   finishing: "",
+  location: "",
 };
 
 // Deterministic finishing assignment since mock data doesn't have a finishing field
@@ -170,6 +172,18 @@ export const matchUnit = (unit: PropertyUnitCardData, filterState: FilterState):
     const unitFinishing = getFinishingForUnit(unit.id);
     if (unitFinishing.toLowerCase() !== filterState.finishing.toLowerCase()) return false;
   }
+
+  // 9. Location Filter
+if (filterState.location) {
+  if (
+    unit.destination?.name?.toLowerCase() !==
+    filterState.location.toLowerCase()
+  ) {
+    return false;
+  }
+}
+
+
 
   return true;
 };

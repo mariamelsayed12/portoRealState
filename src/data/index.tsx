@@ -188,7 +188,7 @@ export const curatedProperties: PropertyUnitCardData[] = [
     price: "3,000,000 EGP",
     paymentModes: ["Installment", "Cash"],
     paymentNote: "5% Down payment",
-    destination: { slug: "village" },
+    destination: { slug: "village" ,name:"Porto Golf" },
   },
   {
     id: "sea-view-chalet-2",
@@ -204,7 +204,7 @@ export const curatedProperties: PropertyUnitCardData[] = [
     price: "3,000,000 EGP",
     paymentModes: ["Installment", "Cash"],
     paymentNote: "5% Down payment",
-    destination: { slug: "village" },
+    destination: { slug: "village" , name:"Porto Golf" },
   },
   {
     id: "sea-view-chalet-3",
@@ -220,7 +220,7 @@ export const curatedProperties: PropertyUnitCardData[] = [
     price: "3,000,000 EGP",
     paymentModes: ["Installment", "Cash"],
     paymentNote: "5% Down payment",
-    destination: { slug: "village" },
+    destination: { slug: "village" , name:"Porto Golf"},
   },
   {
     id: "sea-view-chalet-4",
@@ -236,7 +236,10 @@ export const curatedProperties: PropertyUnitCardData[] = [
     price: "3,000,000 EGP",
     paymentModes: ["Installment", "Cash"],
     paymentNote: "5% Down payment",
-    destination: { slug: "village" },
+    destination: { slug: "village",
+      name:"Porto Golf"
+
+     },
   },
 ];
 
@@ -256,7 +259,10 @@ export const units: PropertyUnitCardData[] = [
     price: "3,000,000 EGP",
     paymentModes: ["Installment", "Cash"],
     paymentNote: "5% Down payment\n250,000 Quarterly /5 y",
-    destination: { slug: "village" },
+    destination: {
+       slug: "village",
+       name:"Porto Golf"
+       },
   },
   {
     id: "village-unit-2",
@@ -272,7 +278,7 @@ export const units: PropertyUnitCardData[] = [
     price: "3,000,000 EGP",
     paymentModes: ["Installment", "Cash"],
     paymentNote: "5% Down payment\n250,000 Quarterly /5 y",
-    destination: { slug: "village" },
+    destination: { slug: "village" ,  name:"Porto Golf"},
   },
   {
     id: "village-unit-3",
@@ -288,7 +294,7 @@ export const units: PropertyUnitCardData[] = [
     price: "3,000,000 EGP",
     paymentModes: ["Installment", "Cash"],
     paymentNote: "5% Down payment\n250,000 Quarterly /5 y",
-    destination: { slug: "village" },
+    destination: { slug: "village"  ,  name:"Porto Golf"},
   },
   {
     id: "village-unit-4",
@@ -304,7 +310,7 @@ export const units: PropertyUnitCardData[] = [
     price: "3,000,000 EGP",
     paymentModes: ["Installment", "Cash"],
     paymentNote: "5% Down payment\n250,000 Quarterly /5 y",
-    destination: { slug: "village" },
+    destination: { slug: "village" ,  name:"Porto Golf" },
   },
   {
     id: "village-unit-5",
@@ -320,7 +326,7 @@ export const units: PropertyUnitCardData[] = [
     price: "3,000,000 EGP",
     paymentModes: ["Installment", "Cash"],
     paymentNote: "5% Down payment\n250,000 Quarterly /5 y",
-    destination: { slug: "village" },
+    destination: { slug: "village"  ,  name:"Porto Golf"},
   },
   {
     id: "village-unit-6",
@@ -336,7 +342,7 @@ export const units: PropertyUnitCardData[] = [
     price: "3,000,000 EGP",
     paymentModes: ["Installment", "Cash"],
     paymentNote: "5% Down payment\n250,000 Quarterly /5 y",
-    destination: { slug: "village" },
+    destination: { slug: "village" ,  name:"Porto Golf" },
   },
 
   // Porto Marina units (3 units)
@@ -354,7 +360,7 @@ export const units: PropertyUnitCardData[] = [
     price: "4,500,000 EGP",
     paymentModes: ["Installment", "Cash"],
     paymentNote: "10% Down payment\n400,000 Quarterly /4 y",
-    destination: { slug: "porto-marina" },
+    destination: { slug: "porto-marina" ,  name:"porto-marina"},
   },
   {
     id: "marina-unit-2",
@@ -370,7 +376,7 @@ export const units: PropertyUnitCardData[] = [
     price: "6,000,000 EGP",
     paymentModes: ["Installment", "Cash"],
     paymentNote: "10% Down payment\n500,000 Quarterly /5 y",
-    destination: { slug: "porto-marina" },
+    destination: { slug: "porto-marina",  name:"porto-marina" },
   },
   {
     id: "marina-unit-3",
@@ -386,7 +392,7 @@ export const units: PropertyUnitCardData[] = [
     price: "2,000,000 EGP",
     paymentModes: ["Cash"],
     paymentNote: "Full cash payment",
-    destination: { slug: "porto-marina" },
+    destination: { slug: "porto-marina" ,  name:"porto-marina" },
   },
 
   // Beach units (3 units)
@@ -404,7 +410,7 @@ export const units: PropertyUnitCardData[] = [
     price: "2,800,000 EGP",
     paymentModes: ["Installment"],
     paymentNote: "5% Down payment\n200,000 Quarterly /5 y",
-    destination: { slug: "beach" },
+    destination: { slug: "beach" ,  name:"porto-marina"    },
   },
   {
     id: "beach-unit-2",
@@ -420,7 +426,7 @@ export const units: PropertyUnitCardData[] = [
     price: "3,500,000 EGP",
     paymentModes: ["Installment", "Cash"],
     paymentNote: "10% Down payment\n250,000 Quarterly /4 y",
-    destination: { slug: "beach" },
+    destination: { slug: "beach" ,  name:"porto-marina"    },
   },
   {
     id: "beach-unit-3",
@@ -436,7 +442,7 @@ export const units: PropertyUnitCardData[] = [
     price: "8,000,000 EGP",
     paymentModes: ["Cash"],
     paymentNote: "Full cash payment",
-    destination: { slug: "beach" },
+    destination: { slug: "beach" ,  name:"porto-marina"    },
   },
 
   // Lagoon units (3 units)
@@ -454,7 +460,7 @@ export const units: PropertyUnitCardData[] = [
     price: "2,600,000 EGP",
     paymentModes: ["Installment", "Cash"],
     paymentNote: "5% Down payment\n180,000 Quarterly /5 y",
-    destination: { slug: "lagoon" },
+    destination: { slug: "lagoon" ,  name:"porto-marina" },
   },
   {
     id: "lagoon-unit-2",
@@ -470,7 +476,7 @@ export const units: PropertyUnitCardData[] = [
     price: "3,100,000 EGP",
     paymentModes: ["Installment", "Cash"],
     paymentNote: "8% Down payment\n220,000 Quarterly /5 y",
-    destination: { slug: "lagoon" },
+    destination: { slug: "lagoon" ,  name:"porto-marina" },
   },
   {
     id: "lagoon-unit-3",
@@ -486,7 +492,7 @@ export const units: PropertyUnitCardData[] = [
     price: "5,000,000 EGP",
     paymentModes: ["Installment", "Cash"],
     paymentNote: "10% Down payment\n350,000 Quarterly /4 y",
-    destination: { slug: "lagoon" },
+    destination: { slug: "lagoon" ,  name:"porto-marina" },
   },
 
   // Marina units (3 units)
@@ -504,7 +510,7 @@ export const units: PropertyUnitCardData[] = [
     price: "3,800,000 EGP",
     paymentModes: ["Installment", "Cash"],
     paymentNote: "5% Down payment\n300,000 Quarterly /5 y",
-    destination: { slug: "marina" },
+    destination: { slug: "marina" ,  name:"porto-marina"},
   },
   {
     id: "marina-sec-unit-2",
@@ -520,7 +526,7 @@ export const units: PropertyUnitCardData[] = [
     price: "4,400,000 EGP",
     paymentModes: ["Installment", "Cash"],
     paymentNote: "10% Down payment\n350,000 Quarterly /5 y",
-    destination: { slug: "marina" },
+    destination: { slug: "marina"  ,  name:"porto-marina"},
   },
   {
     id: "marina-sec-unit-3",
@@ -536,7 +542,7 @@ export const units: PropertyUnitCardData[] = [
     price: "7,000,000 EGP",
     paymentModes: ["Installment", "Cash"],
     paymentNote: "10% Down payment\n600,000 Quarterly /4 y",
-    destination: { slug: "marina" },
+    destination: { slug: "marina" ,  name:"porto-marina"},
   },
 
   // Coast units (3 units)
@@ -554,7 +560,7 @@ export const units: PropertyUnitCardData[] = [
     price: "3,200,000 EGP",
     paymentModes: ["Installment", "Cash"],
     paymentNote: "5% Down payment\n240,000 Quarterly /5 y",
-    destination: { slug: "coast" },
+    destination: { slug: "coast" ,  name:"porto-marina"},
   },
   {
     id: "coast-unit-2",
@@ -570,7 +576,7 @@ export const units: PropertyUnitCardData[] = [
     price: "4,000,000 EGP",
     paymentModes: ["Installment", "Cash"],
     paymentNote: "10% Down payment\n300,000 Quarterly /5 y",
-    destination: { slug: "coast" },
+    destination: { slug: "coast"  ,  name:"porto-marina"},
   },
   {
     id: "coast-unit-3",
@@ -586,7 +592,7 @@ export const units: PropertyUnitCardData[] = [
     price: "9,500,000 EGP",
     paymentModes: ["Cash"],
     paymentNote: "Full cash payment",
-    destination: { slug: "coast" },
+    destination: { slug: "coast" ,  name:"porto-marina"},
   },
 ];
 
