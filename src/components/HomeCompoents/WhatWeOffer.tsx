@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
 import { offerItems } from "../../data";
-import { FaWhatsapp } from "react-icons/fa";
 
 
 const WhatWeOffer = () => {
@@ -13,15 +12,8 @@ const WhatWeOffer = () => {
         </h2>
 
         {/* WhatsApp Float Icon */}
-        <a
-          href="https://wa.me/#"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="w-12 h-12 rounded-full bg-[#25D366] flex items-center justify-center text-white shadow-md hover:bg-[#20ba59] transition-all duration-300 hover:scale-110"
-          aria-label="Contact us on WhatsApp"
-        >
-          <FaWhatsapp className="text-background w-5 h-5"/>
-        </a>
+      {/* WhatsApp Float Icon */}
+
       </div>
 
       {/* Grid container for 4 offer cards */}
