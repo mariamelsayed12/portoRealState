@@ -7,7 +7,7 @@ const WhatWeOffer = () => {
   <section className="relative max-w-7xl mx-auto px-6 md:px-8 lg:px-12 py-24 md:py-28 lg:py-36 ">
       {/* Header section with floating WhatsApp */}
       <div className="flex items-center justify-between mb-12">
-        <h2 className="text-3xl md:text-[40px] font-semibold text-gray-900 tracking-tight">
+        <h2 className="text-3xl md:text-[40px] font-medium text-text-secondary tracking-tight">
           What We Offer ?
         </h2>
 
@@ -36,7 +36,7 @@ const WhatWeOffer = () => {
               {item.title}
             </h3>
             
-            <p className="text-sm text-gray-500 font-medium leading-relaxed mb-6 flex-grow">
+            <p className="text-sm text-text-naturalGray font-medium leading-relaxed mb-6 flex-grow">
               {item.description}
             </p>
 
