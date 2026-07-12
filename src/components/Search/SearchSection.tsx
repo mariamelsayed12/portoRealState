@@ -8,6 +8,7 @@ import LocationPinIcon from "../icons/LocationIcon";
 import BuildingIcon from "../icons/BuildingIcon";
 import WalletIcon from "../icons/WalletIcon";
 import BankNoteIcon from "../icons/BankNote";
+import { House, MapPin } from "lucide-react";
 
 /**
  * SearchSection
@@ -21,7 +22,7 @@ const SearchSection = () => {
   return (
     <div className="bg-background rounded-md  shadow-2xl border border-border p-[16px]">
       {/* Label row */}
-      <h3 className="text-text-darker font-semi text-sm md:text-base mb-5 tracking-wide">
+      <h3 className="text-text-darker font-normal text-sm md:text-lg  mb-5 tracking-wide">
         Search properties
       </h3>
 
@@ -29,7 +30,7 @@ const SearchSection = () => {
       <div className="flex flex-col sm:flex-row items-stretch">
         {/* ── Location ── */}
         <SearchFilterDropdown
-          icon={<LocationPinIcon className="w-5 h-5 text-primary" />}
+          icon={  <MapPin className="w-6 h-6 text-primary" />}
           label="Location"
           value="Any"
           panelContent={(onClose) => (
@@ -40,7 +41,7 @@ const SearchSection = () => {
 
         {/* ── Property Type ── */}
         <SearchFilterDropdown
-  icon={<BuildingIcon className="w-5 h-5 text-primary" />}
+  icon={    <House className="w-6 h-6 text-primary" />}
   label="Property Type"
   value="All"
   panelContent={(onClose) => (
@@ -49,7 +50,7 @@ const SearchSection = () => {
 />
 
 <SearchFilterDropdown
-  icon={<BankNoteIcon className="w-5 h-5 text-primary" />}
+  icon={<WalletIcon className="w-5 h-5 text-primary" />}
   label="Beds & Baths"
   value="Any"
   panelContent={(onClose) => (
@@ -58,7 +59,9 @@ const SearchSection = () => {
 />
 
 <SearchFilterDropdown
-  icon={<WalletIcon className="w-5 h-5 text-primary" />}
+  icon={
+    <BankNoteIcon className="w-5 h-5 text-primary" />
+  }
   label="Price Range"
   value="1M – 2M EGP"
   islast={true}

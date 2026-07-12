@@ -17,7 +17,7 @@ const ChevronDown = () => (
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 20 20"
     fill="currentColor"
-    className="w-4 h-4 text-gray-400 flex-shrink-0"
+    className="w-6 h-6 text-text-secondary flex-shrink-0"
   >
     <path
       fillRule="evenodd"
@@ -44,24 +44,24 @@ const SearchFilterDropdown = ({
       <Button
         type="button"
         onClick={() => setOpen((o) => !o)}
-    className={`w-full flex items-center gap-3 bg-gray-50 hover:bg-gray-100/70 transition-colors duration-200 p-3 sm:p-4
+    className={`w-full flex items-center gap-3 bg-gray-50 hover:bg-gray-100/70 transition-colors duration-200 lg:px-[20px] lg:py-[8px]  px-[10px] py-[4px]
   rounded-xl sm:rounded-none
-  ${isfirst ? "sm:rounded-l-xl" : ""}
-  ${islast ? "sm:rounded-r-xl" : ""}
-  border border-gray-200 cursor-pointer text-left`}
+  ${isfirst ? "sm:rounded-l-md" : ""}
+  ${islast ? "sm:rounded-r-md" : ""}
+  border border-border cursor-pointer text-left`}
       >
         <div className="text-primary bg-primary/10 p-2 rounded-lg flex-shrink-0">
           {icon}
         </div>
         <div className="flex-1 min-w-0">
-          <span className="block text-[10px] font-bold text-gray-400 uppercase tracking-wider leading-none">
+          <span className="block text-[16px] font-normal text-text-naturalGray  ">
             {label}
           </span>
-          <span className="block font-bold text-gray-800 truncate text-sm mt-0.5">
+          <span className="block font-normal text-text-darker truncate text-[16px] mt-0.5">
             {value}
           </span>
         </div>
-        <ChevronDown />
+        <ChevronDown  />
       </Button>
 
       {/* Panel */}

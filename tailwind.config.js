@@ -20,6 +20,7 @@ export default {
         primary: "var(--text-primary)",
         darker: "var(--text-darker)",
         secondary: "var(--text-secondary)",
+        naturalGray: "var(--text-natural-gray)",
       },
     },
     borderRadius: {

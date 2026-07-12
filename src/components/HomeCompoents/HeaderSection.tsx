@@ -34,7 +34,7 @@ const HeaderSection = () => {
       </div>
 
       {/* Floating Search Bar — uses the new SearchSection component */}
-<div className="relative -mt-20 sm:-mt-24 z-30  w-[95%]  lg:w-[1200px]  mx-auto px-2 sm:px-4">
+<div className="relative -mt-40 sm:-mt-24 z-30  w-[95%]  lg:w-[1200px]  mx-auto px-2 sm:px-4">
     <SearchSection />
       </div>
     </section>

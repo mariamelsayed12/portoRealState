@@ -1,8 +1,9 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
 
 
 
@@ -27,10 +28,11 @@ body {
   /* --text-secondary: #6B7280; */
   --text-darker: #464646; 
   /* --text-white: #FFFFFF; */ 
+  --text-natural-gray:#747474;
+
 
   /* Border */
    --border: #D4D5D8; 
-   
 
   /* Status */
   /* --success: #22C55E;
