@@ -10,8 +10,7 @@ const DestinationCard = ({ destination }: DestinationCardProps) => {
 	return (
 		<Link
 			to={`/home/${destination.slug}`}
-			className="group relative aspect-[4/5] overflow-hidden rounded-md shadow-lg transition-all duration-500 hover:shadow-2xl"
-		>
+className="group relative w-full max-w-[384px] aspect-[384/443] overflow-hidden rounded-md shadow-lg transition-all duration-500 hover:shadow-2xl"		>
 			<img
 				src={destination.image}
 				alt={destination.title}

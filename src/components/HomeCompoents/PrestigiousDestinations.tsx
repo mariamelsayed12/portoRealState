@@ -6,7 +6,7 @@ const PrestigiousDestinations = () => {
     <section className="w-full bg-light-primary">
       <div className="max-w-6xl mx-auto bg-light-primary  py-16">
         {/* Section Title */}
-        <h2 className="text-3xl md:text-[40px] font-bold text-gray-900 tracking-tight mb-12">
+        <h2 className="text-3xl md:text-[40px] font-medium text-text-secondary tracking-tight mb-12">
           Prestigious Destinations
         </h2>
 
