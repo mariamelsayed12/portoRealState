@@ -3,7 +3,6 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { toast } from "react-hot-toast";
 import { ChevronDown, Mail, Phone } from "lucide-react";
-
 import contactUsImg from "../assets/contactUs.png";
 import CustomShapeForContact from "../components/icons/CustomShapforContact";
 import Input from "../components/Ui/Input";

@@ -380,7 +380,10 @@ const PropertyDetails: React.FC = () => {
         </div>
 
         {/* Amenities Section */}
-       <AmenitiesSection/>
+
+        <div className=" px-6 py-12 ">
+        <AmenitiesSection/>
+        </div>
 
         {/* Related Properties Carousel/Grid Section */}
         {relatedProperties.length > 0 && (

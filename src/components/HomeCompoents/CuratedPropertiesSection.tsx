@@ -1,13 +1,16 @@
 import { useMemo, useRef } from "react";
 import { ArrowUpRight, ChevronLeft, ChevronRight } from "lucide-react";
-import { curatedProperties, curatedPropertiesHeading } from "../../data";
+import { curatedProperties, curatedPropertiesHeading, units } from "../../data";
 import UnitCard from "../UnitCard";
+import {  useNavigate } from "react-router-dom";
 
 const CuratedPropertiesSection = () => {
   const scrollerRef = useRef<HTMLDivElement | null>(null);
+  const navigate = useNavigate();
+
 
   const canScroll = useMemo(() => curatedProperties.length > 3, []);
-
+ 
   const scrollByCards = (direction: "left" | "right") => {
     const container = scrollerRef.current;
 
@@ -32,6 +35,9 @@ const CuratedPropertiesSection = () => {
           <button
             type="button"
             className="inline-flex items-center gap-1.5 rounded-full border border-[#D9E1E4] bg-white px-3 py-1.5 text-[11px] font-medium text-[#6E7D84] shadow-sm transition-colors hover:border-primary/30 hover:text-primary"
+            onClick={()=>{
+              navigate("/buy");
+            }}
           >
             <span>{curatedPropertiesHeading.actionLabel}</span>
             <ArrowUpRight className="h-3.5 w-3.5" />
@@ -42,7 +48,7 @@ const CuratedPropertiesSection = () => {
           ref={scrollerRef}
           className="mt-3 flex gap-4 overflow-x-auto pb-2 pt-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
         >
-          {curatedProperties.map((card) => (
+          {units.map((card) => (
             <UnitCard key={card.id} card={card} />
           ))}
         </div>

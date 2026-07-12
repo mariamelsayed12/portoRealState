@@ -13,7 +13,7 @@ const footerLinkGroups: FooterLinkGroup[] = [
     links: [
       { label: "Home", to: "/" },
       { label: "About Us", to: "/about" },
-      { label: "Favourites", to: "/" },
+      { label: "Favourites", to: "/favorites" },
       { label: "Search", to: "/" },
     ],
   },

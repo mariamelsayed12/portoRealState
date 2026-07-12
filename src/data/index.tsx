@@ -147,24 +147,28 @@ export const offerItems = [
     description:
       "Direct access to launches across the most coveted North Coast developments before they reach the market.",
     icon: <CartIcon className="w-8 h-8 text-gray-500" />,
+    link: "/buy",
   },
   {
     title: "Sell Your Property",
     description:
       "List discreetly with PORTO expert valuation, qualified buyers, and quiet negotiation that protects your price.",
     icon: <BuildingIcon className="w-8 h-8 text-gray-500" />,
+    link: "/sell",
   },
   {
     title: "Special Rentals",
     description:
       "Hand picked special residences for rent, vetted for service, comfort, and privacy.",
     icon: <HomeInvestmentIcon className="w-8 h-8 text-gray-500" />,
+    link: "/rent",
   },
   {
     title: "Property Management",
     description:
       "End to end management of your asset yield optimization, guest screening, and concierge upkeep.",
     icon: <BuildingIcon className="w-8 h-8 text-gray-500" />,
+    link: "/management",
   },
 ];
 

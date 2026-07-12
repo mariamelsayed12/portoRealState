@@ -51,7 +51,7 @@ const router = createBrowserRouter(
                                 <PropertyDetails/>
                             </Suspense>
                         } /> */}
-                        <Route path="/favorites" element={<FavoritesPage />} />
+                        <Route path="favorites" element={<FavoritesPage />} />
                         <Route path="about" element={<AboutPage/>} />
                         <Route path="need-help" element={<NeedHelpPage/>} />
 

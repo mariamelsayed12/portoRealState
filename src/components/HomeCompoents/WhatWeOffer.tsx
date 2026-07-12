@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { offerItems } from "../../data";
 import { FaWhatsapp } from "react-icons/fa";
 
@@ -26,8 +27,9 @@ const WhatWeOffer = () => {
       {/* Grid container for 4 offer cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
         {offerItems.map((item, index) => (
-          <div
+          <Link
             key={index}
+            to={item.link}
             className="group relative bg-[#F5F9FA]/40 hover:bg-white rounded-3xl border border-border hover:border-primary/10 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col pt-16 pb-8 px-6 text-center"
           >
             {/* Top arched decoration with icon */}
@@ -48,7 +50,7 @@ const WhatWeOffer = () => {
 
             {/* Reusable Action link */}
             <a
-              href="#"
+              href={item.link}
               className="inline-flex items-center justify-center gap-1.5 text-sm font-bold text-primary hover:text-primary/80 transition-colors duration-200"
             >
               <span>Learn More</span>
@@ -56,7 +58,7 @@ const WhatWeOffer = () => {
                 ↗
               </span>
             </a>
-          </div>
+          </Link>
         ))}
       </div>
     </section>
