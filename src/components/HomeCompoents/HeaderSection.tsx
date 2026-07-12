@@ -3,16 +3,16 @@ import SearchSection from "../Search/SearchSection";
 
 const HeaderSection = () => {
   return (
-    <section className="relative w-full h-[650px] md:h-[750px] lg:h-[800px]  rounded-b-[100px] overflow-visible shadow-xl bg-[#0c1618] z-10">
+    <section className="relative w-full h-[650px] md:h-[750px] lg:h-[800px]  rounded-b-[50px] md:rounded-b-[70px]     lg:rounded-b-[99px] overflow-visible shadow-xl bg-[#0c1618] z-10">
       {/* Background Image */}
       <img
         src={primaryImage}
         alt="Porto Luxury Coastline"
-        className="absolute inset-0 w-full h-full object-cover object-center rounded-b-[100px] z-0 select-none "
+        className="absolute inset-0 w-full h-full object-cover object-center rounded-b-[50px] md:rounded-b-[70px] lg:rounded-b-[99px] z-0 select-none "
       />
 
       {/* Dark gradient overlay */}
-      <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/25 to-black/60 z-10" />
+      <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/25 to-black/60 z-10 rounded-b-[50px] md:rounded-b-[70px] lg:rounded-b-[99px]" />
 
       {/* Content wrapper — centered */}
       <div className="relative z-20 max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 h-full flex flex-col justify-center pt-24 pb-40">
