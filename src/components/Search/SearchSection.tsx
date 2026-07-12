@@ -4,8 +4,6 @@ import LocationPanel from "./LocationPanel";
 import PropertyTypePanel from "./PropertyTypePanel";
 import BedsAndBathsPanel from "./BedsAndBathsPanel";
 import PriceRangePanel from "./PriceRangePanel";
-import LocationPinIcon from "../icons/LocationIcon";
-import BuildingIcon from "../icons/BuildingIcon";
 import WalletIcon from "../icons/WalletIcon";
 import BankNoteIcon from "../icons/BankNote";
 import { House, MapPin } from "lucide-react";
