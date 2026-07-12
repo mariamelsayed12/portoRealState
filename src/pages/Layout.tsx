@@ -15,7 +15,7 @@ const RootLayout = () => {
   const isPropertyDetails = location.pathname.includes("/properties/");
   const isFavoritesPage = location.pathname === "/favorites";
   
-  const isBuyPage = location.pathname === "/buy";
+  const isBuyPage = location.pathname === "/buy" || location.pathname === "/rent" || location.pathname === "/need-help";
 
   return (
     <div className="bg-background text-text-darker min-h-screen flex flex-col">

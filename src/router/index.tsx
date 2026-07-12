@@ -12,6 +12,7 @@ import DestinationDetails from "../pages/DestinationDetails";
 import PropertyDetails from "../pages/PropertyDetails";
 import FavoritesPage from "../pages/favorites";
 import AboutPage from "../pages/about";
+import NeedHelpPage from "../pages/needHelp";
 
 
 
@@ -44,14 +45,15 @@ const router = createBrowserRouter(
                         <Route path="sell" element={<SellPage  />} />
                         <Route path="rent" element={<RentPage/>} />
                         <Route path="management" element={<ManagementPage/>} />
-                        <Route path="destination/:slug" element={<DestinationDetails/>} />
+                        {/* <Route path="destination/:slug" element={<DestinationDetails/>} />
                         <Route path="destination/:destinationSlug/properties/:propertySlug" element={
                             <Suspense fallback={<div className="mx-auto max-w-7xl px-6 py-16 sm:px-8 lg:px-12 text-text-darker">Loading property...</div>}>
                                 <PropertyDetails/>
                             </Suspense>
-                        } />
+                        } /> */}
                         <Route path="/favorites" element={<FavoritesPage />} />
                         <Route path="about" element={<AboutPage/>} />
+                        <Route path="need-help" element={<NeedHelpPage/>} />
 
     </Route>
 

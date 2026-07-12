@@ -98,16 +98,16 @@ const Navbar = ({ variant = "transparent" }: NavbarProps) => {
               )}
             </Link>
 
-            {/* Need Help Button */}
-            <button
-              className={`px-5 py-2 border hover:border-primary transition-all duration-300 rounded-full text-xs font-semibold tracking-wider uppercase shadow-sm cursor-pointer ${
+            <Link
+              to="/need-help"
+              className={`px-5 py-2 border hover:border-primary transition-all duration-300 rounded-full text-xs font-semibold tracking-wider uppercase shadow-sm cursor-pointer text-center block ${
                 isLight
                   ? "border-[#D9E1E4] text-text-secondary bg-[#F5F9FA] hover:bg-primary hover:text-white"
                   : "border-white/20 text-text-primary bg-white/5 hover:bg-primary"
               }`}
             >
               Need Help
-            </button>
+            </Link>
           </div>
 
           {/* Mobile Menu Hamburger Button */}
@@ -231,10 +231,13 @@ const Navbar = ({ variant = "transparent" }: NavbarProps) => {
             </Link>
           </div>
 
-          {/* Mobile Need Help Button */}
-          <button className="w-full py-3 border border-white/20 hover:border-primary text-text-primary bg-white/5 hover:bg-primary transition-all duration-300 rounded-full text-sm font-semibold tracking-wider uppercase text-center shadow-sm">
+          <Link
+            to="/need-help"
+            onClick={toggleMobileMenu}
+            className="w-full py-3 border border-white/20 hover:border-primary text-text-primary bg-white/5 hover:bg-primary transition-all duration-300 rounded-full text-sm font-semibold tracking-wider uppercase text-center shadow-sm block"
+          >
             Need Help
-          </button>
+          </Link>
         </div>
       </div>
     </>
