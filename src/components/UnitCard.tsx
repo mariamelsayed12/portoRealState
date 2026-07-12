@@ -1,9 +1,12 @@
 import { Bath, BedDouble, MapPin, Ruler } from "lucide-react";
-import type { PropertyUnitCardData } from "../interfaces";
+import type { PropertyCardData } from "../interfaces";
 import Image from "./Ui/Image";
 import { useAppDispatch, type RootState } from "../app/store";
 import { useSelector } from "react-redux";
-import { addToFavAction, removeFromFavAction } from "../app/feature/favoriteUnitSlice";
+import {
+  addToFavAction,
+  removeFromFavAction,
+} from "../app/feature/favoriteUnitSlice";
 import { FaHeart, FaRegHeart } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 
@@ -18,7 +21,7 @@ const UnitCard = ({
   card,
   className = "w-[286px] sm:w-[296px] shrink-0",
 }: {
-  card: PropertyUnitCardData;
+  card: PropertyCardData;
   className?: string;
 }) => {
   const dispatch = useAppDispatch();

@@ -17,7 +17,7 @@ export interface Feature {
   icon: ComponentType<any>;
 }
 
-export interface PropertyUnitCardData {
+export interface PropertyCardData {
   id: string;
   image: string;
   badges: string[];
@@ -29,7 +29,7 @@ export interface PropertyUnitCardData {
   paymentNote: string;
   destination: {
     slug: string;
-    name:string
+    name: string;
   };
   description?: string;
   finishing?: string;

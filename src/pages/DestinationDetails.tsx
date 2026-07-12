@@ -8,6 +8,7 @@ import AmenitiesSection from "../components/Ui/AmenitiesSection";
 import LocationSection from "../components/Location/LocationSection";
 import Image from "../components/Ui/Image";
 import northcost from "../assets/HomePage/northcost.jpg";
+import { motion } from "framer-motion";
 
 
 const DestinationDetails = () => {
@@ -19,7 +20,12 @@ const DestinationDetails = () => {
   }
 
   return (
-    <div className="w-full flex flex-col min-h-screen">
+    <motion.div
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.25 }}
+      className="w-full flex flex-col min-h-screen"
+    >
       {/* Hero Section */}
       <div className="relative w-full h-[600px] sm:h-[700px] lg:h-[80vh] flex items-end justify-center rounded-b-[40px] overflow-hidden">
         {/* Background Image */}
@@ -78,7 +84,7 @@ const DestinationDetails = () => {
       <LocationSection destination={destination} />
       
       
-    </div>
+    </motion.div>
   );
 };
 

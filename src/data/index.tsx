@@ -6,7 +6,7 @@ import type {
   DestinationData,
   Feature,
   InvestmentCardData,
-  PropertyUnitCardData,
+  PropertyCardData,
 } from "../interfaces";
 import northcost from "../assets/HomePage/northcost.jpg";
 import { Mail, Phone } from "lucide-react";
@@ -36,7 +36,8 @@ export const destinations: DestinationData[] = [
     phone: "+20113333333",
     email: "elahdd@email.com",
     coordinates: { lat: 30.8247, lng: 28.9892 },
-    googleMapsUrl: "https://www.google.com/maps/search/?api=1&query=30.8247,28.9892",
+    googleMapsUrl:
+      "https://www.google.com/maps/search/?api=1&query=30.8247,28.9892",
   },
   {
     id: 2,
@@ -55,7 +56,8 @@ export const destinations: DestinationData[] = [
     phone: "+20113333333",
     email: "elahdd@email.com",
     coordinates: { lat: 30.8284, lng: 29.0028 },
-    googleMapsUrl: "https://www.google.com/maps/search/?api=1&query=30.8284,29.0028",
+    googleMapsUrl:
+      "https://www.google.com/maps/search/?api=1&query=30.8284,29.0028",
   },
   {
     id: 3,
@@ -74,8 +76,9 @@ export const destinations: DestinationData[] = [
     address: "beachfront sector, north coast",
     phone: "+20113333333",
     email: "elahdd@email.com",
-    coordinates: { lat: 30.8210, lng: 28.9750 },
-    googleMapsUrl: "https://www.google.com/maps/search/?api=1&query=30.8210,28.9750",
+    coordinates: { lat: 30.821, lng: 28.975 },
+    googleMapsUrl:
+      "https://www.google.com/maps/search/?api=1&query=30.8210,28.9750",
   },
   {
     id: 4,
@@ -94,8 +97,9 @@ export const destinations: DestinationData[] = [
     address: "lagoon parkway, north coast",
     phone: "+20113333333",
     email: "elahdd@email.com",
-    coordinates: { lat: 30.8300, lng: 28.9950 },
-    googleMapsUrl: "https://www.google.com/maps/search/?api=1&query=30.8300,28.9950",
+    coordinates: { lat: 30.83, lng: 28.995 },
+    googleMapsUrl:
+      "https://www.google.com/maps/search/?api=1&query=30.8300,28.9950",
   },
   {
     id: 5,
@@ -114,8 +118,9 @@ export const destinations: DestinationData[] = [
     address: "yacht promenade, north coast",
     phone: "+20113333333",
     email: "elahdd@email.com",
-    coordinates: { lat: 30.8270, lng: 28.9850 },
-    googleMapsUrl: "https://www.google.com/maps/search/?api=1&query=30.8270,28.9850",
+    coordinates: { lat: 30.827, lng: 28.985 },
+    googleMapsUrl:
+      "https://www.google.com/maps/search/?api=1&query=30.8270,28.9850",
   },
   {
     id: 6,
@@ -134,8 +139,9 @@ export const destinations: DestinationData[] = [
     address: "coastal bypass, north coast",
     phone: "+20113333333",
     email: "elahdd@email.com",
-    coordinates: { lat: 30.8230, lng: 28.9650 },
-    googleMapsUrl: "https://www.google.com/maps/search/?api=1&query=30.8230,28.9650",
+    coordinates: { lat: 30.823, lng: 28.965 },
+    googleMapsUrl:
+      "https://www.google.com/maps/search/?api=1&query=30.8230,28.9650",
   },
 ];
 
@@ -177,77 +183,77 @@ export const curatedPropertiesHeading = {
   actionLabel: "View All",
 };
 
-export const curatedProperties: PropertyUnitCardData[] = [
-  {
-    id: "sea-view-chalet-1",
-    image: defualtImage,
-    badges: ["Resale", "Delivery in 2023"],
-    location: "Porto Golf • Chalet",
-    title: "Sea view Chalet",
-    stats: [
-      { icon: "location", value: "6.5 km" },
-      { icon: "bed", value: "5" },
-      { icon: "bath", value: "3" },
-    ],
-    price: "3,000,000 EGP",
-    paymentModes: ["Installment", "Cash"],
-    paymentNote: "5% Down payment",
-    destination: { slug: "village" ,name:"Porto Golf" },
-  },
-  {
-    id: "sea-view-chalet-2",
-    image: defualtImage,
-    badges: ["Developer", "Delivery in 2023"],
-    location: "Porto Golf • Chalet",
-    title: "Sea view Chalet",
-    stats: [
-      { icon: "location", value: "6.5 km" },
-      { icon: "bed", value: "5" },
-      { icon: "bath", value: "3" },
-    ],
-    price: "3,000,000 EGP",
-    paymentModes: ["Installment", "Cash"],
-    paymentNote: "5% Down payment",
-    destination: { slug: "village" , name:"Porto Golf" },
-  },
-  {
-    id: "sea-view-chalet-3",
-    image: defualtImage,
-    badges: ["Rent", "Available"],
-    location: "Porto Golf • Chalet",
-    title: "Sea view Chalet",
-    stats: [
-      { icon: "area", value: "125 sqm" },
-      { icon: "bed", value: "3" },
-      { icon: "bath", value: "1" },
-    ],
-    price: "20,000 EGP /month",
-    paymentModes: [],
-    paymentNote: "1 month insurance",
-    destination: { slug: "village" , name:"Porto Golf"},
-  },
-  {
-    id: "sea-view-chalet-4",
-    image: defualtImage,
-    badges: ["Resale", "Delivery in 2023"],
-    location: "Porto Golf • Chalet",
-    title: "Sea view Chalet",
-    stats: [
-      { icon: "location", value: "6.5 km" },
-      { icon: "bed", value: "5" },
-      { icon: "bath", value: "3" },
-    ],
-    price: "3,000,000 EGP",
-    paymentModes: ["Installment", "Cash"],
-    paymentNote: "5% Down payment",
-    destination: { slug: "village",
-      name:"Porto Golf"
+// export const curatedProperties: PropertyUnitCardData[] = [
+//   {
+//     id: "sea-view-chalet-1",
+//     image: defualtImage,
+//     badges: ["Resale", "Delivery in 2023"],
+//     location: "Porto Golf • Chalet",
+//     title: "Sea view Chalet",
+//     stats: [
+//       { icon: "location", value: "6.5 km" },
+//       { icon: "bed", value: "5" },
+//       { icon: "bath", value: "3" },
+//     ],
+//     price: "3,000,000 EGP",
+//     paymentModes: ["Installment", "Cash"],
+//     paymentNote: "5% Down payment",
+//     destination: { slug: "village" ,name:"Porto Golf" },
+//   },
+//   {
+//     id: "sea-view-chalet-2",
+//     image: defualtImage,
+//     badges: ["Developer", "Delivery in 2023"],
+//     location: "Porto Golf • Chalet",
+//     title: "Sea view Chalet",
+//     stats: [
+//       { icon: "location", value: "6.5 km" },
+//       { icon: "bed", value: "5" },
+//       { icon: "bath", value: "3" },
+//     ],
+//     price: "3,000,000 EGP",
+//     paymentModes: ["Installment", "Cash"],
+//     paymentNote: "5% Down payment",
+//     destination: { slug: "village" , name:"Porto Golf" },
+//   },
+//   {
+//     id: "sea-view-chalet-3",
+//     image: defualtImage,
+//     badges: ["Rent", "Available"],
+//     location: "Porto Golf • Chalet",
+//     title: "Sea view Chalet",
+//     stats: [
+//       { icon: "area", value: "125 sqm" },
+//       { icon: "bed", value: "3" },
+//       { icon: "bath", value: "1" },
+//     ],
+//     price: "20,000 EGP /month",
+//     paymentModes: [],
+//     paymentNote: "1 month insurance",
+//     destination: { slug: "village" , name:"Porto Golf"},
+//   },
+//   {
+//     id: "sea-view-chalet-4",
+//     image: defualtImage,
+//     badges: ["Resale", "Delivery in 2023"],
+//     location: "Porto Golf • Chalet",
+//     title: "Sea view Chalet",
+//     stats: [
+//       { icon: "location", value: "6.5 km" },
+//       { icon: "bed", value: "5" },
+//       { icon: "bath", value: "3" },
+//     ],
+//     price: "3,000,000 EGP",
+//     paymentModes: ["Installment", "Cash"],
+//     paymentNote: "5% Down payment",
+//     destination: { slug: "village",
+//       name:"Porto Golf"
 
-     },
-  },
-];
+//      },
+//   },
+// ];
 
-export const units: PropertyUnitCardData[] = [
+export const units: PropertyCardData[] = [
   // Village / Porto Golf units (6 units as shown in grid)
   {
     id: "village-unit-1",
@@ -264,9 +270,9 @@ export const units: PropertyUnitCardData[] = [
     paymentModes: ["Installment", "Cash"],
     paymentNote: "5% Down payment\n250,000 Quarterly /5 y",
     destination: {
-       slug: "village",
-       name:"Porto Golf"
-       },
+      slug: "village",
+      name: "Porto Golf",
+    },
   },
   {
     id: "village-unit-2",
@@ -282,7 +288,7 @@ export const units: PropertyUnitCardData[] = [
     price: "3,000,000 EGP",
     paymentModes: ["Installment", "Cash"],
     paymentNote: "5% Down payment\n250,000 Quarterly /5 y",
-    destination: { slug: "village" ,  name:"Porto Golf"},
+    destination: { slug: "village", name: "Porto Golf" },
   },
   {
     id: "village-unit-3",
@@ -298,7 +304,7 @@ export const units: PropertyUnitCardData[] = [
     price: "20,000 EGP /month",
     paymentModes: [],
     paymentNote: "1 month insurance",
-    destination: { slug: "village"  ,  name:"Porto Golf"},
+    destination: { slug: "village", name: "Porto Golf" },
   },
   {
     id: "village-unit-4",
@@ -314,7 +320,7 @@ export const units: PropertyUnitCardData[] = [
     price: "3,000,000 EGP",
     paymentModes: ["Installment", "Cash"],
     paymentNote: "5% Down payment\n250,000 Quarterly /5 y",
-    destination: { slug: "village" ,  name:"Porto Golf" },
+    destination: { slug: "village", name: "Porto Golf" },
   },
   {
     id: "village-unit-5",
@@ -330,7 +336,7 @@ export const units: PropertyUnitCardData[] = [
     price: "3,000,000 EGP",
     paymentModes: ["Installment", "Cash"],
     paymentNote: "5% Down payment\n250,000 Quarterly /5 y",
-    destination: { slug: "village"  ,  name:"Porto Golf"},
+    destination: { slug: "village", name: "Porto Golf" },
   },
   {
     id: "village-unit-6",
@@ -346,7 +352,7 @@ export const units: PropertyUnitCardData[] = [
     price: "20,000 EGP /month",
     paymentModes: [],
     paymentNote: "1 month insurance",
-    destination: { slug: "village" ,  name:"Porto Golf" },
+    destination: { slug: "village", name: "Porto Golf" },
   },
 
   // Porto Marina units (3 units)
@@ -364,7 +370,7 @@ export const units: PropertyUnitCardData[] = [
     price: "4,500,000 EGP",
     paymentModes: ["Installment", "Cash"],
     paymentNote: "10% Down payment\n400,000 Quarterly /4 y",
-    destination: { slug: "porto-marina" ,  name:"porto-marina"},
+    destination: { slug: "porto-marina", name: "porto-marina" },
   },
   {
     id: "marina-unit-2",
@@ -380,7 +386,7 @@ export const units: PropertyUnitCardData[] = [
     price: "6,000,000 EGP",
     paymentModes: ["Installment", "Cash"],
     paymentNote: "10% Down payment\n500,000 Quarterly /5 y",
-    destination: { slug: "porto-marina",  name:"porto-marina" },
+    destination: { slug: "porto-marina", name: "porto-marina" },
   },
   {
     id: "marina-unit-3",
@@ -396,7 +402,7 @@ export const units: PropertyUnitCardData[] = [
     price: "20,000 EGP /month",
     paymentModes: [],
     paymentNote: "1 month insurance",
-    destination: { slug: "porto-marina" ,  name:"porto-marina" },
+    destination: { slug: "porto-marina", name: "porto-marina" },
   },
 
   // Beach units (3 units)
@@ -414,7 +420,7 @@ export const units: PropertyUnitCardData[] = [
     price: "2,800,000 EGP",
     paymentModes: ["Installment"],
     paymentNote: "5% Down payment\n200,000 Quarterly /5 y",
-    destination: { slug: "beach" ,  name:"porto-marina"    },
+    destination: { slug: "beach", name: "porto-marina" },
   },
   {
     id: "beach-unit-2",
@@ -430,7 +436,7 @@ export const units: PropertyUnitCardData[] = [
     price: "3,500,000 EGP",
     paymentModes: ["Installment", "Cash"],
     paymentNote: "10% Down payment\n250,000 Quarterly /4 y",
-    destination: { slug: "beach" ,  name:"porto-marina"    },
+    destination: { slug: "beach", name: "porto-marina" },
   },
   {
     id: "beach-unit-3",
@@ -446,7 +452,7 @@ export const units: PropertyUnitCardData[] = [
     price: "20,000 EGP /month",
     paymentModes: [],
     paymentNote: "1 month insurance",
-    destination: { slug: "beach" ,  name:"porto-marina"    },
+    destination: { slug: "beach", name: "porto-marina" },
   },
 
   // Lagoon units (3 units)
@@ -464,7 +470,7 @@ export const units: PropertyUnitCardData[] = [
     price: "2,600,000 EGP",
     paymentModes: ["Installment", "Cash"],
     paymentNote: "5% Down payment\n180,000 Quarterly /5 y",
-    destination: { slug: "lagoon" ,  name:"porto-marina" },
+    destination: { slug: "lagoon", name: "porto-marina" },
   },
   {
     id: "lagoon-unit-2",
@@ -480,7 +486,7 @@ export const units: PropertyUnitCardData[] = [
     price: "3,100,000 EGP",
     paymentModes: ["Installment", "Cash"],
     paymentNote: "8% Down payment\n220,000 Quarterly /5 y",
-    destination: { slug: "lagoon" ,  name:"porto-marina" },
+    destination: { slug: "lagoon", name: "porto-marina" },
   },
   {
     id: "lagoon-unit-3",
@@ -496,7 +502,7 @@ export const units: PropertyUnitCardData[] = [
     price: "20,000 EGP /month",
     paymentModes: [],
     paymentNote: "1 month insurance",
-    destination: { slug: "lagoon" ,  name:"porto-marina" },
+    destination: { slug: "lagoon", name: "porto-marina" },
   },
 
   // Marina units (3 units)
@@ -514,7 +520,7 @@ export const units: PropertyUnitCardData[] = [
     price: "3,800,000 EGP",
     paymentModes: ["Installment", "Cash"],
     paymentNote: "5% Down payment\n300,000 Quarterly /5 y",
-    destination: { slug: "marina" ,  name:"porto-marina"},
+    destination: { slug: "marina", name: "porto-marina" },
   },
   {
     id: "marina-sec-unit-2",
@@ -530,7 +536,7 @@ export const units: PropertyUnitCardData[] = [
     price: "4,400,000 EGP",
     paymentModes: ["Installment", "Cash"],
     paymentNote: "10% Down payment\n350,000 Quarterly /5 y",
-    destination: { slug: "marina"  ,  name:"porto-marina"},
+    destination: { slug: "marina", name: "porto-marina" },
   },
   {
     id: "marina-sec-unit-3",
@@ -546,7 +552,7 @@ export const units: PropertyUnitCardData[] = [
     price: "20,000 EGP /month",
     paymentModes: [],
     paymentNote: "1 month insurance",
-    destination: { slug: "marina" ,  name:"porto-marina"},
+    destination: { slug: "marina", name: "porto-marina" },
   },
 
   // Coast units (3 units)
@@ -564,7 +570,7 @@ export const units: PropertyUnitCardData[] = [
     price: "3,200,000 EGP",
     paymentModes: ["Installment", "Cash"],
     paymentNote: "5% Down payment\n240,000 Quarterly /5 y",
-    destination: { slug: "coast" ,  name:"porto-marina"},
+    destination: { slug: "coast", name: "porto-marina" },
   },
   {
     id: "coast-unit-2",
@@ -580,7 +586,7 @@ export const units: PropertyUnitCardData[] = [
     price: "4,000,000 EGP",
     paymentModes: ["Installment", "Cash"],
     paymentNote: "10% Down payment\n300,000 Quarterly /5 y",
-    destination: { slug: "coast"  ,  name:"porto-marina"},
+    destination: { slug: "coast", name: "porto-marina" },
   },
   {
     id: "coast-unit-3",
@@ -596,7 +602,7 @@ export const units: PropertyUnitCardData[] = [
     price: "20,000 EGP /month",
     paymentModes: [],
     paymentNote: "1 month insurance",
-    destination: { slug: "coast" ,  name:"porto-marina"},
+    destination: { slug: "coast", name: "porto-marina" },
   },
 ];
 

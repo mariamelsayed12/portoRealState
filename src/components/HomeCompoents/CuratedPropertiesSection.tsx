@@ -1,6 +1,6 @@
 import { useMemo, useRef } from "react";
 import { ArrowUpRight, ChevronLeft, ChevronRight } from "lucide-react";
-import { curatedProperties, curatedPropertiesHeading, units } from "../../data";
+import {  curatedPropertiesHeading, units } from "../../data";
 import UnitCard from "../UnitCard";
 import {  useNavigate } from "react-router-dom";
 
@@ -9,7 +9,7 @@ const CuratedPropertiesSection = () => {
   const navigate = useNavigate();
 
 
-  const canScroll = useMemo(() => curatedProperties.length > 3, []);
+  const canScroll = useMemo(() => units.length > 3, []);
  
   const scrollByCards = (direction: "left" | "right") => {
     const container = scrollerRef.current;

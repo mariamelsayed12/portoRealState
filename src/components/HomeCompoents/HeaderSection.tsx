@@ -3,12 +3,12 @@ import SearchSection from "../Search/SearchSection";
 
 const HeaderSection = () => {
   return (
-    <section className="relative w-full h-[650px] md:h-[750px] lg:h-[800px] rounded-b-[60px] md:rounded-b-[90px] lg:rounded-b-[100px] overflow-visible shadow-xl bg-[#0c1618] z-10">
+    <section className="relative w-full h-[650px] md:h-[750px] lg:h-[800px]  rounded-b-[100px] overflow-visible shadow-xl bg-[#0c1618] z-10">
       {/* Background Image */}
       <img
         src={primaryImage}
         alt="Porto Luxury Coastline"
-        className="absolute inset-0 w-full h-full object-cover object-center z-0 select-none "
+        className="absolute inset-0 w-full h-full object-cover object-center rounded-b-[100px] z-0 select-none "
       />
 
       {/* Dark gradient overlay */}

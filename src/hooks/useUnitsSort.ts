@@ -1,9 +1,15 @@
 import { useState, useMemo } from "react";
-import type { PropertyUnitCardData } from "../interfaces";
+import type { PropertyCardData } from "../interfaces";
 
-export type SortOption = "max-price" | "min-price" | "ready-by" | "min-installments" | "max-installments" | "";
+export type SortOption =
+  | "max-price"
+  | "min-price"
+  | "ready-by"
+  | "min-installments"
+  | "max-installments"
+  | "";
 
-export const useUnitsSort = (units: PropertyUnitCardData[]) => {
+export const useUnitsSort = (units: PropertyCardData[]) => {
   const [activeSort, setActiveSort] = useState<SortOption>("");
 
   const sortedUnits = useMemo(() => {
@@ -12,17 +18,19 @@ export const useUnitsSort = (units: PropertyUnitCardData[]) => {
     // Create a copy to avoid mutating the original array
     const sorted = [...units];
 
-    const getPrice = (unit: PropertyUnitCardData) =>
+    const getPrice = (unit: PropertyCardData) =>
       parseFloat(unit.price.replace(/[^0-9.]/g, "")) || 0;
 
-    const getDeliveryYear = (unit: PropertyUnitCardData) => {
-      const deliveryBadge = unit.badges.find((b) => b.toLowerCase().includes("delivery"));
+    const getDeliveryYear = (unit: PropertyCardData) => {
+      const deliveryBadge = unit.badges.find((b) =>
+        b.toLowerCase().includes("delivery"),
+      );
       if (!deliveryBadge) return 0; // ready units are 0
       const match = deliveryBadge.match(/delivery in (\d+)/i);
       return match ? parseInt(match[1], 10) : 0;
     };
 
-    const getMonthlyInstallment = (unit: PropertyUnitCardData) => {
+    const getMonthlyInstallment = (unit: PropertyCardData) => {
       const note = unit.paymentNote.toLowerCase();
       if (note.includes("full cash payment")) {
         return 0;

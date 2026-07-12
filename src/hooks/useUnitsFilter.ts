@@ -1,5 +1,5 @@
 import { useState, useMemo, useCallback } from "react";
-import type { PropertyUnitCardData } from "../interfaces";
+import type { PropertyCardData } from "../interfaces";
 
 export interface FilterState {
   propertyType: string;
@@ -13,7 +13,7 @@ export interface FilterState {
   monthlyInstallment: string;
   deliveryDate: string;
   finishing: string;
-  location?:string
+  location?: string;
 }
 
 export const initialFilterState: FilterState = {
@@ -38,27 +38,42 @@ export const getFinishingForUnit = (unitId: string): string => {
     hash = unitId.charCodeAt(i) + ((hash << 5) - hash);
   }
   const index = Math.abs(hash) % 4;
-  const finishingTypes = ["Not finished", "Semi finished", "Finished", "Fully furnished"];
+  const finishingTypes = [
+    "Not finished",
+    "Semi finished",
+    "Finished",
+    "Fully furnished",
+  ];
   return finishingTypes[index];
 };
 
 // Helper function to check if a unit matches a set of filters
-export const matchUnit = (unit: PropertyUnitCardData, filterState: FilterState): boolean => {
+export const matchUnit = (
+  unit: PropertyCardData,
+  filterState: FilterState,
+): boolean => {
   // 1. Property Type Filter
   if (filterState.propertyType) {
     const parts = unit.location.split("•");
     const unitType = parts.length > 1 ? parts[1].trim().toLowerCase() : "";
     const targetType = filterState.propertyType.trim().toLowerCase();
 
-    const isChalet = (t: string) => t === "chalet" || t === "challet" || t === "chalets" || t === "challets";
+    const isChalet = (t: string) =>
+      t === "chalet" || t === "challet" || t === "chalets" || t === "challets";
 
     let matchesType = false;
     if (isChalet(targetType)) {
       matchesType = isChalet(unitType);
     } else if (targetType === "twin house" || targetType === "twinhouse") {
-      matchesType = unitType === "twin house" || unitType === "townhouse" || unitType === "town house";
+      matchesType =
+        unitType === "twin house" ||
+        unitType === "townhouse" ||
+        unitType === "town house";
     } else if (targetType === "apartment") {
-      matchesType = unitType === "apartment" || unitType === "studio" || unitType === "penthouse";
+      matchesType =
+        unitType === "apartment" ||
+        unitType === "studio" ||
+        unitType === "penthouse";
     } else {
       matchesType = unitType === targetType;
     }
@@ -71,7 +86,7 @@ export const matchUnit = (unit: PropertyUnitCardData, filterState: FilterState):
     const bedStat = unit.stats.find((s) => s.icon === "bed");
     if (!bedStat) return false;
     const bedValue = parseInt(bedStat.value, 10);
-    
+
     if (filterState.bedrooms === "5+") {
       if (bedValue < 5) return false;
     } else {
@@ -98,19 +113,23 @@ export const matchUnit = (unit: PropertyUnitCardData, filterState: FilterState):
   const areaStat = unit.stats.find((s) => s.icon === "area");
   const areaValue = areaStat ? parseFloat(areaStat.value) : NaN;
   if (filterState.areaFrom) {
-    if (isNaN(areaValue) || areaValue < parseFloat(filterState.areaFrom)) return false;
+    if (isNaN(areaValue) || areaValue < parseFloat(filterState.areaFrom))
+      return false;
   }
   if (filterState.areaTo) {
-    if (isNaN(areaValue) || areaValue > parseFloat(filterState.areaTo)) return false;
+    if (isNaN(areaValue) || areaValue > parseFloat(filterState.areaTo))
+      return false;
   }
 
   // 5. Price Range Filter
   const priceValue = parseFloat(unit.price.replace(/[^0-9.]/g, ""));
   if (filterState.priceFrom) {
-    if (isNaN(priceValue) || priceValue < parseFloat(filterState.priceFrom)) return false;
+    if (isNaN(priceValue) || priceValue < parseFloat(filterState.priceFrom))
+      return false;
   }
   if (filterState.priceTo) {
-    if (isNaN(priceValue) || priceValue > parseFloat(filterState.priceTo)) return false;
+    if (isNaN(priceValue) || priceValue > parseFloat(filterState.priceTo))
+      return false;
   }
 
   // 6. Payments Filter (Down Payment & Monthly Installment)
@@ -129,7 +148,7 @@ export const matchUnit = (unit: PropertyUnitCardData, filterState: FilterState):
         const pct = parseFloat(pctMatch[1]);
         unitDownPayment = priceValue * (pct / 100);
       }
-      
+
       // Installment quarterly match
       const qtMatch = note.match(/([\d,]+)\s*quarterly/i);
       if (qtMatch) {
@@ -143,13 +162,16 @@ export const matchUnit = (unit: PropertyUnitCardData, filterState: FilterState):
     if (unitDownPayment > parseFloat(filterState.downPayment)) return false;
   }
   if (filterState.monthlyInstallment) {
-    if (unitMonthlyInstallment > parseFloat(filterState.monthlyInstallment)) return false;
+    if (unitMonthlyInstallment > parseFloat(filterState.monthlyInstallment))
+      return false;
   }
 
   // 7. Delivery Date Filter
   if (filterState.deliveryDate) {
     // Find delivery badge
-    const deliveryBadge = unit.badges.find((b) => b.toLowerCase().includes("delivery"));
+    const deliveryBadge = unit.badges.find((b) =>
+      b.toLowerCase().includes("delivery"),
+    );
     let deliveryYear: number | null = null;
     if (deliveryBadge) {
       const match = deliveryBadge.match(/delivery in (\d+)/i);
@@ -170,30 +192,30 @@ export const matchUnit = (unit: PropertyUnitCardData, filterState: FilterState):
   // 8. Finishing Filter
   if (filterState.finishing) {
     const unitFinishing = getFinishingForUnit(unit.id);
-    if (unitFinishing.toLowerCase() !== filterState.finishing.toLowerCase()) return false;
+    if (unitFinishing.toLowerCase() !== filterState.finishing.toLowerCase())
+      return false;
   }
 
   // 9. Location Filter
-if (filterState.location) {
-  if (
-    unit.destination?.name?.toLowerCase() !==
-    filterState.location.toLowerCase()
-  ) {
-    return false;
+  if (filterState.location) {
+    if (
+      unit.destination?.name?.toLowerCase() !==
+      filterState.location.toLowerCase()
+    ) {
+      return false;
+    }
   }
-}
-
-
 
   return true;
 };
 
-export const useUnitsFilter = (units: PropertyUnitCardData[]) => {
+export const useUnitsFilter = (units: PropertyCardData[]) => {
   // Committed filters that affect the main page
   const [filters, setFilters] = useState<FilterState>(initialFilterState);
 
   // Local/unsaved filters inside the drawer
-  const [tempFilters, setTempFilters] = useState<FilterState>(initialFilterState);
+  const [tempFilters, setTempFilters] =
+    useState<FilterState>(initialFilterState);
 
   // Memoized filtered units based on committed filters
   const filteredUnits = useMemo(() => {

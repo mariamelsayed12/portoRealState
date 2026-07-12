@@ -23,6 +23,7 @@ import {
 import { FaHeart, FaRegHeart, FaWhatsapp } from "react-icons/fa6";
 import AmenitiesSection from "../components/Ui/AmenitiesSection";
 import DestinationBreadcrumb from "../components/HomeCompoents/DestinationBreadcrumb";
+import { motion } from "framer-motion";
 
 const PropertyDetails: React.FC = () => {
   const { destinationSlug, propertySlug } = useParams<{
@@ -141,7 +142,12 @@ const PropertyDetails: React.FC = () => {
 
 
   return (
-    <div className="w-full flex flex-col min-h-screen bg-background lg:pt-36 pt-24 md:pt-36 pb-0">
+    <motion.div
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.25 }}
+      className="w-full flex flex-col min-h-screen bg-background lg:pt-36 pt-24 md:pt-36 pb-0"
+    >
       <div className="mx-auto max-w-7xl px-6 sm:px-8 lg:px-12 w-full flex-1">
         {/* Breadcrumb Navigation */}
         <div className="mb-6">
@@ -409,7 +415,7 @@ const PropertyDetails: React.FC = () => {
           </div>
         )}
       </div>
-    </div>
+    </motion.div>
   );
 };
 
