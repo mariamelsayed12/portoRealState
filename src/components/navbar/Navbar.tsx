@@ -29,7 +29,7 @@ const Navbar = ({ variant = "transparent" }: NavbarProps) => {
   return (
     <>
       <nav
-        className={`absolute top-4 md:top-8 left-1/2 transform -translate-x-1/2 w-[calc(100%-2rem)] md:w-[calc(100%-4rem)] max-w-7xl z-40 transition-all duration-300 backdrop-blur-md rounded-2xl md:rounded-3xl ${
+        className={`absolute  left-1/2 transform -translate-x-1/2 w-[calc(100%-2rem)] md:w-[calc(100%-4rem)] max-w-7xl z-40 transition-all duration-300 backdrop-blur-md  md:rounded-[99px] ${
           isLight
             ? "bg-white border border-[#E8EFF1] shadow-md"
             : "bg-black/20 border border-white/10 shadow-lg"

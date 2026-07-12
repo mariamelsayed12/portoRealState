@@ -45,8 +45,9 @@ const SearchFilterDropdown = ({
         type="button"
         onClick={() => setOpen((o) => !o)}
     className={`w-full flex items-center gap-3 bg-gray-50 hover:bg-gray-100/70 transition-colors duration-200 p-3 sm:p-4
-  ${isfirst ? "rounded-l-xl" : ""}
-  ${islast ? "rounded-r-xl" : ""}
+  rounded-xl sm:rounded-none
+  ${isfirst ? "sm:rounded-l-xl" : ""}
+  ${islast ? "sm:rounded-r-xl" : ""}
   border border-gray-200 cursor-pointer text-left`}
       >
         <div className="text-primary bg-primary/10 p-2 rounded-lg flex-shrink-0">

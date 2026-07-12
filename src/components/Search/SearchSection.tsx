@@ -68,7 +68,7 @@ const SearchSection = () => {
 />
 
         {/* ── Search Button ── */}
-        <div className="pl-2 flex flex-col items-center justify-center">
+        <div className="pl-0 sm:pl-2 pt-1 sm:pt-0 flex flex-col items-center justify-center">
             <SearchButton />
         </div> 
       </div>
