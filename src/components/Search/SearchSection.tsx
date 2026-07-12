@@ -19,7 +19,7 @@ import BankNoteIcon from "../icons/BankNote";
  */
 const SearchSection = () => {
   return (
-    <div className="bg-white rounded-2xl sm:rounded-[28px] shadow-2xl border border-gray-100/60 p-5 sm:p-6 md:p-6">
+    <div className="bg-background rounded-md  shadow-2xl border border-border p-[16px]">
       {/* Label row */}
       <h3 className="text-text-darker font-semi text-sm md:text-base mb-5 tracking-wide">
         Search properties

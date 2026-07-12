@@ -29,10 +29,8 @@ const Navbar = ({ variant = "transparent" }: NavbarProps) => {
   return (
     <>
       <nav
-        className={`absolute  left-1/2 transform -translate-x-1/2 w-[calc(100%-2rem)] md:w-[calc(100%-4rem)] max-w-7xl z-40 transition-all duration-300 backdrop-blur-md  md:rounded-[99px] ${
-          isLight
-            ? "bg-white border border-[#E8EFF1] shadow-md"
-            : "bg-black/20 border border-white/10 shadow-lg"
+        className={`absolute left-1/2 transform -translate-x-1/2 w-[calc(100%-2rem)] md:w-[calc(100%-4rem)] max-w-7xl z-40 transition-all duration-300 backdrop-blur-[2.9px] md:rounded-[99px] ${
+          isLight ? "bg-background  shadow-md" : "bg-[#F5F9FA]/5 shadow-lg"
         }`}
       >
         <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
@@ -48,7 +46,7 @@ const Navbar = ({ variant = "transparent" }: NavbarProps) => {
                 key={link.name}
                 to={link.path}
                 className={({ isActive }) =>
-                  `text-sm font-medium tracking-wide transition-colors duration-200 relative py-1 after:absolute after:bottom-0 after:left-0 after:w-full after:h-[2px] after:bg-primary after:transform after:scale-x-0 hover:after:scale-x-100 after:transition-transform after:duration-300 ${
+                  `text-sm md:text-[16px] font-medium tracking-wide transition-colors duration-200 relative py-1 after:absolute after:bottom-0 after:left-0 after:w-full after:h-[2px] after:bg-primary after:transform after:scale-x-0 hover:after:scale-x-100 after:transition-transform after:duration-300 ${
                     isActive
                       ? "text-primary after:scale-x-100 font-semibold"
                       : isLight
