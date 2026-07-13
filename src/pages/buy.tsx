@@ -64,7 +64,7 @@ const BuyPage = () => {
 							<motion.div
 								layout
 								className={`grid grid-cols-1 gap-6 sm:grid-cols-2 justify-items-center sm:justify-items-stretch transition-all duration-300 ${
-									"lg:grid-cols-3"
+									"lg:grid-cols-2 xl:grid-cols-2"
 								}`}
 							>
 								<AnimatePresence mode="popLayout">

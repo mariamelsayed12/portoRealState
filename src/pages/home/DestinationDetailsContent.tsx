@@ -161,7 +161,7 @@ const DestinationDetailsContent = ({ destinationSlug }: DestinationDetailsConten
 							<motion.div
 								layout
 								className={`grid grid-cols-1 gap-6 sm:grid-cols-2 justify-items-center sm:justify-items-stretch transition-all duration-300 ${
-									isFilterOpen ? "lg:grid-cols-2" : "lg:grid-cols-3"
+									isFilterOpen ? "lg:grid-cols-3" : "lg:grid-cols-3"
 								}`}
 							>
 								<AnimatePresence mode="popLayout">

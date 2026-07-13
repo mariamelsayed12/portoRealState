@@ -18,61 +18,59 @@ const CuratedPropertiesSection = () => {
       return;
     }
 
-    const cardWidth = 286 + 16;
-    const amount = direction === "left" ? -cardWidth * 1.15 : cardWidth * 1.15;
+    const cardWidth = 384 + 24; // Card width + gap
+    const amount = direction === "left" ? -cardWidth : cardWidth;
 
     container.scrollBy({ left: amount, behavior: "smooth" });
   };
 
   return (
-    <section className="bg-background py-10 sm:py-14">
-      <div className="mx-auto max-w-7xl px-6 sm:px-8 lg:px-12">
-        <div className="flex items-center justify-between gap-4">
-          <h2 className="lg:text-[40px] font-semibold tracking-tight text-text-secondary text-[24px]">
+    <section className="w-full bg-background py-[60px] px-6 sm:px-12 lg:px-[120px]">
+      <div className="w-full mx-auto flex flex-col gap-[24px]">
+        <div className="flex items-center justify-between w-full">
+          <h2 className="text-[28px] lg:text-[40px] font-medium text-[#141414] font-['Poppins'] leading-[normal]">
             {curatedPropertiesHeading.title}
           </h2>
 
           <button
             type="button"
-            className="inline-flex items-center gap-1.5 rounded-full border border-[#D9E1E4] bg-white px-3 py-1.5 text-[11px] font-medium text-[#6E7D84] shadow-sm transition-colors hover:border-primary/30 hover:text-primary"
+            className="flex items-center justify-center h-[36px] px-[16px] rounded-[12px] border border-[#747474] text-[16px] font-medium text-[#141414] font-['Poppins'] transition-colors hover:bg-[#edeff2]"
             onClick={()=>{
               navigate("/buy");
             }}
           >
-            <span>{curatedPropertiesHeading.actionLabel}</span>
-            <ArrowUpRight className="h-3.5 w-3.5" />
+            {curatedPropertiesHeading.actionLabel}
           </button>
         </div>
 
         <div
           ref={scrollerRef}
-          className="mt-3 flex gap-4 overflow-x-auto pb-2 pt-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+          className="flex gap-[24px] overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden w-full pb-2"
         >
           {units.map((card) => (
             <UnitCard key={card.id} card={card} />
           ))}
         </div>
-        <div className="mt-4 flex items-center gap-2">
-          <div className="hidden sm:flex items-center gap-2">
-            <button
-              type="button"
-              onClick={() => scrollByCards("left")}
-              disabled={!canScroll}
-              className="grid p-2 place-items-center rounded-md border border-[#D9E1E4] bg-white text-[#6E7D84] shadow-sm transition-colors hover:border-primary/30 hover:text-primary disabled:cursor-not-allowed disabled:opacity-50"
-              aria-label="Scroll properties left"
-            >
-              <ChevronLeft className="h-4 w-4 text-primary" />
-            </button>
-            <button
-              type="button"
-              onClick={() => scrollByCards("right")}
-              disabled={!canScroll}
-              className="grid p-2 place-items-center rounded-md border border-[#D9E1E4] bg-white text-[#6E7D84] shadow-sm transition-colors hover:border-primary/30 hover:text-primary disabled:cursor-not-allowed disabled:opacity-50"
-              aria-label="Scroll properties right"
-            >
-              <ChevronRight className="h-4 w-4 text-primary" />
-            </button>
-          </div>
+        
+        <div className="flex items-center gap-[8px] w-full">
+          <button
+            type="button"
+            onClick={() => scrollByCards("left")}
+            disabled={!canScroll}
+            className="flex items-center justify-center size-[48px] rounded-[12px] border border-[#747474] text-[#141414] transition-colors hover:bg-[#edeff2] disabled:cursor-not-allowed disabled:opacity-50"
+            aria-label="Scroll properties left"
+          >
+            <ChevronLeft className="h-[20px] w-[20px]" />
+          </button>
+          <button
+            type="button"
+            onClick={() => scrollByCards("right")}
+            disabled={!canScroll}
+            className="flex items-center justify-center size-[48px] rounded-[12px] border border-[#747474] text-[#141414] transition-colors hover:bg-[#edeff2] disabled:cursor-not-allowed disabled:opacity-50"
+            aria-label="Scroll properties right"
+          >
+            <ChevronRight className="h-[20px] w-[20px]" />
+          </button>
         </div>
       </div>
     </section>

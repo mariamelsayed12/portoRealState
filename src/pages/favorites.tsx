@@ -170,7 +170,7 @@ const FavoritesPage = () => {
             {sortedUnits.length > 0 ? (
               <motion.div
                 layout
-                className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 justify-items-center sm:justify-items-stretch transition-all duration-300"
+                className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 justify-items-center sm:justify-items-stretch transition-all duration-300"
               >
                 <AnimatePresence mode="popLayout">
                   {sortedUnits.map((unit) => (

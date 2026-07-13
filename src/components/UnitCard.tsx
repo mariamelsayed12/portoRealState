@@ -19,7 +19,7 @@ const statIconMap = {
 
 const UnitCard = ({
   card,
-  className = "w-[286px] sm:w-[296px] shrink-0",
+  className = "w-[280px] sm:w-[340px] md:w-[384px] shrink-0",
 }: {
   card: PropertyCardData;
   className?: string;
@@ -42,22 +42,22 @@ const UnitCard = ({
   return (
     <Link
       to={`/home/${card.destination.slug}/properties/${card.id}`}
-      className={`${className} block text-left rounded-md overflow-hidden hover:shadow-[0_4px_20px_rgba(73,95,104,0.12)] transition-all duration-300 group`}
+      className={`${className} block text-left group`}
     >
-      <article className="w-full h-full rounded-md border border-border bg-white shadow-[0_2px_10px_rgba(73,95,104,0.06)] overflow-hidden">
-        <div className="relative h-[198px] overflow-hidden bg-[#dfeef1]">
+      <article className="w-full h-full flex flex-col bg-[#F5F9FA] border border-white rounded-[12px] shadow-[0px_2px_3.15px_rgba(0,0,0,0.14)] overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-[0px_6px_12px_rgba(0,0,0,0.15)]">
+        <div className="relative h-[276px] w-full p-[24px] flex flex-col justify-start rounded-t-[12px]">
           <Image
             imageurl={card.image}
             alt={card.title}
-            className="h-full w-full object-cover object-center transition-transform duration-500 group-hover:scale-105"
+            className="absolute inset-0 h-full w-full object-cover object-center rounded-t-[12px]"
           />
 
-          <div className="absolute inset-x-0 top-0 flex items-start justify-between gap-2 p-3 z-10">
-            <div className="flex flex-wrap gap-1.5">
+          <div className="relative z-10 flex items-start justify-between w-full">
+            <div className="flex flex-wrap gap-[16px]">
               {card.badges.map((badge) => (
                 <span
                   key={badge}
-                  className="rounded-full bg-white/70 px-2.5 py-1 text-[10px] font-medium text-text-darker shadow-sm backdrop-blur-sm"
+                  className="rounded-[99px] bg-black/25 px-[8px] py-[8px] text-[14px] font-medium text-[#edeff2] leading-[normal] font-['Poppins'] backdrop-blur-sm"
                 >
                   {badge}
                 </span>
@@ -67,67 +67,77 @@ const UnitCard = ({
             <button
               onClick={handleFavorite}
               type="button"
-              className="relative z-20 cursor-pointer p-1"
+              className="relative z-20 flex items-center justify-center bg-primary rounded-[12px] size-[36px] shrink-0 transition-transform hover:scale-110 cursor-pointer"
             >
               {isFavorite ? (
-                <FaHeart className="text-primary h-4 w-4" />
+                <FaHeart className="text-white h-[20px] w-[20px]" />
               ) : (
-                <FaRegHeart className="text-primary h-4 w-4" />
+                <FaRegHeart className="text-white h-[20px] w-[20px]" />
               )}
             </button>
           </div>
-
-          <div className="absolute inset-x-0 bottom-0 h-10 bg-gradient-to-t from-black/30 to-transparent" />
         </div>
 
-        <div className="p-3.5">
-          <div className="mb-1.5 flex items-center gap-1.5 text-[11px] font-medium text-[#7D8D93]">
-            <MapPin className="h-3.5 w-3.5 text-primary" />
+        <div className="flex flex-col gap-[16px] p-[24px] w-full rounded-b-[12px]">
+          <div className="flex items-center gap-[8px] text-[14px] text-[#464646] font-['Poppins']">
+            <MapPin className="h-[20px] w-[20px]" />
             <span>{card.location}</span>
           </div>
 
-          <h3 className="text-[13px] font-semibold leading-tight text-text-darker group-hover:text-primary transition-colors">
+          <h3 className="text-[19px] font-medium text-[#141414] font-['Poppins'] group-hover:text-primary transition-colors">
             {card.title}
           </h3>
 
-          <div className="mt-2 flex items-center gap-2 text-[11px] text-[#7D8D93]">
+          <div className="flex flex-wrap items-center gap-x-[16px] gap-y-[8px] text-[14px] text-[#464646] font-['Poppins']">
             {card.stats.map((stat, index) => {
               const Icon = statIconMap[stat.icon];
 
               return (
                 <div
                   key={`${card.id}-${stat.icon}`}
-                  className="flex items-center gap-1"
+                  className="flex items-center gap-[16px]"
                 >
-                  <Icon className="h-3.5 w-3.5 text-primary" />
-                  <span>{stat.value}</span>
-                  {index < card.stats.length - 1 ? (
-                    <span className="text-[#C3CCCF]">•</span>
-                  ) : null}
+                  <div className="flex items-center gap-[8px]">
+                    <Icon className="h-[20px] w-[20px]" />
+                    <span>{stat.value}</span>
+                  </div>
+                  {index < card.stats.length - 1 && (
+                    <div className="h-[21px] w-[1px] bg-[#d4d5d8]" />
+                  )}
                 </div>
               );
             })}
           </div>
 
-          <div className="mt-3 flex items-center justify-between gap-2">
-            <p className="text-[12px] font-semibold text-text-darker">
-              {card.price}
-            </p>
-            <div className="flex flex-wrap items-center gap-1.5">
-              {card.paymentModes.map((mode) => (
-                <span
-                  key={mode}
-                  className="rounded-md bg-[#F2F5F6] px-2 py-1 text-[10px] font-medium text-[#58696F]"
-                >
-                  {mode}
-                </span>
-              ))}
-            </div>
-          </div>
+          <div className="w-full h-[1px] bg-[#d4d5d8]" />
 
-          <p className="mt-2 text-[10px] font-medium text-[#7D8D93] whitespace-pre-line">
-            {card.paymentNote}
-          </p>
+          <div className="flex flex-col gap-[8px] w-full">
+            <div className="flex flex-wrap items-center justify-between gap-2 w-full">
+              <p className="text-[19px] font-medium text-[#141414] font-['Poppins']">
+                {card.price}
+              </p>
+              {card.paymentModes && card.paymentModes.length > 0 && (
+                <div className="flex h-[32px] items-center border border-[#d4d5d8] rounded-[12px] overflow-hidden shrink-0">
+                  {card.paymentModes.map((mode, index) => (
+                    <div
+                      key={mode}
+                      className={`flex h-[32px] items-center justify-center px-[8px] ${
+                        index === 0 ? "bg-[#edeff2]" : ""
+                      }`}
+                    >
+                      <span className="text-[16px] font-medium text-[#141414] font-['Poppins']">
+                        {mode}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            <p className="text-[16px] text-[#464646] font-['Poppins'] whitespace-pre-line">
+              {card.paymentNote}
+            </p>
+          </div>
         </div>
       </article>
     </Link>
