@@ -44,26 +44,27 @@ const UnitCard = ({
       to={`/home/${card.destination.slug}/properties/${card.id}`}
       className={`${className} block text-left group`}
     >
-      <article className="w-full h-full flex flex-col bg-[#F5F9FA] border border-white rounded-[12px] shadow-[0px_2px_3.15px_rgba(0,0,0,0.14)] overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-[0px_6px_12px_rgba(0,0,0,0.15)]">
-        <div className="relative h-[276px] w-full p-[24px] flex flex-col justify-start rounded-t-[12px]">
+      <article className="w-full flex flex-col bg-[#F5F9FA] border border-white rounded-[12px] shadow-[0px_2px_3.15px_rgba(0,0,0,0.14)] overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-[0px_6px_12px_rgba(0,0,0,0.15)]">
+
+        {/* Image Section — uses aspect ratio so height scales with width */}
+        <div className="relative w-full aspect-[343/276] overflow-hidden rounded-t-[12px] shrink-0">
           <Image
             imageurl={card.image}
             alt={card.title}
-            className="absolute inset-0 h-full w-full object-cover object-center rounded-t-[12px]"
+            className="absolute inset-0 h-full w-full object-cover object-center"
           />
-
-          <div className="relative z-10 flex items-start justify-between w-full">
-            <div className="flex flex-wrap gap-[16px]">
+          {/* Badges + Favorite */}
+          <div className="absolute inset-0 p-[16px] sm:p-[24px] flex items-start justify-between z-10">
+            <div className="flex flex-wrap gap-[8px] sm:gap-[16px] max-w-[75%]">
               {card.badges.map((badge) => (
                 <span
                   key={badge}
-                  className="rounded-[99px] bg-black/25 px-[8px] py-[8px] text-[14px] font-medium text-[#edeff2] leading-[normal] font-['Poppins'] backdrop-blur-sm"
+                  className="rounded-[99px] bg-black/25 px-[8px] py-[6px] text-[12px] sm:text-[14px] font-medium text-[#edeff2] leading-[normal] font-['Poppins'] backdrop-blur-sm"
                 >
                   {badge}
                 </span>
               ))}
             </div>
-
             <button
               onClick={handleFavorite}
               type="button"
@@ -78,54 +79,57 @@ const UnitCard = ({
           </div>
         </div>
 
-        <div className="flex flex-col gap-[16px] p-[24px] w-full rounded-b-[12px]">
-          <div className="flex items-center gap-[8px] text-[14px] text-[#464646] font-['Poppins']">
-            <MapPin className="h-[20px] w-[20px]" />
-            <span>{card.location}</span>
+        {/* Body Section */}
+        <div className="flex flex-col gap-[14px] sm:gap-[16px] p-[16px] sm:p-[24px] w-full">
+
+          {/* Location */}
+          <div className="flex items-center gap-[6px] sm:gap-[8px] text-[13px] sm:text-[14px] text-[#464646] font-['Poppins']">
+            <MapPin className="h-[18px] w-[18px] sm:h-[20px] sm:w-[20px] shrink-0" />
+            <span className="truncate">{card.location}</span>
           </div>
 
-          <h3 className="text-[16px] sm:text-[19px] font-medium text-[#141414] font-['Poppins'] group-hover:text-primary transition-colors">
+          {/* Title */}
+          <h3 className="text-[15px] sm:text-[16px] font-medium text-[#141414] font-['Poppins'] group-hover:text-primary transition-colors leading-tight line-clamp-2">
             {card.title}
           </h3>
 
-          <div className="flex flex-wrap items-center gap-x-[16px] gap-y-[8px] text-[14px] text-[#464646] font-['Poppins']">
+          {/* Stats Row */}
+          <div className="flex items-center gap-[8px] sm:gap-[12px] flex-wrap text-[13px] sm:text-[14px] text-[#464646] font-['Poppins']">
             {card.stats.map((stat, index) => {
               const Icon = statIconMap[stat.icon];
-
               return (
-                <div
-                  key={`${card.id}-${stat.icon}`}
-                  className="flex items-center gap-[16px]"
-                >
-                  <div className="flex items-center gap-[8px]">
-                    <Icon className="h-[20px] w-[20px]" />
-                    <span>{stat.value}</span>
+                <div key={`${card.id}-${stat.icon}`} className="flex items-center gap-[8px] sm:gap-[12px]">
+                  <div className="flex items-center gap-[6px] sm:gap-[8px] shrink-0">
+                    <Icon className="h-[18px] w-[18px] sm:h-[20px] sm:w-[20px] shrink-0" />
+                    <span className="whitespace-nowrap">{stat.value}</span>
                   </div>
                   {index < card.stats.length - 1 && (
-                    <div className="h-[21px] w-[1px] bg-[#d4d5d8]" />
+                    <div className="h-[18px] w-[1px] bg-[#d4d5d8] shrink-0" />
                   )}
                 </div>
               );
             })}
           </div>
 
+          {/* Divider */}
           <div className="w-full h-[1px] bg-[#d4d5d8]" />
 
+          {/* Price + Payment Modes */}
           <div className="flex flex-col gap-[8px] w-full">
-            <div className="flex flex-wrap items-center justify-between gap-2 w-full">
-              <p className="text-[16px] sm:text-[19px] font-medium text-[#141414] font-['Poppins']">
+            <div className="flex items-center justify-between gap-[8px] w-full flex-wrap">
+              <p className="text-[15px] sm:text-[16px] font-medium text-[#141414] font-['Poppins'] whitespace-nowrap">
                 {card.price}
               </p>
               {card.paymentModes && card.paymentModes.length > 0 && (
-                <div className="flex h-[32px] items-center border border-[#d4d5d8] rounded-[12px] overflow-hidden shrink-0">
+                <div className="flex h-[28px] sm:h-[32px] items-center border border-[#d4d5d8] rounded-[12px] overflow-hidden shrink-0">
                   {card.paymentModes.map((mode, index) => (
                     <div
                       key={mode}
-                      className={`flex h-[32px] items-center justify-center px-[8px] ${
+                      className={`flex h-full items-center justify-center px-[6px] sm:px-[8px] ${
                         index === 0 ? "bg-[#edeff2]" : ""
                       }`}
                     >
-                      <span className="text-[16px] font-medium text-[#141414] font-['Poppins']">
+                      <span className="text-[12px] sm:text-[14px] font-medium text-[#141414] font-['Poppins'] whitespace-nowrap">
                         {mode}
                       </span>
                     </div>
@@ -134,9 +138,12 @@ const UnitCard = ({
               )}
             </div>
 
-            <p className="text-[14px] sm:text-[16px] text-[#464646] font-['Poppins'] whitespace-pre-line">
-              {card.paymentNote}
-            </p>
+            {/* Payment Note */}
+            {card.paymentNote && (
+              <p className="text-[12px] sm:text-[14px] text-[#464646] font-['Poppins'] leading-relaxed">
+                {card.paymentNote}
+              </p>
+            )}
           </div>
         </div>
       </article>
