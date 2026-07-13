@@ -160,7 +160,7 @@ const DestinationDetailsContent = ({ destinationSlug }: DestinationDetailsConten
 						{sortedUnits.length > 0 ? (
 							<motion.div
 								layout
-								className={`grid grid-cols-1 gap-6 sm:grid-cols-2 justify-items-center sm:justify-items-stretch transition-all duration-300 ${
+								className={`grid grid-cols-1 gap-6 sm:grid-cols-2 justify-items-stretch transition-all duration-300 ${
 									isFilterOpen ? "lg:grid-cols-3" : "lg:grid-cols-3"
 								}`}
 							>
