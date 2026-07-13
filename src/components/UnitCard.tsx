@@ -19,7 +19,7 @@ const statIconMap = {
 
 const UnitCard = ({
   card,
-  className = "w-[282px] sm:w-[382px] max-w-full shrink-0",
+  className = "w-[282px] sm:w-[382px] shrink-0",
 }: {
   card: PropertyCardData;
   className?: string;
@@ -42,7 +42,7 @@ const UnitCard = ({
   return (
     <Link
       to={`/home/${card.destination.slug}/properties/${card.id}`}
-      className={`${className} block text-left group mx-auto max-w-[282px] sm:max-w-[382px]`}
+      className={`${className} block text-left group`}
     >
       <article className="w-full h-full flex flex-col bg-[#F5F9FA] border border-white rounded-[12px] shadow-[0px_2px_3.15px_rgba(0,0,0,0.14)] overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-[0px_6px_12px_rgba(0,0,0,0.15)]">
         <div className="relative h-[276px] w-full p-[24px] flex flex-col justify-start rounded-t-[12px]">
