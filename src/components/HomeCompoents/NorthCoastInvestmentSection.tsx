@@ -48,14 +48,12 @@ const WaveFooter = ({ variant }: { variant: number }) => {
 
 const InvestmentTextCard = ({ card, waveVariant }: { card: InvestmentCardData; waveVariant: number }) => {
   return (
-    <article className="relative min-h-[185px] overflow-hidden rounded-[12px] border border-[#E1E8EB] bg-white px-4 py-4">
-      <div className="relative z-10 flex h-full flex-col items-center text-center">
-        <h3
-          className="max-w-[200px] text-[19px] font-medium text-text-secondary"
-        >
+    <article className="relative h-[220px] sm:h-[253px] w-full overflow-hidden rounded-[12px] border border-border bg-white pt-[24px] px-[24px]">
+      <div className="relative z-10 flex flex-col gap-[20px] items-start text-center w-full leading-[normal]">
+        <h3 className="text-[16px] sm:text-[19px] font-medium text-[#141414] w-full font-['Poppins']">
           {card.title}
         </h3>
-        <p className="mt-2 max-w-[178px] text-[10px] leading-relaxed text-[#66767D]">
+        <p className="text-[14px] sm:text-[16px] font-normal text-[#464646] w-full font-['Poppins']">
           {card.description}
         </p>
       </div>
@@ -67,11 +65,11 @@ const InvestmentTextCard = ({ card, waveVariant }: { card: InvestmentCardData; w
 
 const InvestmentImageCard = ({ card }: { card: InvestmentCardData }) => {
   return (
-    <article className="relative min-h-[334px] overflow-hidden rounded-[12px] border border-[#E1E8EB] bg-white md:min-h-[334px]">
+    <article className="relative h-[300px] sm:h-[400px] md:h-[530px] w-full overflow-hidden rounded-[12px] bg-white">
       <Image
         imageurl={card.image ?? ""}
         alt={card.alt ?? card.title}
-        className="h-full w-full object-cover object-center"
+        className="absolute inset-0 h-full w-full object-cover object-center rounded-[12px]"
       />
     </article>
   );
@@ -81,21 +79,21 @@ const NorthCoastInvestmentSection = () => {
   const [leftTop, leftBottom, featured, rightTop, rightBottom] = northCoastInvestmentCards;
 
   return (
-    <section className="bg-background py-4 pb-14 sm:pb-16">
-      <div className="mx-auto max-w-7xl px-6 sm:px-8 lg:px-12">
-        <h2 className="mb-4 text-[22px] font-semibold tracking-tight text-text-secondary sm:text-[24px]">
+    <section className="w-full bg-background py-[60px] px-6 sm:px-12 md:px-16 lg:px-[120px]">
+      <div className="mx-auto w-full flex flex-col gap-[24px]">
+        <h2 className="text-[#141414] font-medium text-[28px] md:text-[40px] tracking-tight leading-[normal] font-['Poppins']">
           {northCoastHeading.title}
         </h2>
 
-        <div className="grid gap-4 md:grid-cols-[1fr_1.18fr_1fr] md:items-stretch">
-          <div className="grid gap-4">
+        <div className="grid gap-[24px] md:grid-cols-3 md:items-stretch">
+          <div className="flex flex-col gap-[24px] justify-center">
             {leftTop && <InvestmentTextCard card={leftTop} waveVariant={0} />}
             {leftBottom && <InvestmentTextCard card={leftBottom} waveVariant={1} />}
           </div>
 
           {featured && <InvestmentImageCard card={featured} />}
 
-          <div className="grid gap-4">
+          <div className="flex flex-col gap-[24px] justify-center">
             {rightTop && <InvestmentTextCard card={rightTop} waveVariant={3} />}
             {rightBottom && <InvestmentTextCard card={rightBottom} waveVariant={2} />}
           </div>
