@@ -2,159 +2,209 @@ import { useState } from "react";
 import type { SubmitHandler } from "react-hook-form";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import Button from "../Ui/Button";
-import Input from "../Ui/Input";
-import Textarea from "../Ui/Textarea";
+import { Mail, Phone, ChevronDown } from "lucide-react";
 import InputErrorMessage from "../Ui/InputErrorMessage";
 import type { ContactUsFormValues } from "../../interfaces";
 import { ContactUs_Schema } from "../../validation";
-import { contactFields, contactItems } from "../../data";
-
-
 
 const phoneCodes = ["Eg +000", "+20", "+971"];
 
 const ContactUsSection = () => {
-	const [isSubmitting, setIsSubmitting] = useState(false);
-	const {
-		register,
-		handleSubmit,
-		formState: { errors },
-		reset,
-	} = useForm<ContactUsFormValues>({
-		resolver: yupResolver(ContactUs_Schema),
-		mode: "onSubmit",
-		defaultValues: {
-			fullName: "",
-			phoneCountryCode: "Eg +000",
-			phoneNumber: "",
-			description: "",
-		},
-	});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm<ContactUsFormValues>({
+    resolver: yupResolver(ContactUs_Schema),
+    mode: "onSubmit",
+    defaultValues: {
+      fullName: "",
+      phoneCountryCode: "Eg +000",
+      phoneNumber: "",
+      description: "",
+    },
+  });
 
-	const onSubmit: SubmitHandler<ContactUsFormValues> = async () => {
-		try {
-			setIsSubmitting(true);
-			await new Promise((resolve) => setTimeout(resolve, 250));
-			reset();
-		} finally {
-			setIsSubmitting(false);
-		}
-	};
+  const onSubmit: SubmitHandler<ContactUsFormValues> = async () => {
+    try {
+      setIsSubmitting(true);
+      await new Promise((resolve) => setTimeout(resolve, 500));
+      reset();
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
-	return (
-			<section className="bg-background py-16 sm:py-20">
-				<div className="mx-auto max-w-[1152px] px-6 sm:px-8 lg:px-12">
-					<div className="grid items-start gap-5 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] lg:gap-6">
-						<div className="max-w-[420px] pt-6 lg:pt-8">
-							<h2 className="text-[28px] font-medium tracking-tight text-text-secondary sm:text-[32px] lg:text-[34px]">
-							Need Expert Advice ?
-						</h2>
+  return (
+    <section className="bg-[#f5f9fa] w-full px-6 sm:px-12 lg:px-[120px] py-[60px]">
+      <style dangerouslySetInnerHTML={{__html: `
+        @media (min-width: 1024px) {
+          .contact-col-left {
+            width: 588px !important;
+            flex-shrink: 0 !important;
+          }
+          .contact-col-right {
+            width: 588px !important;
+            flex-shrink: 0 !important;
+          }
+        }
+      `}} />
 
-							<p className="mt-4 max-w-[340px] text-[14px] font-normal leading-6 text-text-darker sm:text-[15px]">
-							Fill out the form and a single advisor will be in touch within 24 hours.
-							</p>
+      <div className="max-w-[1200px] mx-auto flex flex-col lg:flex-row justify-between items-center gap-[48px] w-full">
+        
+        {/* Left Side Content */}
+        <div className="contact-col-left flex flex-col gap-[48px]  justify-center w-full">
+          <div className="flex flex-col gap-[24px] items-start justify-center w-full">
+            <h2 className="text-[28px] sm:text-[40px] font-medium text-[#141414] font-['Poppins'] leading-[normal]">
+              Need Expert Advice ?
+            </h2>
+            <p className="text-[16px] font-normal text-[#464646] font-['Poppins'] leading-[normal] max-w-[436px]">
+              Fill out the form and a single advisor will be in touch within 24 hours.
+            </p>
+          </div>
 
-							<div className="mt-8 flex flex-wrap items-center gap-x-10 gap-y-5">
-								{contactItems.map(({ icon: Icon, label, href }) => (
-									<a key={label} href={href} className="flex items-center gap-3 text-text-darker">
-										<span className="grid h-8 w-8 place-items-center rounded-full bg-secondary text-[#1F2937]">
-											<Icon className="h-3.5 w-3.5" />
-										</span>
-										<span className="text-[14px] font-normal">{label}</span>
-									</a>
-								))}
-							</div>
-						</div>
+          {/* Contact Details */}
+          <div className="flex flex-wrap gap-[24px] sm:gap-[93px] items-center">
+            {/* Phone */}
+            <div className="flex gap-[12px] items-center">
+              <div className="bg-[#b9dbe5] rounded-full size-[44px] flex items-center justify-center text-[#1e8cab] shrink-0">
+                <Phone className="size-[20px]" />
+              </div>
+              <a
+                href="tel:+20113333333"
+                className="text-[16px] font-normal text-[#141414] font-['Poppins'] leading-[normal] hover:underline"
+              >
+                +20113333333
+              </a>
+            </div>
 
-					<div className="w-full max-w-[382px] rounded-[12px] border border-[#E1E8EB] bg-white p-4 shadow-[0_2px_8px_rgba(73,95,104,0.08)] sm:p-5 lg:justify-self-end">
-						<form className="space-y-4" onSubmit={handleSubmit(onSubmit)} noValidate>
-							{contactFields.map((field) => {
-								const fieldError = errors[field.name];
+            {/* Email */}
+            <div className="flex gap-[12px] items-center">
+              <div className="bg-[#b9dbe5] rounded-full size-[44px] flex items-center justify-center text-[#1e8cab] shrink-0">
+                <Mail className="size-[20px]" />
+              </div>
+              <a
+                href="mailto:elahdd@email.com"
+                className="text-[16px] font-normal text-[#141414] font-['Poppins'] leading-[normal] hover:underline"
+              >
+                elahdd@email.com
+              </a>
+            </div>
+          </div>
+        </div>
 
-								if (field.isTextarea) {
-									return (
-										<div key={field.name}>
-											<label htmlFor={field.name} className="mb-1.5 block text-[12px] font-normal text-text-darker">
-												{field.label}
-											</label>
-											<Textarea
-												id={field.name}
-												placeholder={field.placeholder}
-												className={fieldError ? "border-red-400 focus:border-red-500" : ""}
-												{...register(field.name)}
-											/>
-											<div className="min-h-[18px] pt-1">
-												<InputErrorMessage msg={fieldError?.message} />
-											</div>
-										</div>
-									);
-								}
+        {/* Right Side Form Card */}
+        <div className="contact-col-right bg-white p-[16px] rounded-[12px] shadow-[0px_2px_6.3px_1px_rgba(0,0,0,0.14)] w-full shrink-0">
+          <form onSubmit={handleSubmit(onSubmit)} noValidate className="flex flex-col gap-[32px] w-full">
+            <div className="flex flex-col gap-[16px] w-full">
+              
+              {/* Full Name Input */}
+              <div className="flex flex-col gap-[8px] w-full">
+                <label htmlFor="fullName" className="text-[16px] font-normal text-[#141414] font-['Poppins'] leading-[normal]">
+                  <span>Full Name</span>
+                  <span className="text-[#1e8cab] ml-[2px]">*</span>
+                </label>
+                <div className="w-full">
+                  <input
+                    id="fullName"
+                    type="text"
+                    placeholder="Input text"
+                    className={`h-[48px] w-full bg-white border rounded-[8px] px-[12px] text-[16px] text-[#141414] font-['Poppins'] outline-none transition-colors ${
+                      errors.fullName ? "border-red-400 focus:border-red-500" : "border-[#d4d5d8] focus:border-[#1e8cab]"
+                    }`}
+                    {...register("fullName")}
+                  />
+                  {errors.fullName && (
+                    <div className="pt-1">
+                      <InputErrorMessage msg={errors.fullName.message} />
+                    </div>
+                  )}
+                </div>
+              </div>
 
-								if (field.name === "phoneNumber") {
-									return (
-										<div key={field.name}>
-											<label htmlFor={field.name} className="mb-1.5 block text-[12px] font-normal text-text-darker">
-												{field.label}
-											</label>
-											<div className="flex items-stretch gap-1.5">
-												<select
-													{...register("phoneCountryCode")}
-													className="h-11 w-[80px] rounded-md border border-border bg-white px-2 text-[12px] text-text-darker outline-none transition-colors focus:border-primary"
-												>
-													{phoneCodes.map((code) => (
-														<option key={code} value={code}>
-															{code}
-														</option>
-													))}
-												</select>
-												<Input
-													id={field.name}
-													type={field.type}
-													placeholder={field.placeholder}
-													className={`flex-1 ${fieldError ? "border-red-400 focus:border-red-500" : ""}`}
-													{...register(field.name)}
-												/>
-											</div>
-											<div className="min-h-[18px] pt-1">
-												<InputErrorMessage msg={fieldError?.message} />
-											</div>
-										</div>
-									);
-								}
+              {/* Phone Number Input */}
+              <div className="flex flex-col gap-[8px] w-full h-[80px]">
+                <label htmlFor="phoneNumber" className="text-[16px] font-normal text-[#141414] font-['Poppins'] leading-[normal]">
+                  <span>Phone Number</span>
+                  <span className="text-[#1e8cab] ml-[2px]">*</span>
+                </label>
+                <div className="w-full">
+                  <div className="flex gap-[8px] items-stretch w-full h-[48px]">
+                    {/* Country Code Selector */}
+                    <div className="relative shrink-0 w-[108px] h-full">
+                      <select
+                        id="phoneCountryCode"
+                        className="w-full h-full border border-[#d4d5d8] rounded-[8px] pl-[12px] pr-[28px] bg-white text-[13px] text-[#464646] font-['Poppins'] outline-none cursor-pointer appearance-none"
+                        {...register("phoneCountryCode")}
+                      >
+                        {phoneCodes.map((code) => (
+                          <option key={code} value={code}>
+                            {code}
+                          </option>
+                        ))}
+                      </select>
+                      <ChevronDown className="absolute right-[8px] top-1/2 -translate-y-1/2 size-[16px] text-[#464646] pointer-events-none" />
+                    </div>
 
-								return (
-									<div key={field.name}>
-										<label htmlFor={field.name} className="mb-1.5 block text-[12px] font-normal text-text-darker">
-											{field.label}
-										</label>
-										<Input
-											id={field.name}
-											type={field.type}
-											placeholder={field.placeholder}
-											className={fieldError ? "border-red-400 focus:border-red-500" : ""}
-											{...register(field.name)}
-										/>
-										<div className="min-h-[18px] pt-1">
-											<InputErrorMessage msg={fieldError?.message} />
-										</div>
-									</div>
-								);
-							})}
+                    {/* Number Input */}
+                    <input
+                      id="phoneNumber"
+                      type="tel"
+                      placeholder="Phone number"
+                      className={`flex-1 h-full bg-white border rounded-[8px] px-[12px] text-[16px] text-[#141414] font-['Poppins'] outline-none transition-colors ${
+                        errors.phoneNumber ? "border-red-400 focus:border-red-500" : "border-[#d4d5d8] focus:border-[#1e8cab]"
+                      }`}
+                      {...register("phoneNumber")}
+                    />
+                  </div>
+                  {errors.phoneNumber && (
+                    <div className="pt-1">
+                      <InputErrorMessage msg={errors.phoneNumber.message} />
+                    </div>
+                  )}
+                </div>
+              </div>
 
-							<Button
-								type="submit"
-								disabled={isSubmitting}
-								className="w-full rounded-md bg-primary py-3 text-[13px] font-medium text-white shadow-none transition-opacity hover:opacity-95"
-							>
-								{isSubmitting ? "Submitting..." : "Request Consultation"}
-							</Button>
-						</form>
-					</div>
-				</div>
-			</div>
-		</section>
-	);
+              {/* Description Input */}
+              <div className="flex flex-col gap-[8px] w-full h-[125px]">
+                <label htmlFor="description" className="text-[16px] font-normal text-[#141414] font-['Poppins'] leading-[normal]">
+                  Description
+                </label>
+                <div className="w-full h-[93px]">
+                  <textarea
+                    id="description"
+                    placeholder="Tell us more about your request..."
+                    className={`h-full w-full bg-white border rounded-[8px] p-[12px] text-[16px] text-[#747474] font-['Poppins'] outline-none resize-none transition-colors ${
+                      errors.description ? "border-red-400 focus:border-red-500" : "border-[#d4d5d8] focus:border-[#1e8cab]"
+                    }`}
+                    {...register("description")}
+                  />
+                  {errors.description && (
+                    <div className="pt-1">
+                      <InputErrorMessage msg={errors.description.message} />
+                    </div>
+                  )}
+                </div>
+              </div>
+
+            </div>
+
+            {/* Submit Button */}
+            <button
+              type="submit"
+              disabled={isSubmitting}
+              className="bg-[#1e8cab] hover:bg-[#1a7a96] text-[#f5f6fa] h-[48px] rounded-[12px] flex items-center justify-center text-[16px] font-medium font-['Poppins'] cursor-pointer transition-colors duration-200"
+            >
+              {isSubmitting ? "Requesting..." : "Request Consultation"}
+            </button>
+          </form>
+        </div>
+
+      </div>
+    </section>
+  );
 };
 
 export default ContactUsSection;
