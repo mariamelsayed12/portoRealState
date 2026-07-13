@@ -19,7 +19,7 @@ const statIconMap = {
 
 const UnitCard = ({
   card,
-  className = "w-[280px] sm:w-[340px] md:w-[384px] shrink-0",
+  className = "w-full max-w-[282px] sm:max-w-none shrink-0",
 }: {
   card: PropertyCardData;
   className?: string;
@@ -84,7 +84,7 @@ const UnitCard = ({
             <span>{card.location}</span>
           </div>
 
-          <h3 className="text-[19px] font-medium text-[#141414] font-['Poppins'] group-hover:text-primary transition-colors">
+          <h3 className="text-[16px] sm:text-[19px] font-medium text-[#141414] font-['Poppins'] group-hover:text-primary transition-colors">
             {card.title}
           </h3>
 
@@ -113,7 +113,7 @@ const UnitCard = ({
 
           <div className="flex flex-col gap-[8px] w-full">
             <div className="flex flex-wrap items-center justify-between gap-2 w-full">
-              <p className="text-[19px] font-medium text-[#141414] font-['Poppins']">
+              <p className="text-[16px] sm:text-[19px] font-medium text-[#141414] font-['Poppins']">
                 {card.price}
               </p>
               {card.paymentModes && card.paymentModes.length > 0 && (
@@ -134,7 +134,7 @@ const UnitCard = ({
               )}
             </div>
 
-            <p className="text-[16px] text-[#464646] font-['Poppins'] whitespace-pre-line">
+            <p className="text-[14px] sm:text-[16px] text-[#464646] font-['Poppins'] whitespace-pre-line">
               {card.paymentNote}
             </p>
           </div>
