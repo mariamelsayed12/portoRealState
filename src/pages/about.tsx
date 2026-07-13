@@ -1,7 +1,7 @@
 import aboutImage from "../assets/aboutpage.jpg";
 import HomeIconInAbout from "../components/icons/homeiconeinabout";
 import ChatIcon from "../components/icons/ChatIcon";
-import contactusimage from "../assets/contactusSvg.svg"
+import contactusimage from "../assets/contactusSvg.svg";
 
 const AboutPage = () => {
   const heroCards = [
@@ -21,7 +21,7 @@ const AboutPage = () => {
           className="absolute inset-0 w-full h-full object-cover object-center z-0 select-none"
         />
         <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/30 to-black/75 z-10" />
-        
+
         <div className="relative z-20 max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 h-full flex flex-col justify-center items-center text-center pt-20">
           <div className="max-w-4xl mx-auto">
             <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-[40px] font-bold text-white tracking-tight leading-[1.2] drop-shadow-md">
@@ -52,7 +52,6 @@ const AboutPage = () => {
       {/* About Partner & Content Section */}
       <section className="py-20 sm:py-28 lg:py-36 bg-background">
         <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 flex flex-col lg:flex-row items-center justify-between gap-16 lg:gap-20">
-          
           {/* Left Icon */}
           <div className="flex justify-center items-center shrink-0 w-32 sm:w-40 lg:w-48">
             <HomeIconInAbout className="hidden md:block h-auto text-primary/30" />
@@ -61,14 +60,13 @@ const AboutPage = () => {
           {/* Center Capsule Graphics */}
           <div className="relative py-8 flex justify-center items-center">
             {/* The Central Rounded Capsule using Custom SVG */}
-          <img src={contactusimage} alt="contact us image" />
+            <img src={contactusimage} alt="contact us image" />
           </div>
 
           {/* Right Icon */}
           <div className="flex justify-center items-center shrink-0 w-32 sm:w-40 lg:w-48">
             <ChatIcon className="hidden md:block   h-auto text-primary/30" />
           </div>
-
         </div>
       </section>
     </div>
