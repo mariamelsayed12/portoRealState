@@ -27,7 +27,7 @@ const DestinationDetails = () => {
       className="w-full flex flex-col min-h-screen"
     >
       {/* Hero Section */}
-      <div className="relative w-full h-[600px] sm:h-[700px] lg:h-[80vh] flex items-end justify-center rounded-b-[40px] overflow-hidden">
+      <div className="relative w-full h-auto min-h-[440px] sm:min-h-[460px] lg:h-[450px] flex items-end justify-center rounded-bl-[30px] rounded-br-[30px] sm:rounded-bl-[60px] sm:rounded-br-[60px] lg:rounded-bl-[99px] lg:rounded-br-[99px] overflow-hidden">
         {/* Background Image */}
         <img
           src={destination.image}
@@ -35,17 +35,17 @@ const DestinationDetails = () => {
           className="absolute inset-0 w-full h-full object-cover object-center z-0"
         />
         {/* Dark Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/30 z-10" />
+        <div className="absolute inset-0 bg-black/35 z-10" />
 
         {/* Content Container */}
-        <div className="relative z-20 w-full max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 h-full flex flex-col justify-end pb-12 pt-32">
-          {/* Breadcrumbs - using absolute positioning if needed, or flex layout */}
-          <div className="absolute top-32 left-6 sm:left-8 lg:left-12">
-             <DestinationBreadcrumb title={destination.title} />
+        <div className="relative z-20 w-full max-w-[1440px] mx-auto px-6 sm:px-12 lg:px-[120px] pt-[120px] pb-[48px] lg:h-full flex flex-col justify-end">
+          {/* Breadcrumbs */}
+          <div className="mb-[24px]">
+             <DestinationBreadcrumb title={destination.breadcrumbLabel || destination.title} />
           </div>
 
-          <div className="flex flex-col gap-8">
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white tracking-tight">
+          <div className="flex flex-col gap-[24px] items-start w-full">
+            <h1 className="text-[32px] sm:text-[40px] font-medium text-[#f5f9fa] font-['Poppins'] leading-[normal]">
               {destination.title}
             </h1>
             

@@ -8,9 +8,13 @@ interface DestinationStatsProps {
 }
 
 const StatCard = ({ label, value }: { label: string; value: string }) => (
-  <div className="flex flex-col justify-center px-4 py-3 rounded-xl bg-white/20 backdrop-blur-md border border-white/20 hover:bg-black/50 transition-colors duration-300">
-    <span className="text-sm text-gray-300 mb-1">{label}</span>
-    <span className="text-lg font-medium text-white">{value}</span>
+  <div className="bg-[rgba(255,255,255,0.1)] backdrop-blur-[12px] rounded-[12px] p-[8px] flex flex-col gap-[8px] items-start w-full sm:w-[181px] h-[75px] shrink-0 border border-white/10">
+    <span className="text-[16px] font-normal text-[#edeff2] font-['Poppins'] leading-[normal]">
+      {label}
+    </span>
+    <span className="text-[19px] font-medium text-[#edeff2] font-['Poppins'] leading-[normal] truncate w-full">
+      {value}
+    </span>
   </div>
 );
 
@@ -21,7 +25,7 @@ const DestinationStats: React.FC<DestinationStatsProps> = ({
   developer,
 }) => {
   return (
-    <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 w-full">
+    <div className="grid grid-cols-2 sm:flex sm:flex-wrap sm:items-center gap-[16px] sm:gap-[24px] w-full">
       <StatCard label="Starting Price" value={startingPrice} />
       <StatCard label="Rental Yield" value={rentalYield} />
       <StatCard label="Available Listing" value={availableListings} />
