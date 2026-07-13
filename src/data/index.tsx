@@ -1,6 +1,3 @@
-import BuildingIcon from "../components/icons/BuildingIcon";
-import CartIcon from "../components/icons/CartIcon";
-import HomeInvestmentIcon from "../components/icons/HomeInvestmentIcon";
 import defualtImage from "../assets/HomePage/default.png";
 import BuyProperty from "../assets/BuyProperty.svg";
 

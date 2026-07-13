@@ -1,25 +1,24 @@
-import Button from "../Ui/Button";
-
-/** Reusable panel footer with Cancel / Apply buttons */
+/** Reusable panel footer with Cancel / Apply buttons — matches Figma 125:4045 */
 interface PanelFooterProps {
   onCancel: () => void;
   onApply: () => void;
 }
 
 export const PanelFooter = ({ onCancel, onApply }: PanelFooterProps) => (
-  <div className="flex items-center justify-between gap-3 pt-4 mt-4 border-t border-gray-100">
-    <Button
+  <div className="flex items-center gap-[24px] w-full">
+    {/* Cancel — text-only, primary color */}
+    <button
       type="button"
       onClick={onCancel}
-      className="flex-1 py-2.5  rounded-full border border-gray-200 text-sm font-semibold text-gray-600 hover:bg-gray-50 transition-colors duration-200"
+      className="flex flex-1 h-[36px] items-center justify-center rounded-[12px] p-[8px] text-[16px] font-medium text-[#1e8cab] font-['Poppins'] cursor-pointer"
     >
       Cancel
-    </Button>
+    </button>
+    {/* Apply — filled primary */}
     <button
       type="button"
       onClick={onApply}
-      className="flex-1 py-2.5 rounded-full text-sm font-bold text-white transition-colors duration-200"
-      style={{ backgroundColor: "var(--primary)" }}
+      className="flex flex-1 h-[36px] items-center justify-center bg-[#1e8cab] rounded-[12px] px-[16px] py-[8px] text-[16px] font-medium text-[#f5f6fa] font-['Poppins'] cursor-pointer hover:bg-[#1a7a96] transition-colors"
     >
       Apply
     </button>

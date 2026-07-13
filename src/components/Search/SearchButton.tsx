@@ -1,20 +1,34 @@
 import { Search } from "lucide-react";
 
-/** Teal magnifier search button */
 interface SearchButtonProps {
   onClick?: () => void;
+  mobile?: boolean;
 }
 
-const SearchButton = ({ onClick }: SearchButtonProps) => (
-  <button
-    type="submit"
-    onClick={onClick}
-    aria-label="Search"
-    className="w-full lg:w-auto h-12 sm:h-full lg:h-14 flex items-center justify-center rounded-md px-5 text-white transition-all duration-300 hover:opacity-90 hover:scale-[1.04] "
-    style={{ backgroundColor: "var(--primary)", boxShadow: "0 4px 20px color-mix(in srgb, var(--primary) 30%, transparent)" }}
-  >
-        <Search  className="w-5 h-5" />
-  </button>
-);
+const SearchButton = ({ onClick, mobile = false }: SearchButtonProps) => {
+  if (mobile) {
+    return (
+      <button
+        type="button"
+        onClick={onClick}
+        className="w-full h-[48px] bg-[#1e8cab] hover:bg-[#1a7a96] text-[#f5f6fa] rounded-[12px] flex items-center justify-center gap-[8px] px-[24px] py-[8px] text-[16px] font-medium font-['Poppins'] cursor-pointer transition-colors duration-200"
+      >
+        <Search className="size-[24px] text-[#f5f6fa]" />
+        <span>Search</span>
+      </button>
+    );
+  }
+
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      aria-label="Search"
+      className="size-[56px] bg-[#1e8cab] hover:bg-[#1a7a96] rounded-[12px] flex items-center justify-center cursor-pointer transition-colors duration-200 shrink-0"
+    >
+      <Search className="size-[24px] text-white" />
+    </button>
+  );
+};
 
 export default SearchButton;

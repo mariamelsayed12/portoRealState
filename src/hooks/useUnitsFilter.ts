@@ -56,26 +56,34 @@ export const matchUnit = (
   if (filterState.propertyType) {
     const parts = unit.location.split("•");
     const unitType = parts.length > 1 ? parts[1].trim().toLowerCase() : "";
-    const targetType = filterState.propertyType.trim().toLowerCase();
+    const selectedTypes = filterState.propertyType.split(",").map(t => t.trim().toLowerCase());
 
     const isChalet = (t: string) =>
       t === "chalet" || t === "challet" || t === "chalets" || t === "challets";
 
     let matchesType = false;
-    if (isChalet(targetType)) {
-      matchesType = isChalet(unitType);
-    } else if (targetType === "twin house" || targetType === "twinhouse") {
-      matchesType =
-        unitType === "twin house" ||
-        unitType === "townhouse" ||
-        unitType === "town house";
-    } else if (targetType === "apartment") {
-      matchesType =
-        unitType === "apartment" ||
-        unitType === "studio" ||
-        unitType === "penthouse";
-    } else {
-      matchesType = unitType === targetType;
+    for (const targetType of selectedTypes) {
+      if (isChalet(targetType)) {
+        if (isChalet(unitType)) matchesType = true;
+      } else if (targetType === "twin house" || targetType === "twinhouse") {
+        if (
+          unitType === "twin house" ||
+          unitType === "townhouse" ||
+          unitType === "town house"
+        ) {
+          matchesType = true;
+        }
+      } else if (targetType === "apartment") {
+        if (
+          unitType === "apartment" ||
+          unitType === "studio" ||
+          unitType === "penthouse"
+        ) {
+          matchesType = true;
+        }
+      } else {
+        if (unitType === targetType) matchesType = true;
+      }
     }
 
     if (!matchesType) return false;
@@ -198,9 +206,10 @@ export const matchUnit = (
 
   // 9. Location Filter
   if (filterState.location) {
+    const normalize = (s: string) => s.toLowerCase().replace(/[\s-_]+/g, "");
+    const selectedLocs = filterState.location.split(",").map(l => normalize(l.trim()));
     if (
-      unit.destination?.name?.toLowerCase() !==
-      filterState.location.toLowerCase()
+      !selectedLocs.includes(normalize(unit.destination?.name || ""))
     ) {
       return false;
     }
@@ -209,13 +218,42 @@ export const matchUnit = (
   return true;
 };
 
+import { useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
+
 export const useUnitsFilter = (units: PropertyCardData[]) => {
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  // Parse search params to FilterState
+  const parseParams = useCallback((): FilterState => {
+    return {
+      propertyType: searchParams.get("type") || searchParams.get("propertyType") || "",
+      bedrooms: searchParams.get("bedrooms") || searchParams.get("beds") || "",
+      bathrooms: searchParams.get("bathrooms") || searchParams.get("baths") || "",
+      areaFrom: searchParams.get("areaFrom") || "",
+      areaTo: searchParams.get("areaTo") || "",
+      priceFrom: searchParams.get("priceFrom") || "",
+      priceTo: searchParams.get("priceTo") || "",
+      downPayment: searchParams.get("downPayment") || "",
+      monthlyInstallment: searchParams.get("monthlyInstallment") || "",
+      deliveryDate: searchParams.get("deliveryDate") || "",
+      finishing: searchParams.get("finishing") || "",
+      location: searchParams.get("location") || "",
+    };
+  }, [searchParams]);
+
   // Committed filters that affect the main page
-  const [filters, setFilters] = useState<FilterState>(initialFilterState);
+  const [filters, setFilters] = useState<FilterState>(parseParams());
 
   // Local/unsaved filters inside the drawer
-  const [tempFilters, setTempFilters] =
-    useState<FilterState>(initialFilterState);
+  const [tempFilters, setTempFilters] = useState<FilterState>(parseParams());
+
+  // Sync state when URL params change (e.g. on navigation)
+  useEffect(() => {
+    const parsed = parseParams();
+    setFilters(parsed);
+    setTempFilters(parsed);
+  }, [parseParams]);
 
   // Memoized filtered units based on committed filters
   const filteredUnits = useMemo(() => {
@@ -227,16 +265,25 @@ export const useUnitsFilter = (units: PropertyCardData[]) => {
     return units.filter((unit) => matchUnit(unit, tempFilters)).length;
   }, [units, tempFilters]);
 
-  // Apply the temporary filters to committed filters
+  // Apply the temporary filters to committed filters and URL
   const applyFilters = useCallback(() => {
     setFilters(tempFilters);
-  }, [tempFilters]);
+    const params = new URLSearchParams();
+    if (tempFilters.propertyType) params.set("type", tempFilters.propertyType);
+    if (tempFilters.location) params.set("location", tempFilters.location);
+    if (tempFilters.bedrooms) params.set("bedrooms", tempFilters.bedrooms);
+    if (tempFilters.bathrooms) params.set("bathrooms", tempFilters.bathrooms);
+    if (tempFilters.priceFrom) params.set("priceFrom", tempFilters.priceFrom);
+    if (tempFilters.priceTo) params.set("priceTo", tempFilters.priceTo);
+    setSearchParams(params, { replace: true });
+  }, [tempFilters, setSearchParams]);
 
-  // Reset both temporary and committed filters
+  // Reset both temporary and committed filters and URL
   const resetFilters = useCallback(() => {
     setFilters(initialFilterState);
     setTempFilters(initialFilterState);
-  }, []);
+    setSearchParams({}, { replace: true });
+  }, [setSearchParams]);
 
   return {
     filters,
@@ -249,3 +296,4 @@ export const useUnitsFilter = (units: PropertyCardData[]) => {
     tempFilteredCount,
   };
 };
+

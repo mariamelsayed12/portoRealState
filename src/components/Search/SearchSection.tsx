@@ -1,77 +1,158 @@
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { MapPin, Home, Briefcase, Banknote } from "lucide-react";
 import SearchFilterDropdown from "./SearchFilterDropdown";
 import SearchButton from "./SearchButton";
 import LocationPanel from "./LocationPanel";
 import PropertyTypePanel from "./PropertyTypePanel";
 import BedsAndBathsPanel from "./BedsAndBathsPanel";
 import PriceRangePanel from "./PriceRangePanel";
-import WalletIcon from "../icons/WalletIcon";
-import BankNoteIcon from "../icons/BankNote";
-import { House, MapPin } from "lucide-react";
 
-/**
- * SearchSection
- * Full white card containing the "Search properties" label and
- * 4 filter dropdowns, each with its own interactive panel.
- *
- * Usage: place this wherever you need the search bar
- * (e.g. floating below the hero or inside a standalone page).
- */
 const SearchSection = () => {
+  const navigate = useNavigate();
+
+  // Local filter states before applying search
+  const [location, setLocation] = useState("");
+  const [propertyType, setPropertyType] = useState("");
+  const [beds, setBeds] = useState("");
+  const [baths, setBaths] = useState("");
+  const [priceFrom, setPriceFrom] = useState<number | null>(null);
+  const [priceTo, setPriceTo] = useState<number | null>(null);
+
+  // Navigate to Properties page (/buy) with filters applied to URL query params
+  const handleSearch = () => {
+    const params = new URLSearchParams();
+    if (location) params.set("location", location);
+    if (propertyType) params.set("type", propertyType);
+    if (beds) params.set("bedrooms", beds);
+    if (baths) params.set("bathrooms", baths);
+    if (priceFrom !== null) params.set("priceFrom", priceFrom.toString());
+    if (priceTo !== null) params.set("priceTo", priceTo.toString());
+
+    navigate(`/buy?${params.toString()}`);
+  };
+
+  // Helper labels for selected values
+  const getBedsBathsLabel = () => {
+    if (!beds && !baths) return "Any";
+    if (beds && baths) return `${beds} Beds, ${baths} Baths`;
+    if (beds) return `${beds} Beds`;
+    return `${baths} Baths`;
+  };
+
+  const getPriceLabel = () => {
+    const fromVal = priceFrom ?? 1_000_000;
+    const toVal = priceTo ?? 2_000_000;
+    return `${(fromVal / 1_000_000).toFixed(0)}M - ${(toVal / 1_000_000).toFixed(0)}M EGP`;
+  };
+
   return (
-    <div className="bg-background rounded-md  shadow-2xl border border-border p-[16px]">
-      {/* Label row */}
-      <h3 className="text-text-darker font-normal text-sm md:text-lg  mb-5 tracking-wide">
+    <div className="w-full bg-white rounded-[12px] shadow-[0px_2px_3.15px_rgba(0,0,0,0.14)] p-[16px] flex flex-col gap-[20px] items-start">
+      {/* Title */}
+      <h3 className="text-[19px] font-normal text-[#464646] font-['Poppins'] leading-[normal]">
         Search properties
       </h3>
 
-      {/* Filter row */}
-      <div className="flex flex-col sm:flex-row items-stretch">
-        {/* ── Location ── */}
-        <SearchFilterDropdown
-          icon={  <MapPin className="w-6 h-6 text-primary" />}
-          label="Location"
-          value="Any"
-          panelContent={(onClose) => (
-          <LocationPanel onClose={onClose} />
-          )}
-          isfirst={true}
-        />
+      {/* Filter Outer Layout */}
+      <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-[16px] w-full">
+        {/* Bordered Filters Container */}
+        <div className="flex flex-col sm:flex-row flex-1 border border-[#d4d5d8] rounded-[12px] bg-white">
+          {/* Location Dropdown */}
+          <div className="flex-1 min-w-0">
+            <SearchFilterDropdown
+              icon={<MapPin className="size-[24px]" />}
+              label="Location"
+              value={location || "Any"}
+              className="rounded-t-[12px] sm:rounded-t-none sm:rounded-l-[12px]"
+              panelContent={(onClose) => (
+                <LocationPanel
+                  selected={location}
+                  onSelect={setLocation}
+                  onCancel={onClose}
+                  onApply={onClose}
+                />
+              )}
+            />
+          </div>
 
-        {/* ── Property Type ── */}
-        <SearchFilterDropdown
-  icon={    <House className="w-6 h-6 text-primary" />}
-  label="Property Type"
-  value="All"
-  panelContent={(onClose) => (
-    <PropertyTypePanel onClose={onClose} />
-  )}
-/>
+          {/* Divider */}
+          <div className="hidden sm:block h-[56px] w-[1px] bg-[#d4d5d8] shrink-0" />
+          <div className="block sm:hidden w-full h-[1px] bg-[#d4d5d8]" />
 
-<SearchFilterDropdown
-  icon={<WalletIcon className="w-5 h-5 text-primary" />}
-  label="Beds & Baths"
-  value="Any"
-  panelContent={(onClose) => (
-    <BedsAndBathsPanel onClose={onClose} />
-  )}
-/>
+          {/* Property Type Dropdown */}
+          <div className="flex-1 min-w-0">
+            <SearchFilterDropdown
+              icon={<Home className="size-[24px]" />}
+              label="Property Type"
+              value={propertyType || "All"}
+              panelContent={(onClose) => (
+                <PropertyTypePanel
+                  selected={propertyType}
+                  onSelect={setPropertyType}
+                  onCancel={onClose}
+                  onApply={onClose}
+                />
+              )}
+            />
+          </div>
 
-<SearchFilterDropdown
-  icon={
-    <BankNoteIcon className="w-5 h-5 text-primary" />
-  }
-  label="Price Range"
-  value="1M – 2M EGP"
-  islast={true}
-  panelContent={(onClose) => (
-    <PriceRangePanel onClose={onClose} />
-  )}
-/>
+          {/* Divider */}
+          <div className="hidden sm:block h-[56px] w-[1px] bg-[#d4d5d8] shrink-0" />
+          <div className="block sm:hidden w-full h-[1px] bg-[#d4d5d8]" />
 
-        {/* ── Search Button ── */}
-        <div className="pl-0 sm:pl-2 pt-1 sm:pt-0 flex flex-col items-center justify-center">
-            <SearchButton />
-        </div> 
+          {/* Beds & Baths Dropdown */}
+          <div className="flex-1 min-w-0">
+            <SearchFilterDropdown
+              icon={<Briefcase className="size-[24px]" />}
+              label="Beds & Baths"
+              value={getBedsBathsLabel()}
+              panelContent={(onClose) => (
+                <BedsAndBathsPanel
+                  beds={beds}
+                  baths={baths}
+                  onBedsChange={setBeds}
+                  onBathsChange={setBaths}
+                  onCancel={onClose}
+                  onApply={onClose}
+                />
+              )}
+            />
+          </div>
+
+          {/* Divider */}
+          <div className="hidden sm:block h-[56px] w-[1px] bg-[#d4d5d8] shrink-0" />
+          <div className="block sm:hidden w-full h-[1px] bg-[#d4d5d8]" />
+
+          {/* Price Range Dropdown */}
+          <div className="flex-1 min-w-0">
+            <SearchFilterDropdown
+              icon={<Banknote className="size-[24px]" />}
+              label="Price Range"
+              value={getPriceLabel()}
+              className="rounded-b-[12px] sm:rounded-b-none sm:rounded-r-[12px]"
+              panelContent={(onClose) => (
+                <PriceRangePanel
+                  from={priceFrom ?? 1_000_000}
+                  to={priceTo ?? 2_000_000}
+                  onFromChange={setPriceFrom}
+                  onToChange={setPriceTo}
+                  onCancel={onClose}
+                  onApply={onClose}
+                />
+              )}
+            />
+          </div>
+        </div>
+
+        {/* Desktop inline Search Button */}
+        <div className="hidden sm:block shrink-0">
+          <SearchButton onClick={handleSearch} mobile={false} />
+        </div>
+      </div>
+
+      {/* Mobile full-width Search Button at bottom */}
+      <div className="block sm:hidden w-full mt-[4px]">
+        <SearchButton onClick={handleSearch} mobile={true} />
       </div>
     </div>
   );

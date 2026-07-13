@@ -1,15 +1,19 @@
-import { useState } from "react";
 import { PanelFooter } from "./PanelFooter";
 
-const BED_OPTIONS = [1, 2, 3, 4, "5+"];
-const BATH_OPTIONS = [1, 2, 3];
+const BED_OPTIONS = ["Any", "1", "2", "3", "4", "5+"];
+const BATH_OPTIONS = ["Any", "1", "2", "3"];
 
 interface BedsAndBathsPanelProps {
-  onClose: () => void;
+  beds: string;
+  baths: string;
+  onBedsChange: (v: string) => void;
+  onBathsChange: (v: string) => void;
+  onCancel: () => void;
+  onApply: () => void;
 }
 
-/** Pill selector button */
-const PillBtn = ({
+/** Single pill/option button */
+const OptionBtn = ({
   active,
   children,
   onClick,
@@ -21,46 +25,57 @@ const PillBtn = ({
   <button
     type="button"
     onClick={onClick}
-    className={`w-10 h-10 rounded-full text-sm font-bold border transition-all duration-200 ${
+    className={`h-[36px] min-w-[48px] px-[12px] rounded-[8px] text-[16px] font-normal font-['Poppins'] border transition-colors cursor-pointer ${
       active
-        ? "text-white border-primary"
-        : "text-gray-600 border-gray-200 hover:border-primary hover:text-primary"
+        ? "bg-[#1e8cab] border-[#1e8cab] text-white"
+        : "bg-white border-[#d4d5d8] text-[#464646] hover:border-[#1e8cab] hover:text-[#1e8cab]"
     }`}
-    style={active ? { backgroundColor: "var(--primary)" } : {}}
   >
     {children}
   </button>
 );
 
-const BedsAndBathsPanel = ({ onClose }: BedsAndBathsPanelProps) => {
-  const [beds, setBeds] = useState<number | string | null>(null);
-  const [baths, setBaths] = useState<number | null>(null);
-
+const BedsAndBathsPanel = ({
+  beds,
+  baths,
+  onBedsChange,
+  onBathsChange,
+  onCancel,
+  onApply,
+}: BedsAndBathsPanelProps) => {
   return (
-    <div className="p-4 min-w-[260px]">
-      <p className="text-sm font-bold text-gray-800 mb-3">Beds</p>
-      <div className="flex items-center gap-2 flex-wrap mb-5">
-        {BED_OPTIONS.map((n) => (
-          <PillBtn key={n} active={beds === n} onClick={() => setBeds(n)}>
-            {n}
-          </PillBtn>
-        ))}
+    <div className="flex flex-col gap-[16px] p-[12px] min-w-[280px]">
+      <div className="flex flex-col gap-[12px]">
+        <p className="text-[14px] font-medium text-[#141414] font-['Poppins']">Beds</p>
+        <div className="flex items-center gap-[8px] flex-wrap">
+          {BED_OPTIONS.map((n) => (
+            <OptionBtn
+              key={n}
+              active={beds === n || (n === "Any" && beds === "")}
+              onClick={() => onBedsChange(n === "Any" ? "" : n)}
+            >
+              {n}
+            </OptionBtn>
+          ))}
+        </div>
       </div>
 
-      <p className="text-sm font-bold text-gray-800 mb-3">Baths</p>
-      <div className="flex items-center gap-2 flex-wrap mb-2">
-        {BATH_OPTIONS.map((n) => (
-          <PillBtn
-            key={n}
-            active={baths === n}
-            onClick={() => setBaths(n as number)}
-          >
-            {n}
-          </PillBtn>
-        ))}
+      <div className="flex flex-col gap-[12px]">
+        <p className="text-[14px] font-medium text-[#141414] font-['Poppins']">Baths</p>
+        <div className="flex items-center gap-[8px] flex-wrap">
+          {BATH_OPTIONS.map((n) => (
+            <OptionBtn
+              key={n}
+              active={baths === n || (n === "Any" && baths === "")}
+              onClick={() => onBathsChange(n === "Any" ? "" : n)}
+            >
+              {n}
+            </OptionBtn>
+          ))}
+        </div>
       </div>
 
-      <PanelFooter onCancel={onClose} onApply={onClose} />
+      <PanelFooter onCancel={onCancel} onApply={onApply} />
     </div>
   );
 };

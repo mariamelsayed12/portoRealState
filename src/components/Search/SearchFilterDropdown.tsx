@@ -1,77 +1,58 @@
 import { useState, type ReactNode } from "react";
-import Button from "../Ui/Button";
+import { ChevronDown } from "lucide-react";
 
-/** Generic dropdown wrapper — handles open/close state and the panel */
 interface SearchFilterDropdownProps {
   icon: ReactNode;
   label: string;
   value: string;
   panelContent: (onClose: () => void) => ReactNode;
-  islast?:boolean;
-  isfirst?:boolean ;
-
+  className?: string;
 }
-
-const ChevronDown = () => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    viewBox="0 0 20 20"
-    fill="currentColor"
-    className="w-6 h-6 text-text-secondary flex-shrink-0"
-  >
-    <path
-      fillRule="evenodd"
-      d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z"
-      clipRule="evenodd"
-    />
-  </svg>
-);
 
 const SearchFilterDropdown = ({
   icon,
   label,
   value,
   panelContent,
- islast,
- isfirst,
-
+  className = "",
 }: SearchFilterDropdownProps) => {
   const [open, setOpen] = useState(false);
 
   return (
     <div className="relative flex-1 min-w-0">
-      {/* Trigger */}
-      <Button
+      {/* Trigger Button - Figma style (h-56, px-20, py-8, text-left) */}
+      <button
         type="button"
         onClick={() => setOpen((o) => !o)}
-    className={`w-full flex items-center gap-3 bg-gray-50 hover:bg-gray-100/70 transition-colors duration-200 lg:px-[20px] lg:py-[8px]  px-[10px] py-[4px]
-  rounded-xl sm:rounded-none
-  ${isfirst ? "sm:rounded-l-md" : ""}
-  ${islast ? "sm:rounded-r-md" : ""}
-  border border-border cursor-pointer text-left`}
+        className={`w-full h-[56px] flex items-center justify-between px-[20px] py-[8px] bg-white hover:bg-[#f5f9fa]/50 transition-colors cursor-pointer select-none text-left outline-none border-none ${className}`}
       >
-        <div className="text-primary bg-primary/10 p-2 rounded-lg flex-shrink-0">
-          {icon}
+        <div className="flex items-center gap-[12px] min-w-0">
+          {/* Icon - Figma size 32 */}
+          <div className="size-[32px] flex items-center justify-center text-[#1e8cab] shrink-0">
+            {icon}
+          </div>
+          {/* Text block */}
+          <div className="flex flex-col justify-center leading-[normal] font-['Poppins']">
+            <span className="text-[16px] font-normal text-[#747474]">
+              {label}
+            </span>
+            <span className="text-[16px] font-normal text-[#464646] truncate">
+              {value}
+            </span>
+          </div>
         </div>
-        <div className="flex-1 min-w-0">
-          <span className="block text-[16px] font-normal text-text-naturalGray  ">
-            {label}
-          </span>
-          <span className="block font-normal text-text-darker truncate text-[16px] mt-0.5">
-            {value}
-          </span>
-        </div>
-        <ChevronDown  />
-      </Button>
 
-      {/* Panel */}
+        {/* Chevron Down - Figma size 24 */}
+        <ChevronDown className="size-[24px] text-[#747474] shrink-0" />
+      </button>
+
+      {/* Dropdown Panel */}
       {open && (
         <>
           {/* Backdrop to close on outside click */}
-          <div className="fixed inset-0 z-10" onClick={() => setOpen(false)} />
-          <div className="absolute left-0 top-full mt-2 z-20 min-w-[220px] w-full bg-white rounded-2xl shadow-2xl border border-gray-100 overflow-hidden">
-              {panelContent(() => setOpen(false))}
-
+          <div className="fixed inset-0 z-40" onClick={() => setOpen(false)} />
+          <div className="absolute left-0 lg:left-auto lg:right-0 top-full mt-[8px] z-50 bg-white rounded-[12px] shadow-[0px_1px_4px_rgba(0,0,0,0.17)] overflow-hidden border border-[#d4d5d8]/40">
+            {panelContent(() => setOpen(false))}
           </div>
         </>
       )}

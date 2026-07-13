@@ -1,5 +1,5 @@
 import { useMemo, useRef } from "react";
-import { ArrowUpRight, ChevronLeft, ChevronRight } from "lucide-react";
+import {  ChevronLeft, ChevronRight } from "lucide-react";
 import {  curatedPropertiesHeading, units } from "../../data";
 import UnitCard from "../UnitCard";
 import {  useNavigate } from "react-router-dom";
