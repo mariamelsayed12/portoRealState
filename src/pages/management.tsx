@@ -6,12 +6,12 @@ import { ChevronDown } from "lucide-react";
 
 import managementImage from "../assets/mangamentPage.jpg";
 import RectangleSellPage from "../components/icons/RectangleSellPage";
-import BuildingSellPageIcon from "../components/icons/BuildingSellPageIcon";
 import Input from "../components/Ui/Input";
 import Textarea from "../components/Ui/Textarea";
 import Button from "../components/Ui/Button";
 import InputErrorMessage from "../components/Ui/InputErrorMessage";
 import { sellFormSchema } from "../validation";
+import 
 
 interface SellFormData {
   fullName: string;
@@ -101,7 +101,7 @@ const ManagementPage = () => {
             {/* Building Icon Container */}
             <div className="relative flex justify-center items-center w-[280px] sm:w-[320px] md:w-[360px] lg:w-[420px]">
               <RectangleSellPage className="w-full h-auto" />
-              <BuildingSellPageIcon className="absolute text-primary w-14 sm:w-16 md:w-20 lg:w-24 h-auto" />
+              <img src={vector} alt="vector"   className="absolute text-primary w-14 sm:w-16 md:w-20 lg:w-24 h-auto" />
             </div>
 
             <h2 className="text-3xl md:text-[40px] font-bold text-text-secondary mt-8 leading-tight">

@@ -1,7 +1,7 @@
 import aboutImage from "../assets/aboutpage.jpg";
 import HomeIconInAbout from "../components/icons/homeiconeinabout";
-import BackgroundShapeInAbout from "../components/icons/backgroundfInAbout";
 import ChatIcon from "../components/icons/ChatIcon";
+import contactusimage from "../assets/contactusSvg.svg"
 
 const AboutPage = () => {
   const heroCards = [
@@ -61,37 +61,7 @@ const AboutPage = () => {
           {/* Center Capsule Graphics */}
           <div className="relative py-8 flex justify-center items-center">
             {/* The Central Rounded Capsule using Custom SVG */}
-            <div className="relative flex items-center justify-center min-w-[280px] sm:min-w-[340px] md:min-w-[420px] min-h-[140px] md:min-h-[180px]">
-              <div className="absolute inset-0 flex items-center justify-center z-0">
-                <BackgroundShapeInAbout className="w-full h-full drop-shadow-sm text-light-gray" color="currentColor" />
-              </div>
-              <h2 className="relative z-10 text-xl sm:text-2xl md:text-3xl font-bold text-text-secondary text-center tracking-tight leading-tight select-none">
-                Your Investment
-                <br /> Partner
-              </h2>
-
-              {/* Absolute positioned floating badges */}
-              
-              {/* Top Left: Property Sales */}
-              <div className="bg-light-primary px-4 py-2 sm:px-5 sm:py-2.5 rounded-full border border-[#E8EFF1] shadow-[0_6px_20px_rgba(73,95,104,0.06)] text-[11px] sm:text-xs md:text-sm font-semibold text-text-darker hover:shadow-md transition-shadow select-none whitespace-nowrap absolute -top-4 left-2 sm:-top-5 sm:left-4 md:-top-6 md:left-12">
-                Property Sales
-              </div>
-
-              {/* Top Right: Resale */}
-              <div className="bg-light-primary px-4 py-2 sm:px-5 sm:py-2.5 rounded-full border border-[#E8EFF1] shadow-[0_6px_20px_rgba(73,95,104,0.06)] text-[11px] sm:text-xs md:text-sm font-semibold text-text-darker hover:shadow-md transition-shadow select-none whitespace-nowrap absolute -top-4 right-2 sm:-top-5 sm:right-6 md:-top-6 md:right-16">
-                Resale
-              </div>
-
-              {/* Bottom Left: Rent */}
-              <div className="bg-light-primary px-4 py-2 sm:px-5 sm:py-2.5 rounded-full border border-[#E8EFF1] shadow-[0_6px_20px_rgba(73,95,104,0.06)] text-[11px] sm:text-xs md:text-sm font-semibold text-text-darker hover:shadow-md transition-shadow select-none whitespace-nowrap absolute -bottom-4 left-6 sm:-bottom-5 sm:left-10 md:-bottom-6 md:left-20">
-                Rent
-              </div>
-
-              {/* Bottom Right: Management */}
-              <div className="bg-light-primary px-4 py-2 sm:px-5 sm:py-2.5 rounded-full border border-[#E8EFF1] shadow-[0_6px_20px_rgba(73,95,104,0.06)] text-[11px] sm:text-xs md:text-sm font-semibold text-text-darker hover:shadow-md transition-shadow select-none whitespace-nowrap absolute -bottom-4 right-2 sm:-bottom-5 sm:right-4 md:-bottom-6 md:right-12">
-                Management
-              </div>
-            </div>
+          <img src={contactusimage} alt="contact us image" />
           </div>
 
           {/* Right Icon */}
