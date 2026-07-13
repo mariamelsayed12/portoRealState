@@ -19,7 +19,7 @@ const statIconMap = {
 
 const UnitCard = ({
   card,
-  className = "w-full max-w-[282px] sm:max-w-none shrink-0",
+  className = "w-full max-w-[282px] sm:max-w-[382px] shrink-0",
 }: {
   card: PropertyCardData;
   className?: string;
