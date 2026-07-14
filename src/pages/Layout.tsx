@@ -11,7 +11,8 @@ const RootLayout = () => {
     location.pathname.startsWith("/destination") ||
     location.pathname === "/sell" ||
     location.pathname === "/management" ||
-    location.pathname === "/about";
+    location.pathname === "/about" ||
+    location.pathname === "/need-help";
 
   const isPropertyDetails = location.pathname.includes("/properties/");
   const isFavoritesPage = location.pathname === "/favorites";

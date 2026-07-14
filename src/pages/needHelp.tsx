@@ -53,90 +53,96 @@ const NeedHelpPage = () => {
   };
 
   return (
-    <div className="bg-background min-h-screen pt-12 pb-24">
-      <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
-          {/* Left Column - Information & Shape */}
-          <div className="lg:col-span-7 flex flex-col items-center text-center">
+    <div className="bg-[#f5f9fa] w-full min-h-screen flex flex-col justify-between overflow-hidden">
+      {/* Centered Content Area with fixed height on desktop */}
+      <div className="relative w-full max-w-[1440px] mx-auto flex-1 flex items-center justify-center pt-28 pb-16 lg:pt-0 lg:pb-0 lg:h-[725px] shrink-0">
+        <div className="w-full flex flex-col lg:flex-row lg:absolute lg:top-[140px] lg:left-0 lg:right-0 lg:px-[120px] lg:justify-between lg:items-center gap-12 lg:gap-6 px-6 max-w-xl lg:max-w-none mx-auto">
+          {/* Left Column - Illustration & Text */}
+          <div className="flex flex-col items-center text-center lg:w-[588px] shrink-0 gap-[40px]">
             {/* Custom Shape Wrapper with wood blocks image */}
-            <div className="relative flex justify-center items-center w-full max-w-[500px] sm:max-w-[550px] lg:max-w-[588px] aspect-[588/261] mb-8 select-none">
-              <CustomShapeForContact className="w-full h-full" />
+            <div className="relative w-full max-w-[588px] aspect-[588/260] shrink-0 select-none">
+              <CustomShapeForContact className="absolute inset-0 w-full h-full" />
               <img
                 src={contactUsImg}
-                alt="We are here to help blocks"
-                className="absolute lg:w-[481px] w-[280.583px] h-[133.846px]  lg:h-[232px] object-contain top-[10%] lg:-top-[3%]"
+                alt="We are here to help"
+                className="absolute left-[9%] top-[5.76%] w-[81.8%] h-[89.2%] object-contain"
               />
             </div>
 
             {/* Heading & Subtitle */}
-            <h1 className="text-3xl sm:text-4xl font-semibold text-text-secondary leading-tight">
-              We are here to help!
-            </h1>
-            <p className="text-sm sm:text-base text-[#58696F] max-w-md mt-4 leading-relaxed">
-              Fill out the form and one of our agents will be in touch within 24 hours.
-            </p>
+            <div className="flex flex-col gap-[24px] items-center">
+              <h1 className="font-['Poppins'] font-medium text-[28px] sm:text-[34px] lg:text-[40px] leading-normal text-[#141414]">
+                We are here to help!
+              </h1>
+              <p className="font-['Poppins'] font-normal text-[14px] sm:text-[16px] text-[#464646] leading-normal max-w-[436px]">
+                Fill out the form and one of our agents will be
+                <br className="hidden sm:inline" /> in touch within 24 hours.
+              </p>
+            </div>
 
             {/* Quick Contact Links */}
-            <div className="flex flex-col sm:flex-row gap-6 sm:gap-10 justify-center items-center mt-10">
+            <div className="flex flex-col sm:flex-row gap-6 sm:gap-10 lg:gap-[93px] justify-center items-center w-full">
+              {/* Phone Link */}
               <a
                 href="tel:+20113333333"
-                className="flex items-center gap-3 hover:text-primary transition-colors group cursor-pointer"
+                className="flex gap-[12px] items-center select-none hover:opacity-80 transition-opacity cursor-pointer group"
               >
-                <div className="w-11 h-11 rounded-full bg-[#E9F4F7] flex items-center justify-center text-primary group-hover:bg-[#d5e9ef] transition-colors shrink-0">
-                  <Phone className="w-5 h-5" />
+                <div className="bg-[#B9DBE5] rounded-[99px] size-[44px] flex items-center justify-center text-[#141414] group-hover:bg-[#a3ccd9] transition-colors shrink-0">
+                  <Phone className="w-[20px] h-[20px]" />
                 </div>
-                <span className="text-[15px] font-semibold text-[#141414] group-hover:text-primary transition-colors">
+                <p className="font-['Poppins'] font-normal text-[16px] text-[#141414] select-none">
                   +20113333333
-                </span>
+                </p>
               </a>
 
+              {/* Email Link */}
               <a
                 href="mailto:elahdd@email.com"
-                className="flex items-center gap-3 hover:text-primary transition-colors group cursor-pointer"
+                className="flex gap-[12px] items-center select-none hover:opacity-80 transition-opacity cursor-pointer group"
               >
-                <div className="w-11 h-11 rounded-full bg-[#E9F4F7] flex items-center justify-center text-primary group-hover:bg-[#d5e9ef] transition-colors shrink-0">
-                  <Mail className="w-5 h-5" />
+                <div className="bg-[#B9DBE5] rounded-[99px] size-[44px] flex items-center justify-center text-[#141414] group-hover:bg-[#a3ccd9] transition-colors shrink-0">
+                  <Mail className="w-[20px] h-[20px]" />
                 </div>
-                <span className="text-[15px] font-semibold text-[#141414] group-hover:text-primary transition-colors">
+                <p className="font-['Poppins'] font-normal text-[16px] text-[#141414] select-none">
                   elahdd@email.com
-                </span>
+                </p>
               </a>
             </div>
           </div>
 
           {/* Right Column - Request Form */}
-          <div className="lg:col-span-5 flex justify-center w-full">
-            <div className="w-full max-w-lg bg-white rounded-3xl border border-[#E8EFF1] shadow-[0_10px_30px_rgba(73,95,104,0.06)] p-6 sm:p-8 lg:p-10">
-              <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+          <div className="w-full lg:w-[588px] bg-white rounded-[12px] p-[16px] shadow-[0px_2px_6.3px_1px_rgba(0,0,0,0.14)] shrink-0">
+            <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-[32px]">
+              <div className="flex flex-col gap-[16px]">
                 {/* Full Name Field */}
-                <div className="flex flex-col gap-2">
-                  <label className="text-sm font-semibold text-[#141414] flex items-center">
-                    Full Name
-                    <span className="text-primary font-bold ml-0.5">*</span>
+                <div className="flex flex-col gap-[8px]">
+                  <label className="font-['Poppins'] font-normal text-[16px] text-[#141414]">
+                    Full Name<span className="text-[#1E8CAB] font-bold ml-0.5">*</span>
                   </label>
                   <Input
                     type="text"
                     placeholder="Input text"
                     {...register("fullName")}
-                    className={`border-[#D9E1E4] focus:border-primary ${
-                      errors.fullName ? "border-red-700 focus:border-red-700" : ""
+                    className={`h-[48px] rounded-[8px] border px-[12px] text-[16px] font-['Poppins'] ${
+                      errors.fullName
+                        ? "border-red-500 focus:border-red-500"
+                        : "border-[#1E8CAB] focus:border-[#1E8CAB]"
                     }`}
                   />
                   <InputErrorMessage msg={errors.fullName?.message} />
                 </div>
 
                 {/* Phone Number Field */}
-                <div className="flex flex-col gap-2">
-                  <label className="text-sm font-semibold text-[#141414] flex items-center">
-                    Phone Number
-                    <span className="text-primary font-bold ml-0.5">*</span>
+                <div className="flex flex-col gap-[8px] h-auto">
+                  <label className="font-['Poppins'] font-normal text-[16px] text-[#141414]">
+                    Phone Number<span className="text-[#1E8CAB] font-bold ml-0.5">*</span>
                   </label>
-                  <div className="flex gap-3">
-                    {/* Country Code Prefix */}
-                    <div className="relative w-28 shrink-0">
+                  <div className="flex gap-[8px] h-[48px]">
+                    {/* Prefix selector */}
+                    <div className="relative w-[108px] shrink-0">
                       <select
                         {...register("phoneCountryCode")}
-                        className="h-11 w-full appearance-none rounded-md border border-[#D9E1E4] bg-white pl-3.5 pr-8 text-[14px] font-semibold text-text-darker outline-none transition-colors focus:border-primary cursor-pointer"
+                        className="h-full w-full appearance-none rounded-[8px] border border-[#D4D5D8] bg-white pl-[12px] pr-8 text-[14px] font-['Poppins'] text-[#464646] outline-none focus:border-[#1E8CAB] cursor-pointer"
                       >
                         <option value="+20">Eg +20</option>
                         <option value="+966">Sa +966</option>
@@ -144,18 +150,20 @@ const NeedHelpPage = () => {
                         <option value="+44">Uk +44</option>
                         <option value="+1">Us +1</option>
                       </select>
-                      <div className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 flex items-center">
-                        <ChevronDown className="h-4 w-4 text-[#7D8D93]" />
+                      <div className="pointer-events-none absolute right-[12px] top-1/2 -translate-y-1/2">
+                        <ChevronDown className="h-[20px] w-[20px] text-[#464646]" />
                       </div>
                     </div>
 
-                    {/* Number Input */}
+                    {/* Number input */}
                     <Input
                       type="tel"
                       placeholder="Phone number"
                       {...register("phoneNumber")}
-                      className={`border-[#D9E1E4] focus:border-primary ${
-                        errors.phoneNumber ? "border-red-700 focus:border-red-700" : ""
+                      className={`flex-1 h-full rounded-[8px] border px-[12px] text-[16px] font-['Poppins'] ${
+                        errors.phoneNumber
+                          ? "border-red-500 focus:border-red-500"
+                          : "border-[#D4D5D8] focus:border-[#1E8CAB]"
                       }`}
                     />
                   </div>
@@ -163,30 +171,30 @@ const NeedHelpPage = () => {
                 </div>
 
                 {/* Description Field */}
-                <div className="flex flex-col gap-2">
-                  <label className="text-sm font-semibold text-[#141414]">
+                <div className="flex flex-col gap-[8px]">
+                  <label className="font-['Poppins'] font-normal text-[16px] text-[#141414]">
                     Description
                   </label>
                   <Textarea
                     placeholder="Tell us more about your request..."
                     {...register("description")}
-                    className={`border-[#D9E1E4] focus:border-primary ${
-                      errors.description ? "border-red-700 focus:border-red-700" : ""
+                    className={`w-full rounded-[8px] border border-[#D4D5D8] px-[12px] py-[12px] text-[16px] font-['Poppins'] placeholder-[#747474] focus:border-[#1E8CAB] h-[93px] resize-none ${
+                      errors.description ? "border-red-500 focus:border-red-500" : ""
                     }`}
                   />
                   <InputErrorMessage msg={errors.description?.message} />
                 </div>
+              </div>
 
-                {/* Submit Button */}
-                <Button
-                  type="submit"
-                  isLoading={isSubmitting}
-                  className="w-full rounded-xl bg-primary text-white font-bold hover:opacity-95 h-12 text-sm transition-opacity cursor-pointer"
-                >
-                  Request Consultation
-                </Button>
-              </form>
-            </div>
+              {/* Submit Button */}
+              <Button
+                type="submit"
+                isLoading={isSubmitting}
+                className="w-full h-[48px] rounded-[12px] bg-[#1E8CAB] text-[#F5F6FA] text-[16px] font-medium font-['Poppins'] hover:opacity-90 transition-opacity"
+              >
+                Request Consultation
+              </Button>
+            </form>
           </div>
         </div>
       </div>
