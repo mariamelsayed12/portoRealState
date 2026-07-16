@@ -174,66 +174,79 @@ const PropertyDetails: React.FC = () => {
         </div>
 
         {/* Gallery Section */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 lg:gap-6">
+        <div className="flex flex-col lg:flex-row gap-[16px] lg:gap-[24px] items-start w-full">
           {/* Main Large Hero Image */}
-          <div className="relative lg:col-span-10 w-full h-[300px] sm:h-[450px] lg:h-[520px] rounded-[32px] overflow-hidden bg-[#dfeef1] group">
+          <div className="relative w-full lg:flex-1 h-[240px] sm:h-[350px] lg:h-[365px] rounded-[12px] overflow-hidden bg-[#dfeef1] group shrink-0 lg:shrink">
             <Image
               imageurl={galleryImages[activeImageIndex]}
               alt={property.title}
               className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.01]"
             />
             {/* Gallery Top Badges */}
-            <div className="absolute top-5 left-5 flex flex-wrap gap-2 z-10">
+            <div className="absolute top-[16px] left-[16px] flex flex-wrap gap-[8px] z-10">
               {property.badges.map((badge) => (
                 <span
                   key={badge}
-                  className="rounded-full bg-white/70 px-3.5 py-1.5 text-xs font-semibold text-text-secondary shadow-sm backdrop-blur-md"
+                  className="bg-[rgba(9,1,1,0.25)] backdrop-blur-sm px-[16px] py-[8px] rounded-[99px] text-[#edeff2] font-['Poppins'] font-medium text-[14px] leading-none"
                 >
                   {badge}
                 </span>
               ))}
-              <span className="rounded-full bg-primary/95 px-3.5 py-1.5 text-xs font-semibold text-white shadow-sm">
-                Yield {destination.rentalYield.replace("Up to ", "")}
-              </span>
             </div>
 
             {/* Favorite Toggler Button */}
             <button
               onClick={handleFavoriteToggle}
               type="button"
-              className="absolute top-5 right-5 w-11 h-11 flex items-center justify-center rounded-full bg-white/95 text-primary shadow-md backdrop-blur-md transition-transform hover:scale-105 active:scale-95 cursor-pointer z-10"
+              className="absolute top-[16px] right-[16px] size-[36px] flex items-center justify-center rounded-[12px] bg-[#1e8cab] text-[#f5f6fa] hover:bg-[#1a7a96] transition-colors cursor-pointer z-10"
               aria-label={isFavorite ? "Remove from favorites" : "Add to favorites"}
             >
               {isFavorite ? (
-                <FaHeart className="w-5 h-5 text-primary" />
+                <FaHeart className="size-[20px] text-white" />
               ) : (
-                <FaRegHeart className="w-5 h-5 text-primary" />
+                <FaRegHeart className="size-[20px] text-white" />
               )}
             </button>
           </div>
 
-          {/* Vertical Thumbnail Sidebar Container */}
-          <div className="lg:col-span-2 flex lg:flex-col gap-3 justify-center items-center h-full">
-            {/* Scroll Up Button */}
+          {/* Vertical Thumbnail Sidebar Container (Horizontal on Mobile/Tablet) */}
+          <div className="w-full lg:w-[78px] flex flex-row lg:flex-col gap-[8px] items-center justify-center shrink-0">
+            {/* Scroll Up / Left Button */}
             <button
               onClick={() => scrollThumbnails("up")}
-              className="hidden lg:flex w-8 h-8 items-center justify-center rounded-full border border-border bg-white text-[#7D8D93] hover:text-primary transition-colors shadow-sm cursor-pointer"
+              className="flex w-[36px] h-[36px] items-center justify-center rounded-[12px] border border-[#747474] bg-white text-[#747474] hover:text-[#1e8cab] hover:border-[#1e8cab] transition-colors cursor-pointer shrink-0"
               aria-label="Previous image"
             >
-              <ChevronUp className="w-4 h-4" />
+              <ChevronUp className="hidden lg:block size-[16px]" />
+              <ArrowLeft className="block lg:hidden size-[16px] text-[#747474]" />
             </button>
 
             {/* Thumbnails Row/Column */}
-            <div className="flex lg:flex-col gap-3 overflow-x-auto lg:overflow-x-visible pb-2 lg:pb-0 w-full justify-center">
+            <div className="flex flex-row lg:flex-col gap-[8px] overflow-x-auto lg:overflow-x-visible scrollbar-none py-1 w-full justify-center lg:justify-start items-center">
               {galleryImages.map((img, idx) => {
                 const isActive = idx === activeImageIndex;
+                if (isActive) {
+                  return (
+                    <button
+                      key={idx}
+                      onClick={() => setActiveImageIndex(idx)}
+                      className="border border-[#1e8cab] p-[4px] rounded-[8px] h-[52px] w-[68px] lg:h-[60px] lg:w-[78px] shrink-0 overflow-hidden bg-white cursor-pointer"
+                    >
+                      <div className="rounded-[4px] overflow-hidden w-full h-full">
+                        <Image
+                          imageurl={img}
+                          alt={`Thumbnail ${idx + 1}`}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                    </button>
+                  );
+                }
                 return (
                   <button
                     key={idx}
                     onClick={() => setActiveImageIndex(idx)}
-                    className={`relative w-20 h-16 sm:w-24 sm:h-18 lg:w-full lg:h-[90px] rounded-[16px] overflow-hidden border-2 bg-[#dfeef1] flex-shrink-0 transition-all ${
-                      isActive ? "border-primary shadow-md scale-102" : "border-transparent opacity-80 hover:opacity-100"
-                    }`}
+                    className="h-[44px] w-[58px] lg:h-[52px] lg:w-[78px] rounded-[4px] overflow-hidden shrink-0 bg-white cursor-pointer opacity-80 hover:opacity-100 transition-opacity"
                   >
                     <Image
                       imageurl={img}
@@ -245,13 +258,14 @@ const PropertyDetails: React.FC = () => {
               })}
             </div>
 
-            {/* Scroll Down Button */}
+            {/* Scroll Down / Right Button */}
             <button
               onClick={() => scrollThumbnails("down")}
-              className="hidden lg:flex w-8 h-8 items-center justify-center rounded-full border border-border bg-white text-[#7D8D93] hover:text-primary transition-colors shadow-sm cursor-pointer"
+              className="flex w-[36px] h-[36px] items-center justify-center rounded-[12px] border border-[#747474] bg-white text-[#747474] hover:text-[#1e8cab] hover:border-[#1e8cab] transition-colors cursor-pointer shrink-0"
               aria-label="Next image"
             >
-              <ChevronDown className="w-4 h-4" />
+              <ChevronDown className="hidden lg:block size-[16px]" />
+              <ArrowRight className="block lg:hidden size-[16px] text-[#747474]" />
             </button>
           </div>
         </div>
