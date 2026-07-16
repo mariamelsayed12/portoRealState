@@ -20,15 +20,19 @@ const PrestigiousDestinations = () => {
 	};
 
 	return (
-		<section className="w-full bg-light-primary py-[60px] px-6 sm:px-12 md:px-16 lg:px-[120px]">
-			<div className="mx-auto w-full flex flex-col gap-[24px]">
+		<section className="w-full bg-light-primary py-[60px] ">
+			<div className=" w-full flex flex-col gap-[24px] ">
 				{/* Section Title */}
+				<div className="px-6 sm:px-12 md:px-16 lg:px-[120px]">
 				<h2 className="text-[#141414] font-medium text-[28px] md:text-[40px] tracking-tight leading-[normal] font-['Poppins']">
-					Prestigious Destinations
+				Prestigious Destinations
 				</h2>
+				</div>
+				
 
 				{/* Cards Container with horizontal scrolling */}
-				<div
+				<div className=" pl-6 sm:pl-12 md:pl-16 lg:pl-[120px] pr-0 ">
+                   <div
 					ref={scrollerRef}
 					className="flex gap-[24px] overflow-x-auto pb-4 pt-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden scroll-smooth"
 				>
@@ -36,16 +40,18 @@ const PrestigiousDestinations = () => {
 						<DestinationCard key={dest.id} destination={dest} />
 					))}
 				</div>
+				</div>
+				
 
 				{/* Navigation Arrows */}
-				<div className="flex gap-[24px] items-center mt-2">
+				<div className="flex gap-[24px] items-center mt-2 px-6 sm:px-12 md:px-16 lg:px-[120px]">
 					<button
 						type="button"
 						onClick={() => scrollByCards("left")}
 						className="border border-[#747474] flex items-center justify-center rounded-[12px] shrink-0 w-[48px] h-[48px] text-[#747474] transition-all hover:border-primary hover:text-primary active:scale-95 bg-transparent cursor-pointer"
 						aria-label="Scroll destinations left"
 					>
-						<ChevronLeft className="h-6 w-6" />
+						<ChevronLeft className="h-6 w-6 text-primary" />
 					</button>
 					<button
 						type="button"
@@ -53,7 +59,7 @@ const PrestigiousDestinations = () => {
 						className="border border-[#747474] flex items-center justify-center rounded-[12px] shrink-0 w-[48px] h-[48px] text-[#747474] transition-all hover:border-primary hover:text-primary active:scale-95 bg-transparent cursor-pointer"
 						aria-label="Scroll destinations right"
 					>
-						<ChevronRight className="h-6 w-6" />
+						<ChevronRight className="h-6 w-6 text-primary" />
 					</button>
 				</div>
 			</div>

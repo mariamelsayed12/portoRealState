@@ -1,6 +1,5 @@
 import defualtImage from "../assets/HomePage/default.png";
 import BuyProperty from "../assets/BuyProperty.svg";
-
 import type {
   DestinationData,
   Feature,

@@ -17,7 +17,7 @@ const ContactUsSection = () => {
     formState: { errors },
     reset,
   } = useForm<ContactUsFormValues>({
-    resolver: yupResolver(ContactUs_Schema),
+    resolver: yupResolver(ContactUs_Schema) as any ,
     mode: "onSubmit",
     defaultValues: {
       fullName: "",

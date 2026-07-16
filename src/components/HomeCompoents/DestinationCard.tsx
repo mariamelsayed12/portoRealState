@@ -19,7 +19,7 @@ const DestinationCard = ({ destination }: DestinationCardProps) => {
 	return (
 		<Link
 			to={`/home/${destination.slug}`}
-			className="group relative flex flex-col justify-end p-6 rounded-[12px] overflow-hidden shrink-0 w-[280px] sm:w-[384px] h-[320px] sm:h-[443px] transition-all duration-300 hover:shadow-xl"
+			className="group relative flex flex-col justify-end p-6 rounded-[12px] overflow-hidden shrink-0 w-[280px] sm:w-[384px] h-[320px] sm:h-[443px] transition-all duration-300 "
 		>
 			<img
 				src={destination.image}

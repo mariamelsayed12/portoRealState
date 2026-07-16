@@ -25,16 +25,15 @@ const CuratedPropertiesSection = () => {
   };
 
   return (
-    <section className="w-full bg-background py-[60px] px-6 sm:px-12 lg:px-[120px]">
+    <section className="w-full bg-background py-[60px]">
       <div className="w-full mx-auto flex flex-col gap-[24px]">
-        <div className="flex items-center justify-between w-full">
+        <div className="flex items-center justify-between w-full px-6 sm:px-12 lg:px-[120px]">
           <h2 className="text-[28px] lg:text-[40px] font-medium text-[#141414] font-['Poppins'] leading-[normal]">
             {curatedPropertiesHeading.title}
           </h2>
 
           <button
-            type="button"
-            className="flex items-center justify-center h-[36px] px-[16px] rounded-[12px] border border-[#747474] text-[16px] font-medium text-[#141414] font-['Poppins'] transition-colors hover:bg-[#edeff2]"
+            className="flex items-center justify-center h-[36px] px-[16px] rounded-md border border-[#747474] text-[16px] font-medium text-primary font-['Poppins'] transition-colors hover:bg-[#edeff2]"
             onClick={()=>{
               navigate("/buy");
             }}
@@ -42,8 +41,8 @@ const CuratedPropertiesSection = () => {
             {curatedPropertiesHeading.actionLabel}
           </button>
         </div>
-
-        <div
+        <div className=" pl-6 sm:pl-12 lg:pl-[120px]">
+           <div
           ref={scrollerRef}
           className="flex gap-[24px] overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden w-full pb-2"
         >
@@ -52,7 +51,11 @@ const CuratedPropertiesSection = () => {
           ))}
         </div>
         
-        <div className="flex items-center gap-[8px] w-full">
+          
+        </div>
+
+       
+        <div className="flex items-center gap-[24px] w-full px-6 sm:px-12 lg:px-[120px]">
           <button
             type="button"
             onClick={() => scrollByCards("left")}
@@ -60,7 +63,7 @@ const CuratedPropertiesSection = () => {
             className="flex items-center justify-center size-[48px] rounded-[12px] border border-[#747474] text-[#141414] transition-colors hover:bg-[#edeff2] disabled:cursor-not-allowed disabled:opacity-50"
             aria-label="Scroll properties left"
           >
-            <ChevronLeft className="h-[20px] w-[20px]" />
+            <ChevronLeft className="h-[20px] w-[20px] text-primary" />
           </button>
           <button
             type="button"
@@ -69,7 +72,7 @@ const CuratedPropertiesSection = () => {
             className="flex items-center justify-center size-[48px] rounded-[12px] border border-[#747474] text-[#141414] transition-colors hover:bg-[#edeff2] disabled:cursor-not-allowed disabled:opacity-50"
             aria-label="Scroll properties right"
           >
-            <ChevronRight className="h-[20px] w-[20px]" />
+            <ChevronRight className="h-[20px] w-[20px] text-primary" />
           </button>
         </div>
       </div>
