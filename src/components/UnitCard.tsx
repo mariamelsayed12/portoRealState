@@ -28,8 +28,8 @@ const UnitCard = ({
   const dispatch = useAppDispatch();
   const { favUnite } = useSelector((state: RootState) => state.favUnit);
   const [paymentMode, setPaymentMode] = useState<"installment" | "cash">(
-  "installment"
-);
+    "installment"
+  );
 
   const isFavorite = favUnite.some((item) => item.id === card.id);
 
@@ -43,23 +43,51 @@ const UnitCard = ({
     }
   };
 
+  // Helper to calculate fallback cash price (15% discount) if not explicitly provided
+  const getCashPrice = () => {
+    if (card.cashPrice) return card.cashPrice;
+
+    // Fallback: parse price and calculate 15% discount for EGP prices (excluding rent)
+    const isEgp = card.price.includes("EGP");
+    const isRent = card.price.toLowerCase().includes("month") || card.price.toLowerCase().includes("day");
+    if (isEgp && !isRent) {
+      const numericPrice = parseFloat(card.price.replace(/,/g, ""));
+      if (!isNaN(numericPrice)) {
+        return `${Math.round(numericPrice * 0.85).toLocaleString()} EGP`;
+      }
+    }
+    return card.price;
+  };
+
+  const currentPrice = paymentMode === "cash" 
+    ? getCashPrice() 
+    : (card.installmentPrice || card.price);
+
+  const showPaymentNote = paymentMode === "installment" && card.paymentNote;
+
+  const hasBothModes = card.paymentModes && 
+    card.paymentModes.includes("Installment") && 
+    card.paymentModes.includes("Cash");
+
   return (
-    <Link
-      to={`/home/${card.destination.slug}/properties/${card.id}`}
-      className={`${className} block text-left group`}
-    >
+    <div className={`${className} block text-left group`}>
       <article className="w-full flex flex-col bg-[#F5F9FA] border border-white rounded-[12px] shadow-[0px_2px_3.15px_rgba(0,0,0,0.14)] overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-[0px_6px_12px_rgba(0,0,0,0.15)]">
 
         {/* Image Section — uses aspect ratio so height scales with width */}
         <div className="relative w-full aspect-[343/276] overflow-hidden rounded-t-[12px] shrink-0">
-          <Image
-            imageurl={card.image}
-            alt={card.title}
-            className="absolute inset-0 h-full w-full object-cover object-center"
-          />
+          <Link
+            to={`/home/${card.destination.slug}/properties/${card.id}`}
+            className="absolute inset-0 block h-full w-full"
+          >
+            <Image
+              imageurl={card.image}
+              alt={card.title}
+              className="h-full w-full object-cover object-center"
+            />
+          </Link>
           {/* Badges + Favorite */}
-          <div className="absolute inset-0 p-[16px] sm:p-[24px] flex items-start justify-between z-10">
-            <div className="flex flex-wrap gap-[8px] sm:gap-[16px] max-w-[75%]">
+          <div className="absolute inset-0 p-[16px] sm:p-[24px] flex items-start justify-between z-10 pointer-events-none">
+            <div className="flex flex-wrap gap-[8px] sm:gap-[16px] max-w-[75%] pointer-events-auto">
               {card.badges.map((badge) => (
                 <span
                   key={badge}
@@ -72,7 +100,7 @@ const UnitCard = ({
             <button
               onClick={handleFavorite}
               type="button"
-              className="relative z-20 flex items-center justify-center bg-primary rounded-[12px] size-[36px] shrink-0 transition-transform hover:scale-110 cursor-pointer"
+              className="relative z-20 flex items-center justify-center bg-primary rounded-[12px] size-[36px] shrink-0 transition-transform hover:scale-110 cursor-pointer pointer-events-auto"
             >
               {isFavorite ? (
                 <FaHeart className="text-white h-[20px] w-[20px]" />
@@ -94,7 +122,9 @@ const UnitCard = ({
 
           {/* Title */}
           <h3 className="text-[15px] sm:text-[16px] font-medium text-[#141414] font-['Poppins'] group-hover:text-primary transition-colors leading-tight line-clamp-2">
-            {card.title}
+            <Link to={`/home/${card.destination.slug}/properties/${card.id}`}>
+              {card.title}
+            </Link>
           </h3>
 
           {/* Stats Row */}
@@ -122,41 +152,41 @@ const UnitCard = ({
           <div className="flex flex-col gap-[8px] w-full">
             <div className="flex items-center justify-between gap-[8px] w-full flex-wrap">
               <p className="text-[15px] sm:text-[16px] font-medium text-[#141414] font-['Poppins'] whitespace-nowrap">
-                {card.price}
+                {currentPrice}
               </p>
-             {card.paymentModes && card.paymentModes.length > 0 && (
-  <div className="flex items-center border border-[#d4d5d8] rounded-[12px] overflow-hidden h-[28px] sm:h-[32px] shrink-0">
+             {hasBothModes && (
+                 <div className="flex items-center border border-[#d4d5d8] rounded-[12px] overflow-hidden h-[28px] sm:h-[32px] shrink-0 font-['Poppins']">
 
-    <button
-      type="button"
-      onClick={() => setPaymentMode("installment")}
-      className={`h-full px-[8px] sm:px-[12px] text-[12px] sm:text-[14px] font-medium font-['Poppins'] transition-colors whitespace-nowrap ${
-        paymentMode === "installment"
-          ? "bg-[#edeff2] text-[#141414]"
-          : "bg-white text-[#141414] hover:bg-[#edeff2]"
-      }`}
-    >
-      Installment
-    </button>
+                      <button
+                        type="button"
+                        onClick={() => setPaymentMode("installment")}
+                        className={`h-full px-[8px] sm:px-[12px] text-[12px] sm:text-[14px] font-medium font-['Poppins'] transition-colors whitespace-nowrap ${
+                        paymentMode === "installment"
+                        ? "bg-[#edeff2] text-[#141414]"
+                        : "bg-white text-[#141414] hover:bg-[#edeff2]"
+                      }`}
+                      >
+                        Installment
+                      </button>
 
-    <button
-      type="button"
-      onClick={() => setPaymentMode("cash")}
-      className={`h-full px-[8px] sm:px-[12px] text-[12px] sm:text-[14px] font-medium font-['Poppins'] transition-colors whitespace-nowrap ${
-        paymentMode === "cash"
-          ? "bg-[#edeff2] text-[#141414]"
-          : "bg-white text-[#141414] hover:bg-[#edeff2]"
-      }`}
-    >
-      Cash
-    </button>
+                      <button
+                        type="button"
+                        onClick={() => setPaymentMode("cash")}
+                        className={`h-full px-[8px] sm:px-[12px] text-[12px] sm:text-[14px] font-medium font-['Poppins'] transition-colors whitespace-nowrap ${
+                        paymentMode === "cash"
+                        ? "bg-[#edeff2] text-[#141414]"
+                        : "bg-white text-[#141414] hover:bg-[#edeff2]"
+                      }`}
+                      >
+                        Cash
+                      </button>
 
-  </div>
-)} 
+                 </div>
+             )}
             </div>
 
             {/* Payment Note */}
-            {card.paymentNote && (
+            {showPaymentNote && (
               <p className="text-[12px] sm:text-[14px] text-[#464646] font-['Poppins'] leading-relaxed">
                 {card.paymentNote}
               </p>
@@ -164,7 +194,7 @@ const UnitCard = ({
           </div>
         </div>
       </article>
-    </Link>
+    </div>
   );
 };
 

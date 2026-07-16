@@ -27,6 +27,8 @@ export interface PropertyCardData {
   price: string;
   paymentModes: string[];
   paymentNote: string;
+  cashPrice?: string;
+  installmentPrice?: string;
   destination: {
     slug: string;
     name: string;
