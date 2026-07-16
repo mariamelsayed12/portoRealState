@@ -9,6 +9,7 @@ import {
 } from "../app/feature/favoriteUnitSlice";
 import { FaHeart, FaRegHeart } from "react-icons/fa6";
 import { Link } from "react-router-dom";
+import { useState } from "react";
 
 const statIconMap = {
   location: MapPin,
@@ -26,6 +27,9 @@ const UnitCard = ({
 }) => {
   const dispatch = useAppDispatch();
   const { favUnite } = useSelector((state: RootState) => state.favUnit);
+  const [paymentMode, setPaymentMode] = useState<"installment" | "cash">(
+  "installment"
+);
 
   const isFavorite = favUnite.some((item) => item.id === card.id);
 
@@ -120,22 +124,35 @@ const UnitCard = ({
               <p className="text-[15px] sm:text-[16px] font-medium text-[#141414] font-['Poppins'] whitespace-nowrap">
                 {card.price}
               </p>
-              {card.paymentModes && card.paymentModes.length > 0 && (
-                <div className="flex h-[28px] sm:h-[32px] items-center border border-[#d4d5d8] rounded-[12px] overflow-hidden shrink-0">
-                  {card.paymentModes.map((mode, index) => (
-                    <div
-                      key={mode}
-                      className={`flex h-full items-center justify-center px-[6px] sm:px-[8px] ${
-                        index === 0 ? "bg-[#edeff2]" : ""
-                      }`}
-                    >
-                      <span className="text-[12px] sm:text-[14px] font-medium text-[#141414] font-['Poppins'] whitespace-nowrap">
-                        {mode}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              )}
+             {card.paymentModes && card.paymentModes.length > 0 && (
+  <div className="flex items-center border border-[#d4d5d8] rounded-[12px] overflow-hidden h-[28px] sm:h-[32px] shrink-0">
+
+    <button
+      type="button"
+      onClick={() => setPaymentMode("installment")}
+      className={`h-full px-[8px] sm:px-[12px] text-[12px] sm:text-[14px] font-medium font-['Poppins'] transition-colors whitespace-nowrap ${
+        paymentMode === "installment"
+          ? "bg-[#edeff2] text-[#141414]"
+          : "bg-white text-[#141414] hover:bg-[#edeff2]"
+      }`}
+    >
+      Installment
+    </button>
+
+    <button
+      type="button"
+      onClick={() => setPaymentMode("cash")}
+      className={`h-full px-[8px] sm:px-[12px] text-[12px] sm:text-[14px] font-medium font-['Poppins'] transition-colors whitespace-nowrap ${
+        paymentMode === "cash"
+          ? "bg-[#edeff2] text-[#141414]"
+          : "bg-white text-[#141414] hover:bg-[#edeff2]"
+      }`}
+    >
+      Cash
+    </button>
+
+  </div>
+)} 
             </div>
 
             {/* Payment Note */}

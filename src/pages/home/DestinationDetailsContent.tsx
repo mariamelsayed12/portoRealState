@@ -7,6 +7,8 @@ import { SlidersHorizontal, ArrowUpDown } from "lucide-react";
 import { useUnitsFilter } from "../../hooks/useUnitsFilter";
 import { useUnitsSort, type SortOption } from "../../hooks/useUnitsSort";
 import FilterDrawer from "../../components/filterCcomponents/FilterDrawer";
+import FilterIcon from "../../components/icons/Filter";
+import SortIcon from "../../components/icons/SortIcon";
 
 interface DestinationDetailsContentProps {
 	destinationSlug: string;
@@ -75,28 +77,29 @@ const DestinationDetailsContent = ({ destinationSlug }: DestinationDetailsConten
 					{/* Action Buttons: Filter & Sort */}
 					<div className="flex items-center gap-3 self-start sm:self-auto shrink-0 z-20">
 						<motion.button
-							type="button"
-							onClick={() => setIsFilterOpen(!isFilterOpen)}
-							whileHover={{ scale: 1.05 }}
-							whileTap={{ scale: 0.95 }}
-							className="inline-flex items-center gap-2 rounded-lg border border-[#D9E1E4] bg-white px-4 py-2 text-xs font-semibold text-primary shadow-sm hover:bg-gray-50 transition-colors cursor-pointer"
-						>
-							<SlidersHorizontal className="h-4 w-4 text-primary" />
-							<span>Filter</span>
-						</motion.button>
-						<div className="relative">
-							<motion.button
-								type="button"
-								onClick={() => setIsSortOpen(!isSortOpen)}
-								whileHover={{ scale: 1.05 }}
-								whileTap={{ scale: 0.95 }}
-								className="inline-flex items-center gap-2 rounded-lg border border-[#D9E1E4] bg-white px-4 py-2 text-xs font-semibold text-primary shadow-sm hover:bg-gray-50 transition-colors cursor-pointer"
-							>
-								<span>
-									Sort{activeSort ? `: ${SORT_OPTIONS.find((o) => o.value === activeSort)?.label}` : ""}
-								</span>
-								<ArrowUpDown className="h-4 w-4 text-primary" />
-							</motion.button>
+            type="button"
+            onClick={() => setIsFilterOpen(!isFilterOpen)}
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            className="inline-flex items-center gap-2 rounded-md border border-[#747474] bg-white px-[16px] py-[8px] text-xs font-semibold text-primary shadow-sm hover:bg-gray-50 transition-colors cursor-pointer"
+          >
+            <FilterIcon className="h-4 w-4 text-primary" />
+            <span>Filter</span>
+          </motion.button>
+
+          <div className="relative">
+            <motion.button
+              type="button"
+              onClick={() => setIsSortOpen(!isSortOpen)}
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              className="inline-flex items-center gap-2 rounded-md border border-[#747474] bg-white px-[16px] py-[8px] text-xs font-semibold text-primary shadow-sm hover:bg-gray-50 transition-colors cursor-pointer"
+            >
+              <span>
+                Sort{activeSort ? `: ${SORT_OPTIONS.find((o) => o.value === activeSort)?.label}` : ""}
+              </span>
+              <SortIcon className="w-[18px] h-[18px] text-primary" />
+            </motion.button>
 							{isSortOpen && (
 								<>
 									<div className="fixed inset-0 z-10" onClick={() => setIsSortOpen(false)} />

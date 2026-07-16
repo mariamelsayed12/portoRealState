@@ -35,7 +35,7 @@ const ContactUsSection = () => {
     } finally {
       setIsSubmitting(false);
     }
-  };
+  }; 
 
   return (
     <section className="bg-[#f5f9fa] w-full px-6 sm:px-12 lg:px-[120px] py-[60px]">
@@ -52,7 +52,7 @@ const ContactUsSection = () => {
         }
       `}} />
 
-      <div className="max-w-[1200px] mx-auto flex flex-col lg:flex-row justify-between items-center gap-[48px] w-full">
+      <div className="mx-auto flex flex-col lg:flex-row justify-between items-center gap-[48px] w-full">
         
         {/* Left Side Content */}
         <div className="contact-col-left flex flex-col gap-[48px]  justify-center w-full">

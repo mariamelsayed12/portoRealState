@@ -23,19 +23,45 @@ const FilterContent = ({
   stickyFooter = true,
   displayMode = "drawer",
 }: FilterContentProps) => {
+
+
   const handleTogglePropertyType = (type: string) => {
-    setTempFilters((prev) => ({
+  setTempFilters((prev) => {
+    const currentTypes = prev.propertyType
+      ? prev.propertyType.split(",")
+      : [];
+
+    const exists = currentTypes.includes(type);
+
+    const updatedTypes = exists
+      ? currentTypes.filter((item) => item !== type)
+      : [...currentTypes, type];
+
+    return {
       ...prev,
-      propertyType: prev.propertyType === type ? "" : type,
-    }));
-  };
+      propertyType: updatedTypes.join(","),
+    };
+  });
+};
 
   const handleToggleLocation = (loc: string) => {
-    setTempFilters((prev) => ({
+  setTempFilters((prev) => {
+    const currentLocations = prev.location
+      ? prev.location.split(",")
+      : [];
+
+    const exists = currentLocations.includes(loc);
+
+    const updatedLocations = exists
+      ? currentLocations.filter((item) => item !== loc)
+      : [...currentLocations, loc];
+
+    return {
       ...prev,
-      location: prev.location === loc ? "" : loc,
-    }));
-  };
+      location: updatedLocations.join(","),
+    };
+  });
+};
  
   const handleToggleBedrooms = (num: string) => {
     setTempFilters((prev) => ({
@@ -107,8 +133,10 @@ const FilterContent = ({
           <div className="flex flex-wrap gap-2">
             {["Chalet", "Villa", "Apartment", "Twin house"].map((type) => {
               const isSelected =
-                (tempFilters.propertyType || "").toLowerCase() ===
-                type.toLowerCase();
+  (tempFilters.propertyType || "")
+    .toLowerCase()
+    .split(",")
+    .includes(type.toLowerCase());
               return (
                 <button
                   key={type}
@@ -146,9 +174,11 @@ const FilterContent = ({
           </div>
           <div className="flex flex-wrap gap-2">
             {destinations.map(({title}) => {
-              const isSelected =
-                (tempFilters.location || "").toLowerCase() ===
-                title.toLowerCase();
+             const isSelected =
+  (tempFilters.location || "")
+    .toLowerCase()
+    .split(",")
+    .includes(title.toLowerCase());
               return (
                 <button
                   key={title}

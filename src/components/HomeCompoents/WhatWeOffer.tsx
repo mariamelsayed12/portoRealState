@@ -5,7 +5,7 @@ import { offerItems } from "../../data";
 const WhatWeOffer = () => {
   return (
     <section className="bg-[#f5f9fa] w-full px-6 sm:px-12 lg:px-[120px] py-[90px] lg:mt-[60px]">
-      <div className="max-w-[1200px] mx-auto flex flex-col gap-[24px] items-start w-full">
+      <div className=" mx-auto flex flex-col gap-[24px] items-start w-full">
         {/* Section Heading */}
         <h2 className="text-[28px] sm:text-[40px] font-medium text-[#141414] font-['Poppins'] leading-[normal]">
           What We Offer ?

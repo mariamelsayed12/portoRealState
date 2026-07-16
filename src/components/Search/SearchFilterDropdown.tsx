@@ -1,5 +1,6 @@
 import { useState, type ReactNode } from "react";
 import { ChevronDown } from "lucide-react";
+import { truncateText } from "../../utils";
 
 interface SearchFilterDropdownProps {
   icon: ReactNode;
@@ -37,7 +38,7 @@ const SearchFilterDropdown = ({
               {label}
             </span>
             <span className="text-[16px] font-normal text-[#464646] truncate">
-              {value}
+             {truncateText(value,20)}
             </span>
           </div>
         </div>

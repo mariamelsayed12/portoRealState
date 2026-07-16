@@ -6,6 +6,9 @@ import { useUnitsFilter } from "../hooks/useUnitsFilter";
 import { useUnitsSort, type SortOption } from "../hooks/useUnitsSort";
 import { units } from "../data";
 import FilterDrawer from "../components/filterCcomponents/FilterDrawer";
+import CartIcon from "../components/icons/CartIcon";
+import FilterIcon from "../components/icons/Filter";
+import SortIcon from "../components/icons/SortIcon";
 
 const SORT_OPTIONS: { label: string; value: SortOption }[] = [
   { label: "Maximum Price", value: "max-price" },
@@ -63,9 +66,9 @@ const RentPage = () => {
             onClick={() => setIsFilterOpen(!isFilterOpen)}
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
-            className="inline-flex items-center gap-2 rounded-lg border border-[#D9E1E4] bg-white px-4 py-2 text-xs font-semibold text-primary shadow-sm hover:bg-gray-50 transition-colors cursor-pointer"
+            className="inline-flex items-center gap-2 rounded-md border border-[#747474] bg-white px-[16px] py-[8px] text-xs font-semibold text-primary shadow-sm hover:bg-gray-50 transition-colors cursor-pointer"
           >
-            <SlidersHorizontal className="h-4 w-4 text-primary" />
+            <FilterIcon className="h-4 w-4 text-primary" />
             <span>Filter</span>
           </motion.button>
 
@@ -75,12 +78,12 @@ const RentPage = () => {
               onClick={() => setIsSortOpen(!isSortOpen)}
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
-              className="inline-flex items-center gap-2 rounded-lg border border-[#D9E1E4] bg-white px-4 py-2 text-xs font-semibold text-primary shadow-sm hover:bg-gray-50 transition-colors cursor-pointer"
+              className="inline-flex items-center gap-2 rounded-md border border-[#747474] bg-white px-[16px] py-[8px] text-xs font-semibold text-primary shadow-sm hover:bg-gray-50 transition-colors cursor-pointer"
             >
               <span>
                 Sort{activeSort ? `: ${SORT_OPTIONS.find((o) => o.value === activeSort)?.label}` : ""}
               </span>
-              <ArrowUpDown className="h-4 w-4 text-primary" />
+              <SortIcon className="w-[18px] h-[18px] text-primary" />
             </motion.button>
 
             {isSortOpen && (
@@ -141,7 +144,7 @@ const RentPage = () => {
 
       {/* Units Grid & Filter Sidebar */}
       <div className="flex flex-col lg:flex-row gap-8 items-start relative">
-        <div className="flex-1 w-full overflow-hidden">
+        <div className="flex-1 w-full overflow-hidden pb-4">
           {sortedUnits.length > 0 ? (
             <motion.div
               layout
