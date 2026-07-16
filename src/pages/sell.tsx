@@ -72,7 +72,7 @@ const SellPage = () => {
 
       {/* ─── Agents + Form Section ────────────────────────────── */}
       <section className="w-full bg-[#F5F9FA] px-6 sm:px-12 lg:px-[120px] py-[40px] sm:py-[50px] lg:py-[60px]">
-        <div className="flex flex-col lg:flex-row items-center justify-between gap-10 lg:gap-[24px] w-full max-w-[1200px] mx-auto">
+        <div className="flex flex-col lg:flex-row items-center justify-between gap-10 lg:gap-[24px] w-full mx-auto">
 
           {/* Left — illustration + text */}
           <div className="flex flex-col items-center gap-[40px] w-full lg:w-[588px] shrink-0">

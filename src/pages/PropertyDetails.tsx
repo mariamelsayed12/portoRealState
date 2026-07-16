@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useRef } from "react";
 import { useParams, Link } from "react-router-dom";
 import { destinations, units } from "../data";
 import { useSelector } from "react-redux";
@@ -33,6 +33,20 @@ const PropertyDetails: React.FC = () => {
 
   const dispatch = useAppDispatch();
   const { favUnite } = useSelector((state: RootState) => state.favUnit);
+
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+
+  const scrollLeft = () => {
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollBy({ left: -340, behavior: "smooth" });
+    }
+  };
+
+  const scrollRight = () => {
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollBy({ left: 340, behavior: "smooth" });
+    }
+  };
 
   // Find destination and property unit dynamically
   const destination = useMemo(() => {
@@ -393,23 +407,32 @@ const PropertyDetails: React.FC = () => {
 
         {/* Related Properties Carousel/Grid Section */}
         {relatedProperties.length > 0 && (
-          <div className="mt-16 sm:mt-20 pb-16">
+          <div className="mt-16 sm:mt-20 pb-16 ">
             <div className="flex items-center justify-between mb-6 sm:mb-8">
               <h2 className="text-2xl sm:text-3xl font-bold text-text-secondary">
                 You may also like
               </h2>
               <div className="flex gap-2">
-                <button className="w-8 h-8 flex items-center justify-center rounded-full border border-border bg-white text-[#7D8D93] hover:text-primary hover:border-primary transition-all shadow-sm cursor-pointer">
-                  <ArrowLeft className="w-4 h-4" />
+                <button 
+                  onClick={scrollLeft}
+                  className="w-8 h-8 flex items-center justify-center rounded-md border border-border bg-white text-[#7D8D93] hover:text-primary hover:border-primary transition-all shadow-sm cursor-pointer"
+                >
+                  <ArrowLeft className="w-4 h-4 text-primary" />
                 </button>
-                <button className="w-8 h-8 flex items-center justify-center rounded-full border border-border bg-white text-[#7D8D93] hover:text-primary hover:border-primary transition-all shadow-sm cursor-pointer">
-                  <ArrowRight className="w-4 h-4" />
+                <button 
+                  onClick={scrollRight}
+                  className="w-8 h-8 flex items-center justify-center rounded-md border border-border bg-white text-[#7D8D93] hover:text-primary hover:border-primary transition-all shadow-sm cursor-pointer"
+                >
+                  <ArrowRight className="w-4 h-4 text-primary" />
                 </button>
               </div>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div
+              ref={scrollContainerRef}
+              className="flex w-full overflow-x-auto gap-6 scrollbar-none pb-4 scroll-smooth"
+            >
               {relatedProperties.map((unit) => (
-                <UnitCard key={unit.id} card={unit} className="w-full" />
+                <UnitCard key={unit.id} card={unit} className="w-[282px] sm:w-[382px] shrink-0" />
               ))}
             </div>
           </div>
