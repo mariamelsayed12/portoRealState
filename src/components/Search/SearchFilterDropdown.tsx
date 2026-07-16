@@ -21,30 +21,30 @@ const SearchFilterDropdown = ({
 
   return (
     <div className="relative flex-1 min-w-0">
-      {/* Trigger Button - Figma style (h-56, px-20, py-8, text-left) */}
+      {/* Trigger Button - Figma style (h-[48px] lg:h-[56px], px-[12px] sm:px-[8px] lg:px-[20px], py-8, text-left) */}
       <button
         type="button"
         onClick={() => setOpen((o) => !o)}
-        className={`w-full h-[56px] flex items-center justify-between px-[20px] py-[8px] bg-white hover:bg-[#f5f9fa]/50 transition-colors cursor-pointer select-none text-left outline-none border-none ${className}`}
+        className={`w-full h-[48px] lg:h-[56px] flex items-center justify-between px-[12px] sm:px-[8px] lg:px-[20px] py-[8px] bg-white hover:bg-[#f5f9fa]/50 transition-colors cursor-pointer select-none text-left outline-none border-none ${className}`}
       >
-        <div className="flex items-center gap-[12px] min-w-0">
-          {/* Icon - Figma size 32 */}
-          <div className="size-[32px] flex items-center justify-center text-[#1e8cab] shrink-0">
+        <div className="flex items-center gap-[6px] sm:gap-[4px] lg:gap-[12px] min-w-0">
+          {/* Icon - Figma size 20 to 32 */}
+          <div className="size-[24px] sm:size-[20px] lg:size-[32px] flex items-center justify-center text-[#1e8cab] shrink-0">
             {icon}
           </div>
           {/* Text block */}
-          <div className="flex flex-col justify-center leading-[normal] font-['Poppins']">
-            <span className="text-[16px] font-normal text-[#747474]">
+          <div className="flex flex-col justify-center leading-[normal] font-['Poppins'] min-w-0">
+            <span className="text-[14px] sm:text-[12px] lg:text-[16px] font-normal text-[#747474]">
               {label}
             </span>
-            <span className="text-[16px] font-normal text-[#464646] truncate">
+            <span className="text-[14px] sm:text-[12px] lg:text-[16px] font-normal text-[#464646] truncate">
              {truncateText(value,20)}
             </span>
           </div>
         </div>
 
-        {/* Chevron Down - Figma size 24 */}
-        <ChevronDown className="size-[24px] text-[#747474] shrink-0" />
+        {/* Chevron Down - Figma size 12 to 24 */}
+        <ChevronDown className="size-[16px] sm:size-[12px] lg:size-[24px] text-[#747474] shrink-0" />
       </button>
 
       {/* Dropdown Panel */}

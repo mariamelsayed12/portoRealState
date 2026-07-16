@@ -290,7 +290,7 @@ export const units: PropertyCardData[] = [
     cashPrice: "2,500,000 EGP",
     installmentPrice: "3,000,000 EGP",
     paymentModes: ["Installment", "Cash"],
-    paymentNote: "5% Down payment\n250,000 Quarterly /5 y",
+    paymentNote: "5% Down payment \n 250,000 Quarterly /5 y",
     destination: { slug: "village", name: "Porto Golf" },
   },
   {

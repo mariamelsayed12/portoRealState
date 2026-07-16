@@ -24,9 +24,9 @@ const SearchButton = ({ onClick, mobile = false }: SearchButtonProps) => {
       type="button"
       onClick={onClick}
       aria-label="Search"
-      className="size-[56px] bg-[#1e8cab] hover:bg-[#1a7a96] rounded-[12px] flex items-center justify-center cursor-pointer transition-colors duration-200 shrink-0"
+      className="size-[48px] lg:size-[56px] bg-[#1e8cab] hover:bg-[#1a7a96] rounded-[12px] flex items-center justify-center cursor-pointer transition-colors duration-200 shrink-0"
     >
-      <Search className="size-[24px] text-white" />
+      <Search className="size-[20px] lg:size-[24px] text-white" />
     </button>
   );
 };
