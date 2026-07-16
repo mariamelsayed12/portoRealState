@@ -92,7 +92,7 @@ export default function FeaturesMarquee({
             {/* Duplicate lane: purely visual, creates the seamless loop. */}
             <div
               className="flex shrink-0"
-              style={{ marginLeft: FEATURE_MARQUEE_TOKENS.card.gap }}
+              style={{ marginLeft: 24 }}
             >
               <FeatureList features={secondLaneFeatures} ariaHidden />
             </div>

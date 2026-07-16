@@ -119,7 +119,7 @@ const AboutPage = () => {
         </div>
 
         {/* Responsive View (< 1280px) */}
-        <div className="w-full flex items-center justify-center gap-8 md:gap-12 xl:hidden block py-6">
+        <div className="w-full flex items-center justify-center gap-8 md:gap-12 xl:hidden  py-6">
           {/* Decorative Left Flag Icon (hidden on mobile, visible on tablet) */}
           <div className="hidden md:block text-[#B9DBE5] shrink-0">
             <HomeIcon size={100} color="#B9DBE5" />

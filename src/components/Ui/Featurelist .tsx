@@ -16,7 +16,7 @@ export interface FeatureListProps {
 function FeatureListBase({ features, ariaHidden = false }: FeatureListProps) {
   return (
     <ul
-      className="flex  shrink-0 list-none items-stretch gap-5"
+      className="flex shrink-0 list-none items-stretch gap-6"
       aria-hidden={ariaHidden}
     >
       {features.map((feature) => (

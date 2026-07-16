@@ -1,12 +1,10 @@
 import { useState, useMemo } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { SlidersHorizontal, ArrowUpDown } from "lucide-react";
 import UnitCard from "../components/UnitCard";
 import { useUnitsFilter } from "../hooks/useUnitsFilter";
 import { useUnitsSort, type SortOption } from "../hooks/useUnitsSort";
 import { units } from "../data";
 import FilterDrawer from "../components/filterCcomponents/FilterDrawer";
-import CartIcon from "../components/icons/CartIcon";
 import FilterIcon from "../components/icons/Filter";
 import SortIcon from "../components/icons/SortIcon";
 

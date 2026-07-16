@@ -22,35 +22,29 @@ function FeatureCardBase({ feature, className = "" }: FeatureCardProps) {
   return (
     <div
       className={[
-        "relative flex shrink-0 items-center overflow-hidden",
-        "w-[190px] h-[100px]",
-        "sm:w-[240px] sm:h-[112px]",
-        "lg:w-[280px] lg:h-[132px]",
-        "rounded-md",
-        
+        "relative flex shrink-0 items-center overflow-hidden bg-white",
+        "w-[210px] sm:w-[250px] lg:w-[281px]",
+        "h-[100px] sm:h-[112px] lg:h-[113px]",
+        "border border-border rounded-[12px]",
+        "transition-all duration-300 hover:border-primary group cursor-default",
         className,
       ].join(" ")}
       style={{
         backgroundColor: colors.cardBg,
       }}
     >
-      {/* Title — capped width so long labels never run into the icon shape */}
-      <p
-        className="relative z-10 max-w-[52%] break-words pl-6 pr-2 text-[15px] font-semibold leading-tight sm:pl-7 sm:text-[17px] lg:pl-8 lg:text-[19px]"
-        style={{ color: colors.title }}
-      >
+      {/* Title — capped width so long labels wrap nicely exactly like Figma */}
+      <p className="relative z-10 font-medium text-text-secondary leading-snug break-normal pl-4 pr-2 text-[13px] sm:text-[16px] lg:text-[19px] max-w-[75px] sm:max-w-[95px] lg:max-w-[125px]">
         {feature.title}
       </p>
 
-      {/* Accent shape + icon, pinned to the right edge */}
-      <div className="absolute inset-y-0 right-0 flex aspect-[137/113] h-full items-center justify-center">
+      {/* Accent shape + icon, pinned to the right edge with proportional aspect ratio */}
+      <div className="absolute inset-y-0 right-0 flex aspect-[137/113] h-full items-center justify-center overflow-hidden pointer-events-none">
         <IconeofAnimatSection
-          className="absolute inset-0 h-full w-full text-secondary"
-         
+          className="absolute inset-0 h-full w-full text-secondary transition-colors duration-300 group-hover:text-[#A7D1DE]"
         />
         <Icon
-          className="relative z-10 h-6 w-6 sm:h-7 sm:w-7 lg:h-8 lg:w-8"
-          color={colors.title}
+          className="relative z-10 h-6 w-6 sm:h-7 sm:w-7 lg:h-9 lg:w-9 text-text-secondary shrink-0 transition-transform duration-300 group-hover:scale-110"
         />
       </div>
     </div>

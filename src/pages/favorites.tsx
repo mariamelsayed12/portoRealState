@@ -166,7 +166,7 @@ const FavoritesPage = () => {
         {/* Layout container: Sidebar & Grid */}
         <div className="flex flex-col lg:flex-row gap-8 items-start relative">
           {/* Units Grid */}
-          <div className="flex-1 w-full overflow-hidden">
+          <div className="flex-1 w-full overflow-hidden pb-3">
             {sortedUnits.length > 0 ? (
               <motion.div
                 layout

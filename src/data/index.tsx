@@ -14,6 +14,7 @@ import PoolIcon from "../components/icons/pools";
 import Security from "../components/icons/security";
 import MediacalServiceIcon from "../components/icons/MedicalService";
 import Marina from "../components/icons/marina";
+import BeachIcon from "../components/icons/beach";
 
 export const destinations: DestinationData[] = [
   {
@@ -745,6 +746,11 @@ export const villageFeatures: Feature[] = [
     id: "Golf",
     title: "Golf",
     icon: GolfIcon,
+  },
+  {
+    id: "Private-Beach",
+    title: "Private Beach",
+    icon: BeachIcon,
   },
   {
     id: "Pools",

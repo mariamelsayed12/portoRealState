@@ -3,7 +3,6 @@ import { AnimatePresence, motion } from "framer-motion";
 import type { DestinationData } from "../../interfaces";
 import { destinations, units } from "../../data";
 import UnitCard from "../../components/UnitCard";
-import { SlidersHorizontal, ArrowUpDown } from "lucide-react";
 import { useUnitsFilter } from "../../hooks/useUnitsFilter";
 import { useUnitsSort, type SortOption } from "../../hooks/useUnitsSort";
 import FilterDrawer from "../../components/filterCcomponents/FilterDrawer";
@@ -159,7 +158,7 @@ const DestinationDetailsContent = ({ destinationSlug }: DestinationDetailsConten
 				{/* Layout container: Sidebar & Grid inline on desktop */}
 				<div className="flex flex-col lg:flex-row gap-8 items-start relative">
 					{/* Units Grid */}
-					<div className="flex-1 w-full overflow-hidden">
+					<div className="flex-1 w-full overflow-hidden pb-3">
 						{sortedUnits.length > 0 ? (
 							<motion.div
 								layout
