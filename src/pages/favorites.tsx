@@ -2,8 +2,7 @@ import { useState, useMemo, useRef } from "react";
 import { useSelector } from "react-redux";
 import { AnimatePresence, motion } from "framer-motion";
 import {
-  SlidersHorizontal,
-  ArrowUpDown,
+  
   Heart,
   ArrowLeft,
   ArrowRight,
