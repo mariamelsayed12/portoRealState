@@ -20,7 +20,7 @@ body {
  
   /* Background */
  --background: #F5F9FA;
-  --surface-overlay: rgba(245, 249, 250, 0.05);
+  --surface-overlay: rgba(81, 116, 125, 0.05);
 
   /* Text */
   --text-primary: #F5F9FA;

@@ -61,7 +61,8 @@ const Navbar = ({ variant = "transparent" }: NavbarProps) => {
       >
         <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
           {/* Logo Section */}
-          <Link to="/" className="flex items-center space-x-2 rtl:space-x-reverse flex-shrink-0">
+          <div className="flex items-center gap-[106px]">
+             <Link to="/" className="flex items-center space-x-2 rtl:space-x-reverse flex-shrink-0">
             <Logo className="h-8 w-auto transition-transform hover:scale-105 duration-200" />
           </Link>
 
@@ -84,6 +85,9 @@ const Navbar = ({ variant = "transparent" }: NavbarProps) => {
                 {t(link.key)}
               </NavLink>
             ))}
+
+          </div>
+         
           </div>
 
           {/* Right Action Items (Desktop) */}
@@ -172,10 +176,10 @@ const Navbar = ({ variant = "transparent" }: NavbarProps) => {
 
             <Link
               to="/need-help"
-              className={`px-5 py-2 border hover:border-primary transition-all duration-300 rounded-full text-xs font-semibold tracking-wider uppercase shadow-sm cursor-pointer text-center block ${
+              className={`px-5 py-2 border hover:border-primary transition-all duration-300 rounded-md text-xs font-normal tracking-wider uppercase shadow-sm cursor-pointer text-center block ${
                 isLight
-                  ? "border-[#D9E1E4] text-text-secondary bg-[#F5F9FA] hover:bg-primary hover:text-white"
-                  : "border-white/20 text-text-primary bg-white/5 hover:bg-primary"
+                  ? "border-text-primary text-text-secondary bg-[#F5F9FA] hover:bg-primary hover:text-white"
+                  : "border-[#F5F9FA] text-text-primary bg-white/5 hover:bg-primary"
               }`}
             >
               {t("navbar.needHelp")}
@@ -348,7 +352,7 @@ const Navbar = ({ variant = "transparent" }: NavbarProps) => {
           <Link
             to="/need-help"
             onClick={toggleMobileMenu}
-            className="w-full py-3 border border-white/20 hover:border-primary text-text-primary bg-white/5 hover:bg-primary transition-all duration-300 rounded-full text-sm font-semibold tracking-wider uppercase text-center shadow-sm block"
+            className="w-full py-3 border border-white/20 hover:border-primary text-text-primary bg-white/5 hover:bg-primary transition-all duration-300 rounded-md text-sm font-semibold tracking-wider uppercase text-center shadow-sm block"
           >
             {t("navbar.needHelp")}
           </Link>
