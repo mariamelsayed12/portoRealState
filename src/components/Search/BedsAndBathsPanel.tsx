@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { PanelFooter } from "./PanelFooter";
 
 const BED_OPTIONS = ["Any", "1", "2", "3", "4", "5+"];
@@ -43,10 +44,12 @@ const BedsAndBathsPanel = ({
   onCancel,
   onApply,
 }: BedsAndBathsPanelProps) => {
+  const { t } = useTranslation();
+
   return (
     <div className="flex flex-col gap-[16px] p-[12px] min-w-[280px]">
       <div className="flex flex-col gap-[12px]">
-        <p className="text-[14px] font-medium text-[#141414] font-['Poppins']">Beds</p>
+        <p className="text-[14px] font-medium text-[#141414] font-['Poppins']">{t("search.beds")}</p>
         <div className="flex items-center gap-[8px] flex-wrap">
           {BED_OPTIONS.map((n) => (
             <OptionBtn
@@ -54,14 +57,14 @@ const BedsAndBathsPanel = ({
               active={beds === n || (n === "Any" && beds === "")}
               onClick={() => onBedsChange(n === "Any" ? "" : n)}
             >
-              {n}
+              {n === "Any" ? t("search.any") : n}
             </OptionBtn>
           ))}
         </div>
       </div>
 
       <div className="flex flex-col gap-[12px]">
-        <p className="text-[14px] font-medium text-[#141414] font-['Poppins']">Baths</p>
+        <p className="text-[14px] font-medium text-[#141414] font-['Poppins']">{t("search.baths")}</p>
         <div className="flex items-center gap-[8px] flex-wrap">
           {BATH_OPTIONS.map((n) => (
             <OptionBtn
@@ -69,7 +72,7 @@ const BedsAndBathsPanel = ({
               active={baths === n || (n === "Any" && baths === "")}
               onClick={() => onBathsChange(n === "Any" ? "" : n)}
             >
-              {n}
+              {n === "Any" ? t("search.any") : n}
             </OptionBtn>
           ))}
         </div>
@@ -81,3 +84,4 @@ const BedsAndBathsPanel = ({
 };
 
 export default BedsAndBathsPanel;
+

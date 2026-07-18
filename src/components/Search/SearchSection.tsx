@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { MapPin, Home, Briefcase, Banknote } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import SearchFilterDropdown from "./SearchFilterDropdown";
 import SearchButton from "./SearchButton";
 import LocationPanel from "./LocationPanel";
@@ -10,6 +11,7 @@ import PriceRangePanel from "./PriceRangePanel";
 
 const SearchSection = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   // Local filter states before applying search
   const [location, setLocation] = useState("");
@@ -34,23 +36,26 @@ const SearchSection = () => {
 
   // Helper labels for selected values
   const getBedsBathsLabel = () => {
-    if (!beds && !baths) return "Any";
-    if (beds && baths) return `${beds} Beds, ${baths} Baths`;
-    if (beds) return `${beds} Beds`;
-    return `${baths} Baths`;
+    if (!beds && !baths) return t("search.any");
+    if (beds && baths) return `${beds} ${t("search.beds")}, ${baths} ${t("search.baths")}`;
+    if (beds) return `${beds} ${t("search.beds")}`;
+    return `${baths} ${t("search.baths")}`;
   };
 
   const getPriceLabel = () => {
     const fromVal = priceFrom ?? 1_000_000;
     const toVal = priceTo ?? 2_000_000;
-    return `${(fromVal / 1_000_000).toFixed(0)}M - ${(toVal / 1_000_000).toFixed(0)}M EGP`;
+    return t("search.priceFormatted", {
+      from: (fromVal / 1_000_000).toFixed(0),
+      to: (toVal / 1_000_000).toFixed(0),
+    });
   };
 
   return (
     <div className="w-full bg-white rounded-[12px] shadow-[0px_2px_3.15px_rgba(0,0,0,0.14)] p-[12px] lg:p-[16px] flex flex-col gap-[16px] lg:gap-[20px] items-start">
       {/* Title */}
       <h3 className="text-[19px] font-normal text-[#464646] font-['Poppins'] leading-[normal]">
-        Search properties
+        {t("search.title")}
       </h3>
 
       {/* Filter Outer Layout */}
@@ -61,8 +66,8 @@ const SearchSection = () => {
           <div className="flex-1 min-w-0">
             <SearchFilterDropdown
               icon={<MapPin className="size-[20px] sm:size-[16px] lg:size-[24px]" />}
-              label="Location"
-              value={location || "Any"}
+              label={t("search.location")}
+              value={location || t("search.any")}
               className="rounded-t-[12px] sm:rounded-t-none sm:rounded-l-[12px]"
               panelContent={(onClose) => (
                 <LocationPanel
@@ -83,8 +88,8 @@ const SearchSection = () => {
           <div className="flex-1 min-w-0">
             <SearchFilterDropdown
               icon={<Home className="size-[20px] sm:size-[16px] lg:size-[24px]" />}
-              label="Property Type"
-              value={propertyType || "All"}
+              label={t("search.propertyType")}
+              value={propertyType || t("search.all")}
               panelContent={(onClose) => (
                 <PropertyTypePanel
                   selected={propertyType}
@@ -104,7 +109,7 @@ const SearchSection = () => {
           <div className="flex-1 min-w-0">
             <SearchFilterDropdown
               icon={<Briefcase className="size-[20px] sm:size-[16px] lg:size-[24px]" />}
-              label="Beds & Baths"
+              label={t("search.bedsAndBaths")}
               value={getBedsBathsLabel()}
               panelContent={(onClose) => (
                 <BedsAndBathsPanel
@@ -127,7 +132,7 @@ const SearchSection = () => {
           <div className="flex-1 min-w-0">
             <SearchFilterDropdown
               icon={<Banknote className="size-[20px] sm:size-[16px] lg:size-[24px]" />}
-              label="Price Range"
+              label={t("search.priceRange")}
               value={getPriceLabel()}
               className="rounded-b-[12px] sm:rounded-b-none sm:rounded-r-[12px]"
               panelContent={(onClose) => (
@@ -159,3 +164,4 @@ const SearchSection = () => {
 };
 
 export default SearchSection;
+

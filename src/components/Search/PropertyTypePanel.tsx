@@ -1,7 +1,15 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { PanelFooter } from "./PanelFooter";
 
 const PROPERTY_TYPES = ["Chalet", "Villa", "Apartment", "Twin House"];
+
+const PROPERTY_TYPE_KEYS: Record<string, string> = {
+  Chalet: "search.propertyTypes.chalet",
+  Villa: "search.propertyTypes.villa",
+  Apartment: "search.propertyTypes.apartment",
+  "Twin House": "search.propertyTypes.twinHouse",
+};
 
 interface PropertyTypePanelProps {
   selected: string; // Comma-separated string
@@ -11,6 +19,8 @@ interface PropertyTypePanelProps {
 }
 
 const PropertyTypePanel = ({ selected, onSelect, onCancel, onApply }: PropertyTypePanelProps) => {
+  const { t } = useTranslation();
+
   // Parse initial selected values
   const initialSet = new Set(
     selected
@@ -75,7 +85,7 @@ const PropertyTypePanel = ({ selected, onSelect, onCancel, onApply }: PropertyTy
                     </svg>
                   )}
                 </div>
-                <span>{opt}</span>
+                <span>{t(PROPERTY_TYPE_KEYS[opt])}</span>
               </button>
             </li>
           );
@@ -87,3 +97,4 @@ const PropertyTypePanel = ({ selected, onSelect, onCancel, onApply }: PropertyTy
 };
 
 export default PropertyTypePanel;
+

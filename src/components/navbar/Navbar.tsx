@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, NavLink } from "react-router-dom";
 import Logo from "../icons/Logo";
 import { useSelector } from "react-redux";
 import type { RootState } from "../../app/store";
 import { HeartIcon } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 interface NavbarProps {
   variant?: "transparent" | "light";
@@ -11,13 +12,38 @@ interface NavbarProps {
 
 const Navbar = ({ variant = "transparent" }: NavbarProps) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [mobileLangOpen, setMobileLangOpen] = useState(false);
+
+  const { t, i18n } = useTranslation();
+
+  const changeLanguage = (lang: "en" | "ar") => {
+    i18n.changeLanguage(lang);
+    setOpen(false);
+    setMobileLangOpen(false);
+  };
+
+  useEffect(() => {
+    if (!open && !mobileLangOpen) return;
+    const handleOutsideClick = (event: MouseEvent) => {
+      const target = event.target as HTMLElement;
+      if (open && !target.closest(".lang-selector-container")) {
+        setOpen(false);
+      }
+      if (mobileLangOpen && !target.closest(".mobile-lang-selector-container")) {
+        setMobileLangOpen(false);
+      }
+    };
+    document.addEventListener("click", handleOutsideClick);
+    return () => document.removeEventListener("click", handleOutsideClick);
+  }, [open, mobileLangOpen]);
 
   const navLinks = [
-    { name: "Buy", path: "/buy" },
-    { name: "Sell", path: "/sell" },
-    { name: "Rent", path: "/rent" },
-    { name: "Management", path: "/management" },
-    { name: "About", path: "/about" },
+    { name: "Buy", path: "/buy", key: "navbar.buy" },
+    { name: "Sell", path: "/sell", key: "navbar.sell" },
+    { name: "Rent", path: "/rent", key: "navbar.rent" },
+    { name: "Management", path: "/management", key: "navbar.management" },
+    { name: "About", path: "/about", key: "navbar.about" },
   ];
 
   const toggleMobileMenu = () => {
@@ -35,12 +61,12 @@ const Navbar = ({ variant = "transparent" }: NavbarProps) => {
       >
         <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
           {/* Logo Section */}
-          <Link to="/" className="flex items-center space-x-2 flex-shrink-0">
+          <Link to="/" className="flex items-center space-x-2 rtl:space-x-reverse flex-shrink-0">
             <Logo className="h-8 w-auto transition-transform hover:scale-105 duration-200" />
           </Link>
 
           {/* Desktop Navigation Links */}
-          <div className="hidden lg:flex items-center space-x-8">
+          <div className="hidden lg:flex items-center space-x-8 rtl:space-x-reverse">
             {navLinks.map((link) => (
               <NavLink
                 key={link.name}
@@ -55,34 +81,82 @@ const Navbar = ({ variant = "transparent" }: NavbarProps) => {
                   }`
                 }
               >
-                {link.name}
+                {t(link.key)}
               </NavLink>
             ))}
           </div>
 
           {/* Right Action Items (Desktop) */}
-          <div className="hidden lg:flex items-center space-x-6">
+          <div className="hidden lg:flex items-center space-x-6 rtl:space-x-reverse">
             {/* Language Selector */}
-            <div
-              className={`flex items-center space-x-1 cursor-pointer transition-colors duration-200 ${
-                isLight
-                  ? "text-[#58696F] hover:text-primary"
-                  : "text-text-primary hover:text-primary"
-              }`}
-            >
-              <span className="text-sm font-medium tracking-wide">English</span>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 20 20"
-                fill="currentColor"
-                className="w-4 h-4 opacity-80"
+            <div className="relative lang-selector-container">
+              <button
+                onClick={() => setOpen(!open)}
+                className={`flex items-center space-x-1 rtl:space-x-reverse cursor-pointer transition-colors duration-200 focus:outline-none ${
+                  isLight
+                    ? "text-[#58696F] hover:text-primary"
+                    : "text-text-primary hover:text-primary"
+                }`}
               >
-                <path
-                  fillRule="evenodd"
-                  d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z"
-                  clipRule="evenodd"
-                />
-              </svg>
+                <span className="text-sm font-medium tracking-wide">
+                  {i18n.language === "ar" ? "العربية" : "English"}
+                </span>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                  className={`w-4 h-4 opacity-80 transition-transform duration-200 ${
+                    open ? "rotate-180" : ""
+                  }`}
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+              </button>
+
+              {open && (
+                <div
+                  className={`absolute ${
+                    i18n.language === "ar" ? "left-0" : "right-0"
+                  } mt-2 w-32 rounded-xl border shadow-xl overflow-hidden z-50 transition-all duration-200 ${
+                    isLight
+                      ? "bg-white border-[#D9E1E4] text-[#58696F]"
+                      : "bg-[#0e1617]/95 backdrop-blur-md border-white/10 text-text-primary"
+                  }`}
+                >
+                  <button
+                    onClick={() => changeLanguage("en")}
+                    className={`w-full px-4 py-2.5 text-start text-sm transition-colors duration-200 ${
+                      i18n.language === "en"
+                        ? isLight
+                          ? "bg-[#F5F9FA] text-primary font-semibold"
+                          : "bg-white/10 text-primary font-semibold"
+                        : isLight
+                        ? "hover:bg-gray-50 hover:text-primary"
+                        : "hover:bg-white/5 hover:text-primary"
+                    }`}
+                  >
+                    English
+                  </button>
+                  <button
+                    onClick={() => changeLanguage("ar")}
+                    className={`w-full px-4 py-2.5 text-start text-sm transition-colors duration-200 ${
+                      i18n.language === "ar"
+                        ? isLight
+                          ? "bg-[#F5F9FA] text-primary font-semibold"
+                          : "bg-white/10 text-primary font-semibold"
+                        : isLight
+                        ? "hover:bg-gray-50 hover:text-primary"
+                        : "hover:bg-white/5 hover:text-primary"
+                    }`}
+                  >
+                    العربية
+                  </button>
+                </div>
+              )}
             </div>
 
             {/* Favorites (Heart) Icon */}
@@ -104,7 +178,7 @@ const Navbar = ({ variant = "transparent" }: NavbarProps) => {
                   : "border-white/20 text-text-primary bg-white/5 hover:bg-primary"
               }`}
             >
-              Need Help
+              {t("navbar.needHelp")}
             </Link>
           </div>
 
@@ -189,7 +263,7 @@ const Navbar = ({ variant = "transparent" }: NavbarProps) => {
                   }`
                 }
               >
-                {link.name}
+                {t(link.key)}
               </NavLink>
             ))}
           </div>
@@ -198,26 +272,68 @@ const Navbar = ({ variant = "transparent" }: NavbarProps) => {
         {/* Drawer Footer Actions */}
         <div className="space-y-6 border-t border-white/10 pt-6">
           {/* Mobile Language Selector */}
-          <div className="flex items-center space-x-2 text-text-primary hover:text-primary transition-colors duration-200 cursor-pointer">
-            <span className="text-sm font-medium tracking-wide">
-              Language: English
-            </span>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 20 20"
-              fill="currentColor"
-              className="w-4 h-4 opacity-80"
+          <div className="relative mobile-lang-selector-container">
+            <button
+              onClick={() => setMobileLangOpen(!mobileLangOpen)}
+              className="flex items-center space-x-2 rtl:space-x-reverse text-text-primary hover:text-primary transition-colors duration-200 cursor-pointer focus:outline-none w-full"
             >
-              <path
-                fillRule="evenodd"
-                d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z"
-                clipRule="evenodd"
-              />
-            </svg>
+              <span className="text-sm font-medium tracking-wide">
+                {i18n.language === "ar" ? "اللغة: العربية" : "Language: English"}
+              </span>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+                className={`w-4 h-4 opacity-80 transition-transform duration-200 ${
+                  mobileLangOpen ? "rotate-180" : ""
+                }`}
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z"
+                  clipRule="evenodd"
+                />
+              </svg>
+            </button>
+
+            {mobileLangOpen && (
+              <div
+                className={`absolute bottom-full ${
+                  i18n.language === "ar" ? "left-0" : "right-0"
+                } mb-2 w-32 rounded-xl bg-[#0e1617] border border-white/10 shadow-2xl overflow-hidden z-50`}
+              >
+                <button
+                  onClick={() => {
+                    changeLanguage("en");
+                    setMobileLangOpen(false);
+                  }}
+                  className={`w-full px-4 py-2.5 text-start text-sm transition-colors duration-200 text-text-primary ${
+                    i18n.language === "en"
+                      ? "bg-white/10 text-primary font-semibold"
+                      : "hover:bg-white/5 hover:text-primary"
+                  }`}
+                >
+                  English
+                </button>
+                <button
+                  onClick={() => {
+                    changeLanguage("ar");
+                    setMobileLangOpen(false);
+                  }}
+                  className={`w-full px-4 py-2.5 text-start text-sm transition-colors duration-200 text-text-primary ${
+                    i18n.language === "ar"
+                      ? "bg-white/10 text-primary font-semibold"
+                      : "hover:bg-white/5 hover:text-primary"
+                  }`}
+                >
+                  العربية
+                </button>
+              </div>
+            )}
           </div>
 
           {/* Mobile Favorites link */}
-          <div className="flex items-center space-x-2 text-text-primary hover:text-primary transition-colors duration-200 cursor-pointer">
+          <div className="flex items-center space-x-2 rtl:space-x-reverse text-text-primary hover:text-primary transition-colors duration-200 cursor-pointer">
             <Link to="/favorites" className="relative">
               <HeartIcon />
 
@@ -234,7 +350,7 @@ const Navbar = ({ variant = "transparent" }: NavbarProps) => {
             onClick={toggleMobileMenu}
             className="w-full py-3 border border-white/20 hover:border-primary text-text-primary bg-white/5 hover:bg-primary transition-all duration-300 rounded-full text-sm font-semibold tracking-wider uppercase text-center shadow-sm block"
           >
-            Need Help
+            {t("navbar.needHelp")}
           </Link>
         </div>
       </div>

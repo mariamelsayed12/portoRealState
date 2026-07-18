@@ -1,4 +1,5 @@
 import { Search } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 interface SearchButtonProps {
   onClick?: () => void;
@@ -6,6 +7,8 @@ interface SearchButtonProps {
 }
 
 const SearchButton = ({ onClick, mobile = false }: SearchButtonProps) => {
+  const { t } = useTranslation();
+
   if (mobile) {
     return (
       <button
@@ -14,7 +17,7 @@ const SearchButton = ({ onClick, mobile = false }: SearchButtonProps) => {
         className="w-full h-[48px] bg-[#1e8cab] hover:bg-[#1a7a96] text-[#f5f6fa] rounded-[12px] flex items-center justify-center gap-[8px] px-[24px] py-[8px] text-[16px] font-medium font-['Poppins'] cursor-pointer transition-colors duration-200"
       >
         <Search className="size-[24px] text-[#f5f6fa]" />
-        <span>Search</span>
+        <span>{t("search.search")}</span>
       </button>
     );
   }
@@ -23,7 +26,7 @@ const SearchButton = ({ onClick, mobile = false }: SearchButtonProps) => {
     <button
       type="button"
       onClick={onClick}
-      aria-label="Search"
+      aria-label={t("search.search")}
       className="size-[48px] lg:size-[56px] bg-[#1e8cab] hover:bg-[#1a7a96] rounded-[12px] flex items-center justify-center cursor-pointer transition-colors duration-200 shrink-0"
     >
       <Search className="size-[20px] lg:size-[24px] text-white" />
@@ -32,3 +35,4 @@ const SearchButton = ({ onClick, mobile = false }: SearchButtonProps) => {
 };
 
 export default SearchButton;
+

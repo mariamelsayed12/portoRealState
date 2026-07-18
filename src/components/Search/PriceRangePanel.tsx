@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { PanelFooter } from "./PanelFooter";
 
 interface PriceRangePanelProps {
@@ -20,6 +21,8 @@ const PriceRangePanel = ({
   onCancel,
   onApply,
 }: PriceRangePanelProps) => {
+  const { t } = useTranslation();
+
   // Percentage positions for slider fill
   const fromPct = ((from - MIN) / (MAX - MIN)) * 100;
   const toPct = ((to - MIN) / (MAX - MIN)) * 100;
@@ -32,7 +35,7 @@ const PriceRangePanel = ({
           {/* From */}
           <div className="flex flex-1 flex-col gap-[8px]">
             <p className="text-[16px] font-normal text-[#141414] font-['Poppins'] leading-[normal]">
-              From
+              {t("search.from")}
             </p>
             <div className="flex items-center h-[36px] bg-white border border-[#d4d5d8] rounded-[8px] px-[12px] overflow-hidden">
               <input
@@ -40,7 +43,9 @@ const PriceRangePanel = ({
                 value={from}
                 min={MIN}
                 max={to}
-                onChange={(e) => onFromChange(Math.min(Number(e.target.value), to))}
+                onChange={(e) =>
+                  onFromChange(Math.min(Number(e.target.value), to))
+                }
                 className="w-full text-[14px] font-normal text-[#747474] font-['Poppins'] bg-transparent outline-none"
               />
             </div>
@@ -48,7 +53,7 @@ const PriceRangePanel = ({
           {/* To */}
           <div className="flex flex-1 flex-col gap-[8px]">
             <p className="text-[16px] font-normal text-[#141414] font-['Poppins'] leading-[normal]">
-              To
+              {t("search.to")}
             </p>
             <div className="flex items-center h-[36px] bg-white border border-[#d4d5d8] rounded-[8px] px-[12px] overflow-hidden">
               <input
@@ -56,7 +61,9 @@ const PriceRangePanel = ({
                 value={to}
                 min={from}
                 max={MAX}
-                onChange={(e) => onToChange(Math.max(Number(e.target.value), from))}
+                onChange={(e) =>
+                  onToChange(Math.max(Number(e.target.value), from))
+                }
                 className="w-full text-[14px] font-normal text-[#747474] font-['Poppins'] bg-transparent outline-none"
               />
             </div>
@@ -64,26 +71,16 @@ const PriceRangePanel = ({
         </div>
 
         {/* Dual-thumb range slider */}
-        <div className="flex flex-col gap-[4px]">
-          <div className="relative h-[43px]">
+        <div className="flex flex-col gap-[0px]">
+          {/* Track + thumb handles layer */}
+          <div className="relative h-[28px]">
             {/* Track background */}
-            <div className="absolute left-0 right-0 top-[calc(50%+4px)] h-[8px] bg-[#edeff2] rounded-[4px]" />
+            <div className="absolute left-0 right-0 top-1/2 -translate-y-1/2 h-[8px] bg-[#edeff2] rounded-[4px]" />
             {/* Active fill between thumbs */}
             <div
-              className="absolute top-[calc(50%+4px)] h-[8px] bg-[#00236f] rounded-[4px]"
+              className="absolute top-1/2 -translate-y-1/2 h-[8px] bg-[#00236f] rounded-[4px]"
               style={{ left: `${fromPct}%`, width: `${toPct - fromPct}%` }}
             />
-            {/* Min label */}
-            <span className="absolute left-0 bottom-0 text-[12px] font-normal text-[#464646] font-['Inter']">
-              0 EGP
-            </span>
-            {/* Max label - positioned at to thumb */}
-            <span
-              className="absolute bottom-0 text-[12px] font-normal text-[#464646] font-['Inter'] -translate-x-1/2"
-              style={{ left: `${toPct}%` }}
-            >
-              {(to / 1_000_000).toFixed(0)}M EGP
-            </span>
             {/* From thumb */}
             <input
               type="range"
@@ -98,7 +95,7 @@ const PriceRangePanel = ({
             />
             {/* From thumb handle */}
             <div
-              className="absolute top-[calc(50%+4px)] -translate-y-1/2 -translate-x-1/2 size-[20px] bg-white rounded-full shadow-[0px_2px_5px_0px_rgba(103,110,118,0.08),0px_0px_0px_1px_rgba(103,110,118,0.16),0px_1px_1px_0px_rgba(0,0,0,0.12)] pointer-events-none"
+              className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 size-[20px] bg-white rounded-full shadow-[0px_2px_5px_0px_rgba(103,110,118,0.08),0px_0px_0px_1px_rgba(103,110,118,0.16),0px_1px_1px_0px_rgba(0,0,0,0.12)] pointer-events-none"
               style={{ left: `${fromPct}%` }}
             />
             {/* To thumb */}
@@ -115,9 +112,24 @@ const PriceRangePanel = ({
             />
             {/* To thumb handle */}
             <div
-              className="absolute top-[calc(50%+4px)] -translate-y-1/2 -translate-x-1/2 size-[20px] bg-white rounded-full shadow-[0px_2px_5px_0px_rgba(103,110,118,0.08),0px_0px_0px_1px_rgba(103,110,118,0.16),0px_1px_1px_0px_rgba(0,0,0,0.12)] pointer-events-none"
+              className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 size-[20px] bg-white rounded-full shadow-[0px_2px_5px_0px_rgba(103,110,118,0.08),0px_0px_0px_1px_rgba(103,110,118,0.16),0px_1px_1px_0px_rgba(0,0,0,0.12)] pointer-events-none"
               style={{ left: `${toPct}%` }}
             />
+          </div>
+
+          {/* Labels row — separate from the track layer to avoid clipping */}
+          <div className="relative h-[18px] mt-[4px]">
+            {/* Min label — always at far left */}
+            <span className="absolute left-0 top-0 text-[12px] font-normal text-[#464646] font-['Inter'] whitespace-nowrap">
+              0 {t("search.egp")}
+            </span>
+            {/* Max label — follows the "to" thumb */}
+            <span
+              className="absolute top-0 text-[12px] font-normal text-[#464646] font-['Inter'] -translate-x-1/2 whitespace-nowrap"
+              style={{ left: `${toPct}%` }}
+            >
+              {(to / 1_000_000).toFixed(0)}M {t("search.egp")}
+            </span>
           </div>
         </div>
       </div>

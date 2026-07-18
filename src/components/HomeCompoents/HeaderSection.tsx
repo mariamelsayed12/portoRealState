@@ -1,7 +1,10 @@
 import primaryImage from "../../assets/HomePage/primaryImage.jpg";
 import SearchSection from "../Search/SearchSection";
+import { useTranslation } from "react-i18next";
 
 const HeaderSection = () => {
+  const { t } = useTranslation();
+
   return (
     <div className="w-full flex flex-col sm:block pb-[16px] sm:pb-0">
       {/* Hero background */}
@@ -21,15 +24,15 @@ const HeaderSection = () => {
           <div className="max-w-3xl flex flex-col justify-center">
             <h1 className="text-3xl sm:text-5xl md:text-[64px] lg:text-[64px] font-medium text-white tracking-wide leading-[1.3] drop-shadow-md">
               <span className="block">
-                Discover Exceptional
+                {t("hero.titlePart1")}
               </span>
 
               <span className="block mt-2 sm:mt-4">
-                North Cost Properties
+                {t("hero.titlePart2")}
               </span>
             </h1>
             <p className="text-xs sm:text-sm md:text-[16px] text-white/95 font-normal tracking-wide mt-4 sm:mt-6 drop-shadow-sm leading-relaxed">
-              Exclusive opportunities in Egypt's most prestigious coastal destinations
+              {t("hero.subtitle")}
             </p>
           </div>
         </div>
