@@ -65,12 +65,12 @@ const DestinationDetails = () => {
           <DestinationDetailsContent destinationSlug={destination.slug} />
       </div>
         {/* AmenitiesSection */}
-        <div className="container px-6 py-12 sm:px-10 lg:px-16">
+        <div className="container py-12 px-6 sm:px-12 lg:px-[120px]">
           
               <AmenitiesSection/>
         </div>
 
-      <section className="container lg:pt-10 md:pt-8 pt-5">
+      <section className="container max lg:pt-10 md:pt-8 pt-5">
         <div className="overflow-hidden">
           <Image
             alt="village image"
