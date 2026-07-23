@@ -55,54 +55,54 @@ const Navbar = ({ variant = "transparent" }: NavbarProps) => {
   return (
     <>
       <nav
-        className={`absolute left-1/2 transform -translate-x-1/2 w-[calc(100%-2rem)] md:w-[calc(100%-4rem)] max-w-7xl z-40 transition-all duration-300 backdrop-blur-[2.9px] rounded-[99px] ${
-          isLight ? "bg-background  shadow-md" : "bg-[#F5F9FA]/5 shadow-lg"
+        className={`absolute top-6 left-1/2 transform -translate-x-1/2 w-[calc(100%-2rem)] md:w-[calc(100%-4rem)] max-w-7xl z-40 transition-all duration-300 backdrop-blur-[2.9px] rounded-[99px] ${
+          isLight
+            ? "bg-[#f5f9fa] shadow-[0px_2px_6.3px_1px_rgba(0,0,0,0.14)]"
+            : "bg-[rgba(245,249,250,0.05)]"
         }`}
       >
-        <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+        <div className="w-full px-6 md:px-[32px] py-4 md:py-[22px] flex items-center justify-between">
           {/* Logo Section */}
-          <div className="flex items-center gap-[106px]">
-             <Link to="/" className="flex items-center space-x-2 rtl:space-x-reverse flex-shrink-0">
-            <Logo className="h-8 w-auto transition-transform hover:scale-105 duration-200" />
-          </Link>
+          <div className="flex items-center gap-[24px]">
+            <Link to="/" className="flex items-center space-x-2 rtl:space-x-reverse flex-shrink-0">
+              <Logo className="h-[36px] w-[180px] transition-transform hover:scale-102 duration-200" />
+            </Link>
 
-          {/* Desktop Navigation Links */}
-          <div className="hidden lg:flex items-center space-x-8 rtl:space-x-reverse">
-            {navLinks.map((link) => (
-              <NavLink
-                key={link.name}
-                to={link.path}
-                className={({ isActive }) =>
-                  `text-sm md:text-[16px] font-medium tracking-wide transition-colors duration-200 relative py-1 after:absolute after:bottom-0 after:left-0 after:w-full after:h-[2px] after:bg-primary after:transform after:scale-x-0 hover:after:scale-x-100 after:transition-transform after:duration-300 ${
-                    isActive
-                      ? "text-primary after:scale-x-100 font-semibold"
-                      : isLight
-                      ? "text-[#58696F] hover:text-primary"
-                      : "text-text-primary hover:text-primary"
-                  }`
-                }
-              >
-                {t(link.key)}
-              </NavLink>
-            ))}
-
-          </div>
-         
+            {/* Desktop Navigation Links */}
+            <div className="hidden lg:flex items-center space-x-[24px] rtl:space-x-reverse">
+              {navLinks.map((link) => (
+                <NavLink
+                  key={link.name}
+                  to={link.path}
+                  className={({ isActive }) =>
+                    `text-[16px] font-medium font-['Poppins'] tracking-wide transition-colors duration-200 relative py-1 after:absolute after:bottom-0 after:left-0 after:w-full after:h-[2px] after:bg-primary after:transform after:scale-x-0 hover:after:scale-x-100 after:transition-transform after:duration-300 ${
+                      isActive
+                        ? "text-primary after:scale-x-100 font-semibold"
+                        : isLight
+                        ? "text-[#141414] hover:text-primary"
+                        : "text-[#f5f9fa] hover:text-primary"
+                    }`
+                  }
+                >
+                  {t(link.key)}
+                </NavLink>
+              ))}
+            </div>
           </div>
 
           {/* Right Action Items (Desktop) */}
-          <div className="hidden lg:flex items-center space-x-6 rtl:space-x-reverse">
+          <div className="hidden lg:flex items-center space-x-[20px] rtl:space-x-reverse">
             {/* Language Selector */}
             <div className="relative lang-selector-container">
               <button
                 onClick={() => setOpen(!open)}
-                className={`flex items-center space-x-1 rtl:space-x-reverse cursor-pointer transition-colors duration-200 focus:outline-none ${
+                className={`flex items-center gap-[6px] cursor-pointer transition-colors duration-200 focus:outline-none text-[16px] font-normal font-['Poppins'] ${
                   isLight
-                    ? "text-[#58696F] hover:text-primary"
-                    : "text-text-primary hover:text-primary"
+                    ? "text-[#141414] hover:text-primary"
+                    : "text-[#f5f9fa] hover:text-primary"
                 }`}
               >
-                <span className="text-sm font-medium tracking-wide">
+                <span>
                   {i18n.language === "ar" ? "العربية" : "English"}
                 </span>
                 <svg
@@ -164,11 +164,14 @@ const Navbar = ({ variant = "transparent" }: NavbarProps) => {
             </div>
 
             {/* Favorites (Heart) Icon */}
-            <Link to="/favorites" className="relative">
-              <HeartIcon className="text-primary" />
+            <Link
+              to="/favorites"
+              className="relative w-[36px] h-[36px] flex items-center justify-center p-[8px] rounded-[12px] transition-colors duration-200 hover:bg-primary/5 cursor-pointer"
+            >
+              <HeartIcon className="text-primary size-[24px]" />
 
               {favUnite.length > 0 && (
-                <span className="absolute -top-2 -right-2 w-4 h-4 rounded-full bg-red-700 text-white text-xs flex items-center justify-center">
+                <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-red-700 text-white text-[10px] flex items-center justify-center font-bold">
                   {favUnite.length}
                 </span>
               )}
@@ -176,10 +179,10 @@ const Navbar = ({ variant = "transparent" }: NavbarProps) => {
 
             <Link
               to="/need-help"
-              className={`px-5 py-2 border hover:border-primary transition-all duration-300 rounded-md text-xs font-normal tracking-wider uppercase shadow-sm cursor-pointer text-center block ${
+              className={`h-[36px] flex items-center justify-center px-[16px] rounded-[12px] text-[16px] font-['Poppins'] font-medium transition-all duration-300 border border-solid cursor-pointer text-center block ${
                 isLight
-                  ? "border-text-primary text-text-secondary bg-[#F5F9FA] hover:bg-primary hover:text-white"
-                  : "border-[#F5F9FA] text-text-primary bg-white/5 hover:bg-primary"
+                  ? "border-[#747474] text-primary hover:bg-primary/5 hover:border-primary"
+                  : "border-[#f5f9fa] text-[#f5f9fa] hover:bg-white/10"
               }`}
             >
               {t("navbar.needHelp")}
@@ -192,7 +195,7 @@ const Navbar = ({ variant = "transparent" }: NavbarProps) => {
               onClick={toggleMobileMenu}
               aria-label="Toggle menu"
               className={`transition-colors duration-200 focus:outline-none ${
-                isLight ? "text-text-secondary hover:text-primary" : "text-text-primary hover:text-primary"
+                isLight ? "text-[#141414] hover:text-primary" : "text-[#f5f9fa] hover:text-primary"
               }`}
             >
               <svg
