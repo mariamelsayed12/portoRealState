@@ -24,8 +24,10 @@ import { FaHeart, FaRegHeart, FaWhatsapp } from "react-icons/fa6";
 import AmenitiesSection from "../components/Ui/AmenitiesSection";
 import DestinationBreadcrumb from "../components/HomeCompoents/DestinationBreadcrumb";
 import { motion } from "framer-motion";
+import { useTranslation } from "react-i18next";
 
 const PropertyDetails: React.FC = () => {
+  const { t } = useTranslation();
   const { destinationSlug, propertySlug } = useParams<{
     destinationSlug: string;
     propertySlug: string;
@@ -45,6 +47,76 @@ const PropertyDetails: React.FC = () => {
   const scrollRight = () => {
     if (scrollContainerRef.current) {
       scrollContainerRef.current.scrollBy({ left: 340, behavior: "smooth" });
+    }
+  };
+
+  const getTranslatedDestinationName = (name: string) => {
+    switch (name) {
+      case "Porto Golf":
+        return t("destinations.portoGolf");
+      case "Porto Marina":
+        return t("destinations.portoMarina");
+      case "Porto Beach":
+        return t("destinations.portoBeach");
+      case "Porto Lagoon":
+        return t("destinations.portoLagoon");
+      case "Porto Coast":
+        return t("destinations.portoCoast");
+      default:
+        return name;
+    }
+  };
+
+  const getTranslatedPropertyTitle = (title: string) => {
+    switch (title.toLowerCase()) {
+      case "sea view challet":
+      case "sea view chalet":
+        return t("unitCard.title.seaViewChalet");
+      case "luxury beachfront chalet":
+        return t("unitCard.title.luxuryBeachfrontChalet");
+      case "marina view penthouse":
+        return t("unitCard.title.marinaViewPenthouse");
+      case "sea shore chalet":
+        return t("unitCard.title.seaShoreChalet");
+      case "front row chalet":
+        return t("unitCard.title.frontRowChalet");
+      case "lagoon side chalet":
+        return t("unitCard.title.lagoonSideChalet");
+      case "crystal lagoon chalet":
+        return t("unitCard.title.crystalLagoonChalet");
+      case "yacht harbour chalet":
+        return t("unitCard.title.yachtHarbourChalet");
+      case "panoramic promenade chalet":
+        return t("unitCard.title.panoramicPromenadeChalet");
+      case "premium sea-breeze chalet":
+        return t("unitCard.title.premiumSeaBreezeChalet");
+      case "infinity view chalet":
+        return t("unitCard.title.infinityViewChalet");
+      default:
+        return title;
+    }
+  };
+
+  const getTranslatedBadge = (badge: string) => {
+    if (badge.startsWith("Delivery in ")) {
+      const year = badge.replace("Delivery in ", "");
+      return t("unitCard.badge.deliveryIn", { year });
+    }
+    switch (badge.toLowerCase()) {
+      case "resale":
+        return t("unitCard.badge.resale");
+      case "developer":
+        return t("unitCard.badge.developer");
+      case "rent":
+        return t("unitCard.badge.rent");
+      case "sale":
+        return t("unitCard.badge.sale");
+      case "available":
+        return t("unitCard.badge.available");
+      case "available soon":
+        return t("unitCard.badge.availableSoon");
+      default:
+        return badge;
     }
   };
 
@@ -111,49 +183,47 @@ const PropertyDetails: React.FC = () => {
   if (!destination || !property) {
     return (
       <div className="mx-auto max-w-7xl px-6 py-24 sm:px-8 lg:px-12 text-center">
-        <h2 className="text-2xl font-bold text-text-secondary">Property not found</h2>
+        <h2 className="text-2xl font-bold text-text-secondary">{t("propertyDetails.notFound.title")}</h2>
         <p className="mt-2 text-sm text-[#7D8D93]">
-          The property you are looking for does not exist or has been removed.
+          {t("propertyDetails.notFound.description")}
         </p>
         <Link
           to="/home"
           className="mt-6 inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-opacity-95 transition-colors cursor-pointer"
         >
-          Back to Home
+          {t("propertyDetails.notFound.backBtn")}
         </Link>
       </div>
     );
   }
 
   // Extract specs details, leveraging actual unit data with standard defaults
-  const areaSpec = property.stats.find((s) => s.icon === "area")?.value || "145 sq.m";
+  const areaSpec = property.stats.find((s) => s.icon === "area")?.value || t("propertyDetails.specs.areaDefault");
   const bedSpec = property.stats.find((s) => s.icon === "bed")?.value || "3";
   const bathSpec = property.stats.find((s) => s.icon === "bath")?.value || "3";
-  const finishingSpec = property.finishing || "Fully furnished";
+  const finishingSpec = property.finishing || t("propertyDetails.specs.finishingDefault");
   const deliverySpec = property.delivery || property.badges.find((b) => b.includes("202"))?.replace("Delivery in ", "") || "2030";
-  const orientationSpec = property.orientation || "Sea view";
+  const orientationSpec = property.orientation || t("propertyDetails.specs.orientationDefault");
 
   // Derived or default pricing fields
   const downPayment = property.downPayment || "200,000 EGP";
   const monthlyInstallment = property.monthlyInstallment || "125,000 EGP";
-  const installmentYears = property.installmentYears || "4 year installment";
+  const installmentYears = property.installmentYears || t("propertyDetails.pricing.installmentYearsDefault");
 
   // Description copy
   const descriptionText =
     property.description ||
-    `A serene ${bedSpec}-bedroom chalet framed by uninterrupted Mediterranean views, set within ${destination.title}'s most private beachfront enclave. Designed for the discerning buyer, this residence balances daily liveability with the architectural restraint that defines Porto's most desirable addresses.`;
+    t("propertyDetails.descriptionDefault", { bedSpec, destinationTitle: getTranslatedDestinationName(destination.title) });
 
   // Specs Cards config for clean mapping
   const specsConfig = [
-    { value: areaSpec, label: "Area", icon: Ruler },
-    { value: bedSpec, label: "Bedrooms", icon: BedDouble },
-    { value: bathSpec, label: "Bathrooms", icon: Bath },
-    { value: finishingSpec, label: "Finishing", icon: Layers },
-    { value: deliverySpec, label: "Delivery", icon: Home },
-    { value: orientationSpec, label: "Orientation", icon: Compass },
+    { value: areaSpec, label: t("propertyDetails.specs.labels.area"), icon: Ruler },
+    { value: bedSpec, label: t("propertyDetails.specs.labels.bedrooms"), icon: BedDouble },
+    { value: bathSpec, label: t("propertyDetails.specs.labels.bathrooms"), icon: Bath },
+    { value: finishingSpec, label: t("propertyDetails.specs.labels.finishing"), icon: Layers },
+    { value: deliverySpec, label: t("propertyDetails.specs.labels.delivery"), icon: Home },
+    { value: orientationSpec, label: t("propertyDetails.specs.labels.orientation"), icon: Compass },
   ];
-
-
 
   return (
     <motion.div
@@ -166,8 +236,8 @@ const PropertyDetails: React.FC = () => {
         {/* Breadcrumb Navigation */}
         <div className="mb-6">
           <DestinationBreadcrumb
-            title={destination.title}
-            propertyTitle={property.title}
+            title={getTranslatedDestinationName(destination.title)}
+            propertyTitle={getTranslatedPropertyTitle(property.title)}
             destinationSlug={destination.slug}
             variant="light"
           />
@@ -179,7 +249,7 @@ const PropertyDetails: React.FC = () => {
           <div className="relative w-full lg:flex-1 h-[240px] sm:h-[350px] lg:h-[365px] rounded-[12px] overflow-hidden bg-[#dfeef1] group shrink-0 lg:shrink">
             <Image
               imageurl={galleryImages[activeImageIndex]}
-              alt={property.title}
+              alt={getTranslatedPropertyTitle(property.title)}
               className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.01]"
             />
             {/* Gallery Top Badges */}
@@ -189,7 +259,7 @@ const PropertyDetails: React.FC = () => {
                   key={badge}
                   className="bg-[rgba(9,1,1,0.25)] backdrop-blur-sm px-[16px] py-[8px] rounded-[99px] text-[#edeff2] font-['Poppins'] font-medium text-[14px] leading-none"
                 >
-                  {badge}
+                  {getTranslatedBadge(badge)}
                 </span>
               ))}
             </div>
@@ -199,7 +269,7 @@ const PropertyDetails: React.FC = () => {
               onClick={handleFavoriteToggle}
               type="button"
               className="absolute top-[16px] right-[16px] size-[36px] flex items-center justify-center rounded-[12px] bg-[#1e8cab] text-[#f5f6fa] hover:bg-[#1a7a96] transition-colors cursor-pointer z-10"
-              aria-label={isFavorite ? "Remove from favorites" : "Add to favorites"}
+              aria-label={isFavorite ? t("propertyDetails.gallery.removeFromFav") : t("propertyDetails.gallery.addToFav")}
             >
               {isFavorite ? (
                 <FaHeart className="size-[20px] text-white" />
@@ -215,7 +285,7 @@ const PropertyDetails: React.FC = () => {
             <button
               onClick={() => scrollThumbnails("up")}
               className="flex w-[36px] h-[36px] items-center justify-center rounded-[12px] border border-[#747474] bg-white text-[#747474] hover:text-[#1e8cab] hover:border-[#1e8cab] transition-colors cursor-pointer shrink-0"
-              aria-label="Previous image"
+              aria-label={t("propertyDetails.gallery.prevImage")}
             >
               <ChevronUp className="hidden lg:block size-[16px]" />
               <ArrowLeft className="block lg:hidden size-[16px] text-[#747474]" />
@@ -235,7 +305,7 @@ const PropertyDetails: React.FC = () => {
                       <div className="rounded-[4px] overflow-hidden w-full h-full">
                         <Image
                           imageurl={img}
-                          alt={`Thumbnail ${idx + 1}`}
+                          alt={t("propertyDetails.gallery.thumbnailAlt", { index: idx + 1 })}
                           className="w-full h-full object-cover"
                         />
                       </div>
@@ -250,7 +320,7 @@ const PropertyDetails: React.FC = () => {
                   >
                     <Image
                       imageurl={img}
-                      alt={`Thumbnail ${idx + 1}`}
+                      alt={t("propertyDetails.gallery.thumbnailAlt", { index: idx + 1 })}
                       className="w-full h-full object-cover"
                     />
                   </button>
@@ -262,7 +332,7 @@ const PropertyDetails: React.FC = () => {
             <button
               onClick={() => scrollThumbnails("down")}
               className="flex w-[36px] h-[36px] items-center justify-center rounded-[12px] border border-[#747474] bg-white text-[#747474] hover:text-[#1e8cab] hover:border-[#1e8cab] transition-colors cursor-pointer shrink-0"
-              aria-label="Next image"
+              aria-label={t("propertyDetails.gallery.nextImage")}
             >
               <ChevronDown className="hidden lg:block size-[16px]" />
               <ArrowRight className="block lg:hidden size-[16px] text-[#747474]" />
@@ -277,12 +347,12 @@ const PropertyDetails: React.FC = () => {
             {/* Location Tag */}
             <div className="flex items-center gap-1 text-sm font-semibold text-primary mb-2">
               <MapPin className="w-4 h-4" />
-              <span>{destination.title}</span>
+              <span>{getTranslatedDestinationName(destination.title)}</span>
             </div>
 
             {/* Property Title */}
             <h1 className="text-[28px] sm:text-[32px] font-bold text-text-secondary leading-tight mb-5">
-              {property.title} in {destination.title}
+              {t("propertyDetails.titleTemplate", { propertyTitle: getTranslatedPropertyTitle(property.title), destinationTitle: getTranslatedDestinationName(destination.title) })}
             </h1>
 
             {/* Description Paragraph */}
@@ -327,7 +397,7 @@ const PropertyDetails: React.FC = () => {
                       : "text-[#58696F] hover:text-text-secondary"
                   }`}
                 >
-                  Installment
+                  {t("propertyDetails.pricing.installmentTab")}
                 </button>
                 <button
                   onClick={() => setPricingMode("Cash")}
@@ -337,11 +407,11 @@ const PropertyDetails: React.FC = () => {
                       : "text-[#58696F] hover:text-text-secondary"
                   }`}
                 >
-                  Cash
+                  {t("propertyDetails.pricing.cashTab")}
                 </button>
               </div>
               <span className="text-xs font-semibold text-[#58696F]">
-                {pricingMode === "Installment" ? installmentYears : "Immediate payment"}
+                {pricingMode === "Installment" ? installmentYears : t("propertyDetails.pricing.immediatePayment")}
               </span>
             </div>
 
@@ -351,7 +421,7 @@ const PropertyDetails: React.FC = () => {
                 <>
                   {/* Price */}
                   <div className="flex-1 flex flex-col items-center text-center">
-                    <span className="text-xs font-semibold text-[#7D8D93] mb-1">Price</span>
+                    <span className="text-xs font-semibold text-[#7D8D93] mb-1">{t("propertyDetails.pricing.price")}</span>
                     <span className="text-[13px] sm:text-sm font-bold text-text-secondary">
                       {property.price}
                     </span>
@@ -360,7 +430,7 @@ const PropertyDetails: React.FC = () => {
                   <div className="w-[1px] h-10 bg-[#D4D5D8]" />
                   {/* Down Payment */}
                   <div className="flex-1 flex flex-col items-center text-center">
-                    <span className="text-xs font-semibold text-[#7D8D93] mb-1">Down Payment</span>
+                    <span className="text-xs font-semibold text-[#7D8D93] mb-1">{t("propertyDetails.pricing.downPayment")}</span>
                     <span className="text-[13px] sm:text-sm font-bold text-text-secondary">
                       {downPayment}
                     </span>
@@ -369,7 +439,7 @@ const PropertyDetails: React.FC = () => {
                   <div className="w-[1px] h-10 bg-[#D4D5D8]" />
                   {/* Monthly Installment */}
                   <div className="flex-1 flex flex-col items-center text-center">
-                    <span className="text-xs font-semibold text-[#7D8D93] mb-1">Monthly</span>
+                    <span className="text-xs font-semibold text-[#7D8D93] mb-1">{t("propertyDetails.pricing.monthly")}</span>
                     <span className="text-[13px] sm:text-sm font-bold text-text-secondary">
                       {monthlyInstallment}
                     </span>
@@ -377,10 +447,10 @@ const PropertyDetails: React.FC = () => {
                 </>
               ) : (
                 <div className="w-full flex flex-col items-center text-center py-2">
-                  <span className="text-xs font-semibold text-[#7D8D93] mb-1">Cash Price</span>
+                  <span className="text-xs font-semibold text-[#7D8D93] mb-1">{t("propertyDetails.pricing.cashPrice")}</span>
                   <span className="text-lg font-bold text-text-secondary">{property.price}</span>
                   <span className="text-[11px] text-[#7D8D93] mt-1">
-                    (Standard cash discount may apply, inquire details)
+                    {t("propertyDetails.pricing.cashNote")}
                   </span>
                 </div>
               )}
@@ -390,15 +460,15 @@ const PropertyDetails: React.FC = () => {
             <div className="grid grid-cols-2 gap-3">
               {/* WhatsApp Button */}
               <a
-                href={`https://wa.me/20113333333?text=Hi,%20I'm%20interested%20in%20${encodeURIComponent(
-                  property.title
-                )}%20at%20${encodeURIComponent(destination.title)}`}
+                href={`https://wa.me/20113333333?text=${encodeURIComponent(
+                  t("propertyDetails.whatsappMsg", { propertyTitle: getTranslatedPropertyTitle(property.title), destinationTitle: getTranslatedDestinationName(destination.title) })
+                )}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center justify-center gap-2 py-3 px-4 rounded-xl border-2 border-[#25D366] text-[#25D366] text-sm font-semibold hover:bg-[#25D366]/5 transition-all active:scale-[0.98] cursor-pointer"
               >
                 <FaWhatsapp className="w-4 h-4" />
-                <span>WhatsApp</span>
+                <span>{t("propertyDetails.actions.whatsapp")}</span>
               </a>
 
               {/* Call Us Button */}
@@ -407,7 +477,7 @@ const PropertyDetails: React.FC = () => {
                 className="flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-primary text-white text-sm font-semibold hover:bg-opacity-95 transition-all active:scale-[0.98] cursor-pointer"
               >
                 <Phone className="w-4 h-4 fill-current" />
-                <span>Call Us</span>
+                <span>{t("propertyDetails.actions.callUs")}</span>
               </a>
             </div>
           </div>
@@ -424,7 +494,7 @@ const PropertyDetails: React.FC = () => {
           <div className="mt-16 sm:mt-20 pb-16 ">
             <div className="flex items-center justify-between mb-6 sm:mb-8">
               <h2 className="text-2xl sm:text-3xl font-bold text-text-secondary">
-                You may also like
+                {t("propertyDetails.relatedTitle")}
               </h2>
               <div className="flex gap-2">
                 <button 
