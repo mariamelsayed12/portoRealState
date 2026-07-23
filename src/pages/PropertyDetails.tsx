@@ -434,7 +434,7 @@ const PropertyDetails: React.FC = () => {
                       <span className="font-['Poppins'] font-medium text-[16px] text-[#464646] mb-2">
                         {t("propertyDetails.pricing.price")}
                       </span>
-                      <span className="font-['Poppins'] font-medium text-[19px] text-[#141414]">
+                      <span className="font-['Poppins'] font-medium text-[16px] text-[#141414]">
                         {property.price}
                       </span>
                     </div>
@@ -445,7 +445,7 @@ const PropertyDetails: React.FC = () => {
                       <span className="font-['Poppins'] font-medium text-[16px] text-[#464646] mb-2">
                         {t("propertyDetails.pricing.downPayment")}
                       </span>
-                      <span className="font-['Poppins'] font-medium text-[19px] text-[#141414]">
+                      <span className="font-['Poppins'] font-medium text-[16px] text-[#141414]">
                         {downPayment}
                       </span>
                     </div>
@@ -456,7 +456,7 @@ const PropertyDetails: React.FC = () => {
                       <span className="font-['Poppins'] font-medium text-[16px] text-[#464646] mb-2">
                         {t("propertyDetails.pricing.monthly")}
                       </span>
-                      <span className="font-['Poppins'] font-medium text-[19px] text-[#141414]">
+                      <span className="font-['Poppins'] font-medium text-[16px] text-[#141414]">
                         {monthlyInstallment}
                       </span>
                     </div>
@@ -505,20 +505,21 @@ const PropertyDetails: React.FC = () => {
         </div>
 
         {/* Amenities Section */}
-
-        <div className=" px-6 py-12 ">
-        <AmenitiesSection/>
+        <div className="px-6 py-12">
+          <AmenitiesSection />
         </div>
+      </div> {/* Close main constrained container */}
 
-        {/* Related Properties Carousel/Grid Section */}
-        {relatedProperties.length > 0 && (
-          <div className="mt-16 sm:mt-20 pb-16 ">
+      {/* Related Properties Carousel/Grid Section */}
+      {relatedProperties.length > 0 && (
+        <div className="w-full bg-[#E9F4F7] py-[60px] mt-16 sm:mt-20">
+          <div className="mx-auto max-w-7xl px-6 sm:px-8 lg:px-12 w-full">
             <div className="flex items-center justify-between mb-6 sm:mb-8">
-              <h2 className="text-2xl sm:text-3xl font-bold text-text-secondary">
+              <h2 className="font-['Poppins'] font-medium text-[24px] sm:text-[32px] text-[#141414]">
                 {t("propertyDetails.relatedTitle")}
               </h2>
               <div className="flex gap-2">
-                <button 
+                <button
                   onClick={isRtl ? scrollRight : scrollLeft}
                   className="w-[40px] h-[40px] flex items-center justify-center rounded-[12px] border border-[#747474] text-primary hover:border-primary transition-all shadow-sm cursor-pointer"
                 >
@@ -528,7 +529,7 @@ const PropertyDetails: React.FC = () => {
                     <ChevronLeft className="w-5 h-5 text-primary" />
                   )}
                 </button>
-                <button 
+                <button
                   onClick={isRtl ? scrollLeft : scrollRight}
                   className="w-[40px] h-[40px] flex items-center justify-center rounded-[12px] border border-[#747474] text-primary hover:border-primary transition-all shadow-sm cursor-pointer"
                 >
@@ -549,8 +550,8 @@ const PropertyDetails: React.FC = () => {
               ))}
             </div>
           </div>
-        )}
-      </div>
+        </div>
+      )}
     </motion.div>
   );
 };
