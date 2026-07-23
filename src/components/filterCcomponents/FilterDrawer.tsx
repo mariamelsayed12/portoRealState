@@ -3,6 +3,7 @@ import type { FilterState } from "../../hooks/useUnitsFilter";
 import FilterContent from "./FilterContent";
 import {motion,AnimatePresence} from "framer-motion"
 import { X } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 interface FilterDrawerProps {
   /** Only relevant to displayMode="drawer". Controls whether the drawer is open. */
@@ -34,6 +35,7 @@ const FilterDrawer = ({
   displayMode = "drawer",
   className = "",
 }: FilterDrawerProps) => {
+  const { t } = useTranslation();
   const drawerRef = useRef<HTMLDivElement>(null);
  
   const handleReset = () => {
@@ -128,13 +130,13 @@ const FilterDrawer = ({
             {/* Header */}
             <div className="flex items-center justify-between px-6 py-4 border-b border-[#E8EFF1] bg-white">
               <h2 className="text-xl font-bold text-text-secondary">
-                Filters
+                {t("filterDrawer.title")}
               </h2>
               <button
                 type="button"
                 onClick={onClose}
                 className="rounded-full p-2 text-[#7D8D93] hover:bg-gray-100 hover:text-text-secondary transition-colors"
-                aria-label="Close filters"
+                aria-label={t("filterDrawer.close")}
               >
                 <X className="h-5 w-5" />
               </button>
@@ -155,5 +157,5 @@ const FilterDrawer = ({
     </AnimatePresence>
   );
 };
- 
+
 export default FilterDrawer;

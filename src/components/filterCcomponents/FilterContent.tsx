@@ -2,6 +2,7 @@ import { destinations } from "../../data";
 import type { FilterState } from "../../hooks/useUnitsFilter";
 import Button from "../Ui/Button";
 import Input from "../Ui/Input";
+import { useTranslation } from "react-i18next";
 
 interface FilterContentProps {
   tempFilters: FilterState;
@@ -23,7 +24,7 @@ const FilterContent = ({
   stickyFooter = true,
   displayMode = "drawer",
 }: FilterContentProps) => {
-
+  const { t } = useTranslation();
 
   const handleTogglePropertyType = (type: string) => {
   setTempFilters((prev) => {
@@ -96,14 +97,14 @@ const FilterContent = ({
       {displayMode === "static" && (
         <div className="flex justify-between items-center px-6 py-4 border-b border-[#E8EFF1] bg-[#F5F9FA]">
           <span className="text-sm font-semibold text-[#141414]">
-            Filters <span className="text-xs font-normal text-[#7D8D93]">({tempFilteredCount} Result)</span>
+            {t("filterDrawer.title")} <span className="text-xs font-normal text-[#7D8D93]">{t("filterDrawer.resultCount", { count: tempFilteredCount })}</span>
           </span>
           <button
             type="button"
             onClick={handleReset}
             className="text-xs font-semibold text-[#1E8CAB] hover:underline cursor-pointer"
           >
-            Reset All
+            {t("filterDrawer.resetAll")}
           </button>
         </div>
       )}
@@ -118,7 +119,7 @@ const FilterContent = ({
         <div className="bg-white rounded-md border border-border p-5 shadow-[0_2px_8px_rgba(73,95,104,0.04)]">
           <div className="flex justify-between items-center mb-3">
             <h3 className="text-[15px] font-bold text-text-secondary">
-              Property type
+              {t("filterDrawer.propertyType")}
             </h3>
             {displayMode === "static" && (
               <button
@@ -126,29 +127,34 @@ const FilterContent = ({
                 onClick={() => setTempFilters((prev) => ({ ...prev, propertyType: "" }))}
                 className="text-xs font-semibold text-[#1E8CAB] hover:underline cursor-pointer"
               >
-                Reset
+                {t("filterDrawer.reset")}
               </button>
             )}
           </div>
           <div className="flex flex-wrap gap-2">
-            {["Chalet", "Villa", "Apartment", "Twin house"].map((type) => {
+            {[
+              { id: "Chalet", labelKey: "search.propertyTypes.chalet" },
+              { id: "Villa", labelKey: "search.propertyTypes.villa" },
+              { id: "Apartment", labelKey: "search.propertyTypes.apartment" },
+              { id: "Twin house", labelKey: "search.propertyTypes.twinHouse" }
+            ].map((type) => {
               const isSelected =
-  (tempFilters.propertyType || "")
-    .toLowerCase()
-    .split(",")
-    .includes(type.toLowerCase());
+                (tempFilters.propertyType || "")
+                  .toLowerCase()
+                  .split(",")
+                  .includes(type.id.toLowerCase());
               return (
                 <button
-                  key={type}
+                  key={type.id}
                   type="button"
-                  onClick={() => handleTogglePropertyType(type)}
+                  onClick={() => handleTogglePropertyType(type.id)}
                   className={`rounded-full px-4 py-2 text-xs font-semibold border transition-all ${
                     isSelected
                       ? "bg-[#E9F4F7] border-primary text-[#141414]"
                       : "bg-white border-[#D9E1E4] text-[#58696F] hover:border-gray-300"
                   }`}
                 >
-                  {type}
+                  {t(type.labelKey)}
                 </button>
               );
             })}
@@ -160,7 +166,7 @@ const FilterContent = ({
         <div className="bg-white rounded-md border border-border p-5 shadow-[0_2px_8px_rgba(73,95,104,0.04)]">
           <div className="flex justify-between items-center mb-3">
             <h3 className="text-[15px] font-bold text-text-secondary">
-             Location
+             {t("filterDrawer.location")}
             </h3>
             {displayMode === "static" && (
               <button
@@ -168,17 +174,17 @@ const FilterContent = ({
                 onClick={() => setTempFilters((prev) => ({ ...prev, location: "" }))}
                 className="text-xs font-semibold text-[#1E8CAB] hover:underline cursor-pointer"
               >
-                Reset
+                {t("filterDrawer.reset")}
               </button>
             )}
           </div>
           <div className="flex flex-wrap gap-2">
-            {destinations.map(({title}) => {
+            {destinations.map(({title, titleKey}) => {
              const isSelected =
-  (tempFilters.location || "")
-    .toLowerCase()
-    .split(",")
-    .includes(title.toLowerCase());
+              (tempFilters.location || "")
+                .toLowerCase()
+                .split(",")
+                .includes(title.toLowerCase());
               return (
                 <button
                   key={title}
@@ -190,7 +196,7 @@ const FilterContent = ({
                       : "bg-white border-[#D9E1E4] text-[#58696F] hover:border-gray-300"
                   }`}
                 >
-                  {title}
+                  {titleKey ? t(titleKey) : title}
                 </button>
               );
             })}
@@ -202,7 +208,7 @@ const FilterContent = ({
         <div className="bg-white rounded-md border border-border p-5 shadow-[0_2px_8px_rgba(73,95,104,0.04)]">
           <div className="flex justify-between items-center mb-3">
             <h3 className="text-[15px] font-bold text-text-secondary">
-              Bedrooms
+              {t("filterDrawer.bedrooms")}
             </h3>
             {displayMode === "static" && (
               <button
@@ -210,7 +216,7 @@ const FilterContent = ({
                 onClick={() => setTempFilters((prev) => ({ ...prev, bedrooms: "" }))}
                 className="text-xs font-semibold text-[#1E8CAB] hover:underline cursor-pointer"
               >
-                Reset
+                {t("filterDrawer.reset")}
               </button>
             )}
           </div>
@@ -239,7 +245,7 @@ const FilterContent = ({
         <div className="bg-white rounded-md border border-border p-5 shadow-[0_2px_8px_rgba(73,95,104,0.04)]">
           <div className="flex justify-between items-center mb-3">
             <h3 className="text-[15px] font-bold text-text-secondary">
-              Bathrooms
+              {t("filterDrawer.bathrooms")}
             </h3>
             {displayMode === "static" && (
               <button
@@ -247,7 +253,7 @@ const FilterContent = ({
                 onClick={() => setTempFilters((prev) => ({ ...prev, bathrooms: "" }))}
                 className="text-xs font-semibold text-[#1E8CAB] hover:underline cursor-pointer"
               >
-                Reset
+                {t("filterDrawer.reset")}
               </button>
             )}
           </div>
@@ -276,8 +282,8 @@ const FilterContent = ({
         <div className="bg-white rounded-md border border-border p-5 shadow-[0_2px_8px_rgba(73,95,104,0.04)]">
           <div className="flex justify-between items-center mb-4">
             <h3 className="text-[15px] font-bold text-text-secondary">
-              Area{" "}
-              <span className="text-xs font-normal text-[#7D8D93]">(m2)</span>
+              {t("filterDrawer.area")}
+              <span className="text-xs font-normal text-[#7D8D93]">{t("filterDrawer.m2")}</span>
             </h3>
             {displayMode === "static" && (
               <button
@@ -285,14 +291,14 @@ const FilterContent = ({
                 onClick={() => setTempFilters((prev) => ({ ...prev, areaFrom: "", areaTo: "" }))}
                 className="text-xs font-semibold text-[#1E8CAB] hover:underline cursor-pointer"
               >
-                Reset
+                {t("filterDrawer.reset")}
               </button>
             )}
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div>
               <label className="block text-[11px] font-semibold text-[#7D8D93] mb-1.5">
-                From
+                {t("filterDrawer.from")}
               </label>
               <Input
                 type="number"
@@ -304,12 +310,12 @@ const FilterContent = ({
                   }))
                 }
                 className="h-10 text-xs border-[#D9E1E4]"
-                placeholder="0"
+                placeholder={t("filterDrawer.placeholder.zero")}
               />
             </div>
             <div>
               <label className="block text-[11px] font-semibold text-[#7D8D93] mb-1.5">
-                To
+                {t("filterDrawer.to")}
               </label>
               <Input
                 type="number"
@@ -321,7 +327,7 @@ const FilterContent = ({
                   }))
                 }
                 className="h-10 text-xs border-[#D9E1E4]"
-                placeholder="Any"
+                placeholder={t("filterDrawer.placeholder.any")}
               />
             </div>
           </div>
@@ -334,8 +340,8 @@ const FilterContent = ({
               <div className="absolute right-[55%] top-1/2 -translate-y-1/2 w-4 h-4 bg-white border-2 border-primary rounded-full shadow cursor-pointer hover:scale-110 transition-transform" />
             </div>
             <div className="mt-3 flex justify-between text-[10px] font-semibold text-[#7D8D93]">
-              <span>0 m2</span>
-              <span>100 m2</span>
+              <span>{t("filterDrawer.m2Value", { val: 0 })}</span>
+              <span>{t("filterDrawer.m2Value", { val: 100 })}</span>
             </div>
           </div>
         </div>
@@ -344,8 +350,8 @@ const FilterContent = ({
         <div className="bg-white rounded-md border border-border p-5 shadow-[0_2px_8px_rgba(73,95,104,0.04)]">
           <div className="flex justify-between items-center mb-4">
             <h3 className="text-[15px] font-bold text-text-secondary">
-              Price range{" "}
-              <span className="text-xs font-normal text-[#7D8D93]">(EGP)</span>
+              {t("filterDrawer.priceRange")}
+              <span className="text-xs font-normal text-[#7D8D93]">{t("filterDrawer.currencyUnit")}</span>
             </h3>
             {displayMode === "static" && (
               <button
@@ -353,14 +359,14 @@ const FilterContent = ({
                 onClick={() => setTempFilters((prev) => ({ ...prev, priceFrom: "", priceTo: "" }))}
                 className="text-xs font-semibold text-[#1E8CAB] hover:underline cursor-pointer"
               >
-                Reset
+                {t("filterDrawer.reset")}
               </button>
             )}
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div>
               <label className="block text-[11px] font-semibold text-[#7D8D93] mb-1.5">
-                From
+                {t("filterDrawer.from")}
               </label>
               <Input
                 type="number"
@@ -372,12 +378,12 @@ const FilterContent = ({
                   }))
                 }
                 className="h-10 text-xs border-[#D9E1E4]"
-                placeholder="Min"
+                placeholder={t("filterDrawer.placeholder.min")}
               />
             </div>
             <div>
               <label className="block text-[11px] font-semibold text-[#7D8D93] mb-1.5">
-                To
+                {t("filterDrawer.to")}
               </label>
               <Input
                 type="number"
@@ -389,7 +395,7 @@ const FilterContent = ({
                   }))
                 }
                 className="h-10 text-xs border-[#D9E1E4]"
-                placeholder="Max"
+                placeholder={t("filterDrawer.placeholder.max")}
               />
             </div>
           </div>
@@ -402,8 +408,8 @@ const FilterContent = ({
               <div className="absolute right-[60%] top-1/2 -translate-y-1/2 w-4 h-4 bg-white border-2 border-primary rounded-full shadow cursor-pointer hover:scale-110 transition-transform" />
             </div>
             <div className="mt-3 flex justify-between text-[10px] font-semibold text-[#7D8D93]">
-              <span>0 EGP</span>
-              <span>100 EGP</span>
+              <span>{t("filterDrawer.egpValue", { val: 0 })}</span>
+              <span>{t("filterDrawer.egpValue", { val: 100 })}</span>
             </div>
           </div>
         </div>
@@ -412,8 +418,8 @@ const FilterContent = ({
         <div className="bg-white rounded-md border border-border p-5 shadow-[0_2px_8px_rgba(73,95,104,0.04)]">
           <div className="flex justify-between items-center mb-4">
             <h3 className="text-[15px] font-bold text-text-secondary">
-              Payments{" "}
-              <span className="text-xs font-normal text-[#7D8D93]">(EGP)</span>
+              {t("filterDrawer.payments")}
+              <span className="text-xs font-normal text-[#7D8D93]">{t("filterDrawer.currencyUnit")}</span>
             </h3>
             {displayMode === "static" && (
               <button
@@ -421,14 +427,14 @@ const FilterContent = ({
                 onClick={() => setTempFilters((prev) => ({ ...prev, downPayment: "", monthlyInstallment: "" }))}
                 className="text-xs font-semibold text-[#1E8CAB] hover:underline cursor-pointer"
               >
-                Reset
+                {t("filterDrawer.reset")}
               </button>
             )}
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div>
               <label className="block text-[11px] font-semibold text-[#7D8D93] mb-1.5">
-                Down Payment
+                {t("filterDrawer.downPayment")}
               </label>
               <Input
                 type="number"
@@ -440,12 +446,12 @@ const FilterContent = ({
                   }))
                 }
                 className="h-10 text-xs border-[#D9E1E4]"
-                placeholder="0"
+                placeholder={t("filterDrawer.placeholder.zero")}
               />
             </div>
             <div>
               <label className="block text-[11px] font-semibold text-[#7D8D93] mb-1.5">
-                Monthly Installments
+                {t("filterDrawer.monthlyInstallment")}
               </label>
               <Input
                 type="number"
@@ -457,7 +463,7 @@ const FilterContent = ({
                   }))
                 }
                 className="h-10 text-xs border-[#D9E1E4]"
-                placeholder="0"
+                placeholder={t("filterDrawer.placeholder.zero")}
               />
             </div>
           </div>
@@ -467,7 +473,7 @@ const FilterContent = ({
         <div className="bg-white rounded-md border border-border p-5 shadow-[0_2px_8px_rgba(73,95,104,0.04)]">
           <div className="flex justify-between items-center mb-3">
             <h3 className="text-[15px] font-bold text-text-secondary">
-              Delivery Date
+              {t("filterDrawer.deliveryDate")}
             </h3>
             {displayMode === "static" && (
               <button
@@ -475,7 +481,7 @@ const FilterContent = ({
                 onClick={() => setTempFilters((prev) => ({ ...prev, deliveryDate: "" }))}
                 className="text-xs font-semibold text-[#1E8CAB] hover:underline cursor-pointer"
               >
-                Reset
+                {t("filterDrawer.reset")}
               </button>
             )}
           </div>
@@ -496,7 +502,7 @@ const FilterContent = ({
                         : "bg-white border-[#D9E1E4] text-[#58696F] hover:border-gray-300"
                     }`}
                   >
-                    {date}
+                    {date.toLowerCase() === "ready" ? t("filterDrawer.ready") : date}
                   </button>
                 );
               },
@@ -508,7 +514,7 @@ const FilterContent = ({
         <div className="bg-white rounded-md border border-border p-5 shadow-[0_2px_8px_rgba(73,95,104,0.04)]">
           <div className="flex justify-between items-center mb-3">
             <h3 className="text-[15px] font-bold text-text-secondary">
-              Finishing
+              {t("filterDrawer.finishing")}
             </h3>
             {displayMode === "static" && (
               <button
@@ -516,32 +522,32 @@ const FilterContent = ({
                 onClick={() => setTempFilters((prev) => ({ ...prev, finishing: "" }))}
                 className="text-xs font-semibold text-[#1E8CAB] hover:underline cursor-pointer"
               >
-                Reset
+                {t("filterDrawer.reset")}
               </button>
             )}
           </div>
           <div className="flex flex-wrap gap-2">
             {[
-              "Not finished",
-              "Semi finished",
-              "Finished",
-              "Fully furnished",
+              { id: "Not finished", labelKey: "filterDrawer.finishing.notFinished" },
+              { id: "Semi finished", labelKey: "filterDrawer.finishing.semiFinished" },
+              { id: "Finished", labelKey: "filterDrawer.finishing.finished" },
+              { id: "Fully furnished", labelKey: "filterDrawer.finishing.fullyFurnished" }
             ].map((finish) => {
               const isSelected =
                 (tempFilters.finishing || "").toLowerCase() ===
-                finish.toLowerCase();
+                finish.id.toLowerCase();
               return (
                 <button
-                  key={finish}
+                  key={finish.id}
                   type="button"
-                  onClick={() => handleToggleFinishing(finish)}
+                  onClick={() => handleToggleFinishing(finish.id)}
                   className={`rounded-full px-4 py-2 text-xs font-semibold border transition-all ${
                     isSelected
                       ? "bg-[#E9F4F7] border-primary text-[#141414]"
                       : "bg-white border-[#D9E1E4] text-[#58696F] hover:border-gray-300"
                   }`}
                 >
-                  {finish}
+                  {t(finish.labelKey)}
                 </button>
               );
             })}
@@ -561,20 +567,19 @@ const FilterContent = ({
             onClick={handleReset}
             className="w-1/2 rounded-md border border-border bg-white text-primary font-bold hover:bg-gray-50 h-12 text-sm"
           >
-            Reset All
+            {t("filterDrawer.resetAll")}
           </Button>
           <Button
             type="button"
             onClick={handleApply}
             className="w-1/2 rounded-xl bg-primary text-white font-bold hover:opacity-95 h-12 text-sm"
           >
-            Apply Filter ({tempFilteredCount})
+            {t("filterDrawer.applyFilter", { count: tempFilteredCount })}
           </Button>
         </div>
       )}
     </>
   );
 };
-
-
-export default FilterContent
+ 
+export default FilterContent;
