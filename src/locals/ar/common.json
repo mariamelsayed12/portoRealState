@@ -30,5 +30,21 @@
     "search.propertyTypes.apartment": "شقة",
     "search.propertyTypes.twinHouse": "توين هاوس",
     "destinations.portoGolf": "بورتو جولف",
-    "destinations.portoMarina": "بورتو مارينا"
+    "destinations.portoMarina": "بورتو مارينا",
+    "whatWeOffer.heading": "ماذا نقدم ؟",
+    "whatWeOffer.learnMore": "معرفة المزيد",
+    "whatWeOffer.sales.title": "بيع العقارات",
+    "whatWeOffer.sales.description": "وصول مباشر لأحدث المشاريع العقارية في أرقى مناطق الساحل الشمالي قبل طرحها في السوق.",
+    "whatWeOffer.sell.title": "بيع عقارك",
+    "whatWeOffer.sell.description": "اعرض عقارك للبيع بسرية تامة مع تقييم خبراء PORTO، ومشترين مؤهلين، وتفاوض هادئ يحمي قيمة عقارك.",
+    "whatWeOffer.rent.title": "إيجارات مميزة",
+    "whatWeOffer.rent.description": "وحدات سكنية مختارة بعناية للإيجار، تم فحصها لضمان الخدمة والراحة والخصوصية.",
+    "whatWeOffer.management.title": "إدارة العقارات",
+    "whatWeOffer.management.description": "إدارة متكاملة لعقاراتك لزيادة العائد الاستثماري، وفحص النزلاء، وتوفير الصيانة وخدمات الكونسيرج.",
+    "prestigiousDestinations.heading": "أرقى الوجهات",
+    "prestigiousDestinations.startsFrom": "يبدأ من",
+    "prestigiousDestinations.scrollLeft": "تمرير الوجهات لليسار",
+    "prestigiousDestinations.scrollRight": "تمرير الوجهات لليمين",
+    "prestigiousDestinations.million": "مليون",
+    "destinations.developer.amerGroup": "مجموعة عامر"
 }

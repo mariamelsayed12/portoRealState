@@ -30,5 +30,21 @@
     "search.to": "To",
     "search.egp": "EGP",
     "destinations.portoGolf": "Porto Golf",
-    "destinations.portoMarina": "Porto Marina"
+    "destinations.portoMarina": "Porto Marina",
+    "whatWeOffer.heading": "What We Offer ?",
+    "whatWeOffer.learnMore": "Learn More",
+    "whatWeOffer.sales.title": "Property Sales",
+    "whatWeOffer.sales.description": "Direct access to launches across the most coveted North Coast developments before they reach the market.",
+    "whatWeOffer.sell.title": "Sell Your Property",
+    "whatWeOffer.sell.description": "List discreetly with PORTO expert valuation, qualified buyers, and quiet negotiation that protects your price.",
+    "whatWeOffer.rent.title": "Special Rentals",
+    "whatWeOffer.rent.description": "Hand picked special residences for rent, vetted for service, comfort, and privacy.",
+    "whatWeOffer.management.title": "Property Management",
+    "whatWeOffer.management.description": "End to end management of your asset yield optimization, guest screening, and concierge upkeep.",
+    "prestigiousDestinations.heading": "Prestigious Destinations",
+    "prestigiousDestinations.startsFrom": "Starts from",
+    "prestigiousDestinations.scrollLeft": "Scroll destinations left",
+    "prestigiousDestinations.scrollRight": "Scroll destinations right",
+    "prestigiousDestinations.million": "M",
+    "destinations.developer.amerGroup": "Amer Group"
 }

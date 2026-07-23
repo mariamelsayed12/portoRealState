@@ -33,7 +33,7 @@ const CuratedPropertiesSection = () => {
           </h2>
 
           <button
-            className="flex items-center justify-center h-[36px] px-[16px] rounded-md border border-[#747474] text-[16px] font-medium text-primary font-['Poppins'] transition-colors hover:bg-[#edeff2]"
+            className="flex items-center justify-center lg:h-[36px] lg:px-[16px] h-[24px] px-[10px] lg:rounded-md rounded-[8px]  border border-[#747474] lg:text-[16px] text-[13px] font-medium text-primary font-['Poppins'] transition-colors hover:bg-[#edeff2]"
             onClick={()=>{
               navigate("/buy");
             }}
@@ -50,8 +50,6 @@ const CuratedPropertiesSection = () => {
             <UnitCard key={card.id} card={card} />
           ))}
         </div>
-        
-          
         </div>
 
        

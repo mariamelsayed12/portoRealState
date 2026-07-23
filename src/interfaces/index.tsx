@@ -69,10 +69,12 @@ export interface DestinationData {
   id: number;
   slug: string;
   title: string;
+  titleKey?: string;
   breadcrumbLabel?: string;
   image: string;
   description: string;
   developer: string;
+  developerKey?: string;
   price: string;
   startingPrice: string;
   rentalYield: string;

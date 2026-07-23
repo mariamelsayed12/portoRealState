@@ -1,14 +1,17 @@
 import { Link } from "react-router-dom";
 import { ArrowUpRight } from "lucide-react";
 import { offerItems } from "../../data";
+import { useTranslation } from "react-i18next";
 
 const WhatWeOffer = () => {
+  const { t } = useTranslation();
+
   return (
     <section className="bg-[#f5f9fa] w-full px-6 sm:px-12 lg:px-[120px] py-[90px] lg:mt-[60px]">
       <div className=" mx-auto flex flex-col gap-[24px] items-start w-full">
         {/* Section Heading */}
         <h2 className="text-[28px] sm:text-[40px] font-medium text-[#141414] font-['Poppins'] leading-[normal]">
-          What We Offer ?
+          {t("whatWeOffer.heading")}
         </h2>
 
         {/* Cards Grid */}
@@ -29,16 +32,16 @@ const WhatWeOffer = () => {
               {/* Text Content */}
               <div className="flex flex-col gap-[16px] items-center text-center w-full flex-1">
                 <h3 className="text-[19px] font-medium text-[#141414] font-['Poppins'] leading-[normal] group-hover:text-[#1e8cab] transition-colors duration-200">
-                  {item.title}
+                  {t(item.titleKey)}
                 </h3>
                 <p className="text-[16px] font-normal text-[#464646] font-['Poppins'] leading-[normal] min-h-[72px]">
-                  {item.description}
+                  {t(item.descriptionKey)}
                 </p>
               </div>
 
               {/* Learn More Button */}
               <div className="inline-flex items-center gap-[8px] h-[36px] px-[8px] py-[8px] rounded-[12px] text-[16px] font-medium text-[#0d3b48] font-['Poppins'] leading-[normal] group-hover:text-[#1e8cab] transition-colors duration-200 shrink-0">
-                <span>Learn More</span>
+                <span>{t("whatWeOffer.learnMore")}</span>
                 <ArrowUpRight className="size-[16px] transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-200" />
               </div>
             </Link>

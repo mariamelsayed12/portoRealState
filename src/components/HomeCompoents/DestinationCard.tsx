@@ -1,12 +1,14 @@
 import { ArrowUpRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import type { DestinationData } from "../../interfaces";
+import { useTranslation } from "react-i18next";
 
 interface DestinationCardProps {
 	destination: DestinationData;
 }
 
 const DestinationCard = ({ destination }: DestinationCardProps) => {
+	const { t } = useTranslation();
 	const priceStr = destination.price || "";
 	const spaceIndex = priceStr.indexOf(" ");
 	let priceVal = priceStr;
@@ -16,6 +18,10 @@ const DestinationCard = ({ destination }: DestinationCardProps) => {
 		priceUnit = priceStr.slice(spaceIndex + 1);
 	}
 
+	const displayPriceVal = priceVal.endsWith("M")
+		? `${priceVal.slice(0, -1)} ${t("prestigiousDestinations.million")}`
+		: priceVal;
+
 	return (
 		<Link
 			to={`/home/${destination.slug}`}
@@ -23,7 +29,7 @@ const DestinationCard = ({ destination }: DestinationCardProps) => {
 		>
 			<img
 				src={destination.image}
-				alt={destination.title}
+				alt={destination.titleKey ? t(destination.titleKey) : destination.title}
 				loading="lazy"
 				decoding="async"
 				sizes="(min-width: 768px) 33vw, 100vw"
@@ -42,23 +48,23 @@ const DestinationCard = ({ destination }: DestinationCardProps) => {
 				{/* Left Glass Badge */}
 				<div className="bg-white/10 backdrop-blur-md rounded-[12px] p-2 flex flex-col items-start min-w-[120px] border border-white/15">
 					<h3 className="text-[#edeff2] text-[16px] sm:text-[19px] font-medium font-['Poppins'] leading-tight">
-						{destination.title}
+						{destination.titleKey ? t(destination.titleKey) : destination.title}
 					</h3>
 					<p className="text-[#edeff2] text-[13px] sm:text-[16px] font-normal font-['Poppins'] mt-0.5 opacity-90">
-						{destination.developer}
+						{destination.developerKey ? t(destination.developerKey) : destination.developer}
 					</p>
 				</div>
 
 				{/* Right Glass Badge */}
 				<div className="bg-white/10 backdrop-blur-md rounded-[12px] p-2 flex flex-col items-start border border-white/15">
 					<span className="text-[#d4d5d8] text-[13px] sm:text-[16px] font-normal font-['Poppins'] leading-tight">
-						Starts from
+						{t("prestigiousDestinations.startsFrom")}
 					</span>
 					<span className="text-[#edeff2] text-[16px] sm:text-[19px] font-medium font-['Poppins'] mt-0.5 whitespace-nowrap">
-						{priceVal}
+						{displayPriceVal}
 						{priceUnit && (
-							<span className="text-[13px] sm:text-[16px] font-normal font-['Poppins'] ml-1">
-								{priceUnit}
+							<span className="text-[13px] sm:text-[16px]  font-normal font-['Poppins']  ml-1 rtl:mr-1 rtl:ml-0">
+								{priceUnit === "EGP" ? t("search.egp") : priceUnit}
 							</span>
 						)}
 					</span>
