@@ -2,6 +2,7 @@ import { memo } from "react";
 import type { Feature } from "../../interfaces";
 import { FEATURE_MARQUEE_TOKENS } from "../../data";
 import IconeofAnimatSection from "../icons/IconeofAnimatSection";
+import { useTranslation } from "react-i18next";
 
 export interface FeatureCardProps {
   feature: Feature;
@@ -17,6 +18,7 @@ const { colors } = FEATURE_MARQUEE_TOKENS;
  * accent shape, and a title on the left.
  */
 function FeatureCardBase({ feature, className = "" }: FeatureCardProps) {
+  const { t } = useTranslation();
   const Icon = feature.icon;
 
   return (
@@ -34,14 +36,14 @@ function FeatureCardBase({ feature, className = "" }: FeatureCardProps) {
       }}
     >
       {/* Title — capped width so long labels wrap nicely exactly like Figma */}
-      <p className="relative z-10 font-medium text-text-secondary leading-snug break-normal pl-4 pr-2 text-[13px] sm:text-[16px] lg:text-[19px] max-w-[75px] sm:max-w-[95px] lg:max-w-[125px]">
-        {feature.title}
+      <p className="relative z-10 font-medium text-text-secondary leading-snug break-normal pl-4 pr-2 rtl:pr-4 rtl:pl-2 text-[13px] sm:text-[16px] lg:text-[19px] max-w-[75px] sm:max-w-[95px] lg:max-w-[125px]">
+        {feature.titleKey ? t(feature.titleKey) : feature.title}
       </p>
 
-      {/* Accent shape + icon, pinned to the right edge with proportional aspect ratio */}
-      <div className="absolute inset-y-0 right-0 flex aspect-[137/113] h-full items-center justify-center overflow-hidden pointer-events-none">
+      {/* Accent shape + icon, pinned to the right edge in LTR, left edge in RTL */}
+      <div className="absolute inset-y-0 right-0 rtl:left-0 rtl:right-auto flex aspect-[137/113] h-full items-center justify-center overflow-hidden pointer-events-none">
         <IconeofAnimatSection
-          className="absolute inset-0 h-full w-full text-secondary transition-colors duration-300 group-hover:text-[#A7D1DE]"
+          className="absolute inset-0 h-full w-full text-secondary transition-colors duration-300 group-hover:text-[#A7D1DE] rtl:-scale-x-100"
         />
         <Icon
           className="relative z-10 h-6 w-6 sm:h-7 sm:w-7 lg:h-9 lg:w-9 text-text-secondary shrink-0 transition-transform duration-300 group-hover:scale-110"

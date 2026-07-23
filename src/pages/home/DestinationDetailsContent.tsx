@@ -8,20 +8,22 @@ import { useUnitsSort, type SortOption } from "../../hooks/useUnitsSort";
 import FilterDrawer from "../../components/filterCcomponents/FilterDrawer";
 import FilterIcon from "../../components/icons/Filter";
 import SortIcon from "../../components/icons/SortIcon";
+import { useTranslation } from "react-i18next";
 
 interface DestinationDetailsContentProps {
 	destinationSlug: string;
 }
 
-const SORT_OPTIONS: { label: string; value: SortOption }[] = [
-	{ label: "Maximum Price", value: "max-price" },
-	{ label: "Minimum Price", value: "min-price" },
-	{ label: "Ready By", value: "ready-by" },
-	{ label: "Minimum Installments", value: "min-installments" },
-	{ label: "Maximum Installments", value: "max-installments" },
+const SORT_OPTIONS: { labelKey: string; value: SortOption }[] = [
+	{ labelKey: "destinationDetails.sort.maxPrice", value: "max-price" },
+	{ labelKey: "destinationDetails.sort.minPrice", value: "min-price" },
+	{ labelKey: "destinationDetails.sort.readyBy", value: "ready-by" },
+	{ labelKey: "destinationDetails.sort.minInstallments", value: "min-installments" },
+	{ labelKey: "destinationDetails.sort.maxInstallments", value: "max-installments" },
 ];
 
 const DestinationDetailsContent = ({ destinationSlug }: DestinationDetailsContentProps) => {
+	const { t } = useTranslation();
 	const destination = destinations.find((item) => item.slug === destinationSlug) as DestinationData | undefined;
 	const [activeTab, setActiveTab] = useState("All");
 	const [isFilterOpen, setIsFilterOpen] = useState(false);
@@ -66,10 +68,10 @@ const DestinationDetailsContent = ({ destinationSlug }: DestinationDetailsConten
 				<div className="mb-6 flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
 					<div>
 						<h2 className="text-3xl font-semibold tracking-tight text-text-secondary sm:text-[40px]">
-							Explore {destination.title} Properties
+							{t("destinationDetails.exploreProperties", { title: destination.titleKey ? t(destination.titleKey) : destination.title })}
 						</h2>
 						<p className="mt-3 max-w-2xl text-sm leading-relaxed text-text-darker sm:text-base">
-							{destination.description}
+							{destination.descriptionKey ? t(destination.descriptionKey) : destination.description}
 						</p>
 					</div>
 					
@@ -83,7 +85,7 @@ const DestinationDetailsContent = ({ destinationSlug }: DestinationDetailsConten
             className="inline-flex items-center gap-2 rounded-md border border-[#747474] bg-white px-[16px] py-[8px] text-xs font-semibold text-primary shadow-sm hover:bg-gray-50 transition-colors cursor-pointer"
           >
             <FilterIcon className="h-4 w-4 text-primary" />
-            <span>Filter</span>
+            <span>{t("destinationDetails.filter")}</span>
           </motion.button>
 
           <div className="relative">
@@ -95,7 +97,7 @@ const DestinationDetailsContent = ({ destinationSlug }: DestinationDetailsConten
               className="inline-flex items-center gap-2 rounded-md border border-[#747474] bg-white px-[16px] py-[8px] text-xs font-semibold text-primary shadow-sm hover:bg-gray-50 transition-colors cursor-pointer"
             >
               <span>
-                Sort{activeSort ? `: ${SORT_OPTIONS.find((o) => o.value === activeSort)?.label}` : ""}
+                {t("destinationDetails.sort")}{activeSort ? `: ${t(SORT_OPTIONS.find((o) => o.value === activeSort)?.labelKey || "")}` : ""}
               </span>
               <SortIcon className="w-[18px] h-[18px] text-primary" />
             </motion.button>
@@ -120,7 +122,7 @@ const DestinationDetailsContent = ({ destinationSlug }: DestinationDetailsConten
 															: "text-[#58696F]"
 													}`}
 												>
-													<span>{opt.label}</span>
+													<span>{t(opt.labelKey)}</span>
 													{isSelected && <span className="w-1.5 h-1.5 rounded-full bg-primary" />}
 												</motion.button>
 											);
@@ -135,20 +137,25 @@ const DestinationDetailsContent = ({ destinationSlug }: DestinationDetailsConten
 				{/* Tabs Navigation */}
 				<div className="mb-8 border-b border-[#E8EFF1]">
 					<nav className="-mb-px flex gap-8" aria-label="Tabs">
-						{["All", "Developer", "Resale", "Rent"].map((tab) => {
-							const isActive = activeTab === tab;
+						{[
+							{ id: "All", labelKey: "destinationDetails.tabs.all" },
+							{ id: "Developer", labelKey: "destinationDetails.tabs.developer" },
+							{ id: "Resale", labelKey: "destinationDetails.tabs.resale" },
+							{ id: "Rent", labelKey: "destinationDetails.tabs.rent" }
+						].map((tab) => {
+							const isActive = activeTab === tab.id;
 							return (
 								<button
-									key={tab}
+									key={tab.id}
 									type="button"
-									onClick={() => setActiveTab(tab)}
+									onClick={() => setActiveTab(tab.id)}
 									className={`whitespace-nowrap pb-4 text-sm font-semibold border-b-2 transition-colors ${
 										isActive
 											? "border-primary border-b-primary text-primary"
 											: "border-transparent text-[#7D8D93] hover:text-[#58696F] hover:border-gray-300"
 									}`}
 								>
-									{tab}
+									{t(tab.labelKey)}
 								</button>
 							);
 						})}
@@ -184,7 +191,7 @@ const DestinationDetailsContent = ({ destinationSlug }: DestinationDetailsConten
 							</motion.div>
 						) : (
 							<div className="flex flex-col items-center justify-center py-16 text-center">
-								<p className="text-base text-[#7D8D93]">No properties found in this category.</p>
+								<p className="text-base text-[#7D8D93]">{t("destinationDetails.noProperties")}</p>
 							</div>
 						)}
 					</div>

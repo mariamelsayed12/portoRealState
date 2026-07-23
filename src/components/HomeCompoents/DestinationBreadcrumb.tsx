@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { ChevronRight } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 interface BreadcrumbProps {
   title: string;
@@ -14,6 +15,7 @@ const Breadcrumb = ({
   destinationSlug,
   variant = "dark",
 }: BreadcrumbProps) => {
+  const { t } = useTranslation();
   const isLight = variant === "light";
   
   const textClass = isLight ? "text-[#7D8D93] hover:text-text-secondary" : "text-gray-300 hover:text-white";
@@ -23,7 +25,7 @@ const Breadcrumb = ({
   return (
     <nav className="flex items-center space-x-2 text-sm">
       <Link to="/home" className={`${textClass} transition-colors`}>
-        Home
+        {t("navbar.home")}
       </Link>
       <ChevronRight className={chevronClass} />
       

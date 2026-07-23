@@ -5,6 +5,7 @@ import { motion, useAnimationFrame, useMotionValue } from "framer-motion";
 import FeatureList from "./Featurelist ";
 import { FEATURE_MARQUEE_TOKENS } from "../../data";
 import type { Feature } from "../../interfaces";
+import { useTranslation } from "react-i18next";
 
 export interface FeaturesMarqueeProps {
   features: Feature[];
@@ -21,6 +22,8 @@ export default function FeaturesMarquee({
   title,
   className = "",
 }: FeaturesMarqueeProps) {
+  const { i18n } = useTranslation();
+  const isRtl = i18n.language === "ar";
   const laneRef = useRef<HTMLDivElement | null>(null);
   const [laneWidth, setLaneWidth] = useState(0);
   const isHovered = useRef(false);
@@ -33,28 +36,38 @@ export default function FeaturesMarquee({
     const node = laneRef.current;
     if (!node) return;
 
-    const measure = () => setLaneWidth(node.scrollWidth);
+    const measure = () => {
+      const width = node.scrollWidth;
+      setLaneWidth(width);
+      x.set(0);
+    };
     measure();
 
     const observer = new ResizeObserver(measure);
     observer.observe(node);
     return () => observer.disconnect();
-  }, [features]);
+  }, [features, isRtl]);
 
   useAnimationFrame((_, delta) => {
     if (isHovered.current || laneWidth === 0) return;
 
     const deltaSeconds = delta / 1000;
-    let next = x.get() - speed * deltaSeconds;
-
-    // Wrap seamlessly: once we've scrolled past one full lane, add its
-    // width back so the visual position is identical to x = 0 (lane two
-    // is now sitting exactly where lane one started).
-    if (next <= -laneWidth) {
-      next += laneWidth;
+    
+    if (isRtl) {
+      // Scroll from left to right (positive x direction)
+      let next = x.get() + speed * deltaSeconds;
+      if (next >= laneWidth) {
+        next -= laneWidth;
+      }
+      x.set(next);
+    } else {
+      // Scroll from right to left (negative x direction)
+      let next = x.get() - speed * deltaSeconds;
+      if (next <= -laneWidth) {
+        next += laneWidth;
+      }
+      x.set(next);
     }
-
-    x.set(next);
   });
 
   const handleHoverStart = useCallback(() => {
@@ -92,7 +105,7 @@ export default function FeaturesMarquee({
             {/* Duplicate lane: purely visual, creates the seamless loop. */}
             <div
               className="flex shrink-0"
-              style={{ marginLeft: 24 }}
+              style={isRtl ? { marginRight: 24 } : { marginLeft: 24 }}
             >
               <FeatureList features={secondLaneFeatures} ariaHidden />
             </div>

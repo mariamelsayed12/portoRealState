@@ -9,9 +9,11 @@ import LocationSection from "../components/Location/LocationSection";
 import Image from "../components/Ui/Image";
 import northcost from "../assets/HomePage/northcost.jpg";
 import { motion } from "framer-motion";
+import { useTranslation } from "react-i18next";
 
 
 const DestinationDetails = () => {
+  const { t } = useTranslation();
   const { slug } = useParams<{ slug: string }>();
   const destination = destinations.find((d) => d.slug === slug);
 
@@ -31,7 +33,7 @@ const DestinationDetails = () => {
         {/* Background Image */}
         <img
           src={destination.image}
-          alt={destination.title}
+          alt={destination.titleKey ? t(destination.titleKey) : destination.title}
           className="absolute inset-0 w-full h-full object-cover object-center z-0"
         />
         {/* Dark Overlay */}
@@ -41,12 +43,12 @@ const DestinationDetails = () => {
         <div className="relative z-20 w-full max-w-[1440px] mx-auto px-6 sm:px-12 lg:px-[120px] pt-[120px] pb-[48px] lg:h-full flex flex-col justify-end">
           {/* Breadcrumbs */}
           <div className="mb-[24px]">
-             <DestinationBreadcrumb title={destination.breadcrumbLabel || destination.title} />
+             <DestinationBreadcrumb title={destination.breadcrumbLabelKey ? t(destination.breadcrumbLabelKey) : (destination.breadcrumbLabel || destination.title)} />
           </div>
 
           <div className="flex flex-col gap-[24px] items-start w-full">
             <h1 className="text-[32px] sm:text-[40px] font-medium text-[#f5f9fa] font-['Poppins'] leading-[normal]">
-              {destination.title}
+              {destination.titleKey ? t(destination.titleKey) : destination.title}
             </h1>
             
             <DestinationStats 
@@ -73,7 +75,7 @@ const DestinationDetails = () => {
       <section className="container max lg:pt-10 md:pt-8 pt-5">
         <div className="overflow-hidden">
           <Image
-            alt="village image"
+            alt={t("northCoastInvestment.landscape.alt")}
             imageurl={northcost}
             className="h-[250px] w-full  md:h-[400px] object-cover lg:h-[526px]"
           />

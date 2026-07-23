@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 interface DestinationStatsProps {
   startingPrice: string;
@@ -24,12 +25,30 @@ const DestinationStats: React.FC<DestinationStatsProps> = ({
   availableListings,
   developer,
 }) => {
+  const { t } = useTranslation();
+
+  const formatStartingPrice = (price: string) => {
+    return price.replace("EGP", t("search.egp"));
+  };
+  
+  const formatRentalYield = (yieldVal: string) => {
+    return yieldVal.replace("Up to", t("destinations.upTo"));
+  };
+
+  const formatAvailableListings = (listings: string) => {
+    return listings.replace("More than", t("destinations.moreThan"));
+  };
+
+  const formatDeveloper = (dev: string) => {
+    return dev === "Amer Group" ? t("destinations.developer.amerGroup") : dev;
+  };
+
   return (
     <div className="grid grid-cols-2 sm:flex sm:flex-wrap sm:items-center gap-[16px] sm:gap-[24px] w-full">
-      <StatCard label="Starting Price" value={startingPrice} />
-      <StatCard label="Rental Yield" value={rentalYield} />
-      <StatCard label="Available Listing" value={availableListings} />
-      <StatCard label="Developer" value={developer} />
+      <StatCard label={t("destinationDetails.startingPrice")} value={formatStartingPrice(startingPrice)} />
+      <StatCard label={t("destinationDetails.rentalYield")} value={formatRentalYield(rentalYield)} />
+      <StatCard label={t("destinationDetails.availableListing")} value={formatAvailableListings(availableListings)} />
+      <StatCard label={t("destinationDetails.developer")} value={formatDeveloper(developer)} />
     </div>
   );
 };

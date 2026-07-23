@@ -13,6 +13,7 @@ export interface Feature {
   id: string;
   /** Card label. Can wrap to two lines (e.g. "Medical Service"). */
   title: string;
+  titleKey?: string;
   /** Icon component rendered inside the card's accent shape. */
   icon: ComponentType<any>;
 }
@@ -76,8 +77,10 @@ export interface DestinationData {
   title: string;
   titleKey?: string;
   breadcrumbLabel?: string;
+  breadcrumbLabelKey?: string;
   image: string;
   description: string;
+  descriptionKey?: string;
   developer: string;
   developerKey?: string;
   price: string;
@@ -86,6 +89,7 @@ export interface DestinationData {
   availableListings: string;
   hasArrowBadge: boolean;
   address?: string;
+  addressKey?: string;
   phone?: string;
   email?: string;
   coordinates?: {
