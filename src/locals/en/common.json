@@ -272,5 +272,20 @@
     "management.validation.fullNameMin": "Full Name must be at least 3 characters",
     "management.validation.phoneNumberRequired": "Phone Number is required",
     "management.validation.phoneNumberDigits": "Phone number must be digits only",
-    "management.validation.phoneNumberMin": "Phone number must be at least 8 digits"
+    "management.validation.phoneNumberMin": "Phone number must be at least 8 digits",
+    "about.hero.imageAlt": "Luxury Resort Deck",
+    "about.hero.title": "In Porto We Offer Exceptional Opportunities Across North Coast",
+    "about.hero.cards.northCoast.label": "North Coast",
+    "about.hero.cards.northCoast.highlight": "Specialists",
+    "about.hero.cards.verified.label": "Verified",
+    "about.hero.cards.verified.highlight": "Listings",
+    "about.hero.cards.personal.label": "Personal",
+    "about.hero.cards.personal.highlight": "Advisory",
+    "about.hero.cards.services.label": "End-to-End",
+    "about.hero.cards.services.highlight": "Services",
+    "about.partner.title": "Your Investment Partner",
+    "about.partner.sales": "Property Sales",
+    "about.partner.resale": "Resale",
+    "about.partner.rent": "Rent",
+    "about.partner.management": "Management"
 }

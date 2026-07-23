@@ -272,5 +272,20 @@
     "management.validation.fullNameMin": "يجب أن يكون الاسم الكامل 3 أحرف على الأقل",
     "management.validation.phoneNumberRequired": "رقم الهاتف مطلوب",
     "management.validation.phoneNumberDigits": "يجب أن يحتوي رقم الهاتف على أرقام فقط",
-    "management.validation.phoneNumberMin": "يجب أن يكون رقم الهاتف 8 أرقام على الأقل"
+    "management.validation.phoneNumberMin": "يجب أن يكون رقم الهاتف 8 أرقام على الأقل",
+    "about.hero.imageAlt": "منصة منتجع فاخر",
+    "about.hero.title": "في بورتو نقدم فرصاً استثنائية في جميع أنحاء الساحل الشمالي",
+    "about.hero.cards.northCoast.label": "الساحل الشمالي",
+    "about.hero.cards.northCoast.highlight": "متخصصون",
+    "about.hero.cards.verified.label": "عقارات",
+    "about.hero.cards.verified.highlight": "موثقة",
+    "about.hero.cards.personal.label": "استشارات",
+    "about.hero.cards.personal.highlight": "شخصية",
+    "about.hero.cards.services.label": "خدمات",
+    "about.hero.cards.services.highlight": "متكاملة",
+    "about.partner.title": "شريكك الاستثماري",
+    "about.partner.sales": "مبيعات العقارات",
+    "about.partner.resale": "إعادة البيع",
+    "about.partner.rent": "الإيجار",
+    "about.partner.management": "إدارة الممتلكات"
 }

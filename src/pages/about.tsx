@@ -2,6 +2,7 @@ import aboutImage from "../assets/aboutpage.jpg";
 import HomeIcon from "../components/icons/homeiconeinabout";
 import ChatIcon from "../components/icons/ChatIcon";
 import BackgroundShapeInAbout from "../components/icons/backgroundfInAbout";
+import { useTranslation } from "react-i18next";
 
 interface CardProps {
   label: string;
@@ -24,11 +25,12 @@ const WhatWeOfferCard = ({ label, highlight }: CardProps) => {
 };
 
 const AboutPage = () => {
+  const { t } = useTranslation();
   const heroCards = [
-    { label: "North Coast", highlight: "Specialists" },
-    { label: "Verified", highlight: "Listings" },
-    { label: "Personal", highlight: "Advisory" },
-    { label: "End-to-End", highlight: "Services" },
+    { label: t("about.hero.cards.northCoast.label"), highlight: t("about.hero.cards.northCoast.highlight") },
+    { label: t("about.hero.cards.verified.label"), highlight: t("about.hero.cards.verified.highlight") },
+    { label: t("about.hero.cards.personal.label"), highlight: t("about.hero.cards.personal.highlight") },
+    { label: t("about.hero.cards.services.label"), highlight: t("about.hero.cards.services.highlight") },
   ];
 
   return (
@@ -37,15 +39,14 @@ const AboutPage = () => {
       <section className="relative w-full h-[460px] sm:h-[480px] lg:h-[483px] rounded-b-[48px] sm:rounded-b-[72px] lg:rounded-b-[99px] overflow-hidden bg-[#0c1618] z-10">
         <img
           src={aboutImage}
-          alt="Luxury Resort Deck"
+          alt={t("about.hero.imageAlt")}
           className="absolute inset-0 w-full h-full object-cover object-center z-0 select-none"
         />
         <div className="absolute inset-0 bg-black/45 z-10" />
 
         <div className="relative z-20 max-w-7xl mx-auto px-6 h-full flex flex-col justify-center items-center text-center pt-16">
           <h1 className="text-2xl sm:text-3xl lg:text-[40px] font-medium text-[#EDEFF2] font-['Poppins'] tracking-tight leading-normal sm:leading-normal lg:leading-normal max-w-[794px]">
-            In Porto We Offer Exceptional
-            <br className="hidden sm:inline" />  Opportunities Across North Coast
+            {t("about.hero.title")}
           </h1>
 
           {/* Cards Grid */}
@@ -78,36 +79,34 @@ const AboutPage = () => {
 
             {/* Centered Heading */}
             <h2 className="absolute left-[58px] top-[53px] w-[370px] h-[120px] font-['Poppins'] font-medium text-[40px] leading-[44px] text-[#141414] text-center flex items-center justify-center">
-              Your Investement
-              <br />
-              Partner
+              {t("about.partner.title")}
             </h2>
 
             {/* Top-Left Pill */}
             <div className="absolute left-0 top-0 w-[161px] h-[53px] bg-[#E9F4F7] rounded-[44px] flex items-center justify-center shadow-sm select-none">
               <span className="font-['Poppins'] font-medium text-[19px] text-[#141414]">
-                Property Sales
+                {t("about.partner.sales")}
               </span>
             </div>
 
             {/* Top-Right Pill */}
             <div className="absolute left-[325px] top-0 w-[88px] h-[53px] bg-[#E9F4F7] rounded-[44px] flex items-center justify-center shadow-sm select-none">
               <span className="font-['Poppins'] font-medium text-[19px] text-[#141414]">
-                Resale
+                {t("about.partner.resale")}
               </span>
             </div>
 
             {/* Bottom-Left Pill */}
             <div className="absolute left-[93px] top-[158px] w-[68px] h-[53px] bg-[#E9F4F7] rounded-[44px] flex items-center justify-center shadow-sm select-none">
               <span className="font-['Poppins'] font-medium text-[19px] text-[#141414]">
-                Rent
+                {t("about.partner.rent")}
               </span>
             </div>
 
             {/* Bottom-Right Pill */}
             <div className="absolute left-[325px] top-[158px] w-[155px] h-[53px] bg-[#E9F4F7] rounded-[44px] flex items-center justify-center shadow-sm select-none">
               <span className="font-['Poppins'] font-medium text-[19px] text-[#141414]">
-                Management
+                {t("about.partner.management")}
               </span>
             </div>
           </div>
@@ -137,36 +136,34 @@ const AboutPage = () => {
 
             {/* Text */}
             <h2 className="absolute left-[40.46px] top-[64px] w-[258.08px] h-[84px] font-['Poppins'] font-semibold text-[28px] leading-[32px] text-[#141414] text-center flex items-center justify-center">
-              Your Investement
-              <br />
-              Partner
+              {t("about.partner.title")}
             </h2>
 
             {/* Top-Left Pill */}
             <div className="absolute left-0 top-0 w-[112.3px] h-[53px] bg-[#E9F4F7] rounded-[44px] flex items-center justify-center shadow-sm select-none">
               <span className="font-['Poppins'] font-medium text-[14px] text-[#141414]">
-                Property Sales
+                {t("about.partner.sales")}
               </span>
             </div>
 
             {/* Top-Right Pill */}
             <div className="absolute left-[226.7px] top-0 w-[61.4px] h-[53px] bg-[#E9F4F7] rounded-[44px] flex items-center justify-center shadow-sm select-none">
               <span className="font-['Poppins'] font-medium text-[14px] text-[#141414]">
-                Resale
+                {t("about.partner.resale")}
               </span>
             </div>
 
             {/* Bottom-Left Pill */}
             <div className="absolute left-[64.9px] top-[158px] w-[47.4px] h-[53px] bg-[#E9F4F7] rounded-[44px] flex items-center justify-center shadow-sm select-none">
               <span className="font-['Poppins'] font-medium text-[14px] text-[#141414]">
-                Rent
+                {t("about.partner.rent")}
               </span>
             </div>
 
             {/* Bottom-Right Pill */}
             <div className="absolute left-[226.7px] top-[158px] w-[108.1px] h-[53px] bg-[#E9F4F7] rounded-[44px] flex items-center justify-center shadow-sm select-none">
               <span className="font-['Poppins'] font-medium text-[14px] text-[#141414]">
-                Management
+                {t("about.partner.management")}
               </span>
             </div>
           </div>
