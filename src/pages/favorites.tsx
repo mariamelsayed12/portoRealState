@@ -20,7 +20,8 @@ import FilterIcon from "../components/icons/Filter";
 import SortIcon from "../components/icons/SortIcon";
 
 const FavoritesPage = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const isRtl = i18n.language === "ar";
   const { favUnite } = useSelector((state: RootState) => state.favUnit);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [isSortOpen, setIsSortOpen] = useState(false);
@@ -225,21 +226,29 @@ const FavoritesPage = () => {
               <div className="flex gap-2">
                 <button
                   type="button"
-                  onClick={() => scrollByCards("left")}
+                  onClick={() => scrollByCards(isRtl ? "right" : "left")}
                   disabled={!canScroll}
-                  className="w-[40px] h-[40px] flex items-center justify-center rounded-[12px] border border-[#747474] text-primary  hover:border-primary transition-all shadow-sm cursor-pointer disabled:cursor-not-allowed disabled:opacity-50"
+                  className="w-[40px] h-[40px] flex items-center justify-center rounded-[12px] border border-[#747474] text-primary hover:border-primary transition-all shadow-sm cursor-pointer disabled:cursor-not-allowed disabled:opacity-50"
                   aria-label="Scroll properties left"
                 >
-                  <ChevronLeft className="w-5 h-5 text-primary hover:text-inherit" />
+                  {isRtl ? (
+                    <ChevronRight className="w-5 h-5 text-primary hover:text-inherit" />
+                  ) : (
+                    <ChevronLeft className="w-5 h-5 text-primary hover:text-inherit" />
+                  )}
                 </button>
                 <button
                   type="button"
-                  onClick={() => scrollByCards("right")}
+                  onClick={() => scrollByCards(isRtl ? "left" : "right")}
                   disabled={!canScroll}
-                  className="w-[40px] h-[40px] flex items-center justify-center rounded-[12px] border border-[#747474] text-primary  hover:border-primary transition-all shadow-sm cursor-pointer disabled:cursor-not-allowed disabled:opacity-50"
+                  className="w-[40px] h-[40px] flex items-center justify-center rounded-[12px] border border-[#747474] text-primary hover:border-primary transition-all shadow-sm cursor-pointer disabled:cursor-not-allowed disabled:opacity-50"
                   aria-label="Scroll properties right"
                 >
-                  <ChevronRight className="w-5 h-5 text-primary hover:text-inherit" />
+                  {isRtl ? (
+                    <ChevronLeft className="w-5 h-5 text-primary hover:text-inherit" />
+                  ) : (
+                    <ChevronRight className="w-5 h-5 text-primary hover:text-inherit" />
+                  )}
                 </button>
               </div>
             </div>

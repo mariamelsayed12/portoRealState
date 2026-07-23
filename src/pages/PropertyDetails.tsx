@@ -29,7 +29,8 @@ import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 
 const PropertyDetails: React.FC = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const isRtl = i18n.language === "ar";
   const { destinationSlug, propertySlug } = useParams<{
     destinationSlug: string;
     propertySlug: string;
@@ -500,16 +501,24 @@ const PropertyDetails: React.FC = () => {
               </h2>
               <div className="flex gap-2">
                 <button 
-                  onClick={scrollLeft}
+                  onClick={isRtl ? scrollRight : scrollLeft}
                   className="w-[40px] h-[40px] flex items-center justify-center rounded-[12px] border border-[#747474] text-primary hover:border-primary transition-all shadow-sm cursor-pointer"
                 >
-                  <ChevronLeft className="w-5 h-5 text-primary" />
+                  {isRtl ? (
+                    <ChevronRight className="w-5 h-5 text-primary" />
+                  ) : (
+                    <ChevronLeft className="w-5 h-5 text-primary" />
+                  )}
                 </button>
                 <button 
-                  onClick={scrollRight}
+                  onClick={isRtl ? scrollLeft : scrollRight}
                   className="w-[40px] h-[40px] flex items-center justify-center rounded-[12px] border border-[#747474] text-primary hover:border-primary transition-all shadow-sm cursor-pointer"
                 >
-                  <ChevronRight className="w-5 h-5 text-primary" />
+                  {isRtl ? (
+                    <ChevronLeft className="w-5 h-5 text-primary" />
+                  ) : (
+                    <ChevronRight className="w-5 h-5 text-primary" />
+                  )}
                 </button>
               </div>
             </div>
