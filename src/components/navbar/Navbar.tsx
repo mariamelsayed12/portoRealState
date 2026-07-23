@@ -55,7 +55,7 @@ const Navbar = ({ variant = "transparent" }: NavbarProps) => {
   return (
     <>
       <nav
-        className={`absolute top-6 left-1/2 transform -translate-x-1/2 w-[calc(100%-2rem)] md:w-[calc(100%-4rem)] max-w-7xl z-40 transition-all duration-300 backdrop-blur-[2.9px] rounded-[99px] ${
+        className={`absolute left-1/2 transform -translate-x-1/2 w-[calc(100%-2rem)] md:w-[calc(100%-4rem)] max-w-7xl z-40 transition-all duration-300 backdrop-blur-[2.9px] rounded-[99px] ${
           isLight
             ? "bg-[#f5f9fa] shadow-[0px_2px_6.3px_1px_rgba(0,0,0,0.14)]"
             : "bg-[rgba(245,249,250,0.05)]"
@@ -164,14 +164,11 @@ const Navbar = ({ variant = "transparent" }: NavbarProps) => {
             </div>
 
             {/* Favorites (Heart) Icon */}
-            <Link
-              to="/favorites"
-              className="relative w-[36px] h-[36px] flex items-center justify-center p-[8px] rounded-[12px] transition-colors duration-200 hover:bg-primary/5 cursor-pointer"
-            >
-              <HeartIcon className="text-primary size-[24px]" />
+            <Link to="/favorites" className="relative">
+              <HeartIcon className="text-primary" />
 
               {favUnite.length > 0 && (
-                <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-red-700 text-white text-[10px] flex items-center justify-center font-bold">
+                <span className="absolute -top-2 -right-2 w-4 h-4 rounded-full bg-red-700 text-white text-xs flex items-center justify-center">
                   {favUnite.length}
                 </span>
               )}
