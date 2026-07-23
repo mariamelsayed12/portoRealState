@@ -19,6 +19,8 @@ import {
   Layers,
   ArrowLeft,
   ArrowRight,
+  ChevronLeft,
+  ChevronRight,
 } from "lucide-react";
 import { FaHeart, FaRegHeart, FaWhatsapp } from "react-icons/fa6";
 import AmenitiesSection from "../components/Ui/AmenitiesSection";
@@ -499,15 +501,15 @@ const PropertyDetails: React.FC = () => {
               <div className="flex gap-2">
                 <button 
                   onClick={scrollLeft}
-                  className="w-8 h-8 flex items-center justify-center rounded-md border border-border bg-white text-[#7D8D93] hover:text-primary hover:border-primary transition-all shadow-sm cursor-pointer"
+                  className="w-[40px] h-[40px] flex items-center justify-center rounded-[12px] border border-[#747474] text-primary hover:border-primary transition-all shadow-sm cursor-pointer"
                 >
-                  <ArrowLeft className="w-4 h-4 text-primary" />
+                  <ChevronLeft className="w-5 h-5 text-primary" />
                 </button>
                 <button 
                   onClick={scrollRight}
-                  className="w-8 h-8 flex items-center justify-center rounded-md border border-border bg-white text-[#7D8D93] hover:text-primary hover:border-primary transition-all shadow-sm cursor-pointer"
+                  className="w-[40px] h-[40px] flex items-center justify-center rounded-[12px] border border-[#747474] text-primary hover:border-primary transition-all shadow-sm cursor-pointer"
                 >
-                  <ArrowRight className="w-4 h-4 text-primary" />
+                  <ChevronRight className="w-5 h-5 text-primary" />
                 </button>
               </div>
             </div>

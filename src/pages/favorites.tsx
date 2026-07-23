@@ -3,8 +3,8 @@ import { useSelector } from "react-redux";
 import { AnimatePresence, motion } from "framer-motion";
 import {
   Heart,
-  ArrowLeft,
-  ArrowRight,
+  ChevronLeft,
+  ChevronRight,
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
@@ -227,19 +227,19 @@ const FavoritesPage = () => {
                   type="button"
                   onClick={() => scrollByCards("left")}
                   disabled={!canScroll}
-                  className="w-8 h-8 flex items-center justify-center rounded-full border border-border bg-white text-[#7D8D93] hover:text-primary hover:border-primary transition-all shadow-sm cursor-pointer disabled:cursor-not-allowed disabled:opacity-50"
+                  className="w-[40px] h-[40px] flex items-center justify-center rounded-[12px] border border-[#747474] text-primary  hover:border-primary transition-all shadow-sm cursor-pointer disabled:cursor-not-allowed disabled:opacity-50"
                   aria-label="Scroll properties left"
                 >
-                  <ArrowLeft className="w-4 h-4 text-primary" />
+                  <ChevronLeft className="w-5 h-5 text-primary hover:text-inherit" />
                 </button>
                 <button
                   type="button"
                   onClick={() => scrollByCards("right")}
                   disabled={!canScroll}
-                  className="w-8 h-8 flex items-center justify-center rounded-full border border-border bg-white text-[#7D8D93] hover:text-primary hover:border-primary transition-all shadow-sm cursor-pointer disabled:cursor-not-allowed disabled:opacity-50"
+                  className="w-[40px] h-[40px] flex items-center justify-center rounded-[12px] border border-[#747474] text-primary  hover:border-primary transition-all shadow-sm cursor-pointer disabled:cursor-not-allowed disabled:opacity-50"
                   aria-label="Scroll properties right"
                 >
-                  <ArrowRight className="w-4 h-4 text-primary" />
+                  <ChevronRight className="w-5 h-5 text-primary hover:text-inherit" />
                 </button>
               </div>
             </div>
