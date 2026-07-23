@@ -389,7 +389,7 @@ const PropertyDetails: React.FC = () => {
           </div>
 
           {/* Right Block: Pricing Actions Widget */}
-          <div className="lg:col-span-5 bg-white border border-[#EDEFF2] rounded-[12px] p-[16px] shadow-[0px_2px_6.3px_1px_rgba(0,0,0,0.14)] lg:sticky lg:top-36 flex flex-col gap-[40px]">
+          <div className="lg:col-span-5 bg-white border border-[#EDEFF2] rounded-[12px] p-[16px] shadow-[0px_2px_6.3px_1px_rgba(0,0,0,0.14)]  lg:top-36 flex flex-col gap-[40px]">
             {/* Header / Switcher row */}
             <div className="flex flex-col gap-[32px] w-full">
               <div className="flex items-center justify-between w-full">
