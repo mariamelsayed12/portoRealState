@@ -351,7 +351,8 @@
     "propertyDetails.pricing.cashPrice": "Cash Price",
     "propertyDetails.pricing.cashNote": "(Standard cash discount may apply, inquire details)",
     "propertyDetails.whatsappMsg": "Hi, I'm interested in {{propertyTitle}} at {{destinationTitle}}",
-    "propertyDetails.actions.whatsapp": "WhatsApp",
+    "propertyDetails.actions.whatsapp": "Chat on WhatsApp",
     "propertyDetails.actions.callUs": "Call Us",
-    "propertyDetails.relatedTitle": "You may also like"
+    "propertyDetails.relatedTitle": "You may also like",
+    "propertyDetails.pricing.pricingHeader": "Pricing"
 }

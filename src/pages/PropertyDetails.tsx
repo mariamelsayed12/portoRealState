@@ -346,41 +346,42 @@ const PropertyDetails: React.FC = () => {
         {/* Content Details Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 mt-12 items-start">
           {/* Left Block: Description and Specs Grid */}
-          <div className="lg:col-span-7 flex flex-col">
-            {/* Location Tag */}
-            <div className="flex items-center gap-1 text-sm font-semibold text-primary mb-2">
-              <MapPin className="w-4 h-4" />
-              <span>{getTranslatedDestinationName(destination.title)}</span>
+          <div className="lg:col-span-7 flex flex-col gap-[24px]">
+            {/* Location and Title Block */}
+            <div className="flex flex-col gap-[12px]">
+              {/* Location Tag */}
+              <div className="flex items-center gap-[8px]">
+                <MapPin className="w-[20px] h-[20px] text-[#464646]" />
+                <span className="font-['Poppins'] font-normal text-[14px] text-[#464646]">
+                  {getTranslatedDestinationName(destination.title)}
+                </span>
+              </div>
+
+              {/* Property Title */}
+              <h1 className="font-['Poppins'] font-medium text-[19px] text-[#141414] leading-tight">
+                {t("propertyDetails.titleTemplate", { propertyTitle: getTranslatedPropertyTitle(property.title), destinationTitle: getTranslatedDestinationName(destination.title) })}
+              </h1>
             </div>
 
-            {/* Property Title */}
-            <h1 className="text-[28px] sm:text-[32px] font-bold text-text-secondary leading-tight mb-5">
-              {t("propertyDetails.titleTemplate", { propertyTitle: getTranslatedPropertyTitle(property.title), destinationTitle: getTranslatedDestinationName(destination.title) })}
-            </h1>
-
             {/* Description Paragraph */}
-            <p className="text-[#58696F] text-[15px] sm:text-base leading-relaxed mb-8">
+            <p className="font-['Poppins'] font-normal text-[16px] text-[#464646] leading-relaxed w-full">
               {descriptionText}
             </p>
 
             {/* Specs Grid */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 sm:gap-5">
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-[16px] w-full">
               {specsConfig.map((spec, index) => {
-                const Icon = spec.icon;
                 return (
                   <div
                     key={index}
-                    className="bg-white border border-[#E8EFF1] rounded-md p-5 flex flex-col justify-between h-[100px] shadow-[0_4px_12px_rgba(73,95,104,0.02)]"
+                    className="bg-white border border-[#d4d5d8] rounded-[12px] px-[16px] py-[8px] flex flex-col gap-[8px] items-start justify-center min-h-[76px]"
                   >
-                    <div className="flex items-center justify-between">
-                      <span className="text-[15px] sm:text-base font-semibold text-text-secondary">
-                        {spec.value}
-                      </span>
-                      <Icon className="w-4 h-4 text-primary opacity-80" />
-                    </div>
-                    <span className="text-xs font-semibold text-[#7D8D93] tracking-wide">
+                    <p className="font-['Poppins'] font-normal text-[16px] text-[#141414] truncate w-full">
+                      {spec.value}
+                    </p>
+                    <p className="font-['Poppins'] font-medium text-[16px] text-[#464646] truncate w-full">
                       {spec.label}
-                    </span>
+                    </p>
                   </div>
                 );
               })}
@@ -388,79 +389,96 @@ const PropertyDetails: React.FC = () => {
           </div>
 
           {/* Right Block: Pricing Actions Widget */}
-          <div className="lg:col-span-5 bg-white border border-[#E8EFF1] rounded-[28px] p-6 shadow-[0_8px_30px_rgba(0,0,0,0.02)]">
-            {/* Tabs & Period indicator */}
-            <div className="flex items-center justify-between mb-6 border-b border-[#F2F5F6] pb-4">
-              <div className="flex bg-light-primary p-1 rounded-full">
-                <button
-                  onClick={() => setPricingMode("Installment")}
-                  className={`px-4 py-1.5 text-xs font-semibold rounded-full transition-all ${
-                    pricingMode === "Installment"
-                      ? "bg-white text-text-secondary shadow-sm"
-                      : "text-[#58696F] hover:text-text-secondary"
-                  }`}
-                >
-                  {t("propertyDetails.pricing.installmentTab")}
-                </button>
-                <button
-                  onClick={() => setPricingMode("Cash")}
-                  className={`px-4 py-1.5 text-xs font-semibold rounded-full transition-all ${
-                    pricingMode === "Cash"
-                      ? "bg-white text-text-secondary shadow-sm"
-                      : "text-[#58696F] hover:text-text-secondary"
-                  }`}
-                >
-                  {t("propertyDetails.pricing.cashTab")}
-                </button>
+          <div className="lg:col-span-5 bg-white border border-[#EDEFF2] rounded-[12px] p-[16px] shadow-[0px_2px_6.3px_1px_rgba(0,0,0,0.14)] lg:sticky lg:top-36 flex flex-col gap-[40px]">
+            {/* Header / Switcher row */}
+            <div className="flex flex-col gap-[32px] w-full">
+              <div className="flex items-center justify-between w-full">
+                <div className="flex items-center gap-[16px]">
+                  <span className="font-['Poppins'] font-medium text-[16px] text-[#141414]">
+                    {t("propertyDetails.pricing.pricingHeader", "Pricing")}
+                  </span>
+                  <div className="border border-[#d4d5d8] flex h-[32px] items-center rounded-[12px] bg-white overflow-hidden p-0.5">
+                    <button
+                      onClick={() => setPricingMode("Installment")}
+                      className={`h-[28px] flex items-center justify-center px-[8px] rounded-[10px] font-['Poppins'] font-medium text-[14px] md:text-[16px] transition-all cursor-pointer ${
+                        pricingMode === "Installment"
+                          ? "bg-[#edeff2] text-[#141414]"
+                          : "text-[#141414] hover:text-primary"
+                      }`}
+                    >
+                      {t("propertyDetails.pricing.installmentTab")}
+                    </button>
+                    <button
+                      onClick={() => setPricingMode("Cash")}
+                      className={`h-[28px] flex items-center justify-center px-[8px] rounded-[10px] font-['Poppins'] font-medium text-[14px] md:text-[16px] transition-all cursor-pointer ${
+                        pricingMode === "Cash"
+                          ? "bg-[#edeff2] text-[#141414]"
+                          : "text-[#141414] hover:text-primary"
+                      }`}
+                    >
+                      {t("propertyDetails.pricing.cashTab")}
+                    </button>
+                  </div>
+                </div>
+                <span className="font-['Poppins'] font-medium text-[16px] text-[#464646]">
+                  {pricingMode === "Installment" ? installmentYears : t("propertyDetails.pricing.immediatePayment")}
+                </span>
               </div>
-              <span className="text-xs font-semibold text-[#58696F]">
-                {pricingMode === "Installment" ? installmentYears : t("propertyDetails.pricing.immediatePayment")}
-              </span>
-            </div>
 
-            {/* Pricing Details Display Container */}
-            <div className="bg-[#F5F9FA] rounded-[20px] p-4 flex justify-between items-center mb-6">
-              {pricingMode === "Installment" ? (
-                <>
-                  {/* Price */}
-                  <div className="flex-1 flex flex-col items-center text-center">
-                    <span className="text-xs font-semibold text-[#7D8D93] mb-1">{t("propertyDetails.pricing.price")}</span>
-                    <span className="text-[13px] sm:text-sm font-bold text-text-secondary">
+              {/* Pricing Details Display Container */}
+              <div className="bg-[#f5f9fa] border border-[#d4d5d8] rounded-[12px] p-[12px] flex justify-between items-center w-full">
+                {pricingMode === "Installment" ? (
+                  <>
+                    {/* Price */}
+                    <div className="flex-1 flex flex-col items-center text-center">
+                      <span className="font-['Poppins'] font-medium text-[16px] text-[#464646] mb-2">
+                        {t("propertyDetails.pricing.price")}
+                      </span>
+                      <span className="font-['Poppins'] font-medium text-[19px] text-[#141414]">
+                        {property.price}
+                      </span>
+                    </div>
+                    {/* Separator */}
+                    <div className="w-[1px] h-[40px] bg-[#d4d5d8]" />
+                    {/* Down Payment */}
+                    <div className="flex-1 flex flex-col items-center text-center">
+                      <span className="font-['Poppins'] font-medium text-[16px] text-[#464646] mb-2">
+                        {t("propertyDetails.pricing.downPayment")}
+                      </span>
+                      <span className="font-['Poppins'] font-medium text-[19px] text-[#141414]">
+                        {downPayment}
+                      </span>
+                    </div>
+                    {/* Separator */}
+                    <div className="w-[1px] h-[40px] bg-[#d4d5d8]" />
+                    {/* Monthly Installment */}
+                    <div className="flex-1 flex flex-col items-center text-center">
+                      <span className="font-['Poppins'] font-medium text-[16px] text-[#464646] mb-2">
+                        {t("propertyDetails.pricing.monthly")}
+                      </span>
+                      <span className="font-['Poppins'] font-medium text-[19px] text-[#141414]">
+                        {monthlyInstallment}
+                      </span>
+                    </div>
+                  </>
+                ) : (
+                  <div className="w-full flex flex-col items-center text-center py-2">
+                    <span className="font-['Poppins'] font-medium text-[16px] text-[#464646] mb-2">
+                      {t("propertyDetails.pricing.cashPrice")}
+                    </span>
+                    <span className="font-['Poppins'] font-medium text-[19px] text-[#141414]">
                       {property.price}
                     </span>
-                  </div>
-                  {/* Separator */}
-                  <div className="w-[1px] h-10 bg-[#D4D5D8]" />
-                  {/* Down Payment */}
-                  <div className="flex-1 flex flex-col items-center text-center">
-                    <span className="text-xs font-semibold text-[#7D8D93] mb-1">{t("propertyDetails.pricing.downPayment")}</span>
-                    <span className="text-[13px] sm:text-sm font-bold text-text-secondary">
-                      {downPayment}
+                    <span className="text-[12px] text-[#464646] mt-2">
+                      {t("propertyDetails.pricing.cashNote")}
                     </span>
                   </div>
-                  {/* Separator */}
-                  <div className="w-[1px] h-10 bg-[#D4D5D8]" />
-                  {/* Monthly Installment */}
-                  <div className="flex-1 flex flex-col items-center text-center">
-                    <span className="text-xs font-semibold text-[#7D8D93] mb-1">{t("propertyDetails.pricing.monthly")}</span>
-                    <span className="text-[13px] sm:text-sm font-bold text-text-secondary">
-                      {monthlyInstallment}
-                    </span>
-                  </div>
-                </>
-              ) : (
-                <div className="w-full flex flex-col items-center text-center py-2">
-                  <span className="text-xs font-semibold text-[#7D8D93] mb-1">{t("propertyDetails.pricing.cashPrice")}</span>
-                  <span className="text-lg font-bold text-text-secondary">{property.price}</span>
-                  <span className="text-[11px] text-[#7D8D93] mt-1">
-                    {t("propertyDetails.pricing.cashNote")}
-                  </span>
-                </div>
-              )}
+                )}
+              </div>
             </div>
 
             {/* Call Actions Row */}
-            <div className="grid grid-cols-2 gap-3">
+            <div className="flex gap-[15px] items-center w-full">
               {/* WhatsApp Button */}
               <a
                 href={`https://wa.me/20113333333?text=${encodeURIComponent(
@@ -468,18 +486,18 @@ const PropertyDetails: React.FC = () => {
                 )}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center justify-center gap-2 py-3 px-4 rounded-xl border-2 border-[#25D366] text-[#25D366] text-sm font-semibold hover:bg-[#25D366]/5 transition-all active:scale-[0.98] cursor-pointer"
+                className="border border-[#747474] flex-1 flex gap-[8px] h-[48px] items-center justify-center px-[24px] py-[8px] rounded-[12px] text-[#44992e] text-[16px] font-['Poppins'] font-medium hover:bg-[#44992e]/5 hover:border-[#44992e] transition-all cursor-pointer text-center whitespace-nowrap"
               >
-                <FaWhatsapp className="w-4 h-4" />
+                <FaWhatsapp className="w-[24px] h-[24px] text-[#44992e]" />
                 <span>{t("propertyDetails.actions.whatsapp")}</span>
               </a>
 
               {/* Call Us Button */}
               <a
                 href="tel:+20113333333"
-                className="flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-primary text-white text-sm font-semibold hover:bg-opacity-95 transition-all active:scale-[0.98] cursor-pointer"
+                className="bg-[#1e8cab] flex-1 flex gap-[8px] h-[48px] items-center justify-center px-[24px] py-[8px] rounded-[12px] text-[#f5f6fa] text-[16px] font-['Poppins'] font-medium hover:bg-[#1a7a96] transition-all cursor-pointer text-center whitespace-nowrap"
               >
-                <Phone className="w-4 h-4 fill-current" />
+                <Phone className="w-[24px] h-[24px] text-[#f5f6fa] fill-current" />
                 <span>{t("propertyDetails.actions.callUs")}</span>
               </a>
             </div>

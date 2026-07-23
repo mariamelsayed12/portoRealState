@@ -351,7 +351,8 @@
     "propertyDetails.pricing.cashPrice": "السعر كاش",
     "propertyDetails.pricing.cashNote": "(قد يتم تطبيق خصم الكاش القياسي، يرجى الاستفسار عن التفاصيل)",
     "propertyDetails.whatsappMsg": "مرحباً، أنا مهتم بـ {{propertyTitle}} في {{destinationTitle}}",
-    "propertyDetails.actions.whatsapp": "واتساب",
+    "propertyDetails.actions.whatsapp": "تواصل عبر واتساب",
     "propertyDetails.actions.callUs": "اتصل بنا",
-    "propertyDetails.relatedTitle": "قد يعجبك أيضاً"
+    "propertyDetails.relatedTitle": "قد يعجبك أيضاً",
+    "propertyDetails.pricing.pricingHeader": "الأسعار"
 }
