@@ -2,11 +2,12 @@ import { useState, useMemo, useRef } from "react";
 import { useSelector } from "react-redux";
 import { AnimatePresence, motion } from "framer-motion";
 import {
-  
   Heart,
   ArrowLeft,
   ArrowRight,
 } from "lucide-react";
+import { useTranslation } from "react-i18next";
+
 import type { RootState } from "../app/store";
 import UnitCard from "../components/UnitCard";
 import { useUnitsFilter } from "../hooks/useUnitsFilter";
@@ -18,18 +19,19 @@ import FilterDrawer from "../components/filterCcomponents/FilterDrawer";
 import FilterIcon from "../components/icons/Filter";
 import SortIcon from "../components/icons/SortIcon";
 
-const SORT_OPTIONS: { label: string; value: SortOption }[] = [
-  { label: "Maximum Price", value: "max-price" },
-  { label: "Minimum Price", value: "min-price" },
-  { label: "Ready By", value: "ready-by" },
-  { label: "Minimum Installments", value: "min-installments" },
-  { label: "Maximum Installments", value: "max-installments" },
-];
-
 const FavoritesPage = () => {
+  const { t } = useTranslation();
   const { favUnite } = useSelector((state: RootState) => state.favUnit);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [isSortOpen, setIsSortOpen] = useState(false);
+
+  const SORT_OPTIONS: { label: string; value: SortOption }[] = useMemo(() => [
+    { label: t("rent.sort.maxPrice"), value: "max-price" },
+    { label: t("rent.sort.minPrice"), value: "min-price" },
+    { label: t("rent.sort.readyBy"), value: "ready-by" },
+    { label: t("rent.sort.minInstallments"), value: "min-installments" },
+    { label: t("rent.sort.maxInstallments"), value: "max-installments" },
+  ], [t]);
 
   // Apply sidebar filters on top of favorite properties
   const {
@@ -72,11 +74,10 @@ const FavoritesPage = () => {
       <div className="flex flex-col items-center justify-center py-20 text-center">
         <Heart className="h-16 w-16 text-[#7D8D93] mb-4 opacity-50" />
         <h2 className="text-2xl font-semibold text-text-secondary mb-2">
-          No Saved Properties
+          {t("favorites.noSavedTitle")}
         </h2>
         <p className="text-sm text-[#7D8D93] max-w-sm">
-          Tap the heart icon on any property card to save it here for quick
-          access later.
+          {t("favorites.noSavedDescription")}
         </p>
       </div>
     );
@@ -89,47 +90,46 @@ const FavoritesPage = () => {
         <div className="mb-8 flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <h1 className="text-3xl font-semibold tracking-tight text-text-secondary sm:text-[40px]">
-              Saved Properties
+              {t("favorites.title")}
             </h1>
             <p className="mt-2 text-sm text-[#7D8D93]">
-              {sortedUnits.length}{" "}
-              {sortedUnits.length === 1 ? "property" : "properties"} found
+              {sortedUnits.length === 1 ? t("favorites.resultCountOne") : t("favorites.resultCountOther", { count: sortedUnits.length })}
             </p>
           </div>
 
           {/* Action Buttons: Filter & Sort */}
           <div className="flex items-center gap-3 self-start sm:self-auto shrink-0 z-20">
-          	<motion.button
-            type="button"
-            onClick={() => setIsFilterOpen(!isFilterOpen)}
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-            className="inline-flex items-center gap-2 rounded-md border border-[#747474] bg-white px-[16px] py-[8px] text-xs font-semibold text-primary shadow-sm hover:bg-gray-50 transition-colors cursor-pointer"
-          >
-            <FilterIcon className="h-4 w-4 text-primary" />
-            <span>Filter</span>
-          </motion.button>
-
-          <div className="relative">
             <motion.button
               type="button"
-              onClick={() => setIsSortOpen(!isSortOpen)}
+              onClick={() => setIsFilterOpen(!isFilterOpen)}
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               className="inline-flex items-center gap-2 rounded-md border border-[#747474] bg-white px-[16px] py-[8px] text-xs font-semibold text-primary shadow-sm hover:bg-gray-50 transition-colors cursor-pointer"
             >
-              <span>
-                Sort{activeSort ? `: ${SORT_OPTIONS.find((o) => o.value === activeSort)?.label}` : ""}
-              </span>
-              <SortIcon className="w-[18px] h-[18px] text-primary" />
+              <FilterIcon className="h-4 w-4 text-primary" />
+              <span>{t("favorites.filterBtn")}</span>
             </motion.button>
+
+            <div className="relative">
+              <motion.button
+                type="button"
+                onClick={() => setIsSortOpen(!isSortOpen)}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                className="inline-flex items-center gap-2 rounded-md border border-[#747474] bg-white px-[16px] py-[8px] text-xs font-semibold text-primary shadow-sm hover:bg-gray-50 transition-colors cursor-pointer"
+              >
+                <span>
+                  {t("favorites.sortBtn")}{activeSort ? `: ${SORT_OPTIONS.find((o) => o.value === activeSort)?.label}` : ""}
+                </span>
+                <SortIcon className="w-[18px] h-[18px] text-primary" />
+              </motion.button>
               {isSortOpen && (
                 <>
                   <div
                     className="fixed inset-0 z-10"
                     onClick={() => setIsSortOpen(false)}
                   />
-                  <div className="absolute right-0 top-full mt-2 z-20 w-52 bg-white rounded-xl shadow-xl border border-[#E8EFF1] py-1 overflow-hidden">
+                  <div className="absolute right-0 rtl:right-auto rtl:left-0 top-full mt-2 z-20 w-52 bg-white rounded-xl shadow-xl border border-[#E8EFF1] py-1 overflow-hidden">
                     {SORT_OPTIONS.map((opt) => {
                       const isSelected = activeSort === opt.value;
                       return (
@@ -141,7 +141,7 @@ const FavoritesPage = () => {
                             setIsSortOpen(false);
                           }}
                           whileHover={{ x: 4, backgroundColor: "#E9F4F7" }}
-                          className={`w-full text-left px-4 py-2 text-xs font-semibold transition-colors flex items-center justify-between cursor-pointer ${
+                          className={`w-full text-left rtl:text-right px-4 py-2 text-xs font-semibold transition-colors flex items-center justify-between cursor-pointer ${
                             isSelected
                               ? "bg-[#E9F4F7] text-primary"
                               : "text-[#58696F]"
@@ -193,7 +193,7 @@ const FavoritesPage = () => {
             ) : (
               <div className="flex flex-col items-center justify-center py-16 text-center">
                 <p className="text-base text-[#7D8D93]">
-                  No properties found matching your criteria.
+                  {t("favorites.noProperties")}
                 </p>
               </div>
             )}
@@ -220,7 +220,7 @@ const FavoritesPage = () => {
           <div className="  w-full pt-12 ">
             <div className="flex items-center justify-between mb-6 sm:mb-8">
               <h2 className="text-2xl sm:text-3xl font-bold text-text-secondary">
-                You May Also Like
+                {t("favorites.recommendedTitle")}
               </h2>
               <div className="flex gap-2">
                 <button

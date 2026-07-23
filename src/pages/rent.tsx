@@ -102,7 +102,7 @@ const RentPage = () => {
             {isSortOpen && (
               <>
                 <div className="fixed inset-0 z-10" onClick={() => setIsSortOpen(false)} />
-                <div className="absolute right-0 top-full mt-2 z-20 w-52 bg-white rounded-xl shadow-xl border border-[#E8EFF1] py-1 overflow-hidden">
+                <div className="absolute right-0 rtl:right-auto rtl:left-0 top-full mt-2 z-20 w-52 bg-white rounded-xl shadow-xl border border-[#E8EFF1] py-1 overflow-hidden">
                   {SORT_OPTIONS.map((opt) => {
                     const isSelected = activeSort === opt.value;
                     return (
@@ -114,7 +114,7 @@ const RentPage = () => {
                           setIsSortOpen(false);
                         }}
                         whileHover={{ x: 4, backgroundColor: "#E9F4F7" }}
-                        className={`w-full text-left px-4 py-2 text-xs font-semibold transition-colors flex items-center justify-between cursor-pointer ${
+                        className={`w-full text-left rtl:text-right px-4 py-2 text-xs font-semibold transition-colors flex items-center justify-between cursor-pointer ${
                           isSelected
                             ? "bg-[#E9F4F7] text-primary"
                             : "text-[#58696F]"

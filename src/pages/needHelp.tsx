@@ -3,6 +3,8 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { toast } from "react-hot-toast";
 import { ChevronDown, Mail, Phone } from "lucide-react";
+import { useTranslation } from "react-i18next";
+
 import contactUsImg from "../assets/contactUs.png";
 import CustomShapeForContact from "../components/icons/CustomShapforContact";
 import Input from "../components/Ui/Input";
@@ -19,6 +21,7 @@ interface ContactUsFormData {
 }
 
 const NeedHelpPage = () => {
+  const { t } = useTranslation();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const {
@@ -42,13 +45,52 @@ const NeedHelpPage = () => {
       // Simulate API call
       await new Promise((resolve) => setTimeout(resolve, 1500));
       console.log("Contact form submitted:", data);
-      toast.success("Thank you! Your help request has been submitted.");
+      toast.success(t("needHelp.successMessage"));
       reset();
     } catch (error) {
       console.error(error);
-      toast.error("An error occurred. Please try again.");
+      toast.error(t("needHelp.errorMessage"));
     } finally {
       setIsSubmitting(false);
+    }
+  };
+
+  const getValidationError = (msg?: string) => {
+    if (!msg) return "";
+    switch (msg.toLowerCase()) {
+      case "full name is required":
+        return t("needHelp.validation.fullNameRequired");
+      case "country code is required":
+        return t("needHelp.validation.phoneCountryCodeRequired");
+      case "phone number is required":
+        return t("needHelp.validation.phoneNumberRequired");
+      case "phone number must contain only digits":
+        return t("needHelp.validation.phoneNumberDigits");
+      case "phone number is too short":
+        return t("needHelp.validation.phoneNumberShort");
+      case "phone number is too long":
+        return t("needHelp.validation.phoneNumberLong");
+      case "description is required":
+        return t("needHelp.validation.descriptionRequired");
+      default:
+        return msg;
+    }
+  };
+
+  const getPhoneCodeLabel = (code: string) => {
+    switch (code) {
+      case "+20":
+        return `${t("needHelp.phoneCodes.eg")} ${code}`;
+      case "+966":
+        return `${t("needHelp.phoneCodes.ksa")} ${code}`;
+      case "+971":
+        return `${t("needHelp.phoneCodes.uae")} ${code}`;
+      case "+44":
+        return `${t("needHelp.phoneCodes.uk")} ${code}`;
+      case "+1":
+        return `${t("needHelp.phoneCodes.us")} ${code}`;
+      default:
+        return code;
     }
   };
 
@@ -64,7 +106,7 @@ const NeedHelpPage = () => {
               <CustomShapeForContact className="absolute inset-0 w-full h-full" />
               <img
                 src={contactUsImg}
-                alt="We are here to help"
+                alt={t("needHelp.hero.imageAlt")}
                 className="absolute left-[9%] top-[5.76%] w-[81.8%] h-[89.2%] object-contain"
               />
             </div>
@@ -72,11 +114,10 @@ const NeedHelpPage = () => {
             {/* Heading & Subtitle */}
             <div className="flex flex-col gap-[24px] items-center">
               <h1 className="font-['Poppins'] font-medium text-[28px] sm:text-[34px] lg:text-[40px] leading-normal text-[#141414]">
-                We are here to help!
+                {t("needHelp.hero.title")}
               </h1>
               <p className="font-['Poppins'] font-normal text-[14px] sm:text-[16px] text-[#464646] leading-normal max-w-[436px]">
-                Fill out the form and one of our agents will be
-                <br className="hidden sm:inline" /> in touch within 24 hours.
+                {t("needHelp.hero.subtitle")}
               </p>
             </div>
 
@@ -120,12 +161,12 @@ const NeedHelpPage = () => {
                 {/* Full Name Field */}
                 <div className="flex flex-col gap-[8px]">
                   <label className="font-['Poppins'] font-normal text-[16px] text-[#141414]">
-                    Full Name
-                    <span className="text-[#1E8CAB] font-bold ml-0.5">*</span>
+                    {t("needHelp.form.fullName")}
+                    <span className="text-[#1E8CAB] font-bold ml-0.5 rtl:mr-0.5">*</span>
                   </label>
                   <Input
                     type="text"
-                    placeholder="Input text"
+                    placeholder={t("needHelp.form.fullNamePlaceholder")}
                     {...register("fullName")}
                     className={`h-[48px] rounded-[8px] border px-[12px] text-[16px] font-['Poppins'] ${
                       errors.fullName
@@ -133,29 +174,29 @@ const NeedHelpPage = () => {
                         : "border-[#1E8CAB] focus:border-[#1E8CAB]"
                     }`}
                   />
-                  <InputErrorMessage msg={errors.fullName?.message} />
+                  <InputErrorMessage msg={getValidationError(errors.fullName?.message)} />
                 </div>
 
                 {/* Phone Number Field */}
                 <div className="flex flex-col gap-[8px] h-auto">
                   <label className="font-['Poppins'] font-normal text-[16px] text-[#141414]">
-                    Phone Number
-                    <span className="text-[#1E8CAB] font-bold ml-0.5">*</span>
+                    {t("needHelp.form.phoneNumber")}
+                    <span className="text-[#1E8CAB] font-bold ml-0.5 rtl:mr-0.5">*</span>
                   </label>
                   <div className="flex gap-[8px] h-[48px]">
                     {/* Prefix selector */}
                     <div className="relative w-[108px] shrink-0">
                       <select
                         {...register("phoneCountryCode")}
-                        className="h-full w-full appearance-none rounded-[8px] border border-[#D4D5D8] bg-white pl-[12px] pr-8 text-[14px] font-['Poppins'] text-[#464646] outline-none focus:border-[#1E8CAB] cursor-pointer"
+                        className="h-full w-full appearance-none rounded-[8px] border border-[#D4D5D8] bg-white pl-[12px] pr-8 rtl:pr-[12px] rtl:pl-8 text-[14px] font-['Poppins'] text-[#464646] outline-none focus:border-[#1E8CAB] cursor-pointer"
                       >
-                        <option value="+20">Eg +20</option>
-                        <option value="+966">Sa +966</option>
-                        <option value="+971">Ae +971</option>
-                        <option value="+44">Uk +44</option>
-                        <option value="+1">Us +1</option>
+                        {["+20", "+966", "+971", "+44", "+1"].map((code) => (
+                          <option key={code} value={code}>
+                            {getPhoneCodeLabel(code)}
+                          </option>
+                        ))}
                       </select>
-                      <div className="pointer-events-none absolute right-[12px] top-1/2 -translate-y-1/2">
+                      <div className="pointer-events-none absolute right-[12px] rtl:left-[12px] rtl:right-auto top-1/2 -translate-y-1/2">
                         <ChevronDown className="h-[20px] w-[20px] text-[#464646]" />
                       </div>
                     </div>
@@ -163,25 +204,26 @@ const NeedHelpPage = () => {
                     {/* Number input */}
                     <Input
                       type="tel"
-                      placeholder="Phone number"
+                      dir="ltr"
+                      placeholder={t("needHelp.form.phoneNumberPlaceholder")}
                       {...register("phoneNumber")}
-                      className={`flex-1 h-full rounded-[8px] border px-[12px] text-[16px] font-['Poppins'] ${
+                      className={`flex-1 h-full rounded-[8px] border px-[12px] text-[16px] font-['Poppins'] text-left ${
                         errors.phoneNumber
                           ? "border-red-500 focus:border-red-500"
                           : "border-[#D4D5D8] focus:border-[#1E8CAB]"
                       }`}
                     />
                   </div>
-                  <InputErrorMessage msg={errors.phoneNumber?.message} />
+                  <InputErrorMessage msg={getValidationError(errors.phoneNumber?.message)} />
                 </div>
 
                 {/* Description Field */}
                 <div className="flex flex-col gap-[8px]">
                   <label className="font-['Poppins'] font-normal text-[16px] text-[#141414]">
-                    Description
+                    {t("needHelp.form.description")}
                   </label>
                   <Textarea
-                    placeholder="Tell us more about your request..."
+                    placeholder={t("needHelp.form.descriptionPlaceholder")}
                     {...register("description")}
                     className={`w-full rounded-[8px] border border-[#D4D5D8] px-[12px] py-[12px] text-[16px] font-['Poppins'] placeholder-[#747474] focus:border-[#1E8CAB] h-[93px] resize-none ${
                       errors.description
@@ -189,7 +231,7 @@ const NeedHelpPage = () => {
                         : ""
                     }`}
                   />
-                  <InputErrorMessage msg={errors.description?.message} />
+                  <InputErrorMessage msg={getValidationError(errors.description?.message)} />
                 </div>
               </div>
 
@@ -199,7 +241,7 @@ const NeedHelpPage = () => {
                 isLoading={isSubmitting}
                 className="w-full h-[48px] rounded-[12px] bg-[#1E8CAB] text-[#F5F6FA] text-[16px] font-medium font-['Poppins'] hover:opacity-90 transition-opacity"
               >
-                Request Consultation
+                {isSubmitting ? t("needHelp.form.submitting") : t("needHelp.form.submit")}
               </Button>
             </form>
           </div>
