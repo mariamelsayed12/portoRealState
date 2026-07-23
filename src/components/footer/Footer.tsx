@@ -49,7 +49,7 @@ const Footer = () => {
 
   return (
     <footer className="bg-white text-[#141414] border-t border-[#EDEFF2]">
-      <div className="mx-auto max-w-7xl px-6 md:px-[120px] py-[60px] flex flex-col gap-[40px]">
+      <div className="mx-auto px-6 md:px-[120px] py-[60px] flex flex-col gap-[40px]">
         {/* Top Section */}
         <div className="flex flex-col md:flex-row flex-wrap md:justify-between gap-10 md:gap-8 lg:gap-12">
           {/* Logo and Socials Column */}
