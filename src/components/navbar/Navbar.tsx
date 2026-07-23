@@ -176,7 +176,7 @@ const Navbar = ({ variant = "transparent" }: NavbarProps) => {
 
             <Link
               to="/need-help"
-              className={`h-[36px] flex items-center justify-center px-[16px] rounded-[12px] text-[16px] font-['Poppins'] font-medium transition-all duration-300 border border-solid cursor-pointer text-center block ${
+              className={`h-[36px] flex items-center justify-center px-[16px] rounded-[12px] text-[16px] font-['Poppins'] font-medium transition-all duration-300 border border-solid cursor-pointer text-center ${
                 isLight
                   ? "border-[#747474] text-primary hover:bg-primary/5 hover:border-primary"
                   : "border-[#f5f9fa] text-[#f5f9fa] hover:bg-white/10"
