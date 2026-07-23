@@ -199,7 +199,9 @@ export const offerItems = [
 
 export const curatedPropertiesHeading = {
   title: "Curated Properties",
+  titleKey: "curatedProperties.title",
   actionLabel: "View All",
+  actionLabelKey: "curatedProperties.viewAll",
 };
 
 // export const curatedProperties: PropertyUnitCardData[] = [

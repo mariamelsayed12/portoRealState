@@ -46,5 +46,9 @@
     "prestigiousDestinations.scrollLeft": "تمرير الوجهات لليسار",
     "prestigiousDestinations.scrollRight": "تمرير الوجهات لليمين",
     "prestigiousDestinations.million": "مليون",
-    "destinations.developer.amerGroup": "مجموعة عامر"
+    "destinations.developer.amerGroup": "مجموعة عامر",
+    "curatedProperties.title": "عقارات مختارة",
+    "curatedProperties.viewAll": "عرض الكل",
+    "curatedProperties.scrollLeft": "تمرير العقارات لليسار",
+    "curatedProperties.scrollRight": "تمرير العقارات لليمين"
 }
