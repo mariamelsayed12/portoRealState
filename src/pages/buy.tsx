@@ -5,11 +5,13 @@ import { useUnitsFilter } from "../hooks/useUnitsFilter";
 import { units } from "../data";
 import FilterDrawer from "../components/filterCcomponents/FilterDrawer";
 import { SlidersHorizontal } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 const BuyPage = () => {
 
 
     const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const { t } = useTranslation();
 
   
 
@@ -27,7 +29,7 @@ const BuyPage = () => {
   return (
     <div className="">
       <div className="pb-10">
-        <h3 className="text-text-darker text-3xl font-semibold">North Coast Properties</h3>
+        <h3 className="text-text-darker text-3xl font-semibold">{t("buy.title")}</h3>
       </div>
       {/* Tabs Navigation */}
 			

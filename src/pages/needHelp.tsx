@@ -112,12 +112,16 @@ const NeedHelpPage = () => {
 
           {/* Right Column - Request Form */}
           <div className="w-full lg:w-[588px] bg-white rounded-[12px] p-[16px] shadow-[0px_2px_6.3px_1px_rgba(0,0,0,0.14)] shrink-0">
-            <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-[32px]">
+            <form
+              onSubmit={handleSubmit(onSubmit)}
+              className="flex flex-col gap-[32px]"
+            >
               <div className="flex flex-col gap-[16px]">
                 {/* Full Name Field */}
                 <div className="flex flex-col gap-[8px]">
                   <label className="font-['Poppins'] font-normal text-[16px] text-[#141414]">
-                    Full Name<span className="text-[#1E8CAB] font-bold ml-0.5">*</span>
+                    Full Name
+                    <span className="text-[#1E8CAB] font-bold ml-0.5">*</span>
                   </label>
                   <Input
                     type="text"
@@ -135,7 +139,8 @@ const NeedHelpPage = () => {
                 {/* Phone Number Field */}
                 <div className="flex flex-col gap-[8px] h-auto">
                   <label className="font-['Poppins'] font-normal text-[16px] text-[#141414]">
-                    Phone Number<span className="text-[#1E8CAB] font-bold ml-0.5">*</span>
+                    Phone Number
+                    <span className="text-[#1E8CAB] font-bold ml-0.5">*</span>
                   </label>
                   <div className="flex gap-[8px] h-[48px]">
                     {/* Prefix selector */}
@@ -179,7 +184,9 @@ const NeedHelpPage = () => {
                     placeholder="Tell us more about your request..."
                     {...register("description")}
                     className={`w-full rounded-[8px] border border-[#D4D5D8] px-[12px] py-[12px] text-[16px] font-['Poppins'] placeholder-[#747474] focus:border-[#1E8CAB] h-[93px] resize-none ${
-                      errors.description ? "border-red-500 focus:border-red-500" : ""
+                      errors.description
+                        ? "border-red-500 focus:border-red-500"
+                        : ""
                     }`}
                   />
                   <InputErrorMessage msg={errors.description?.message} />

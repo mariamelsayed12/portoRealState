@@ -170,8 +170,9 @@ const ContactUsSection = () => {
                     <input
                       id="phoneNumber"
                       type="tel"
+                      dir="ltr"
                       placeholder={t("contactUs.phoneNumberPlaceholder")}
-                      className={`flex-1 h-full   min-w-0 bg-white border rounded-[8px] px-[12px] text-[16px] text-[#141414] font-['Poppins'] outline-none transition-colors ${
+                      className={`flex-1 h-full min-w-0 bg-white border rounded-[8px] px-[12px] text-[16px] text-[#141414] font-['Poppins'] outline-none transition-colors text-left ${
                         errors.phoneNumber ? "border-red-400 focus:border-red-500" : "border-[#d4d5d8] focus:border-[#1e8cab]"
                       }`}
                       {...register("phoneNumber")}

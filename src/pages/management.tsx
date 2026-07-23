@@ -88,7 +88,6 @@ const ManagementPage = () => {
       {/* ─── Agents + Form Section ────────────────────────────── */}
       <section className="w-full bg-[#F5F9FA] px-6 sm:px-12 lg:px-[120px] py-[40px] sm:py-[50px] lg:py-[60px]">
         <div className="flex flex-col lg:flex-row items-center justify-between gap-10 lg:gap-[24px] w-full max-w-[1200px] mx-auto">
-
           {/* Left — illustration + text */}
           <div className="flex flex-col items-start gap-[40px] w-full lg:w-[588px] shrink-0">
             {/* Building Illustration */}
@@ -107,14 +106,18 @@ const ManagementPage = () => {
                 Our Agents are waiting
               </h2>
               <p className="text-[14px] sm:text-[16px] text-[#464646] font-['Poppins'] font-normal leading-normal max-w-[436px]">
-                Fill out the form and one of our agents will be in touch within 24 hours.
+                Fill out the form and one of our agents will be in touch within
+                24 hours.
               </p>
             </div>
           </div>
 
           {/* Right — Form Card */}
           <div className="w-full lg:w-[588px] shrink-0 bg-white rounded-[12px] shadow-[0px_2px_6.3px_1px_rgba(0,0,0,0.14)] p-[16px]">
-            <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-[32px]">
+            <form
+              onSubmit={handleSubmit(onSubmit)}
+              className="flex flex-col gap-[32px]"
+            >
               <div className="flex flex-col gap-[16px]">
                 {/* Full Name */}
                 <div className="flex flex-col gap-[8px]">
