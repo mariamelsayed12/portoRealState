@@ -7,4 +7,4 @@ const InputErrorMessage = ({ msg }: IProps) => {
     ) : null;
 };
 
-export default InputErrorMessage;
+export default InputErrorMessage; 

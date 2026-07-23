@@ -38,24 +38,12 @@ const ContactUsSection = () => {
   }; 
 
   return (
-    <section className="bg-[#f5f9fa] w-full px-6 sm:px-12 lg:px-[120px] py-[60px]">
-      <style dangerouslySetInnerHTML={{__html: `
-        @media (min-width: 1024px) {
-          .contact-col-left {
-            width: 588px !important;
-            flex-shrink: 0 !important;
-          }
-          .contact-col-right {
-            width: 588px !important;
-            flex-shrink: 0 !important;
-          }
-        }
-      `}} />
+    <section className="bg-[#f5f9fa] w-full px-6 sm:px-12 lg:px-[120px] py-[60px] overflow-x-hidden">
 
-      <div className="mx-auto flex flex-col lg:flex-row justify-between items-center gap-[48px] w-full">
+      <div className="mx-auto flex flex-col lg:flex-row justify-between items-start gap-[48px] w-full">
         
         {/* Left Side Content */}
-        <div className="contact-col-left flex flex-col gap-[48px]  justify-center w-full">
+        <div className="flex flex-col gap-[48px] justify-center w-full min-w-0 lg:flex-1 lg:max-w-[588px]">
           <div className="flex flex-col gap-[24px] items-start justify-center w-full">
             <h2 className="text-[28px] sm:text-[40px] font-medium text-[#141414] font-['Poppins'] leading-[normal]">
               Need Expert Advice ?
@@ -96,7 +84,7 @@ const ContactUsSection = () => {
         </div>
 
         {/* Right Side Form Card */}
-        <div className="contact-col-right bg-white p-[16px] rounded-[12px] shadow-[0px_2px_6.3px_1px_rgba(0,0,0,0.14)] w-full shrink-0">
+        <div className="bg-white p-[16px] rounded-[12px] shadow-[0px_2px_6.3px_1px_rgba(0,0,0,0.14)] w-full min-w-0 lg:flex-1 lg:max-w-[588px]">
           <form onSubmit={handleSubmit(onSubmit)} noValidate className="flex flex-col gap-[32px] w-full">
             <div className="flex flex-col gap-[16px] w-full">
               
@@ -153,7 +141,7 @@ const ContactUsSection = () => {
                       id="phoneNumber"
                       type="tel"
                       placeholder="Phone number"
-                      className={`flex-1 h-full bg-white border rounded-[8px] px-[12px] text-[16px] text-[#141414] font-['Poppins'] outline-none transition-colors ${
+                      className={`flex-1 h-full  min-w-0 bg-white border rounded-[8px] px-[12px] text-[16px] text-[#141414] font-['Poppins'] outline-none transition-colors ${
                         errors.phoneNumber ? "border-red-400 focus:border-red-500" : "border-[#d4d5d8] focus:border-[#1e8cab]"
                       }`}
                       {...register("phoneNumber")}
