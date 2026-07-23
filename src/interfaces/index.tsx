@@ -47,15 +47,20 @@ export interface PropertyCardData {
 export interface InvestmentCardData {
   id: string;
   title: string;
+  titleKey?: string;
   description: string;
+  descriptionKey?: string;
   variant: "text" | "image";
   image?: string;
   alt?: string;
+  altKey?: string;
 }
 
 export interface SectionHeadingData {
   title: string;
+  titleKey?: string;
   actionLabel?: string;
+  actionLabelKey?: string;
 }
 
 export interface ContactUsFormValues {

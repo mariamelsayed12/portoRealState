@@ -1,38 +1,39 @@
 import { Link } from "react-router-dom";
 import { FaFacebookF, FaInstagram, FaTiktok } from "react-icons/fa6";
 import Logo from "../icons/Logo";
+import { useTranslation } from "react-i18next";
 
 type FooterLinkGroup = {
-  title: string;
-  links: Array<{ label: string; to: string }>;
+  titleKey: string;
+  links: Array<{ labelKey: string; to: string }>;
 };
 
 const footerLinkGroups: FooterLinkGroup[] = [
   {
-    title: "Navigation",
+    titleKey: "footer.group.navigation",
     links: [
-      { label: "Home", to: "/" },
-      { label: "About Us", to: "/about" },
-      { label: "Favourites", to: "/favorites" },
-      { label: "Search", to: "/" },
+      { labelKey: "footer.link.home", to: "/" },
+      { labelKey: "footer.link.aboutUs", to: "/about" },
+      { labelKey: "footer.link.favourites", to: "/favorites" },
+      { labelKey: "footer.link.search", to: "/" },
     ],
   },
   {
-    title: "Services",
+    titleKey: "footer.group.services",
     links: [
-      { label: "Property sales", to: "/buy" },
-      { label: "Sell your property", to: "/sell" },
-      { label: "Special Rentals", to: "/rent" },
-      { label: "Rental management", to: "/management" },
+      { labelKey: "footer.link.propertySales", to: "/buy" },
+      { labelKey: "footer.link.sellYourProperty", to: "/sell" },
+      { labelKey: "footer.link.specialRentals", to: "/rent" },
+      { labelKey: "footer.link.rentalManagement", to: "/management" },
     ],
   },
   {
-    title: "Navigation",
+    titleKey: "footer.group.navigation",
     links: [
-      { label: "Home", to: "/" },
-      { label: "About Us", to: "/about" },
-      { label: "Favourites", to: "/" },
-      { label: "Search", to: "/" },
+      { labelKey: "footer.link.home", to: "/" },
+      { labelKey: "footer.link.aboutUs", to: "/about" },
+      { labelKey: "footer.link.favourites", to: "/" },
+      { labelKey: "footer.link.search", to: "/" },
     ],
   },
 ];
@@ -44,6 +45,8 @@ const socialLinks = [
 ];
 
 const Footer = () => {
+  const { t } = useTranslation();
+
   return (
     <footer className="bg-white text-text-darker">
       <div className="mx-auto max-w-7xl px-6 py-10 sm:px-8 md:py-12 lg:px-12">
@@ -54,7 +57,7 @@ const Footer = () => {
             </Link>
 
             <div className="space-y-3">
-              <p className="text-[13px] font-medium text-text-darker">Follow us</p>
+              <p className="text-[13px] font-medium text-text-darker">{t("footer.followUs")}</p>
               <div className="flex items-center gap-3">
                 {socialLinks.map(({ label, icon: Icon, href }) => (
                   <a
@@ -70,17 +73,17 @@ const Footer = () => {
             </div>
           </div>
 
-          {footerLinkGroups.map((group) => (
-            <div key={group.title} className="space-y-4">
-              <p className="text-[13px] font-medium text-text-darker">{group.title}</p>
+          {footerLinkGroups.map((group, groupIdx) => (
+            <div key={`${group.titleKey}-${groupIdx}`} className="space-y-4">
+              <p className="text-[13px] font-medium text-text-darker">{t(group.titleKey)}</p>
               <div className="flex flex-col gap-3">
                 {group.links.map((link) => (
                   <Link
-                    key={link.label}
+                    key={link.labelKey}
                     to={link.to}
                     className="text-[13px] font-normal text-[#464646] transition-colors hover:text-primary"
                   >
-                    {link.label}
+                    {t(link.labelKey)}
                   </Link>
                 ))}
               </div>
@@ -89,7 +92,7 @@ const Footer = () => {
         </div>
 
         <div className="mt-8 text-center text-[13px] font-normal text-[#464646]">
-          © Copyright 2026 - Porto
+          {t("footer.copyright")}
         </div>
       </div>
     </footer>

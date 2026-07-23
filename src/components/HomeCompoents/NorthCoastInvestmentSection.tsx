@@ -1,6 +1,7 @@
 import { northCoastHeading, northCoastInvestmentCards } from "../../data";
 import type { InvestmentCardData } from "../../interfaces";
 import Image from "../Ui/Image";
+import { useTranslation } from "react-i18next";
 
 const waveVariants = [
   {
@@ -23,7 +24,7 @@ const waveVariants = [
     heightClass: "h-[81px]",
     d: "M0 0L16 1.92857C32 3.85714 64 7.71429 96 19.2857C128 30.8571 160 50.1429 192 44.3571C224 38.5714 256 7.71429 288 1.92857C320 -3.85714 352 15.4286 368 25.0714L384 34.7143V81H368C352 81 320 81 288 81C256 81 224 81 192 81C160 81 128 81 96 81C64 81 32 81 16 81H0V0Z",
   },
-] as const;
+];
 
 const WaveFooter = ({ variant }: { variant: number }) => {
   const wave = waveVariants[variant] ?? waveVariants[0];
@@ -47,14 +48,15 @@ const WaveFooter = ({ variant }: { variant: number }) => {
 };
 
 const InvestmentTextCard = ({ card, waveVariant }: { card: InvestmentCardData; waveVariant: number }) => {
+  const { t } = useTranslation();
   return (
     <article className="relative h-[220px] sm:h-[253px] w-full overflow-hidden rounded-[12px] border border-border bg-white pt-[24px] px-[24px]">
       <div className="relative z-10 flex flex-col gap-[20px] items-start text-center w-full leading-[normal]">
         <h3 className="text-[16px] sm:text-[19px] font-medium text-[#141414] w-full font-['Poppins']">
-          {card.title}
+          {card.titleKey ? t(card.titleKey) : card.title}
         </h3>
         <p className="text-[14px] sm:text-[16px] font-normal text-[#464646] w-full font-['Poppins']">
-          {card.description}
+          {card.descriptionKey ? t(card.descriptionKey) : card.description}
         </p>
       </div>
 
@@ -64,11 +66,12 @@ const InvestmentTextCard = ({ card, waveVariant }: { card: InvestmentCardData; w
 };
 
 const InvestmentImageCard = ({ card }: { card: InvestmentCardData }) => {
+  const { t } = useTranslation();
   return (
     <article className="relative h-[300px] sm:h-[400px] md:h-[530px] w-full overflow-hidden rounded-[12px] bg-white">
       <Image
         imageurl={card.image ?? ""}
-        alt={card.alt ?? card.title}
+        alt={card.altKey ? t(card.altKey) : (card.alt ?? card.title)}
         className="absolute inset-0 h-full w-full object-cover object-center rounded-[12px]"
       />
     </article>
@@ -76,13 +79,14 @@ const InvestmentImageCard = ({ card }: { card: InvestmentCardData }) => {
 };
 
 const NorthCoastInvestmentSection = () => {
+  const { t } = useTranslation();
   const [leftTop, leftBottom, featured, rightTop, rightBottom] = northCoastInvestmentCards;
 
   return (
     <section className="w-full bg-background py-[60px] px-6 sm:px-12 md:px-16 lg:px-[120px]">
       <div className="mx-auto w-full flex flex-col gap-[24px]">
         <h2 className="text-[#141414] font-medium text-[28px] md:text-[40px] tracking-tight leading-[normal] font-['Poppins']">
-          {northCoastHeading.title}
+          {northCoastHeading.titleKey ? t(northCoastHeading.titleKey) : northCoastHeading.title}
         </h2>
 
         <div className="grid gap-[24px] md:grid-cols-3 md:items-stretch">

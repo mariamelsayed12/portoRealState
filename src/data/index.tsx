@@ -633,43 +633,54 @@ export const units: PropertyCardData[] = [
 
 export const northCoastHeading = {
   title: "Why to Invest in the North Coast ?",
+  titleKey: "northCoastInvestment.heading",
 };
 
 export const northCoastInvestmentCards: InvestmentCardData[] = [
   {
     id: "capital-appreciation",
     title: "Strong Capital Appreciation",
+    titleKey: "northCoastInvestment.capitalAppreciation.title",
     description:
       "North Coast values have grown across premium compounds, creating resilient long-term upside.",
+    descriptionKey: "northCoastInvestment.capitalAppreciation.description",
     variant: "text",
   },
   {
     id: "coastal-location",
     title: "Prime Coastal Location",
+    titleKey: "northCoastInvestment.coastalLocation.title",
     description:
       "Curated addresses in Egypt's most coveted Mediterranean shoreline and lifestyle corridor.",
+    descriptionKey: "northCoastInvestment.coastalLocation.description",
     variant: "text",
   },
   {
     id: "north-coast-hero",
     title: "North Coast Landscape",
+    titleKey: "northCoastInvestment.landscape.title",
     description: "",
     variant: "image",
     image: northcost,
     alt: "North Coast landscape",
+    altKey: "northCoastInvestment.landscape.alt",
   },
   {
     id: "rental-yields",
     title: "Attractive Rental Yields",
+    titleKey: "northCoastInvestment.rentalYields.title",
     description:
       "Seasonal demand keeps occupancy strong and short-term returns resilient year after year.",
+    descriptionKey: "northCoastInvestment.rentalYields.description",
     variant: "text",
   },
   {
     id: "partnerships",
     title: "Strategic Partnerships",
+    titleKey: "northCoastInvestment.partnerships.title",
     description:
       "Developer relationships unlock priority launches, preferred terms, and better allocation.",
+    descriptionKey: "northCoastInvestment.partnerships.description",
     variant: "text",
   },
 ];
