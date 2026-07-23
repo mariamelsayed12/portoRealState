@@ -135,8 +135,8 @@ const DestinationDetailsContent = ({ destinationSlug }: DestinationDetailsConten
 				</div>
 
 				{/* Tabs Navigation */}
-				<div className="mb-8 border-b border-[#E8EFF1]">
-					<nav className="-mb-px flex gap-8" aria-label="Tabs">
+				<div className="mb-8 w-full flex items-start">
+					<nav className="flex w-full" aria-label="Tabs">
 						{[
 							{ id: "All", labelKey: "destinationDetails.tabs.all" },
 							{ id: "Developer", labelKey: "destinationDetails.tabs.developer" },
@@ -149,10 +149,10 @@ const DestinationDetailsContent = ({ destinationSlug }: DestinationDetailsConten
 									key={tab.id}
 									type="button"
 									onClick={() => setActiveTab(tab.id)}
-									className={`whitespace-nowrap pb-4 text-sm font-semibold border-b-2 transition-colors ${
+									className={`whitespace-nowrap flex-1 py-[8px] text-[16px] md:text-[19px] font-['Poppins'] font-normal border-b-[2px] transition-colors text-center cursor-pointer ${
 										isActive
-											? "border-primary border-b-primary text-primary"
-											: "border-transparent text-[#7D8D93] hover:text-[#58696F] hover:border-gray-300"
+											? "border-primary text-primary"
+											: "border-[#d4d5d8] text-[#464646] hover:text-primary hover:border-[#1e8cab]/50"
 									}`}
 								>
 									{t(tab.labelKey)}
