@@ -231,5 +231,17 @@
     "sell.validation.fullNameMin": "يجب أن يكون الاسم الكامل 3 أحرف على الأقل",
     "sell.validation.phoneNumberRequired": "رقم الهاتف مطلوب",
     "sell.validation.phoneNumberDigits": "يجب أن يحتوي رقم الهاتف على أرقام فقط",
-    "sell.validation.phoneNumberMin": "يجب أن يكون رقم الهاتف 8 أرقام على الأقل"
+    "sell.validation.phoneNumberMin": "يجب أن يكون رقم الهاتف 8 أرقام على الأقل",
+    "rent.title": "عقارات للإيجار",
+    "rent.filterBtn": "تصفية",
+    "rent.sortBtn": "ترتيب",
+    "rent.sort.maxPrice": "السعر الأعلى",
+    "rent.sort.minPrice": "السعر الأقل",
+    "rent.sort.readyBy": "تاريخ الاستلام",
+    "rent.sort.minInstallments": "الأقساط الأقل",
+    "rent.sort.maxInstallments": "الأقساط الأعلى",
+    "rent.tabs.all": "الكل",
+    "rent.tabs.available": "متاح",
+    "rent.tabs.availableSoon": "متاح قريباً",
+    "rent.noProperties": "لم يتم العثور على عقارات تطابق هذه المعايير."
 }

@@ -7,19 +7,21 @@ import { units } from "../data";
 import FilterDrawer from "../components/filterCcomponents/FilterDrawer";
 import FilterIcon from "../components/icons/Filter";
 import SortIcon from "../components/icons/SortIcon";
-
-const SORT_OPTIONS: { label: string; value: SortOption }[] = [
-  { label: "Maximum Price", value: "max-price" },
-  { label: "Minimum Price", value: "min-price" },
-  { label: "Ready By", value: "ready-by" },
-  { label: "Minimum Installments", value: "min-installments" },
-  { label: "Maximum Installments", value: "max-installments" },
-];
+import { useTranslation } from "react-i18next";
 
 const RentPage = () => {
+  const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState<"All" | "Available" | "Available soon">("All");
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [isSortOpen, setIsSortOpen] = useState(false);
+
+  const SORT_OPTIONS: { label: string; value: SortOption }[] = useMemo(() => [
+    { label: t("rent.sort.maxPrice"), value: "max-price" },
+    { label: t("rent.sort.minPrice"), value: "min-price" },
+    { label: t("rent.sort.readyBy"), value: "ready-by" },
+    { label: t("rent.sort.minInstallments"), value: "min-installments" },
+    { label: t("rent.sort.maxInstallments"), value: "max-installments" },
+  ], [t]);
 
   // Filter units by rental type and active tab/availability status
   const activeTabUnits = useMemo(() => {
@@ -49,12 +51,25 @@ const RentPage = () => {
     sortedUnits,
   } = useUnitsSort(filteredUnits);
 
+  const getTabLabel = (tab: "All" | "Available" | "Available soon") => {
+    switch (tab) {
+      case "All":
+        return t("rent.tabs.all");
+      case "Available":
+        return t("rent.tabs.available");
+      case "Available soon":
+        return t("rent.tabs.availableSoon");
+      default:
+        return tab;
+    }
+  };
+
   return (
     <div className="w-full pb-16">
       {/* Header Section */}
       <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <h1 className="text-3xl font-semibold text-text-secondary tracking-tight md:text-4xl">
-          Properties for Rent
+          {t("rent.title")}
         </h1>
 
         {/* Filter and Sort buttons */}
@@ -67,7 +82,7 @@ const RentPage = () => {
             className="inline-flex items-center gap-2 rounded-md border border-[#747474] bg-white px-[16px] py-[8px] text-xs font-semibold text-primary shadow-sm hover:bg-gray-50 transition-colors cursor-pointer"
           >
             <FilterIcon className="h-4 w-4 text-primary" />
-            <span>Filter</span>
+            <span>{t("rent.filterBtn")}</span>
           </motion.button>
 
           <div className="relative">
@@ -79,7 +94,7 @@ const RentPage = () => {
               className="inline-flex items-center gap-2 rounded-md border border-[#747474] bg-white px-[16px] py-[8px] text-xs font-semibold text-primary shadow-sm hover:bg-gray-50 transition-colors cursor-pointer"
             >
               <span>
-                Sort{activeSort ? `: ${SORT_OPTIONS.find((o) => o.value === activeSort)?.label}` : ""}
+                {t("rent.sortBtn")}{activeSort ? `: ${SORT_OPTIONS.find((o) => o.value === activeSort)?.label}` : ""}
               </span>
               <SortIcon className="w-[18px] h-[18px] text-primary" />
             </motion.button>
@@ -133,7 +148,7 @@ const RentPage = () => {
                     : "border-transparent text-[#7D8D93] hover:text-[#58696F] hover:border-gray-300"
                 }`}
               >
-                {tab}
+                {getTabLabel(tab)}
               </button>
             );
           })}
@@ -166,7 +181,7 @@ const RentPage = () => {
             </motion.div>
           ) : (
             <div className="flex flex-col items-center justify-center py-16 text-center">
-              <p className="text-base text-[#7D8D93]">No properties found matching the criteria.</p>
+              <p className="text-base text-[#7D8D93]">{t("rent.noProperties")}</p>
             </div>
           )}
         </div>

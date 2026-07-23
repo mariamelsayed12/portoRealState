@@ -231,5 +231,17 @@
     "sell.validation.fullNameMin": "Full Name must be at least 3 characters",
     "sell.validation.phoneNumberRequired": "Phone Number is required",
     "sell.validation.phoneNumberDigits": "Phone number must be digits only",
-    "sell.validation.phoneNumberMin": "Phone number must be at least 8 digits"
+    "sell.validation.phoneNumberMin": "Phone number must be at least 8 digits",
+    "rent.title": "Properties for Rent",
+    "rent.filterBtn": "Filter",
+    "rent.sortBtn": "Sort",
+    "rent.sort.maxPrice": "Maximum Price",
+    "rent.sort.minPrice": "Minimum Price",
+    "rent.sort.readyBy": "Ready By",
+    "rent.sort.minInstallments": "Minimum Installments",
+    "rent.sort.maxInstallments": "Maximum Installments",
+    "rent.tabs.all": "All",
+    "rent.tabs.available": "Available",
+    "rent.tabs.availableSoon": "Available soon",
+    "rent.noProperties": "No properties found matching the criteria."
 }
