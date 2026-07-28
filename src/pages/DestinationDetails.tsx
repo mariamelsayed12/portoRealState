@@ -65,11 +65,10 @@ const DestinationDetails = () => {
           {/* You could render destination specific content here, or reuse existing home sections */}
           <DestinationDetailsContent destinationSlug={destination.slug} />
       </div>
-        {/* AmenitiesSection */}
-        <div className="container py-12 px-6 sm:px-12 lg:px-[120px]">
-          
-              <AmenitiesSection/>
-        </div>
+      {/* AmenitiesSection */}
+      <div className="mx-auto max-w-7xl px-6 sm:px-8 lg:px-12 py-12 sm:py-16">
+        <AmenitiesSection />
+      </div>
 
       <section className="w-full lg:pt-10 md:pt-8 pt-5">
         <ImageGallery
