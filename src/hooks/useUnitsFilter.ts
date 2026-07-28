@@ -251,8 +251,18 @@ export const useUnitsFilter = (units: PropertyCardData[]) => {
   // Sync state when URL params change (e.g. on navigation)
   useEffect(() => {
     const parsed = parseParams();
-    setFilters(parsed);
-    setTempFilters(parsed);
+    setFilters((prev) => {
+      const changed = Object.keys(parsed).some(
+        (key) => (parsed as any)[key] !== (prev as any)[key]
+      );
+      return changed ? parsed : prev;
+    });
+    setTempFilters((prev) => {
+      const changed = Object.keys(parsed).some(
+        (key) => (parsed as any)[key] !== (prev as any)[key]
+      );
+      return changed ? parsed : prev;
+    });
   }, [parseParams]);
 
   // Memoized filtered units based on committed filters
@@ -275,8 +285,21 @@ export const useUnitsFilter = (units: PropertyCardData[]) => {
     if (tempFilters.bathrooms) params.set("bathrooms", tempFilters.bathrooms);
     if (tempFilters.priceFrom) params.set("priceFrom", tempFilters.priceFrom);
     if (tempFilters.priceTo) params.set("priceTo", tempFilters.priceTo);
+
+    // Compare with current URL values directly to avoid React state batching race conditions
+    const parsed = parseParams();
+    const filtersChanged = Object.keys(tempFilters).some(
+      (key) => (tempFilters as any)[key] !== (parsed as any)[key]
+    );
+    if (!filtersChanged) {
+      const currentPageParam = searchParams.get("page");
+      if (currentPageParam) {
+        params.set("page", currentPageParam);
+      }
+    }
+
     setSearchParams(params, { replace: true });
-  }, [tempFilters, setSearchParams]);
+  }, [tempFilters, parseParams, searchParams, setSearchParams]);
 
   // Reset both temporary and committed filters and URL
   const resetFilters = useCallback(() => {
