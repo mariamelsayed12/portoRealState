@@ -8,10 +8,12 @@ const HomePage = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, [location.pathname]);
 
-  const isDetailsPage = location.pathname !== "/home" && location.pathname !== "/";
-
+  // const isDetailsPage = location.pathname !== "/home" && location.pathname !== "/";
+ 
   return (
-    <div className={isDetailsPage ? "pb-0" : "pb-24"}>
+        // <div className={isDetailsPage ? "pb-0" : "pb-24"}>
+
+    <div >
       <Outlet />
     </div>
   );

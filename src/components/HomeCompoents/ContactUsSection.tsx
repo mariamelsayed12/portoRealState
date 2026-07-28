@@ -19,7 +19,7 @@ const ContactUsSection = () => {
     formState: { errors },
     reset,
   } = useForm<ContactUsFormValues>({
-    resolver: yupResolver(ContactUs_Schema) as any ,
+    resolver: yupResolver(ContactUs_Schema) as any,
     mode: "onSubmit",
     defaultValues: {
       fullName: "",
@@ -59,13 +59,11 @@ const ContactUsSection = () => {
     } finally {
       setIsSubmitting(false);
     }
-  }; 
+  };
 
   return (
     <section className="bg-[#f5f9fa] w-full px-6 sm:px-12 lg:px-[120px] py-[60px] overflow-x-hidden">
-
       <div className="mx-auto flex flex-col lg:flex-row justify-between items-start gap-[48px] w-full">
-        
         {/* Left Side Content */}
         <div className="flex flex-col gap-[48px] justify-center w-full min-w-0 lg:flex-1 lg:max-w-[588px]">
           <div className="flex flex-col gap-[24px] items-start justify-center w-full">
@@ -81,7 +79,7 @@ const ContactUsSection = () => {
           <div className="flex flex-wrap gap-[24px] sm:gap-[93px] items-center">
             {/* Phone */}
             <div className="flex gap-[12px] items-center">
-               <div className="bg-[#b9dbe5] rounded-full size-[44px] flex items-center justify-center text-[#1e8cab] shrink-0">
+              <div className="bg-[#b9dbe5] rounded-full size-[44px] flex items-center justify-center text-[#1e8cab] shrink-0">
                 <Phone className="size-[20px]" />
               </div>
               <a
@@ -109,12 +107,18 @@ const ContactUsSection = () => {
 
         {/* Right Side Form Card */}
         <div className="bg-white p-[16px] rounded-[12px] shadow-[0px_2px_6.3px_1px_rgba(0,0,0,0.14)] w-full min-w-0 lg:flex-1 lg:max-w-[588px]">
-          <form onSubmit={handleSubmit(onSubmit)} noValidate className="flex flex-col gap-[32px] w-full">
+          <form
+            onSubmit={handleSubmit(onSubmit)}
+            noValidate
+            className="flex flex-col gap-[32px] w-full"
+          >
             <div className="flex flex-col gap-[16px] w-full">
-              
               {/* Full Name Input */}
               <div className="flex flex-col gap-[8px] w-full">
-                <label htmlFor="fullName" className="text-[16px] font-normal text-[#141414] font-['Poppins'] leading-[normal]">
+                <label
+                  htmlFor="fullName"
+                  className="text-[16px] font-normal text-[#141414] font-['Poppins'] leading-[normal]"
+                >
                   <span>{t("contactUs.fullName")}</span>
                   <span className="text-[#1e8cab] ml-[2px]">*</span>
                 </label>
@@ -124,13 +128,17 @@ const ContactUsSection = () => {
                     type="text"
                     placeholder={t("contactUs.fullNamePlaceholder")}
                     className={`h-[48px] w-full bg-white border rounded-[8px] px-[12px] text-[16px] text-[#141414] font-['Poppins'] outline-none transition-colors ${
-                      errors.fullName ? "border-red-400 focus:border-red-500" : "border-[#d4d5d8] focus:border-[#1e8cab]"
+                      errors.fullName
+                        ? "border-red-400 focus:border-red-500"
+                        : "border-[#d4d5d8] focus:border-[#1e8cab]"
                     }`}
                     {...register("fullName")}
                   />
                   {errors.fullName && (
                     <div className="pt-1 ">
-                      <InputErrorMessage msg={getValidationError(errors.fullName.message)} />
+                      <InputErrorMessage
+                        msg={getValidationError(errors.fullName.message)}
+                      />
                     </div>
                   )}
                 </div>
@@ -138,7 +146,10 @@ const ContactUsSection = () => {
 
               {/* Phone Number Input */}
               <div className="flex flex-col gap-[8px] w-full h-[80px]">
-                <label htmlFor="phoneNumber" className="text-[16px] font-normal text-[#141414] font-['Poppins'] leading-[normal]">
+                <label
+                  htmlFor="phoneNumber"
+                  className="text-[16px] font-normal text-[#141414] font-['Poppins'] leading-[normal]"
+                >
                   <span>{t("contactUs.phoneNumber")}</span>
                   <span className="text-[#1e8cab] ml-[2px]">*</span>
                 </label>
@@ -153,9 +164,12 @@ const ContactUsSection = () => {
                       >
                         {phoneCodes.map((code) => {
                           let label = code;
-                          if (code === "Eg +000") label = t("contactUs.phoneCodes.eg");
-                          else if (code === "+20") label = t("contactUs.phoneCodes.eg20");
-                          else if (code === "+971") label = t("contactUs.phoneCodes.uae");
+                          if (code === "Eg +000")
+                            label = t("contactUs.phoneCodes.eg");
+                          else if (code === "+20")
+                            label = t("contactUs.phoneCodes.eg20");
+                          else if (code === "+971")
+                            label = t("contactUs.phoneCodes.uae");
                           return (
                             <option key={code} value={code}>
                               {label}
@@ -173,14 +187,18 @@ const ContactUsSection = () => {
                       dir="ltr"
                       placeholder={t("contactUs.phoneNumberPlaceholder")}
                       className={`flex-1 h-full min-w-0 bg-white border rounded-[8px] px-[12px] text-[16px] text-[#141414] font-['Poppins'] outline-none transition-colors text-left ${
-                        errors.phoneNumber ? "border-red-400 focus:border-red-500" : "border-[#d4d5d8] focus:border-[#1e8cab]"
+                        errors.phoneNumber
+                          ? "border-red-400 focus:border-red-500"
+                          : "border-[#d4d5d8] focus:border-[#1e8cab]"
                       }`}
                       {...register("phoneNumber")}
                     />
                   </div>
                   {errors.phoneNumber && (
                     <div className="pt-1 ">
-                      <InputErrorMessage msg={getValidationError(errors.phoneNumber.message)} />
+                      <InputErrorMessage
+                        msg={getValidationError(errors.phoneNumber.message)}
+                      />
                     </div>
                   )}
                 </div>
@@ -188,7 +206,10 @@ const ContactUsSection = () => {
 
               {/* Description Input */}
               <div className="flex flex-col gap-[8px] w-full h-[125px]">
-                <label htmlFor="description" className="text-[16px] font-normal text-[#141414] font-['Poppins'] leading-[normal]">
+                <label
+                  htmlFor="description"
+                  className="text-[16px] font-normal text-[#141414] font-['Poppins'] leading-[normal]"
+                >
                   {t("contactUs.description")}
                 </label>
                 <div className="w-full h-[93px]">
@@ -196,18 +217,21 @@ const ContactUsSection = () => {
                     id="description"
                     placeholder={t("contactUs.descriptionPlaceholder")}
                     className={`h-full w-full bg-white border rounded-[8px] p-[12px] text-[16px] text-[#747474] font-['Poppins'] outline-none resize-none transition-colors ${
-                      errors.description ? "border-red-400 focus:border-red-500" : "border-[#d4d5d8] focus:border-[#1e8cab]"
+                      errors.description
+                        ? "border-red-400 focus:border-red-500"
+                        : "border-[#d4d5d8] focus:border-[#1e8cab]"
                     }`}
                     {...register("description")}
                   />
                   {errors.description && (
                     <div className="pt-1">
-                      <InputErrorMessage msg={getValidationError(errors.description.message)} />
+                      <InputErrorMessage
+                        msg={getValidationError(errors.description.message)}
+                      />
                     </div>
                   )}
                 </div>
               </div>
-
             </div>
 
             {/* Submit Button */}
@@ -220,7 +244,6 @@ const ContactUsSection = () => {
             </button>
           </form>
         </div>
-
       </div>
     </section>
   );
