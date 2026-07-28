@@ -31,7 +31,7 @@ const ImageGallery = ({ images, alt }: ImageGalleryProps) => {
 
       {/* Thumbnails Navigation */}
       {images.length > 1 && (
-        <div className="flex flex-row justify-center gap-[8px] sm:absolute sm:right-[16px] sm:lg:right-[32px] sm:top-1/2 sm:-translate-y-1/2 sm:flex-col sm:gap-[12px] z-20 rtl:sm:right-auto rtl:sm:left-[16px] rtl:sm:lg:left-[32px]">
+        <div className="flex flex-row justify-center gap-[8px] sm:absolute sm:right-[16px] sm:lg:right-[24px] sm:top-1/2 sm:-translate-y-1/2 sm:flex-col sm:gap-[12px] z-20 rtl:sm:right-auto rtl:sm:left-[16px] rtl:sm:lg:left-[24px]">
           {images.slice(0, 4).map((img, idx) => {
             const isActive = activeIndex === idx;
             return (
