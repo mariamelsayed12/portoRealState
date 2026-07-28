@@ -14,6 +14,7 @@ const Navbar = ({ variant = "transparent" }: NavbarProps) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [open, setOpen] = useState(false);
   const [mobileLangOpen, setMobileLangOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
 
   const { t, i18n } = useTranslation();
 
@@ -22,6 +23,14 @@ const Navbar = ({ variant = "transparent" }: NavbarProps) => {
     setOpen(false);
     setMobileLangOpen(false);
   };
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 20);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   useEffect(() => {
     if (!open && !mobileLangOpen) return;
@@ -51,14 +60,15 @@ const Navbar = ({ variant = "transparent" }: NavbarProps) => {
   };
   const { favUnite } = useSelector((state: RootState) => state.favUnit);
   const isLight = variant === "light";
+  const isNavbarLight = isLight || isScrolled;
 
   return (
     <>
       <nav
-        className={`absolute left-1/2 transform -translate-x-1/2 w-[calc(100%-2rem)] md:w-[calc(100%-4rem)] max-w-7xl z-40 transition-all duration-300 backdrop-blur-[2.9px] rounded-[99px] ${
-          isLight
-            ? "bg-[#f5f9fa] shadow-[0px_2px_6.3px_1px_rgba(0,0,0,0.14)]"
-            : "bg-[rgba(245,249,250,0.05)]"
+        className={`fixed left-1/2 transform -translate-x-1/2 w-[calc(100%-2rem)] md:w-[calc(100%-4rem)] max-w-7xl z-40 transition-all duration-300 rounded-[99px] border border-transparent top-0 ${
+          isNavbarLight
+            ? "bg-[#f5f9fa] shadow-[0px_2px_6.3px_1px_rgba(0,0,0,0.14)] backdrop-blur-[2.9px]"
+            : "bg-[rgba(245,249,250,0.05)] backdrop-blur-[2.9px]"
         }`}
       >
         <div className="w-full px-6 md:px-[32px] py-4 md:py-[22px] flex items-center justify-between">
@@ -78,7 +88,7 @@ const Navbar = ({ variant = "transparent" }: NavbarProps) => {
                     `text-[16px] font-medium font-['Poppins'] tracking-wide transition-colors duration-200 relative py-1 after:absolute after:bottom-0 after:left-0 after:w-full after:h-[2px] after:bg-primary after:transform after:scale-x-0 hover:after:scale-x-100 after:transition-transform after:duration-300 ${
                       isActive
                         ? "text-primary after:scale-x-100 font-semibold"
-                        : isLight
+                        : isNavbarLight
                         ? "text-[#141414] hover:text-primary"
                         : "text-[#f5f9fa] hover:text-primary"
                     }`
@@ -97,7 +107,7 @@ const Navbar = ({ variant = "transparent" }: NavbarProps) => {
               <button
                 onClick={() => setOpen(!open)}
                 className={`flex items-center gap-[6px] cursor-pointer transition-colors duration-200 focus:outline-none text-[16px] font-normal font-['Poppins'] ${
-                  isLight
+                  isNavbarLight
                     ? "text-[#141414] hover:text-primary"
                     : "text-[#f5f9fa] hover:text-primary"
                 }`}
@@ -126,7 +136,7 @@ const Navbar = ({ variant = "transparent" }: NavbarProps) => {
                   className={`absolute ${
                     i18n.language === "ar" ? "left-0" : "right-0"
                   } mt-2 w-32 rounded-xl border shadow-xl overflow-hidden z-50 transition-all duration-200 ${
-                    isLight
+                    isNavbarLight
                       ? "bg-white border-[#D9E1E4] text-[#58696F]"
                       : "bg-[#0e1617]/95 backdrop-blur-md border-white/10 text-text-primary"
                   }`}
@@ -135,10 +145,10 @@ const Navbar = ({ variant = "transparent" }: NavbarProps) => {
                     onClick={() => changeLanguage("en")}
                     className={`w-full px-4 py-2.5 text-start text-sm transition-colors duration-200 ${
                       i18n.language === "en"
-                        ? isLight
+                        ? isNavbarLight
                           ? "bg-[#F5F9FA] text-primary font-semibold"
                           : "bg-white/10 text-primary font-semibold"
-                        : isLight
+                        : isNavbarLight
                         ? "hover:bg-gray-50 hover:text-primary"
                         : "hover:bg-white/5 hover:text-primary"
                     }`}
@@ -149,10 +159,10 @@ const Navbar = ({ variant = "transparent" }: NavbarProps) => {
                     onClick={() => changeLanguage("ar")}
                     className={`w-full px-4 py-2.5 text-start text-sm transition-colors duration-200 ${
                       i18n.language === "ar"
-                        ? isLight
+                        ? isNavbarLight
                           ? "bg-[#F5F9FA] text-primary font-semibold"
                           : "bg-white/10 text-primary font-semibold"
-                        : isLight
+                        : isNavbarLight
                         ? "hover:bg-gray-50 hover:text-primary"
                         : "hover:bg-white/5 hover:text-primary"
                     }`}
@@ -177,7 +187,7 @@ const Navbar = ({ variant = "transparent" }: NavbarProps) => {
             <Link
               to="/need-help"
               className={`h-[36px] flex items-center justify-center px-[16px] rounded-[12px] text-[16px] font-['Poppins'] font-medium transition-all duration-300 border border-solid cursor-pointer text-center ${
-                isLight
+                isNavbarLight
                   ? "border-[#747474] text-primary hover:bg-primary/5 hover:border-primary"
                   : "border-[#f5f9fa] text-[#f5f9fa] hover:bg-white/10"
               }`}
@@ -192,7 +202,7 @@ const Navbar = ({ variant = "transparent" }: NavbarProps) => {
               onClick={toggleMobileMenu}
               aria-label="Toggle menu"
               className={`transition-colors duration-200 focus:outline-none ${
-                isLight ? "text-[#141414] hover:text-primary" : "text-[#f5f9fa] hover:text-primary"
+                isNavbarLight ? "text-[#141414] hover:text-primary" : "text-[#f5f9fa] hover:text-primary"
               }`}
             >
               <svg
