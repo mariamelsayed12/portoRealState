@@ -4,7 +4,7 @@ import { truncateText } from "../../utils";
 
 interface SearchFilterDropdownProps {
   icon: ReactNode;
-  label: string;
+  placeholder: string;
   value: string;
   panelContent: (onClose: () => void) => ReactNode;
   className?: string;
@@ -12,7 +12,7 @@ interface SearchFilterDropdownProps {
 
 const SearchFilterDropdown = ({
   icon,
-  label,
+  placeholder,
   value,
   panelContent,
   className = "",
@@ -25,7 +25,7 @@ const SearchFilterDropdown = ({
       <button
         type="button"
         onClick={() => setOpen((o) => !o)}
-        className={`w-full h-[48px] lg:h-[56px] flex items-center justify-between px-[12px] sm:px-[8px] lg:px-[20px] py-[8px] bg-white hover:bg-[#f5f9fa]/50 transition-colors cursor-pointer select-none text-left outline-none border-none ${className}`}
+        className={`w-full h-[48px] lg:h-[56px] flex items-center justify-between px-[12px] sm:px-[8px] lg:px-[20px] py-[8px] bg-white hover:bg-[#f5f9fa]/50 transition-colors cursor-pointer select-none text-left rtl:text-right outline-none border-none ${className}`}
       >
         <div className="flex items-center gap-[6px] sm:gap-[4px] lg:gap-[12px] min-w-0">
           {/* Icon - Figma size 20 to 32 */}
@@ -33,13 +33,21 @@ const SearchFilterDropdown = ({
             {icon}
           </div>
           {/* Text block */}
-          <div className="flex flex-col justify-center leading-[normal] font-['Poppins'] min-w-0">
-            <span className="text-[14px] sm:text-[12px] lg:text-[16px] font-normal text-[#747474]">
-              {label}
-            </span>
-            <span className="text-[14px] sm:text-[12px] lg:text-[16px] font-normal text-[#464646] truncate">
-             {truncateText(value,20)}
-            </span>
+          <div className="flex flex-col justify-center leading-[normal] font-['Poppins'] min-w-0 text-left rtl:text-right">
+            {value ? (
+              <>
+                <span className="text-[12px] sm:text-[10px] lg:text-[13px] font-normal text-[#747474] truncate">
+                  {placeholder}
+                </span>
+                <span className="text-[14px] sm:text-[12px] lg:text-[16px] font-normal text-[#464646] truncate">
+                  {truncateText(value, 20)}
+                </span>
+              </>
+            ) : (
+              <span className="text-[14px] sm:text-[12px] lg:text-[16px] font-normal text-[#747474] truncate">
+                {placeholder}
+              </span>
+            )}
           </div>
         </div>
 

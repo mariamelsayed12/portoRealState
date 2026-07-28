@@ -4,7 +4,7 @@ import { PanelFooter } from "./PanelFooter";
 
 const PROPERTY_TYPES = ["Chalet", "Villa", "Apartment", "Twin House"];
 
-const PROPERTY_TYPE_KEYS: Record<string, string> = {
+export const PROPERTY_TYPE_KEYS: Record<string, string> = {
   Chalet: "search.propertyTypes.chalet",
   Villa: "search.propertyTypes.villa",
   Apartment: "search.propertyTypes.apartment",

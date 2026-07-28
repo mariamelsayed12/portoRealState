@@ -1,8 +1,9 @@
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { PanelFooter } from "./PanelFooter";
 
-const BED_OPTIONS = ["Any", "1", "2", "3", "4", "5+"];
-const BATH_OPTIONS = ["Any", "1", "2", "3"];
+const BED_OPTIONS = ["1", "2", "3", "4", "5+"];
+const BATH_OPTIONS = ["1", "2", "3"];
 
 interface BedsAndBathsPanelProps {
   beds: string;
@@ -45,6 +46,22 @@ const BedsAndBathsPanel = ({
   onApply,
 }: BedsAndBathsPanelProps) => {
   const { t } = useTranslation();
+  const [tempBeds, setTempBeds] = useState(beds);
+  const [tempBaths, setTempBaths] = useState(baths);
+
+  const handleBedsClick = (n: string) => {
+    setTempBeds((prev) => (prev === n ? "" : n));
+  };
+
+  const handleBathsClick = (n: string) => {
+    setTempBaths((prev) => (prev === n ? "" : n));
+  };
+
+  const handleApply = () => {
+    onBedsChange(tempBeds);
+    onBathsChange(tempBaths);
+    onApply();
+  };
 
   return (
     <div className="flex flex-col gap-[16px] p-[12px] min-w-[280px]">
@@ -54,10 +71,10 @@ const BedsAndBathsPanel = ({
           {BED_OPTIONS.map((n) => (
             <OptionBtn
               key={n}
-              active={beds === n || (n === "Any" && beds === "")}
-              onClick={() => onBedsChange(n === "Any" ? "" : n)}
+              active={tempBeds === n}
+              onClick={() => handleBedsClick(n)}
             >
-              {n === "Any" ? t("search.any") : n}
+              {n}
             </OptionBtn>
           ))}
         </div>
@@ -69,16 +86,16 @@ const BedsAndBathsPanel = ({
           {BATH_OPTIONS.map((n) => (
             <OptionBtn
               key={n}
-              active={baths === n || (n === "Any" && baths === "")}
-              onClick={() => onBathsChange(n === "Any" ? "" : n)}
+              active={tempBaths === n}
+              onClick={() => handleBathsClick(n)}
             >
-              {n === "Any" ? t("search.any") : n}
+              {n}
             </OptionBtn>
           ))}
         </div>
       </div>
 
-      <PanelFooter onCancel={onCancel} onApply={onApply} />
+      <PanelFooter onCancel={onCancel} onApply={handleApply} />
     </div>
   );
 };

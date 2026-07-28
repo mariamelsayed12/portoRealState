@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { PanelFooter } from "./PanelFooter";
 
@@ -22,10 +23,18 @@ const PriceRangePanel = ({
   onApply,
 }: PriceRangePanelProps) => {
   const { t } = useTranslation();
+  const [tempFrom, setTempFrom] = useState(from);
+  const [tempTo, setTempTo] = useState(to);
 
   // Percentage positions for slider fill
-  const fromPct = ((from - MIN) / (MAX - MIN)) * 100;
-  const toPct = ((to - MIN) / (MAX - MIN)) * 100;
+  const fromPct = ((tempFrom - MIN) / (MAX - MIN)) * 100;
+  const toPct = ((tempTo - MIN) / (MAX - MIN)) * 100;
+
+  const handleApply = () => {
+    onFromChange(tempFrom);
+    onToChange(tempTo);
+    onApply();
+  };
 
   return (
     <div className="flex flex-col gap-[24px] p-[12px] w-[320px]">
@@ -40,11 +49,11 @@ const PriceRangePanel = ({
             <div className="flex items-center h-[36px] bg-white border border-[#d4d5d8] rounded-[8px] px-[12px] overflow-hidden">
               <input
                 type="number"
-                value={from}
+                value={tempFrom}
                 min={MIN}
-                max={to}
+                max={tempTo}
                 onChange={(e) =>
-                  onFromChange(Math.min(Number(e.target.value), to))
+                  setTempFrom(Math.min(Number(e.target.value), tempTo))
                 }
                 className="w-full text-[14px] font-normal text-[#747474] font-['Poppins'] bg-transparent outline-none"
               />
@@ -58,11 +67,11 @@ const PriceRangePanel = ({
             <div className="flex items-center h-[36px] bg-white border border-[#d4d5d8] rounded-[8px] px-[12px] overflow-hidden">
               <input
                 type="number"
-                value={to}
-                min={from}
+                value={tempTo}
+                min={tempFrom}
                 max={MAX}
                 onChange={(e) =>
-                  onToChange(Math.max(Number(e.target.value), from))
+                  setTempTo(Math.max(Number(e.target.value), tempFrom))
                 }
                 className="w-full text-[14px] font-normal text-[#747474] font-['Poppins'] bg-transparent outline-none"
               />
@@ -86,10 +95,10 @@ const PriceRangePanel = ({
               type="range"
               min={MIN}
               max={MAX}
-              value={from}
+              value={tempFrom}
               onChange={(e) => {
                 const v = Number(e.target.value);
-                if (v <= to) onFromChange(v);
+                if (v <= tempTo) setTempFrom(v);
               }}
               className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
             />
@@ -103,10 +112,10 @@ const PriceRangePanel = ({
               type="range"
               min={MIN}
               max={MAX}
-              value={to}
+              value={tempTo}
               onChange={(e) => {
                 const v = Number(e.target.value);
-                if (v >= from) onToChange(v);
+                if (v >= tempFrom) setTempTo(v);
               }}
               className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
             />
@@ -128,13 +137,13 @@ const PriceRangePanel = ({
               className="absolute top-0 text-[12px] font-normal text-[#464646] font-['Inter'] -translate-x-1/2 whitespace-nowrap"
               style={{ left: `${toPct}%` }}
             >
-              {(to / 1_000_000).toFixed(0)}M {t("search.egp")}
+              {(tempTo / 1_000_000).toFixed(0)}M {t("search.egp")}
             </span>
           </div>
         </div>
       </div>
 
-      <PanelFooter onCancel={onCancel} onApply={onApply} />
+      <PanelFooter onCancel={onCancel} onApply={handleApply} />
     </div>
   );
 };

@@ -5,9 +5,10 @@ import { useTranslation } from "react-i18next";
 import SearchFilterDropdown from "./SearchFilterDropdown";
 import SearchButton from "./SearchButton";
 import LocationPanel from "./LocationPanel";
-import PropertyTypePanel from "./PropertyTypePanel";
+import PropertyTypePanel, { PROPERTY_TYPE_KEYS } from "./PropertyTypePanel";
 import BedsAndBathsPanel from "./BedsAndBathsPanel";
 import PriceRangePanel from "./PriceRangePanel";
+import { destinations } from "../../data";
 
 const SearchSection = () => {
   const navigate = useNavigate();
@@ -35,14 +36,39 @@ const SearchSection = () => {
   };
 
   // Helper labels for selected values
+  const getSelectedLocationLabel = () => {
+    if (!location) return "";
+    return location
+      .split(",")
+      .map((loc) => {
+        const trimmed = loc.trim();
+        const dest = destinations.find((d) => d.title === trimmed);
+        return dest?.titleKey ? t(dest.titleKey) : trimmed;
+      })
+      .join(", ");
+  };
+
+  const getPropertyTypeLabel = () => {
+    if (!propertyType) return "";
+    return propertyType
+      .split(",")
+      .map((type) => {
+        const trimmed = type.trim();
+        const key = PROPERTY_TYPE_KEYS[trimmed] || trimmed;
+        return t(key);
+      })
+      .join(", ");
+  };
+
   const getBedsBathsLabel = () => {
-    if (!beds && !baths) return t("search.any");
+    if (!beds && !baths) return "";
     if (beds && baths) return `${beds} ${t("search.beds")}, ${baths} ${t("search.baths")}`;
     if (beds) return `${beds} ${t("search.beds")}`;
     return `${baths} ${t("search.baths")}`;
   };
 
   const getPriceLabel = () => {
+    if (priceFrom === null && priceTo === null) return "";
     const fromVal = priceFrom ?? 1_000_000;
     const toVal = priceTo ?? 2_000_000;
     return t("search.priceFormatted", {
@@ -66,8 +92,8 @@ const SearchSection = () => {
           <div className="flex-1 min-w-0">
             <SearchFilterDropdown
               icon={<MapPin className="size-[20px] sm:size-[16px] lg:size-[24px]" />}
-              label={t("search.location")}
-              value={location || t("search.any")}
+              placeholder={t("search.selectLocation")}
+              value={getSelectedLocationLabel()}
               className="rounded-t-[12px] sm:rounded-t-none sm:rounded-l-[12px]"
               panelContent={(onClose) => (
                 <LocationPanel
@@ -88,8 +114,8 @@ const SearchSection = () => {
           <div className="flex-1 min-w-0">
             <SearchFilterDropdown
               icon={<Home className="size-[20px] sm:size-[16px] lg:size-[24px]" />}
-              label={t("search.propertyType")}
-              value={propertyType || t("search.all")}
+              placeholder={t("search.selectPropertyType")}
+              value={getPropertyTypeLabel()}
               panelContent={(onClose) => (
                 <PropertyTypePanel
                   selected={propertyType}
@@ -109,7 +135,7 @@ const SearchSection = () => {
           <div className="flex-1 min-w-0">
             <SearchFilterDropdown
               icon={<Briefcase className="size-[20px] sm:size-[16px] lg:size-[24px]" />}
-              label={t("search.bedsAndBaths")}
+              placeholder={t("search.selectBedsBaths")}
               value={getBedsBathsLabel()}
               panelContent={(onClose) => (
                 <BedsAndBathsPanel
@@ -132,7 +158,7 @@ const SearchSection = () => {
           <div className="flex-1 min-w-0">
             <SearchFilterDropdown
               icon={<Banknote className="size-[20px] sm:size-[16px] lg:size-[24px]" />}
-              label={t("search.priceRange")}
+              placeholder={t("search.selectPriceRange")}
               value={getPriceLabel()}
               className="rounded-b-[12px] sm:rounded-b-none sm:rounded-r-[12px]"
               panelContent={(onClose) => (
