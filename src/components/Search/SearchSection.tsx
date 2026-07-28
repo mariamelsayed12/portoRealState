@@ -183,7 +183,7 @@ const SearchSection = () => {
 
       {/* Mobile full-width Search Button at bottom */}
       <div className="block sm:hidden w-full mt-[4px]">
-        <SearchButton onClick={handleSearch} mobile={true} />
+        <SearchButton  onClick={handleSearch} mobile={true} />
       </div>
     </div>
   );
