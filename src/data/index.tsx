@@ -7,6 +7,9 @@ import type {
   PropertyCardData,
 } from "../interfaces";
 import northcost from "../assets/HomePage/northcost.jpg";
+import aboutpage from "../assets/aboutpage.jpg";
+import mangamentPage from "../assets/mangamentPage.jpg";
+import unite from "../assets/unite.jpg";
 import { Mail, Phone } from "lucide-react";
 import HotelsIcon from "../components/icons/hotels";
 import GolfIcon from "../components/icons/golf";
@@ -25,6 +28,7 @@ export const destinations: DestinationData[] = [
     breadcrumbLabel: "Village",
     breadcrumbLabelKey: "destinations.labels.village",
     image: defualtImage,
+    images: [northcost, aboutpage, mangamentPage, unite],
     description:
       "A calm residential destination with signature coastal living and private leisure spaces.",
     descriptionKey: "destinations.village.description",
@@ -55,6 +59,7 @@ export const destinations: DestinationData[] = [
     rentalYield: "Up to 10%",
     availableListings: "More than 3000",
     image: defualtImage,
+    images: [unite, aboutpage, mangamentPage, northcost],
     description:
       "Porto Marina is the ultimate seaside resort, providing endless entertainment and pristine beaches.",
     descriptionKey: "destinations.portoMarina.description",
@@ -75,6 +80,7 @@ export const destinations: DestinationData[] = [
     breadcrumbLabel: "Beach",
     breadcrumbLabelKey: "destinations.labels.beach",
     image: defualtImage,
+    images: [mangamentPage, northcost, aboutpage, unite],
     description:
       "A beachfront destination designed for relaxed everyday access to the sea.",
     descriptionKey: "destinations.beach.description",
@@ -101,6 +107,7 @@ export const destinations: DestinationData[] = [
     breadcrumbLabel: "Lagoon",
     breadcrumbLabelKey: "destinations.labels.lagoon",
     image: defualtImage,
+    images: [aboutpage, northcost, mangamentPage, unite],
     description:
       "Waterfront escapes and family-friendly leisure framed by lush landscapes.",
     descriptionKey: "destinations.lagoon.description",
@@ -127,6 +134,7 @@ export const destinations: DestinationData[] = [
     breadcrumbLabel: "Marina",
     breadcrumbLabelKey: "destinations.labels.marina",
     image: defualtImage,
+    images: [northcost, aboutpage, mangamentPage, unite],
     description:
       "A marina lifestyle with an elegant promenade and curated amenities.",
     descriptionKey: "destinations.marina.description",
@@ -153,6 +161,7 @@ export const destinations: DestinationData[] = [
     breadcrumbLabel: "Coast",
     breadcrumbLabelKey: "destinations.labels.coast",
     image: defualtImage,
+    images: [unite, northcost, aboutpage, mangamentPage],
     description:
       "A coastal destination with a modern resort rhythm and timeless appeal.",
     descriptionKey: "destinations.coast.description",

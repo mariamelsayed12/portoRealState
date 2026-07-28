@@ -6,10 +6,9 @@ import DestinationNotFound from "../components/HomeCompoents/DestinationNotFound
 import DestinationBreadcrumb from "../components/HomeCompoents/DestinationBreadcrumb";
 import AmenitiesSection from "../components/Ui/AmenitiesSection";
 import LocationSection from "../components/Location/LocationSection";
-import Image from "../components/Ui/Image";
-import northcost from "../assets/HomePage/northcost.jpg";
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
+import ImageGallery from "../components/Ui/ImageGallery";
 
 
 const DestinationDetails = () => {
@@ -73,14 +72,11 @@ const DestinationDetails = () => {
         </div>
 
       <section className="container max lg:pt-10 md:pt-8 pt-5">
-        <div className="overflow-hidden">
-          <Image
-            alt={t("northCoastInvestment.landscape.alt")}
-            imageurl={northcost}
-            className="h-[250px] w-full  md:h-[400px] object-cover lg:h-[526px]"
-          />
-  </div>
-</section>
+        <ImageGallery
+          images={destination.images || [destination.image]}
+          alt={destination.titleKey ? t(destination.titleKey) : destination.title}
+        />
+      </section>
 
       {/* Location Section */}
       <LocationSection destination={destination} />

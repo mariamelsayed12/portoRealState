@@ -79,6 +79,7 @@ export interface DestinationData {
   breadcrumbLabel?: string;
   breadcrumbLabelKey?: string;
   image: string;
+  images?: string[];
   description: string;
   descriptionKey?: string;
   developer: string;
