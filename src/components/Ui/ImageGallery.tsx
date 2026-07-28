@@ -18,7 +18,7 @@ const ImageGallery = ({ images, alt }: ImageGalleryProps) => {
   return (
     <div className="flex flex-col gap-[12px] sm:gap-0 sm:relative w-full">
       {/* Main Image Container */}
-      <div className="relative w-full overflow-hidden rounded-[16px] sm:rounded-[24px] lg:rounded-[32px] shadow-[0px_2px_8px_rgba(0,0,0,0.08)]">
+      <div className="relative w-full overflow-hidden rounded-none shadow-[0px_2px_8px_rgba(0,0,0,0.08)]">
         <img
           src={images[activeIndex]}
           alt={`${alt} - ${activeIndex + 1}`}
@@ -31,7 +31,7 @@ const ImageGallery = ({ images, alt }: ImageGalleryProps) => {
 
       {/* Thumbnails Navigation */}
       {images.length > 1 && (
-        <div className="flex flex-row justify-center gap-[8px] sm:absolute sm:right-[16px] sm:lg:right-[24px] sm:top-1/2 sm:-translate-y-1/2 sm:flex-col sm:gap-[12px] z-20 rtl:sm:right-auto rtl:sm:left-[16px] rtl:sm:lg:left-[24px]">
+        <div className="flex flex-row justify-center gap-[8px] sm:absolute sm:right-[24px] md:right-[48px] lg:right-[120px] sm:top-1/2 sm:-translate-y-1/2 sm:flex-col sm:gap-[12px] z-20 rtl:sm:right-auto rtl:sm:left-[24px] rtl:md:left-[48px] rtl:lg:left-[120px]">
           {images.slice(0, 4).map((img, idx) => {
             const isActive = activeIndex === idx;
             return (

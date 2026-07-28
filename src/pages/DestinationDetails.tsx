@@ -71,7 +71,7 @@ const DestinationDetails = () => {
               <AmenitiesSection/>
         </div>
 
-      <section className="w-full max-w-[1440px] mx-auto px-6 sm:px-12 lg:px-[120px] lg:pt-10 md:pt-8 pt-5">
+      <section className="w-full lg:pt-10 md:pt-8 pt-5">
         <ImageGallery
           images={destination.images || [destination.image]}
           alt={destination.titleKey ? t(destination.titleKey) : destination.title}
