@@ -87,14 +87,14 @@ const SearchSection = () => {
       {/* Filter Outer Layout */}
       <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-[12px] lg:gap-[16px] w-full min-w-0">
         {/* Bordered Filters Container */}
-        <div className="flex flex-col sm:flex-row flex-1 min-w-0 border border-[#d4d5d8] rounded-[12px] bg-white overflow-hidden">
+        <div className="flex flex-col sm:flex-row flex-1 min-w-0 border border-[#d4d5d8] rounded-[12px] bg-white">
           {/* Location Dropdown */}
           <div className="flex-1 min-w-0">
             <SearchFilterDropdown
               icon={<MapPin className="size-[20px] sm:size-[16px] lg:size-[24px]" />}
               placeholder={t("search.selectLocation")}
               value={getSelectedLocationLabel()}
-              className="rounded-t-[12px] sm:rounded-t-none sm:rounded-l-[12px]"
+              className="rounded-t-[12px] sm:rounded-tr-none sm:rounded-l-[12px] rtl:sm:rounded-l-none rtl:sm:rounded-r-[12px] rtl:sm:rounded-tl-none"
               panelContent={(onClose) => (
                 <LocationPanel
                   selected={location}
@@ -160,7 +160,7 @@ const SearchSection = () => {
               icon={<Banknote className="size-[20px] sm:size-[16px] lg:size-[24px]" />}
               placeholder={t("search.selectPriceRange")}
               value={getPriceLabel()}
-              className="rounded-b-[12px] sm:rounded-b-none sm:rounded-r-[12px]"
+              className="rounded-b-[12px] sm:rounded-bl-none sm:rounded-r-[12px] rtl:sm:rounded-r-none rtl:sm:rounded-l-[12px] rtl:sm:rounded-br-none"
               panelContent={(onClose) => (
                 <PriceRangePanel
                   from={priceFrom ?? 1_000_000}
