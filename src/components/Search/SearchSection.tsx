@@ -87,7 +87,7 @@ const SearchSection = () => {
       {/* Filter Outer Layout */}
       <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-[12px] lg:gap-[16px] w-full min-w-0">
         {/* Bordered Filters Container */}
-        <div className="flex flex-col sm:flex-row flex-1 min-w-0 border border-[#d4d5d8] rounded-[12px] bg-white">
+        <div className="flex flex-col sm:flex-row flex-1 min-w-0 border border-[#d4d5d8] rounded-[12px] bg-white overflow-hidden">
           {/* Location Dropdown */}
           <div className="flex-1 min-w-0">
             <SearchFilterDropdown
