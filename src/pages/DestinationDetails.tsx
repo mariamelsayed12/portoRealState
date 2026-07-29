@@ -20,6 +20,8 @@ const DestinationDetails = () => {
     return <DestinationNotFound />;
   }
 
+
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 10 }}

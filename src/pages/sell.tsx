@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { toast } from "react-hot-toast";
@@ -13,6 +13,7 @@ import Button from "../components/Ui/Button";
 import InputErrorMessage from "../components/Ui/InputErrorMessage";
 import { sellFormSchema } from "../validation";
 import vectorImage from "../assets/Vector.svg";
+import { useGetVillageQuery } from "../app/services/crudVillage";
 
 interface SellFormData {
   fullName: string;
@@ -23,6 +24,12 @@ interface SellFormData {
 const phoneCodes = ["+20", "+971", "+966", "+44", "+1"];
 
 const SellPage = () => {
+
+  const {data}=useGetVillageQuery();
+	console.log(data);
+	useEffect(() => {
+		
+	}, [data])
   const { t } = useTranslation();
   const [prefix, setPrefix] = useState("+20");
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -86,6 +93,8 @@ const SellPage = () => {
         return code;
     }
   };
+
+ 
 
   return (
     <div className="bg-[#F5F9FA] min-h-screen">

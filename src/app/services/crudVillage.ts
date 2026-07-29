@@ -1,0 +1,79 @@
+
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import i18n from "../../i18n";
+
+export interface IVillage {
+  _id:string;
+  name:string;
+  slug:string;
+  developerName:string;
+  locationText:string;
+  startingPrice:number;
+  rentalYield:number;
+  coverImage:string;
+  galleryImages:string [];
+  amenities:string[];
+  googleMapsUrl:string;
+  latitude:number;
+  longitude:number;
+}
+
+
+
+export interface IVillageResponse {
+  status: string;
+  code: number;
+  message: string;
+  results: number;
+  paginationResult: {
+    currentPage: number;
+    limit: number;
+    numberOfPages: number;
+    next?: number;
+  };
+  data: IVillage[];
+}
+
+export const VillageApiSlice=createApi({
+    reducerPath:'ApiVillage',
+    tagTypes:['Village'],
+    baseQuery: fetchBaseQuery({ 
+      baseUrl: import.meta.env.VITE_API_URL,
+      prepareHeaders: (headers) => {
+        headers.set("Accept-Language", i18n.language);
+        return headers;
+      },
+    }),   
+        endpoints:(builder)=>({
+             //----------------------------- Get =>get---------------------
+        getVillage:builder.query<IVillage[], void>({
+            query:()=>{
+                return{
+                    url:"villages"
+                }
+            },
+            transformResponse: (response: IVillageResponse) => response.data,
+            providesTags: (result) =>
+                result
+                    ? [
+                        ...result.map(({ _id }) => ({
+                        type: 'Village' as const,
+                        id: _id,
+                        })),
+                        { type: 'Village', id: 'LIST' },
+                    ]
+                    : [{ type: 'Village', id: 'LIST' }],
+       
+}),
+
+        
+
+
+           
+    })
+
+})
+
+export const { useGetVillageQuery } = VillageApiSlice;
+
+

@@ -15,6 +15,7 @@ const BuyPage = () => {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const { t } = useTranslation();
   const [searchParams, setSearchParams] = useSearchParams();
+  
 
   // Apply sidebar filters on top of destination and tab filtered units
   const {

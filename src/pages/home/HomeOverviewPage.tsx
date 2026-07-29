@@ -7,6 +7,7 @@ import PrestigiousDestinations from "../../components/HomeCompoents/PrestigiousD
 import WhatWeOffer from "../../components/HomeCompoents/WhatWeOffer";
 
 const HomeOverviewPage = () => {
+
 	return (
 		<motion.div
 			initial={{ opacity: 0, y: 10 }}

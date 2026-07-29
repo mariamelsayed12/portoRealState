@@ -1,12 +1,15 @@
 import { useRef } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { destinations } from "../../data";
 import DestinationCard from "./DestinationCard";
 import { useTranslation } from "react-i18next";
+import { useGetVillageQuery } from "../../app/services/crudVillage";
 
-const PrestigiousDestinations = () => {
+const  PrestigiousDestinations = () => {
 	const { t, i18n } = useTranslation();
 	const isRtl = i18n.language === "ar";
+
+	 const {data}=useGetVillageQuery();
+	
 	const scrollerRef = useRef<HTMLDivElement | null>(null);
 
 	const scrollByCards = (direction: "left" | "right") => {
@@ -39,8 +42,8 @@ const PrestigiousDestinations = () => {
 					ref={scrollerRef}
 					className="flex gap-[24px] overflow-x-auto pb-4 pt-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden scroll-smooth"
 				>
-					{destinations.map((dest) => (
-						<DestinationCard key={dest.id} destination={dest} />
+					{data?.map((dest) => (
+						<DestinationCard key={dest._id} destination={dest} />
 					))}
 				</div>
 				</div>

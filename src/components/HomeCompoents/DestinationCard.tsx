@@ -1,26 +1,24 @@
 import { ArrowUpRight } from "lucide-react";
 import { Link } from "react-router-dom";
-import type { DestinationData } from "../../interfaces";
 import { useTranslation } from "react-i18next";
+import type { IVillage } from "../../app/services/crudVillage";
 
 interface DestinationCardProps {
-	destination: DestinationData;
+	destination: IVillage;
 }
 
 const DestinationCard = ({ destination }: DestinationCardProps) => {
-	const { t } = useTranslation();
-	const priceStr = destination.price || "";
-	const spaceIndex = priceStr.indexOf(" ");
-	let priceVal = priceStr;
-	let priceUnit = "";
-	if (spaceIndex !== -1) {
-		priceVal = priceStr.slice(0, spaceIndex);
-		priceUnit = priceStr.slice(spaceIndex + 1);
-	}
+	const { t, i18n } = useTranslation();
+	const startingPrice = destination.startingPrice || 0;
+	const millionPrice = startingPrice / 1000000;
+	
+	const priceVal = millionPrice.toLocaleString(i18n.language, {
+		minimumFractionDigits: 0,
+		maximumFractionDigits: 2,
+	});
+	const priceUnit = "EGP";
 
-	const displayPriceVal = priceVal.endsWith("M")
-		? `${priceVal.slice(0, -1)} ${t("prestigiousDestinations.million")}`
-		: priceVal;
+	const displayPriceVal = `${priceVal} ${t("prestigiousDestinations.million")}`;
 
 	return (
 		<Link
@@ -28,8 +26,8 @@ const DestinationCard = ({ destination }: DestinationCardProps) => {
 			className="group relative flex flex-col justify-end p-6 rounded-[12px] overflow-hidden shrink-0 w-[280px] sm:w-[384px] h-[320px] sm:h-[443px] transition-all duration-300 "
 		>
 			<img
-				src={destination.image}
-				alt={destination.titleKey ? t(destination.titleKey) : destination.title}
+				src={destination.coverImage}
+				alt={destination.name}
 				loading="lazy"
 				decoding="async"
 				sizes="(min-width: 768px) 33vw, 100vw"
@@ -48,10 +46,10 @@ const DestinationCard = ({ destination }: DestinationCardProps) => {
 				{/* Left Glass Badge */}
 				<div className="bg-white/10 backdrop-blur-md rounded-[12px] p-2 flex flex-col items-start min-w-[120px] border border-white/15">
 					<h3 className="text-[#edeff2] text-[16px] sm:text-[19px] font-medium font-['Poppins'] leading-tight">
-						{destination.titleKey ? t(destination.titleKey) : destination.title}
+						{destination.name}
 					</h3>
 					<p className="text-[#edeff2] text-[13px] sm:text-[16px] font-normal font-['Poppins'] mt-0.5 opacity-90">
-						{destination.developerKey ? t(destination.developerKey) : destination.developer}
+						{destination.developerName}
 					</p>
 				</div>
 
