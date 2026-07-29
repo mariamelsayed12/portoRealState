@@ -1,36 +1,43 @@
 import { useState, useMemo } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import UnitCard from "../components/UnitCard";
+import UnitCardSkeleton from "../components/UnitCardSkeleton";
 import { useUnitsFilter } from "../hooks/useUnitsFilter";
 import { useUnitsSort, type SortOption } from "../hooks/useUnitsSort";
-import { units } from "../data";
+import { useGetPropertyQuery } from "../app/services/crudproperties";
 import FilterDrawer from "../components/filterCcomponents/FilterDrawer";
 import FilterIcon from "../components/icons/Filter";
 import SortIcon from "../components/icons/SortIcon";
 import { useTranslation } from "react-i18next";
 
 const RentPage = () => {
+  const { data: units = [], isLoading } = useGetPropertyQuery();
   const { t } = useTranslation();
-  const [activeTab, setActiveTab] = useState<"All" | "Available" | "Available soon">("All");
+  const [activeTab, setActiveTab] = useState<
+    "All" | "Available" | "Available soon"
+  >("All");
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [isSortOpen, setIsSortOpen] = useState(false);
 
-  const SORT_OPTIONS: { label: string; value: SortOption }[] = useMemo(() => [
-    { label: t("rent.sort.maxPrice"), value: "max-price" },
-    { label: t("rent.sort.minPrice"), value: "min-price" },
-    { label: t("rent.sort.readyBy"), value: "ready-by" },
-    { label: t("rent.sort.minInstallments"), value: "min-installments" },
-    { label: t("rent.sort.maxInstallments"), value: "max-installments" },
-  ], [t]);
+  const SORT_OPTIONS: { label: string; value: SortOption }[] = useMemo(
+    () => [
+      { label: t("rent.sort.maxPrice"), value: "max-price" },
+      { label: t("rent.sort.minPrice"), value: "min-price" },
+      { label: t("rent.sort.readyBy"), value: "ready-by" },
+      { label: t("rent.sort.minInstallments"), value: "min-installments" },
+      { label: t("rent.sort.maxInstallments"), value: "max-installments" },
+    ],
+    [t],
+  );
 
   // Filter units by rental type and active tab/availability status
   const activeTabUnits = useMemo(() => {
     return units.filter((unit) => {
-      const isRent = unit.badges.some((b) => b.toLowerCase() === "rent");
+      const isRent = unit.listingType?.toLowerCase() === "rent";
       if (!isRent) return false;
 
       if (activeTab === "All") return true;
-      return unit.badges.some((b) => b.toLowerCase() === activeTab.toLowerCase());
+      return unit.status?.toLowerCase() === activeTab.toLowerCase();
     });
   }, [activeTab]);
 
@@ -45,11 +52,8 @@ const RentPage = () => {
   } = useUnitsFilter(activeTabUnits);
 
   // Sort the filtered units
-  const {
-    activeSort,
-    setActiveSort,
-    sortedUnits,
-  } = useUnitsSort(filteredUnits);
+  const { activeSort, setActiveSort, sortedUnits } =
+    useUnitsSort(filteredUnits);
 
   const getTabLabel = (tab: "All" | "Available" | "Available soon") => {
     switch (tab) {
@@ -94,14 +98,20 @@ const RentPage = () => {
               className="inline-flex items-center gap-2 rounded-md border border-[#747474] bg-white px-[16px] py-[8px] text-xs font-semibold text-primary shadow-sm hover:bg-gray-50 transition-colors cursor-pointer"
             >
               <span>
-                {t("rent.sortBtn")}{activeSort ? `: ${SORT_OPTIONS.find((o) => o.value === activeSort)?.label}` : ""}
+                {t("rent.sortBtn")}
+                {activeSort
+                  ? `: ${SORT_OPTIONS.find((o) => o.value === activeSort)?.label}`
+                  : ""}
               </span>
               <SortIcon className="w-[18px] h-[18px] text-primary" />
             </motion.button>
 
             {isSortOpen && (
               <>
-                <div className="fixed inset-0 z-10" onClick={() => setIsSortOpen(false)} />
+                <div
+                  className="fixed inset-0 z-10"
+                  onClick={() => setIsSortOpen(false)}
+                />
                 <div className="absolute right-0 rtl:right-auto rtl:left-0 top-full mt-2 z-20 w-52 bg-white rounded-xl shadow-xl border border-[#E8EFF1] py-1 overflow-hidden">
                   {SORT_OPTIONS.map((opt) => {
                     const isSelected = activeSort === opt.value;
@@ -121,7 +131,9 @@ const RentPage = () => {
                         }`}
                       >
                         <span>{opt.label}</span>
-                        {isSelected && <span className="w-1.5 h-1.5 rounded-full bg-primary" />}
+                        {isSelected && (
+                          <span className="w-1.5 h-1.5 rounded-full bg-primary" />
+                        )}
                       </motion.button>
                     );
                   })}
@@ -158,7 +170,13 @@ const RentPage = () => {
       {/* Units Grid & Filter Sidebar */}
       <div className="flex flex-col lg:flex-row gap-8 items-start relative">
         <div className="flex-1 w-full overflow-hidden pb-4">
-          {sortedUnits.length > 0 ? (
+          {isLoading ? (
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 justify-items-center sm:justify-items-stretch transition-all duration-300">
+              {Array.from({ length: 6 }).map((_, idx) => (
+                <UnitCardSkeleton key={idx} className="w-full" />
+              ))}
+            </div>
+          ) : sortedUnits.length > 0 ? (
             <motion.div
               layout
               className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 justify-items-center sm:justify-items-stretch transition-all duration-300"
@@ -166,7 +184,7 @@ const RentPage = () => {
               <AnimatePresence mode="popLayout">
                 {sortedUnits.map((unit) => (
                   <motion.div
-                    key={unit.id}
+                    key={unit._id}
                     layout
                     initial={{ opacity: 0, scale: 0.92 }}
                     animate={{ opacity: 1, scale: 1 }}
@@ -181,7 +199,9 @@ const RentPage = () => {
             </motion.div>
           ) : (
             <div className="flex flex-col items-center justify-center py-16 text-center">
-              <p className="text-base text-[#7D8D93]">{t("rent.noProperties")}</p>
+              <p className="text-base text-[#7D8D93]">
+                {t("rent.noProperties")}
+              </p>
             </div>
           )}
         </div>

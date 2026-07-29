@@ -1,8 +1,9 @@
 import { useState, useEffect, useMemo } from "react";
 import UnitCard from "../components/UnitCard";
+import UnitCardSkeleton from "../components/UnitCardSkeleton";
 import { AnimatePresence, motion } from "framer-motion";
 import { useUnitsFilter } from "../hooks/useUnitsFilter";
-import { units } from "../data";
+import { useGetPropertyQuery } from "../app/services/crudproperties";
 import FilterDrawer from "../components/filterCcomponents/FilterDrawer";
 import { SlidersHorizontal } from "lucide-react";
 import { useTranslation } from "react-i18next";
@@ -12,10 +13,10 @@ import { Pagination } from "../components/Pagination";
 const ITEMS_PER_PAGE = 6;
 
 const BuyPage = () => {
+  const { data: units = [] ,isLoading} = useGetPropertyQuery();
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const { t } = useTranslation();
   const [searchParams, setSearchParams] = useSearchParams();
-  
 
   // Apply sidebar filters on top of destination and tab filtered units
   const {
@@ -58,7 +59,9 @@ const BuyPage = () => {
   return (
     <div className="">
       <div className="pb-10">
-        <h3 className="text-text-darker text-3xl font-semibold">{t("buy.title")}</h3>
+        <h3 className="text-text-darker text-3xl font-semibold">
+          {t("buy.title")}
+        </h3>
       </div>
       {/* Tabs Navigation */}
 
@@ -90,7 +93,13 @@ const BuyPage = () => {
 
         {/* Units Grid */}
         <div className="flex-1 w-full overflow-hidden lg:pb-7 md:pb-5 pb-3">
-          {paginatedUnits.length > 0 ? (
+          {isLoading ? (
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 justify-items-stretch transition-all duration-300 lg:grid-cols-2 xl:grid-cols-2">
+              {Array.from({ length: 4 }).map((_, idx) => (
+                <UnitCardSkeleton key={idx} className="w-full" />
+              ))}
+            </div>
+          ) : paginatedUnits.length > 0 ? (
             <>
               <motion.div
                 layout
@@ -99,12 +108,16 @@ const BuyPage = () => {
                 <AnimatePresence mode="popLayout">
                   {paginatedUnits.map((unit) => (
                     <motion.div
-                      key={unit.id}
+                      key={unit._id}
                       layout
                       initial={{ opacity: 0, scale: 0.92 }}
                       animate={{ opacity: 1, scale: 1 }}
                       exit={{ opacity: 0, scale: 0.92 }}
-                      transition={{ type: "spring", damping: 25, stiffness: 220 }}
+                      transition={{
+                        type: "spring",
+                        damping: 25,
+                        stiffness: 220,
+                      }}
                       className="w-full"
                     >
                       <UnitCard card={unit} className="w-full" />
@@ -122,7 +135,9 @@ const BuyPage = () => {
             </>
           ) : (
             <div className="flex flex-col items-center justify-center py-16 text-center">
-              <p className="text-base text-[#7D8D93]">No properties found in this category.</p>
+              <p className="text-base text-[#7D8D93]">
+                No properties found in this category.
+              </p>
             </div>
           )}
         </div>
@@ -143,4 +158,4 @@ const BuyPage = () => {
   );
 };
 
-export default BuyPage
+export default BuyPage;

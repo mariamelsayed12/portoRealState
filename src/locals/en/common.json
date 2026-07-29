@@ -55,6 +55,7 @@
     "prestigiousDestinations.scrollLeft": "Scroll destinations left",
     "prestigiousDestinations.scrollRight": "Scroll destinations right",
     "prestigiousDestinations.million": "M",
+    "prestigiousDestinations.noDestinations": "No destinations found.",
     "destinations.developer.amerGroup": "Amer Group",
     "curatedProperties.title": "Curated Properties",
     "curatedProperties.viewAll": "View All",

@@ -13,7 +13,7 @@ import Button from "../components/Ui/Button";
 import InputErrorMessage from "../components/Ui/InputErrorMessage";
 import { sellFormSchema } from "../validation";
 import vectorImage from "../assets/Vector.svg";
-import { useGetVillageQuery } from "../app/services/crudVillage";
+import { useGetPropertyQuery } from "../app/services/crudproperties";
 
 interface SellFormData {
   fullName: string;
@@ -25,7 +25,7 @@ const phoneCodes = ["+20", "+971", "+966", "+44", "+1"];
 
 const SellPage = () => {
 
-  const {data}=useGetVillageQuery();
+  const {data}=useGetPropertyQuery();
 	console.log(data);
 	useEffect(() => {
 		

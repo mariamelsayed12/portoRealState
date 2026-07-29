@@ -1,38 +1,39 @@
 import { useState, useMemo, useRef } from "react";
 import { useSelector } from "react-redux";
 import { AnimatePresence, motion } from "framer-motion";
-import {
-  Heart,
-  ChevronLeft,
-  ChevronRight,
-} from "lucide-react";
+import { Heart, ChevronLeft, ChevronRight } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
 import type { RootState } from "../app/store";
 import UnitCard from "../components/UnitCard";
+import UnitCardSkeleton from "../components/UnitCardSkeleton";
 import { useUnitsFilter } from "../hooks/useUnitsFilter";
 import { useUnitsSort, type SortOption } from "../hooks/useUnitsSort";
 import AmenitiesSection from "../components/Ui/AmenitiesSection";
-import { units } from "../data";
+import { useGetPropertyQuery } from "../app/services/crudproperties";
 import { getRecommendedProperties } from "../utils/recommendations";
 import FilterDrawer from "../components/filterCcomponents/FilterDrawer";
 import FilterIcon from "../components/icons/Filter";
 import SortIcon from "../components/icons/SortIcon";
 
 const FavoritesPage = () => {
+  const { data: units = [], isLoading } = useGetPropertyQuery();
   const { t, i18n } = useTranslation();
   const isRtl = i18n.language === "ar";
   const { favUnite } = useSelector((state: RootState) => state.favUnit);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [isSortOpen, setIsSortOpen] = useState(false);
 
-  const SORT_OPTIONS: { label: string; value: SortOption }[] = useMemo(() => [
-    { label: t("rent.sort.maxPrice"), value: "max-price" },
-    { label: t("rent.sort.minPrice"), value: "min-price" },
-    { label: t("rent.sort.readyBy"), value: "ready-by" },
-    { label: t("rent.sort.minInstallments"), value: "min-installments" },
-    { label: t("rent.sort.maxInstallments"), value: "max-installments" },
-  ], [t]);
+  const SORT_OPTIONS: { label: string; value: SortOption }[] = useMemo(
+    () => [
+      { label: t("rent.sort.maxPrice"), value: "max-price" },
+      { label: t("rent.sort.minPrice"), value: "min-price" },
+      { label: t("rent.sort.readyBy"), value: "ready-by" },
+      { label: t("rent.sort.minInstallments"), value: "min-installments" },
+      { label: t("rent.sort.maxInstallments"), value: "max-installments" },
+    ],
+    [t],
+  );
 
   // Apply sidebar filters on top of favorite properties
   const {
@@ -52,7 +53,7 @@ const FavoritesPage = () => {
   const recommendedProperties = useMemo(() => {
     if (favUnite.length === 0) return [];
     const latestFav = favUnite[favUnite.length - 1];
-    const excludeIds = favUnite.map((u) => u.id);
+    const excludeIds = favUnite.map((u) => u._id);
     return getRecommendedProperties(latestFav, units, excludeIds);
   }, [favUnite]);
 
@@ -94,7 +95,11 @@ const FavoritesPage = () => {
               {t("favorites.title")}
             </h1>
             <p className="mt-2 text-sm text-[#7D8D93]">
-              {sortedUnits.length === 1 ? t("favorites.resultCountOne") : t("favorites.resultCountOther", { count: sortedUnits.length })}
+              {sortedUnits.length === 1
+                ? t("favorites.resultCountOne")
+                : t("favorites.resultCountOther", {
+                    count: sortedUnits.length,
+                  })}
             </p>
           </div>
 
@@ -120,7 +125,10 @@ const FavoritesPage = () => {
                 className="inline-flex items-center gap-2 rounded-md border border-[#747474] bg-white px-[16px] py-[8px] text-xs font-semibold text-primary shadow-sm hover:bg-gray-50 transition-colors cursor-pointer"
               >
                 <span>
-                  {t("favorites.sortBtn")}{activeSort ? `: ${SORT_OPTIONS.find((o) => o.value === activeSort)?.label}` : ""}
+                  {t("favorites.sortBtn")}
+                  {activeSort
+                    ? `: ${SORT_OPTIONS.find((o) => o.value === activeSort)?.label}`
+                    : ""}
                 </span>
                 <SortIcon className="w-[18px] h-[18px] text-primary" />
               </motion.button>
@@ -174,7 +182,7 @@ const FavoritesPage = () => {
                 <AnimatePresence mode="popLayout">
                   {sortedUnits.map((unit) => (
                     <motion.div
-                      key={unit.id}
+                      key={unit._id}
                       layout
                       initial={{ opacity: 0, scale: 0.92 }}
                       animate={{ opacity: 1, scale: 1 }}
@@ -256,9 +264,15 @@ const FavoritesPage = () => {
               ref={scrollerRef}
               className="flex gap-4 overflow-x-auto pb-4 pt-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
             >
-              {recommendedProperties.map((unit) => (
-                <UnitCard key={unit.id} card={unit} />
-              ))}
+              {isLoading ? (
+                Array.from({ length: 3 }).map((_, idx) => (
+                  <UnitCardSkeleton key={idx} />
+                ))
+              ) : (
+                recommendedProperties.map((unit) => (
+                  <UnitCard key={unit._id} card={unit} />
+                ))
+              )}
             </div>
           </div>
         )}

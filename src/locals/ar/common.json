@@ -55,6 +55,7 @@
     "prestigiousDestinations.scrollLeft": "تمرير الوجهات لليسار",
     "prestigiousDestinations.scrollRight": "تمرير الوجهات لليمين",
     "prestigiousDestinations.million": "مليون",
+    "prestigiousDestinations.noDestinations": "لم يتم العثور على وجهات.",
     "destinations.developer.amerGroup": "مجموعة عامر",
     "curatedProperties.title": "عقارات مختارة",
     "curatedProperties.viewAll": "عرض الكل",

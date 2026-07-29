@@ -1,5 +1,6 @@
-import { useState, useMemo, useCallback } from "react";
-import type { PropertyCardData } from "../interfaces";
+import { useState, useMemo, useCallback, useEffect } from "react";
+import type { IProperty } from "../app/services/crudproperties";
+import { useSearchParams } from "react-router-dom";
 
 export interface FilterState {
   propertyType: string;
@@ -49,13 +50,19 @@ export const getFinishingForUnit = (unitId: string): string => {
 
 // Helper function to check if a unit matches a set of filters
 export const matchUnit = (
-  unit: PropertyCardData,
+  unit: IProperty,
   filterState: FilterState,
 ): boolean => {
   // 1. Property Type Filter
   if (filterState.propertyType) {
-    const parts = unit.location.split("•");
-    const unitType = parts.length > 1 ? parts[1].trim().toLowerCase() : "";
+    const lowerName = unit.name.toLowerCase();
+    let unitType = "chalet";
+    if (lowerName.includes("penthouse")) unitType = "penthouse";
+    else if (lowerName.includes("villa")) unitType = "villa";
+    else if (lowerName.includes("apartment")) unitType = "apartment";
+    else if (lowerName.includes("twin house")) unitType = "twin house";
+    else if (unit.finishingStatus) unitType = unit.finishingStatus.toLowerCase();
+
     const selectedTypes = filterState.propertyType.split(",").map(t => t.trim().toLowerCase());
 
     const isChalet = (t: string) =>
@@ -91,9 +98,7 @@ export const matchUnit = (
 
   // 2. Bedrooms Filter
   if (filterState.bedrooms) {
-    const bedStat = unit.stats.find((s) => s.icon === "bed");
-    if (!bedStat) return false;
-    const bedValue = parseInt(bedStat.value, 10);
+    const bedValue = unit.bedrooms || 0;
 
     if (filterState.bedrooms === "5+") {
       if (bedValue < 5) return false;
@@ -105,9 +110,7 @@ export const matchUnit = (
 
   // 3. Bathrooms Filter
   if (filterState.bathrooms) {
-    const bathStat = unit.stats.find((s) => s.icon === "bath");
-    if (!bathStat) return false;
-    const bathValue = parseFloat(bathStat.value);
+    const bathValue = unit.bathrooms || 0;
 
     if (filterState.bathrooms === "3+") {
       if (bathValue < 3) return false;
@@ -118,53 +121,30 @@ export const matchUnit = (
   }
 
   // 4. Area Range Filter
-  const areaStat = unit.stats.find((s) => s.icon === "area");
-  const areaValue = areaStat ? parseFloat(areaStat.value) : NaN;
+  const areaValue = unit.area || 0;
   if (filterState.areaFrom) {
-    if (isNaN(areaValue) || areaValue < parseFloat(filterState.areaFrom))
+    if (areaValue < parseFloat(filterState.areaFrom))
       return false;
   }
   if (filterState.areaTo) {
-    if (isNaN(areaValue) || areaValue > parseFloat(filterState.areaTo))
+    if (areaValue > parseFloat(filterState.areaTo))
       return false;
   }
 
   // 5. Price Range Filter
-  const priceValue = parseFloat(unit.price.replace(/[^0-9.]/g, ""));
+  const priceValue = unit.installmentPrice || 0;
   if (filterState.priceFrom) {
-    if (isNaN(priceValue) || priceValue < parseFloat(filterState.priceFrom))
+    if (priceValue < parseFloat(filterState.priceFrom))
       return false;
   }
   if (filterState.priceTo) {
-    if (isNaN(priceValue) || priceValue > parseFloat(filterState.priceTo))
+    if (priceValue > parseFloat(filterState.priceTo))
       return false;
   }
 
   // 6. Payments Filter (Down Payment & Monthly Installment)
-  let unitDownPayment = 0;
-  let unitMonthlyInstallment = 0;
-
-  if (!isNaN(priceValue)) {
-    const note = unit.paymentNote.toLowerCase();
-    if (note.includes("full cash payment")) {
-      unitDownPayment = priceValue;
-      unitMonthlyInstallment = 0;
-    } else {
-      // Down payment percent match
-      const pctMatch = note.match(/(\d+(?:\.\d+)?)\s*%\s*down/i);
-      if (pctMatch) {
-        const pct = parseFloat(pctMatch[1]);
-        unitDownPayment = priceValue * (pct / 100);
-      }
-
-      // Installment quarterly match
-      const qtMatch = note.match(/([\d,]+)\s*quarterly/i);
-      if (qtMatch) {
-        const qtVal = parseFloat(qtMatch[1].replace(/,/g, ""));
-        unitMonthlyInstallment = qtVal / 3;
-      }
-    }
-  }
+  const unitDownPayment = unit.downPaymentAmount || 0;
+  const unitMonthlyInstallment = unit.paymentModel === "Cash" ? 0 : (unit.installmentValue || 0) / 3;
 
   if (filterState.downPayment) {
     if (unitDownPayment > parseFloat(filterState.downPayment)) return false;
@@ -176,20 +156,14 @@ export const matchUnit = (
 
   // 7. Delivery Date Filter
   if (filterState.deliveryDate) {
-    // Find delivery badge
-    const deliveryBadge = unit.badges.find((b) =>
-      b.toLowerCase().includes("delivery"),
-    );
-    let deliveryYear: number | null = null;
-    if (deliveryBadge) {
-      const match = deliveryBadge.match(/delivery in (\d+)/i);
-      if (match) {
-        deliveryYear = parseInt(match[1], 10);
-      }
+    let deliveryYear = 0;
+    if (unit.deliveryDate) {
+      deliveryYear = unit.deliveryDate.includes("-")
+        ? parseInt(unit.deliveryDate.split("-")[0], 10)
+        : parseInt(unit.deliveryDate, 10);
     }
 
     if (filterState.deliveryDate.toLowerCase() === "ready") {
-      // If there's a delivery badge and the year is in the future
       if (deliveryYear && deliveryYear > 2026) return false;
     } else {
       const targetYear = parseInt(filterState.deliveryDate, 10);
@@ -199,8 +173,7 @@ export const matchUnit = (
 
   // 8. Finishing Filter
   if (filterState.finishing) {
-    const unitFinishing = getFinishingForUnit(unit.id);
-    if (unitFinishing.toLowerCase() !== filterState.finishing.toLowerCase())
+    if (unit.finishingStatus?.toLowerCase() !== filterState.finishing.toLowerCase())
       return false;
   }
 
@@ -209,7 +182,7 @@ export const matchUnit = (
     const normalize = (s: string) => s.toLowerCase().replace(/[\s-_]+/g, "");
     const selectedLocs = filterState.location.split(",").map(l => normalize(l.trim()));
     if (
-      !selectedLocs.includes(normalize(unit.destination?.name || ""))
+      !selectedLocs.includes(normalize(unit.village?.name || ""))
     ) {
       return false;
     }
@@ -218,10 +191,7 @@ export const matchUnit = (
   return true;
 };
 
-import { useEffect } from "react";
-import { useSearchParams } from "react-router-dom";
-
-export const useUnitsFilter = (units: PropertyCardData[]) => {
+export const useUnitsFilter = (units: IProperty[]) => {
   const [searchParams, setSearchParams] = useSearchParams();
 
   // Parse search params to FilterState
@@ -319,4 +289,3 @@ export const useUnitsFilter = (units: PropertyCardData[]) => {
     tempFilteredCount,
   };
 };
-

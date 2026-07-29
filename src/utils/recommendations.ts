@@ -1,34 +1,36 @@
-import type { PropertyCardData } from "../interfaces";
+import type { IProperty } from "../app/services/crudproperties";
 
 /**
- * Helper to parse property type from location string (e.g. "Porto Golf • Chalet")
+ * Helper to parse property type from property name or finishingStatus
  */
-const getPropertyType = (u: PropertyCardData): string => {
-  const parts = u.location.split("•");
-  return parts.length > 1 ? parts[1].trim().toLowerCase() : "";
+const getPropertyType = (u: IProperty): string => {
+  const lowerName = u.name.toLowerCase();
+  if (lowerName.includes("penthouse")) return "penthouse";
+  if (lowerName.includes("villa")) return "villa";
+  if (lowerName.includes("apartment")) return "apartment";
+  if (lowerName.includes("twin house")) return "twin house";
+  return u.finishingStatus?.toLowerCase() || "";
 };
 
 /**
  * Helper to parse price as a numeric value
  */
-const getPrice = (u: PropertyCardData): number => {
-  return parseFloat(u.price.replace(/[^0-9.]/g, "")) || 0;
+const getPrice = (u: IProperty): number => {
+  return u.installmentPrice || 0;
 };
 
 /**
- * Helper to get bedroom count from stats
+ * Helper to get bedroom count
  */
-const getBedrooms = (u: PropertyCardData): number => {
-  const bedStat = u.stats.find((s) => s.icon === "bed");
-  return bedStat ? parseInt(bedStat.value, 10) || 0 : 0;
+const getBedrooms = (u: IProperty): number => {
+  return u.bedrooms || 0;
 };
 
 /**
  * Helper to parse area as a numeric value
  */
-const getArea = (u: PropertyCardData): number => {
-  const areaStat = u.stats.find((s) => s.icon === "area");
-  return areaStat ? parseFloat(areaStat.value.replace(/[^0-9.]/g, "")) || 0 : 0;
+const getArea = (u: IProperty): number => {
+  return u.area || 0;
 };
 
 /**
@@ -43,13 +45,13 @@ const getArea = (u: PropertyCardData): number => {
  * and then other available properties if there are not enough close matches.
  */
 export const getRecommendedProperties = (
-  currentProperty: PropertyCardData,
-  allProperties: PropertyCardData[],
+  currentProperty: IProperty,
+  allProperties: IProperty[],
   excludeIds: string[] = [],
-): PropertyCardData[] => {
+): IProperty[] => {
   // Exclude the current property and any other specified IDs (e.g. other saved favorites)
   const candidates = allProperties.filter(
-    (u) => u.id !== currentProperty.id && !excludeIds.includes(u.id),
+    (u) => u._id !== currentProperty._id && !excludeIds.includes(u._id),
   );
 
   const currentType = getPropertyType(currentProperty);
@@ -63,7 +65,7 @@ export const getRecommendedProperties = (
 
     // 1. Same Destination (base score of 1000 to ensure destination takes absolute priority)
     const isSameDestination =
-      candidate.destination.slug === currentProperty.destination.slug;
+      candidate.village?.slug === currentProperty.village?.slug;
     if (isSameDestination) {
       score += 1000;
     }

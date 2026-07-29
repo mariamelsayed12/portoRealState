@@ -1,5 +1,4 @@
 import { Bath, BedDouble, MapPin, Ruler } from "lucide-react";
-import type { PropertyCardData } from "../interfaces";
 import Image from "./Ui/Image";
 import { useAppDispatch, type RootState } from "../app/store";
 import { useSelector } from "react-redux";
@@ -11,6 +10,8 @@ import { FaHeart, FaRegHeart } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import type { IProperty } from "../app/services/crudproperties";
+import { truncateText } from "../utils";
 
 const statIconMap = {
   location: MapPin,
@@ -23,24 +24,23 @@ const UnitCard = ({
   card,
   className = "w-[282px] sm:w-[382px] shrink-0",
 }: {
-  card: PropertyCardData;
+  card: IProperty;
   className?: string;
 }) => {
   const { t, i18n } = useTranslation();
   const isRtl = i18n.language === "ar";
   const dispatch = useAppDispatch();
   const { favUnite } = useSelector((state: RootState) => state.favUnit);
-  const [paymentMode, setPaymentMode] = useState<"installment" | "cash">(
-    "installment"
-  );
+  const defaultMode = card.paymentModel?.toLowerCase() === "cash" ? "cash" : "installment";
+  const [paymentMode, setPaymentMode] = useState<"installment" | "cash">(defaultMode);
 
-  const isFavorite = favUnite.some((item) => item.id === card.id);
+  const isFavorite = favUnite.some((item) => item._id === card._id);
 
   const handleFavorite = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
     if (isFavorite) {
-      dispatch(removeFromFavAction(card.id));
+      dispatch(removeFromFavAction(card._id));
     } else {
       dispatch(addToFavAction(card));
     }
@@ -48,106 +48,53 @@ const UnitCard = ({
 
   // Helper to calculate fallback cash price (15% discount) if not explicitly provided
   const getCashPrice = () => {
-    if (card.cashPrice) return card.cashPrice;
-
-    // Fallback: parse price and calculate 15% discount for EGP prices (excluding rent)
-    const isEgp = card.price.includes("EGP");
-    const isRent = card.price.toLowerCase().includes("month") || card.price.toLowerCase().includes("day");
-    if (isEgp && !isRent) {
-      const numericPrice = parseFloat(card.price.replace(/,/g, ""));
-      if (!isNaN(numericPrice)) {
-        return `${Math.round(numericPrice * 0.85).toLocaleString()} EGP`;
-      }
+    if (card.paymentModel?.toLowerCase() === "cash") {
+      const priceNum = card.installmentPrice || card.downPaymentAmount || 0;
+      return `${priceNum.toLocaleString()} EGP`;
     }
-    return card.price;
+    const priceNum = card.installmentPrice || 0;
+    return `${Math.round(priceNum * 0.85).toLocaleString()} EGP`;
   };
 
-  const currentPrice = paymentMode === "cash" 
-    ? getCashPrice() 
-    : (card.installmentPrice || card.price);
+  const currentPrice =
+    paymentMode === "cash"
+      ? getCashPrice()
+      : `${(card.installmentPrice || 0).toLocaleString()} EGP${card.listingType === "Rent" ? " /month" : ""}`;
 
-  const showPaymentNote = paymentMode === "installment" && card.paymentNote;
+  const dpPct = card.downPaymentPercentage ?? 5;
+  const period = card.installmentPeriod || "5";
+  const yearsVal = parseInt(period.replace(/[a-zA-Z\s]/g, "")) || 5;
+  const instValue = card.installmentValue || (card.installmentPrice ? Math.round((card.installmentPrice * (1 - dpPct / 100)) / (yearsVal * 4)) : 0);
 
-  const hasBothModes = card.paymentModes && 
-    card.paymentModes.includes("Installment") && 
-    card.paymentModes.includes("Cash");
+  const paymentNoteRaw =
+    card.listingType !== "Rent" && (card.installmentPrice || 0) > 0
+      ? `${dpPct}% Down payment\n${instValue.toLocaleString()} Quarterly /${period}${period.toLowerCase().includes("year") || period.toLowerCase().includes("y") ? "" : " y"}`
+      : "";
 
-  const formatLocation = (loc: string) => {
-    if (!loc) return "";
-    const parts = loc.split(" • ");
-    if (parts.length === 2) {
-      const destName = parts[0];
-      const typeName = parts[1];
-      
-      let translatedDest = destName;
-      if (destName === "Porto Golf") translatedDest = t("destinations.portoGolf");
-      else if (destName === "Porto Marina") translatedDest = t("destinations.portoMarina");
-      else if (destName === "Porto Beach") translatedDest = t("destinations.portoBeach");
-      else if (destName === "Porto Lagoon") translatedDest = t("destinations.portoLagoon");
-      else if (destName === "Porto Coast") translatedDest = t("destinations.portoCoast");
-      
-      let translatedType = typeName;
-      if (typeName.toLowerCase() === "chalet") translatedType = t("search.propertyTypes.chalet");
-      else if (typeName.toLowerCase() === "penthouse") translatedType = t("search.propertyTypes.penthouse") || "بنتهاوس";
-      else if (typeName.toLowerCase() === "villa") translatedType = t("search.propertyTypes.villa");
-      else if (typeName.toLowerCase() === "apartment") translatedType = t("search.propertyTypes.apartment");
-      else if (typeName.toLowerCase() === "twin house") translatedType = t("search.propertyTypes.twinHouse");
+  const showPaymentNote = paymentMode === "installment" && !!paymentNoteRaw;
 
-      return `${translatedDest} • ${translatedType}`;
+  const hasBothModes =
+    card.listingType !== "Rent" &&
+    (card.paymentModel?.toLowerCase() === "both" || !card.paymentModel);
+
+  const getDeliveryYear = (dateStr?: string) => {
+    if (!dateStr) return "";
+    if (dateStr.includes("-")) {
+      return dateStr.split("-")[0];
     }
-    return loc;
+    return dateStr;
   };
 
-  const getTranslatedTitle = (title: string) => {
-    switch (title.toLowerCase()) {
-      case "sea view challet":
-      case "sea view chalet":
-        return t("unitCard.title.seaViewChalet");
-      case "luxury beachfront chalet":
-        return t("unitCard.title.luxuryBeachfrontChalet");
-      case "marina view penthouse":
-        return t("unitCard.title.marinaViewPenthouse");
-      case "sea shore chalet":
-        return t("unitCard.title.seaShoreChalet");
-      case "front row chalet":
-        return t("unitCard.title.frontRowChalet");
-      case "lagoon side chalet":
-        return t("unitCard.title.lagoonSideChalet");
-      case "crystal lagoon chalet":
-        return t("unitCard.title.crystalLagoonChalet");
-      case "yacht harbour chalet":
-        return t("unitCard.title.yachtHarbourChalet");
-      case "panoramic promenade chalet":
-        return t("unitCard.title.panoramicPromenadeChalet");
-      case "premium sea-breeze chalet":
-        return t("unitCard.title.premiumSeaBreezeChalet");
-      case "infinity view chalet":
-        return t("unitCard.title.infinityViewChalet");
-      default:
-        return title;
-    }
-  };
+  const badges = [
+    card.listingType,
+    card.deliveryDate ? `Delivery in ${getDeliveryYear(card.deliveryDate)}` : "",
+  ].filter(Boolean);
 
-  const getTranslatedBadge = (badge: string) => {
-    if (badge.startsWith("Delivery in ")) {
-      const year = badge.replace("Delivery in ", "");
-      return t("unitCard.badge.deliveryIn", { year });
-    }
-    switch (badge.toLowerCase()) {
-      case "resale":
-        return t("unitCard.badge.resale");
-      case "developer":
-        return t("unitCard.badge.developer");
-      case "rent":
-        return t("unitCard.badge.rent");
-      case "available":
-        return t("unitCard.badge.available");
-      case "available soon":
-        return t("unitCard.badge.availableSoon");
-      default:
-        return badge;
-    }
-  };
+  const locationText = card.village
+    ? `${card.village.name} • ${card.village.locationText}`
+    : "";
+
+
 
   const formatPrice = (price: string) => {
     if (!price) return "";
@@ -157,7 +104,7 @@ const UnitCard = ({
     return formatted;
   };
 
-  const formatPaymentNote = (note: string) => {
+  const translatePaymentNote = (note: string) => {
     if (!note) return "";
     if (note.includes("month insurance")) {
       const match = note.match(/(\d+)\s+month insurance/);
@@ -168,17 +115,23 @@ const UnitCard = ({
     }
 
     const lines = note.split("\n");
-    const translatedLines = lines.map(line => {
+    const translatedLines = lines.map((line) => {
       if (line.toLowerCase().includes("down payment")) {
         const pctMatch = line.match(/(\d+)%/);
         if (pctMatch) {
-          return t("unitCard.paymentNote.downPayment", { percent: pctMatch[1] });
+          return t("unitCard.paymentNote.downPayment", {
+            percent: pctMatch[1],
+          });
         }
       }
       if (line.toLowerCase().includes("quarterly")) {
-        const amtMatch = line.match(/([\d,]+)\s+Quarterly\s*\/(\d+)\s*y/i);
+        const amtMatch = line.match(/([\d,]+)\s+Quarterly\s*\/([^\n]+)/i);
         if (amtMatch) {
-          return t("unitCard.paymentNote.quarterly", { amount: amtMatch[1], years: amtMatch[2] });
+          const yearsRaw = amtMatch[2].replace(/[a-zA-Z\s]/g, "");
+          return t("unitCard.paymentNote.quarterly", {
+            amount: amtMatch[1],
+            years: yearsRaw,
+          });
         }
       }
       return line;
@@ -187,31 +140,36 @@ const UnitCard = ({
     return translatedLines.join(isRtl ? " و " : " \n ");
   };
 
+  const stats = [
+    { icon: "area" as const, value: `${card.area} sqm` },
+    { icon: "bed" as const, value: `${card.bedrooms}` },
+    { icon: "bath" as const, value: `${card.bathrooms}` },
+  ];
+
   return (
     <div className={`${className} block text-left rtl:text-right group`}>
       <article className="w-full flex flex-col bg-[#F5F9FA] border border-white rounded-[12px] shadow-[0px_2px_3.15px_rgba(0,0,0,0.14)] overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-[0px_6px_12px_rgba(0,0,0,0.15)]">
-
         {/* Image Section — uses aspect ratio so height scales with width */}
         <div className="relative w-full aspect-[343/276] overflow-hidden rounded-t-[12px] shrink-0">
           <Link
-            to={`/home/${card.destination.slug}/properties/${card.id}`}
+            to={`/home/${card.village?.slug || ""}/properties/${card._id}`}
             className="absolute inset-0 block h-full w-full"
           >
             <Image
-              imageurl={card.image}
-              alt={getTranslatedTitle(card.title)}
+              imageurl={card.coverImage || card.images?.[0] || ""}
+              alt={card.name}
               className="h-full w-full object-cover object-center"
             />
           </Link>
           {/* Badges + Favorite */}
           <div className="absolute inset-0 p-[16px] sm:p-[24px] flex items-start justify-between z-10 pointer-events-none">
             <div className="flex flex-wrap gap-[8px] sm:gap-[16px] max-w-[75%] pointer-events-auto">
-              {card.badges.map((badge) => (
+              {badges.map((badge) => (
                 <span
                   key={badge}
                   className="rounded-[99px] bg-black/25 px-[8px] py-[6px] text-[12px] sm:text-[14px] font-medium text-[#edeff2] leading-[normal] font-['Poppins'] backdrop-blur-sm"
                 >
-                  {getTranslatedBadge(badge)}
+                  {badge}
                 </span>
               ))}
             </div>
@@ -231,33 +189,37 @@ const UnitCard = ({
 
         {/* Body Section */}
         <div className="flex flex-col gap-[14px] sm:gap-[16px] p-[16px] sm:p-[24px] w-full">
-
           {/* Location */}
           <div className="flex items-center gap-[6px] sm:gap-[8px] text-[13px] sm:text-[14px] text-[#464646] font-['Poppins']">
             <MapPin className="h-[18px] w-[18px] sm:h-[20px] sm:w-[20px] shrink-0" />
-            <span className="truncate">{formatLocation(card.location)}</span>
+            <span className="truncate">{locationText}</span>
           </div>
 
           {/* Title */}
           <h3 className="text-[15px] sm:text-[16px] font-medium text-[#141414] font-['Poppins'] group-hover:text-primary transition-colors leading-tight line-clamp-2">
-            <Link to={`/home/${card.destination.slug}/properties/${card.id}`}>
-              {getTranslatedTitle(card.title)}
+            <Link to={`/home/${card.village?.slug || ""}/properties/${card._id}`}>
+              {truncateText(card.name,39)}
             </Link>
           </h3>
 
           {/* Stats Row */}
           <div className="flex items-center gap-[8px] sm:gap-[12px] flex-wrap text-[13px] sm:text-[14px] text-[#464646] font-['Poppins']">
-            {card.stats.map((stat, index) => {
+            {stats.map((stat, index) => {
               const Icon = statIconMap[stat.icon];
               return (
-                <div key={`${card.id}-${stat.icon}`} className="flex items-center gap-[8px] sm:gap-[12px]">
+                <div
+                  key={`${card._id}-${stat.icon}`}
+                  className="flex items-center gap-[8px] sm:gap-[12px]"
+                >
                   <div className="flex items-center gap-[6px] sm:gap-[8px] shrink-0">
                     <Icon className="h-[18px] w-[18px] sm:h-[20px] sm:w-[20px] shrink-0" />
                     <span className="whitespace-nowrap">
-                      {stat.icon === "area" ? stat.value.replace("sqm", t("unitCard.stat.sqm")) : stat.value}
+                      {stat.icon === "area"
+                        ? stat.value.replace("sqm", t("unitCard.stat.sqm"))
+                        : stat.value}
                     </span>
                   </div>
-                  {index < card.stats.length - 1 && (
+                  {index < stats.length - 1 && (
                     <div className="h-[18px] w-[1px] bg-[#d4d5d8] shrink-0" />
                   )}
                 </div>
@@ -274,41 +236,39 @@ const UnitCard = ({
               <p className="text-[15px] sm:text-[16px] font-medium text-[#141414] font-['Poppins'] whitespace-nowrap">
                 {formatPrice(currentPrice)}
               </p>
-             {hasBothModes && (
-                 <div className="flex items-center border border-[#d4d5d8] rounded-[12px] overflow-hidden h-[28px] sm:h-[32px] shrink-0 font-['Poppins']">
-
-                      <button
-                        type="button"
-                        onClick={() => setPaymentMode("installment")}
-                        className={`h-full px-[8px] sm:px-[12px] text-[12px] sm:text-[14px] font-medium font-['Poppins'] transition-colors whitespace-nowrap ${
-                        paymentMode === "installment"
+              {hasBothModes && (
+                <div className="flex items-center border border-[#d4d5d8] rounded-[12px] overflow-hidden h-[28px] sm:h-[32px] shrink-0 font-['Poppins']">
+                  <button
+                    type="button"
+                    onClick={() => setPaymentMode("installment")}
+                    className={`h-full px-[8px] sm:px-[12px] text-[12px] sm:text-[14px] font-medium font-['Poppins'] transition-colors whitespace-nowrap ${
+                      paymentMode === "installment"
                         ? "bg-[#edeff2] text-[#141414]"
                         : "bg-white text-[#141414] hover:bg-[#edeff2]"
-                      }`}
-                      >
-                        {t("unitCard.installment")}
-                      </button>
+                    }`}
+                  >
+                    {t("unitCard.installment")}
+                  </button>
 
-                      <button
-                        type="button"
-                        onClick={() => setPaymentMode("cash")}
-                        className={`h-full px-[8px] sm:px-[12px] text-[12px] sm:text-[14px] font-medium font-['Poppins'] transition-colors whitespace-nowrap ${
-                        paymentMode === "cash"
+                  <button
+                    type="button"
+                    onClick={() => setPaymentMode("cash")}
+                    className={`h-full px-[8px] sm:px-[12px] text-[12px] sm:text-[14px] font-medium font-['Poppins'] transition-colors whitespace-nowrap ${
+                      paymentMode === "cash"
                         ? "bg-[#edeff2] text-[#141414]"
                         : "bg-white text-[#141414] hover:bg-[#edeff2]"
-                      }`}
-                      >
-                        {t("unitCard.cash")}
-                      </button>
-
-                 </div>
-             )}
+                    }`}
+                  >
+                    {t("unitCard.cash")}
+                  </button>
+                </div>
+              )}
             </div>
 
             {/* Payment Note */}
             {showPaymentNote && (
-              <p className="text-[12px] sm:text-[14px] text-[#464646] font-['Poppins'] leading-relaxed">
-                {formatPaymentNote(card.paymentNote)}
+              <p className="text-[12px] sm:text-[14px] text-[#464646] font-['Poppins'] leading-relaxed whitespace-pre-line">
+                {translatePaymentNote(paymentNoteRaw)}
               </p>
             )}
           </div>

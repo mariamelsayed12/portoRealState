@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux";
 import favoriteUnitReducer from "./feature/favoriteUnitSlice";
 import createWebStorage from "redux-persist/es/storage/createWebStorage";
 import { VillageApiSlice } from "./services/crudVillage";
+import { propertyApiSlice } from "./services/crudproperties";
 
 
 const storage = createWebStorage("local");
@@ -26,13 +27,18 @@ export const store = configureStore({
   reducer: {
     favUnit: persistedFavUnitReducer,
     [VillageApiSlice.reducerPath]: VillageApiSlice.reducer,
+    [propertyApiSlice.reducerPath]: propertyApiSlice.reducer,
   },
 
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: false,
     })
-     .concat(VillageApiSlice.middleware),
+     .concat(
+      VillageApiSlice.middleware,
+      propertyApiSlice.middleware
+
+     ),
 });
 
 

@@ -1,6 +1,7 @@
 import React, { useState, useMemo, useRef } from "react";
 import { useParams, Link } from "react-router-dom";
-import { destinations, units } from "../data";
+import { destinations } from "../data";
+import { useGetPropertyQuery } from "../app/services/crudproperties";
 import { useSelector } from "react-redux";
 import { useAppDispatch, type RootState } from "../app/store";
 import { addToFavAction, removeFromFavAction } from "../app/feature/favoriteUnitSlice";
@@ -123,13 +124,15 @@ const PropertyDetails: React.FC = () => {
     }
   };
 
+  const { data: units = [] } = useGetPropertyQuery();
+
   // Find destination and property unit dynamically
   const destination = useMemo(() => {
     return destinations.find((d) => d.slug === destinationSlug);
   }, [destinationSlug]);
 
   const property = useMemo(() => {
-    return units.find((u) => u.id === propertySlug);
+    return units.find((u) => u._id === propertySlug);
   }, [propertySlug]);
 
   // Pricing tab selector state ("Installment" | "Cash")
@@ -142,7 +145,7 @@ const PropertyDetails: React.FC = () => {
     }
     // Generate beautiful visual gallery defaults
     return [
-      property?.image || "",
+      property?.coverImage || "",
       "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80",
       "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=800&q=80",
       "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=800&q=80",
@@ -154,13 +157,13 @@ const PropertyDetails: React.FC = () => {
   // Redux Favorites sync
   const isFavorite = useMemo(() => {
     if (!property) return false;
-    return favUnite.some((item) => item.id === property.id);
+    return favUnite.some((item) => item._id === property._id);
   }, [property, favUnite]);
 
   const handleFavoriteToggle = () => {
     if (!property) return;
     if (isFavorite) {
-      dispatch(removeFromFavAction(property.id));
+      dispatch(removeFromFavAction(property._id));
     } else {
       dispatch(addToFavAction(property));
     }
@@ -179,7 +182,7 @@ const PropertyDetails: React.FC = () => {
   const relatedProperties = useMemo(() => {
     if (!property) return [];
     return units
-      .filter((u) => u.destination.slug === destinationSlug && u.id !== property.id)
+      .filter((u) => u.village?.slug === destinationSlug && u._id !== property._id)
       .slice(0, 4);
   }, [destinationSlug, property]);
 
@@ -200,18 +203,26 @@ const PropertyDetails: React.FC = () => {
     );
   }
 
+  const getDeliveryYear = (dateStr?: string) => {
+    if (!dateStr) return "";
+    if (dateStr.includes("-")) {
+      return dateStr.split("-")[0];
+    }
+    return dateStr;
+  };
+
   // Extract specs details, leveraging actual unit data with standard defaults
-  const areaSpec = property.stats.find((s) => s.icon === "area")?.value || t("propertyDetails.specs.areaDefault");
-  const bedSpec = property.stats.find((s) => s.icon === "bed")?.value || "3";
-  const bathSpec = property.stats.find((s) => s.icon === "bath")?.value || "3";
-  const finishingSpec = property.finishing || t("propertyDetails.specs.finishingDefault");
-  const deliverySpec = property.delivery || property.badges.find((b) => b.includes("202"))?.replace("Delivery in ", "") || "2030";
+  const areaSpec = property.area ? `${property.area} sqm` : t("propertyDetails.specs.areaDefault");
+  const bedSpec = property.bedrooms ? `${property.bedrooms}` : "3";
+  const bathSpec = property.bathrooms ? `${property.bathrooms}` : "3";
+  const finishingSpec = property.finishingStatus || t("propertyDetails.specs.finishingDefault");
+  const deliverySpec = getDeliveryYear(property.deliveryDate) || "2030";
   const orientationSpec = property.orientation || t("propertyDetails.specs.orientationDefault");
 
   // Derived or default pricing fields
-  const downPayment = property.downPayment || "200,000 EGP";
-  const monthlyInstallment = property.monthlyInstallment || "125,000 EGP";
-  const installmentYears = property.installmentYears || t("propertyDetails.pricing.installmentYearsDefault");
+  const downPayment = property.downPaymentAmount ? `${property.downPaymentAmount.toLocaleString()} EGP` : "200,000 EGP";
+  const monthlyInstallment = property.installmentValue ? `${property.installmentValue.toLocaleString()} EGP` : "125,000 EGP";
+  const installmentYears = property.installmentPeriod || t("propertyDetails.pricing.installmentYearsDefault");
 
   // Description copy
   const descriptionText =
@@ -240,7 +251,7 @@ const PropertyDetails: React.FC = () => {
         <div className="mb-6">
           <DestinationBreadcrumb
             title={getTranslatedDestinationName(destination.title)}
-            propertyTitle={getTranslatedPropertyTitle(property.title)}
+            propertyTitle={getTranslatedPropertyTitle(property.name)}
             destinationSlug={destination.slug}
             variant="light"
           />
@@ -252,12 +263,15 @@ const PropertyDetails: React.FC = () => {
           <div className="relative w-full lg:flex-1 h-[240px] sm:h-[350px] lg:h-[365px] rounded-[12px] overflow-hidden bg-[#dfeef1] group shrink-0 lg:shrink">
             <Image
               imageurl={galleryImages[activeImageIndex]}
-              alt={getTranslatedPropertyTitle(property.title)}
+              alt={getTranslatedPropertyTitle(property.name)}
               className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.01]"
             />
             {/* Gallery Top Badges */}
             <div className="absolute top-[16px] left-[16px] flex flex-wrap gap-[8px] z-10">
-              {property.badges.map((badge) => (
+              {[
+                property.listingType,
+                property.deliveryDate ? `Delivery in ${getDeliveryYear(property.deliveryDate)}` : "",
+              ].filter(Boolean).map((badge) => (
                 <span
                   key={badge}
                   className="bg-[rgba(9,1,1,0.25)] backdrop-blur-sm px-[16px] py-[8px] rounded-[99px] text-[#edeff2] font-['Poppins'] font-medium text-[14px] leading-none"
@@ -359,7 +373,7 @@ const PropertyDetails: React.FC = () => {
 
               {/* Property Title */}
               <h1 className="font-['Poppins'] font-medium text-[19px] text-[#141414] leading-tight">
-                {t("propertyDetails.titleTemplate", { propertyTitle: getTranslatedPropertyTitle(property.title), destinationTitle: getTranslatedDestinationName(destination.title) })}
+                {t("propertyDetails.titleTemplate", { propertyTitle: getTranslatedPropertyTitle(property.name), destinationTitle: getTranslatedDestinationName(destination.title) })}
               </h1>
             </div>
 
@@ -435,7 +449,7 @@ const PropertyDetails: React.FC = () => {
                         {t("propertyDetails.pricing.price")}
                       </span>
                       <span className="font-['Poppins'] font-medium text-[16px] text-[#141414]">
-                        {property.price}
+                        {property.installmentPrice ? `${property.installmentPrice.toLocaleString()} EGP` : "Contact for Price"}
                       </span>
                     </div>
                     {/* Separator */}
@@ -467,7 +481,7 @@ const PropertyDetails: React.FC = () => {
                       {t("propertyDetails.pricing.cashPrice")}
                     </span>
                     <span className="font-['Poppins'] font-medium text-[19px] text-[#141414]">
-                      {property.price}
+                      {property.installmentPrice ? `${Math.round(property.installmentPrice * 0.85).toLocaleString()} EGP` : "Contact for Price"}
                     </span>
                     <span className="text-[12px] text-[#464646] mt-2">
                       {t("propertyDetails.pricing.cashNote")}
@@ -482,7 +496,7 @@ const PropertyDetails: React.FC = () => {
               {/* WhatsApp Button */}
               <a
                 href={`https://wa.me/20113333333?text=${encodeURIComponent(
-                  t("propertyDetails.whatsappMsg", { propertyTitle: getTranslatedPropertyTitle(property.title), destinationTitle: getTranslatedDestinationName(destination.title) })
+                  t("propertyDetails.whatsappMsg", { propertyTitle: getTranslatedPropertyTitle(property.name), destinationTitle: getTranslatedDestinationName(destination.title) })
                 )}`}
                 target="_blank"
                 rel="noopener noreferrer"
@@ -546,7 +560,7 @@ const PropertyDetails: React.FC = () => {
               className="flex w-full overflow-x-auto gap-6 scrollbar-none pb-4 scroll-smooth"
             >
               {relatedProperties.map((unit) => (
-                <UnitCard key={unit.id} card={unit} className="w-[282px] sm:w-[382px] shrink-0" />
+                <UnitCard key={unit._id} card={unit} className="w-[282px] sm:w-[382px] shrink-0" />
               ))}
             </div>
           </div>

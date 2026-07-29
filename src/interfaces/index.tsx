@@ -18,32 +18,7 @@ export interface Feature {
   icon: ComponentType<any>;
 }
 
-export interface PropertyCardData {
-  id: string;
-  image: string;
-  badges: string[];
-  location: string;
-  title: string;
-  stats: PropertyStat[];
-  price: string;
-  paymentModes: string[];
-  paymentNote: string;
-  cashPrice?: string;
-  installmentPrice?: string;
-  destination: {
-    slug: string;
-    name: string;
-  };
-  description?: string;
-  finishing?: string;
-  delivery?: string;
-  orientation?: string;
-  downPayment?: string;
-  monthlyInstallment?: string;
-  installmentYears?: string;
-  images?: string[];
-  amenities?: string[];
-}
+
 
 export interface InvestmentCardData {
   id: string;

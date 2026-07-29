@@ -1,8 +1,10 @@
 import { useState, useMemo } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import type { DestinationData } from "../../interfaces";
-import { destinations, units } from "../../data";
+import { destinations } from "../../data";
+import { useGetPropertyQuery } from "../../app/services/crudproperties";
 import UnitCard from "../../components/UnitCard";
+import UnitCardSkeleton from "../../components/UnitCardSkeleton";
 import { useUnitsFilter } from "../../hooks/useUnitsFilter";
 import { useUnitsSort, type SortOption } from "../../hooks/useUnitsSort";
 import FilterDrawer from "../../components/filterCcomponents/FilterDrawer";
@@ -23,6 +25,7 @@ const SORT_OPTIONS: { labelKey: string; value: SortOption }[] = [
 ];
 
 const DestinationDetailsContent = ({ destinationSlug }: DestinationDetailsContentProps) => {
+	const { data: units = [], isLoading } = useGetPropertyQuery();
 	const { t } = useTranslation();
 	const destination = destinations.find((item) => item.slug === destinationSlug) as DestinationData | undefined;
 	const [activeTab, setActiveTab] = useState("All");
@@ -32,11 +35,11 @@ const DestinationDetailsContent = ({ destinationSlug }: DestinationDetailsConten
 	// First filter units by destination and active tab
 	const activeTabUnits = useMemo(() => {
 		return units.filter((unit) => {
-			const matchesDestination = unit.destination.slug === destinationSlug;
+			const matchesDestination = unit.village?.slug === destinationSlug;
 			if (!matchesDestination) return false;
 
 			if (activeTab === "All") return true;
-			return unit.badges.some((badge) => badge.toLowerCase() === activeTab.toLowerCase());
+			return unit.listingType?.toLowerCase() === activeTab.toLowerCase();
 		});
 	}, [destinationSlug, activeTab]);
 
@@ -166,7 +169,13 @@ const DestinationDetailsContent = ({ destinationSlug }: DestinationDetailsConten
 				<div className="flex flex-col lg:flex-row gap-8 items-start relative">
 					{/* Units Grid */}
 					<div className="flex-1 w-full overflow-hidden pb-3">
-						{sortedUnits.length > 0 ? (
+						{isLoading ? (
+							<div className="grid grid-cols-1 gap-6 sm:grid-cols-2 justify-items-stretch transition-all duration-300 lg:grid-cols-3">
+								{Array.from({ length: 6 }).map((_, idx) => (
+									<UnitCardSkeleton key={idx} className="w-full" />
+								))}
+							</div>
+						) : sortedUnits.length > 0 ? (
 							<motion.div
 								layout
 								className={`grid grid-cols-1 gap-6 sm:grid-cols-2 justify-items-stretch transition-all duration-300 ${
@@ -176,7 +185,7 @@ const DestinationDetailsContent = ({ destinationSlug }: DestinationDetailsConten
 								<AnimatePresence mode="popLayout">
 									{sortedUnits.map((unit) => (
 										<motion.div
-											key={unit.id}
+											key={unit._id}
 											layout
 											initial={{ opacity: 0, scale: 0.92 }}
 											animate={{ opacity: 1, scale: 1 }}
