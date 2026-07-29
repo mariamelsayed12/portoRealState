@@ -3,12 +3,15 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import DestinationCard from "./DestinationCard";
 import { useTranslation } from "react-i18next";
 import { useGetVillageQuery } from "../../app/services/crudVillage";
+import { DestinationCardSkeleton } from "./DestinationCardSkeleton";
 
-const  PrestigiousDestinations = () => {
+
+
+const PrestigiousDestinations = () => {
 	const { t, i18n } = useTranslation();
 	const isRtl = i18n.language === "ar";
 
-	 const {data}=useGetVillageQuery();
+	const { data, isLoading } = useGetVillageQuery();
 	
 	const scrollerRef = useRef<HTMLDivElement | null>(null);
 
@@ -30,24 +33,28 @@ const  PrestigiousDestinations = () => {
 			<div className=" w-full flex flex-col gap-[24px] ">
 				{/* Section Title */}
 				<div className="px-6 sm:px-12 md:px-16 lg:px-[120px]">
-				<h2 className="text-[#141414] font-medium text-[28px] md:text-[40px] tracking-tight leading-[normal] font-['Poppins']">
-				{t("prestigiousDestinations.heading")}
-				</h2>
+					<h2 className="text-[#141414] font-medium text-[28px] md:text-[40px] tracking-tight leading-[normal] font-['Poppins']">
+						{t("prestigiousDestinations.heading")}
+					</h2>
 				</div>
-				
 
 				{/* Cards Container with horizontal scrolling */}
 				<div className="pl-6 sm:pl-12 md:pl-16 lg:pl-[120px] pr-0 rtl:pl-0 rtl:pr-6 rtl:sm:pr-12 rtl:md:pr-16 rtl:lg:pr-[120px]">
-                   <div
-					ref={scrollerRef}
-					className="flex gap-[24px] overflow-x-auto pb-4 pt-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden scroll-smooth"
-				>
-					{data?.map((dest) => (
-						<DestinationCard key={dest._id} destination={dest} />
-					))}
+					<div
+						ref={scrollerRef}
+						className="flex gap-[24px] overflow-x-auto pb-4 pt-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden scroll-smooth"
+					>
+						{isLoading ? (
+							Array.from({ length: 4 }).map((_, idx) => (
+								<DestinationCardSkeleton key={idx} />
+							))
+						) : (
+							data?.map((dest) => (
+								<DestinationCard key={dest._id} destination={dest} />
+							))
+						)}
+					</div>
 				</div>
-				</div>
-				
 
 				{/* Navigation Arrows */}
 				<div className="flex gap-[24px] items-center mt-2 px-6 sm:px-12 md:px-16 lg:px-[120px]">
