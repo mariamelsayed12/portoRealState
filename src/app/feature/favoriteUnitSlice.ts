@@ -29,9 +29,14 @@ const favoriteUniteSlice = createSlice({
     ClearFavAction: (state) => {
       state.favUnite = [];
     },
+    sanitizeFavoritesAction: (state) => {
+      state.favUnite = state.favUnite.filter(
+        (item) => item && item._id && item.name,
+      );
+    },
   },
 });
 
-export const { addToFavAction, removeFromFavAction, ClearFavAction } =
+export const { addToFavAction, removeFromFavAction, ClearFavAction, sanitizeFavoritesAction } =
   favoriteUniteSlice.actions;
 export default favoriteUniteSlice.reducer;

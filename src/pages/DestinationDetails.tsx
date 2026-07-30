@@ -1,5 +1,4 @@
 import { useParams } from "react-router-dom";
-// import { destinations } from "../data";
 import DestinationStats from "../components/DestinationStats";
 import DestinationDetailsContent from "./home/DestinationDetailsContent";
 import DestinationNotFound from "../components/HomeCompoents/DestinationNotFound";
@@ -10,11 +9,14 @@ import { motion } from "framer-motion";
 import ImageGallery from "../components/Ui/ImageGallery";
 import { useGetVillageByIdQuery } from "../app/services/crudVillage";
 import Loading from "../components/Ui/loading/loading";
+import { useTranslation } from "react-i18next";
 
 
 const DestinationDetails = () => {
   const { slug } = useParams<{ slug: string }>();
-    const { data: village, isLoading } = useGetVillageByIdQuery(slug!);
+  const { i18n } = useTranslation();
+
+    const { data: village, isLoading } = useGetVillageByIdQuery({ id: slug, lang: i18n.language });
 
   if (isLoading) {
     return (
@@ -70,7 +72,7 @@ const DestinationDetails = () => {
       {/* Main Content - (Other sections can be placed here) */}
       <div className="flex-1">
           {/* You could render destination specific content here, or reuse existing home sections */}
-          <DestinationDetailsContent destinationSlug={village.slug} />
+          <DestinationDetailsContent village={village} />
       </div>
       {/* AmenitiesSection */}
       <div className="mx-auto max-w-7xl px-6 sm:px-8 lg:px-12 py-12 sm:py-16">

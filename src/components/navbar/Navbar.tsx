@@ -3,6 +3,8 @@ import { Link, NavLink } from "react-router-dom";
 import Logo from "../icons/Logo";
 import { useSelector } from "react-redux";
 import type { RootState } from "../../app/store";
+import { useAppDispatch } from "../../app/store";
+import { sanitizeFavoritesAction } from "../../app/feature/favoriteUnitSlice";
 import { HeartIcon } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
@@ -54,6 +56,11 @@ const Navbar = ({ variant = "transparent" }: NavbarProps) => {
     { name: "Management", path: "/management", key: "navbar.management" },
     { name: "About", path: "/about", key: "navbar.about" },
   ];
+
+  const dispatch = useAppDispatch();
+  useEffect(() => {
+    dispatch(sanitizeFavoritesAction());
+  }, [dispatch]);
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);

@@ -4,6 +4,7 @@ import DestinationCard from "./DestinationCard";
 import { useTranslation } from "react-i18next";
 import { useGetVillageQuery } from "../../app/services/crudVillage";
 import { DestinationCardSkeleton } from "./DestinationCardSkeleton";
+import EmptyState from "../Ui/EmptyState";
 
 
 
@@ -11,7 +12,7 @@ const PrestigiousDestinations = () => {
 	const { t, i18n } = useTranslation();
 	const isRtl = i18n.language === "ar";
 
-	const { data, isLoading } = useGetVillageQuery();
+	const { data, isLoading } = useGetVillageQuery({ lang: i18n.language });
 	
 	const scrollerRef = useRef<HTMLDivElement | null>(null);
 
@@ -85,11 +86,9 @@ const PrestigiousDestinations = () => {
 						</div>
 					</>
 				) : (
-					<div className="flex flex-col items-center justify-center py-[40px] px-6 text-center w-full min-h-[180px]">
-						<p className="text-[#747474] text-[16px] sm:text-[18px] font-medium font-['Poppins']">
-							{t("prestigiousDestinations.noDestinations")}
-						</p>
-					</div>
+					<EmptyState
+						title={t("prestigiousDestinations.noDestinations")}
+					/>
 				)}
 			</div>
 		</section>

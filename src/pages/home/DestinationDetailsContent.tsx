@@ -1,7 +1,7 @@
 import { useState, useMemo } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useGetPropertyQuery } from "../../app/services/crudproperties";
-import { useGetVillageQuery } from "../../app/services/crudVillage";
+import type { IVillage } from "../../app/services/crudVillage";
 import UnitCard from "../../components/UnitCard";
 import UnitCardSkeleton from "../../components/UnitCardSkeleton";
 import { useUnitsFilter } from "../../hooks/useUnitsFilter";
@@ -10,9 +10,10 @@ import FilterDrawer from "../../components/filterCcomponents/FilterDrawer";
 import FilterIcon from "../../components/icons/Filter";
 import SortIcon from "../../components/icons/SortIcon";
 import { useTranslation } from "react-i18next";
+import EmptyState from "../../components/Ui/EmptyState";
 
 interface DestinationDetailsContentProps {
-	destinationSlug: string;
+	village: IVillage;
 }
 
 const SORT_OPTIONS: { labelKey: string; value: SortOption }[] = [
@@ -23,27 +24,32 @@ const SORT_OPTIONS: { labelKey: string; value: SortOption }[] = [
 	{ labelKey: "destinationDetails.sort.maxInstallments", value: "max-installments" },
 ];
 
-const DestinationDetailsContent = ({ destinationSlug }: DestinationDetailsContentProps) => {
-	const { data: units = [], isLoading } = useGetPropertyQuery();
-	const { data: villages = [], isLoading: isVillagesLoading } = useGetVillageQuery();
+const DestinationDetailsContent = ({ village }: DestinationDetailsContentProps) => {
+	const { i18n } = useTranslation();
+	const { data: units = [], isLoading } = useGetPropertyQuery({ lang: i18n.language });
 	const { t } = useTranslation();
-	const destination = villages.find((item) => item.slug === destinationSlug);
 	const [activeTab, setActiveTab] = useState("All");
 	const [isFilterOpen, setIsFilterOpen] = useState(false);
 	const [isSortOpen, setIsSortOpen] = useState(false);
 
-	const showContentLoading = isLoading || isVillagesLoading;
+	const showContentLoading = isLoading;
 
 	// First filter units by destination and active tab
 	const activeTabUnits = useMemo(() => {
 		return units.filter((unit) => {
-			const matchesDestination = unit.village?.slug === destinationSlug;
+			const unitVillageSlug = unit.village?.slug;
+			const unitVillageName = unit.village?.name;
+
+			const matchesDestination =
+				(unitVillageSlug && village?.slug && unitVillageSlug.toLowerCase() === village.slug.toLowerCase()) ||
+				(unitVillageName && village?.name && unitVillageName.toLowerCase() === village.name.toLowerCase());
+
 			if (!matchesDestination) return false;
 
 			if (activeTab === "All") return true;
 			return unit.listingType?.toLowerCase() === activeTab.toLowerCase();
 		});
-	}, [destinationSlug, activeTab, units]);
+	}, [village.slug, village.name, activeTab, units]);
 
 	// Apply sidebar filters on top of destination and tab filtered units
 	const {
@@ -62,18 +68,6 @@ const DestinationDetailsContent = ({ destinationSlug }: DestinationDetailsConten
 		sortedUnits,
 	} = useUnitsSort(filteredUnits);
 
-	if (isVillagesLoading) {
-		return (
-			<div className="mx-auto max-w-7xl px-6 py-16 sm:px-8 lg:px-12 text-center text-text-darker">
-				{t("common.loading", "Loading...")}
-			</div>
-		);
-	}
-
-	if (!destination) {
-		return null;
-	}
-
 	return (
 		<section className="bg-background py-14 sm:py-16 overflow-x-hidden">
 			<div className="mx-auto max-w-7xl px-6 sm:px-8 lg:px-12">
@@ -81,10 +75,10 @@ const DestinationDetailsContent = ({ destinationSlug }: DestinationDetailsConten
 				<div className="mb-6 flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
 					<div>
 						<h2 className="text-3xl font-semibold tracking-tight text-text-secondary sm:text-[40px]">
-							{t("destinationDetails.exploreProperties", { title: destination.name })}
+							{t("destinationDetails.exploreProperties", { title: village.name })}
 						</h2>
 						<p className="mt-3 max-w-2xl text-sm leading-relaxed text-text-darker sm:text-base">
-							{t(`destinations.${destination.slug === 'porto-marina' ? 'portoMarina' : destination.slug}.description`)}
+							{t(`destinations.${village.slug === 'porto-marina' ? 'portoMarina' : village.slug}.description`)}
 						</p>
 					</div>
 					
@@ -209,9 +203,9 @@ const DestinationDetailsContent = ({ destinationSlug }: DestinationDetailsConten
 								</AnimatePresence>
 							</motion.div>
 						) : (
-							<div className="flex flex-col items-center justify-center py-16 text-center">
-								<p className="text-base text-[#7D8D93]">{t("destinationDetails.noProperties")}</p>
-							</div>
+							<EmptyState
+								title={t("destinationDetails.noProperties")}
+							/>
 						)}
 					</div>
 

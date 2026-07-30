@@ -9,11 +9,13 @@ import { SlidersHorizontal } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useSearchParams } from "react-router-dom";
 import { Pagination } from "../components/Pagination";
+import EmptyState from "../components/Ui/EmptyState";
 
 const ITEMS_PER_PAGE = 6;
 
 const BuyPage = () => {
-  const { data: units = [] ,isLoading} = useGetPropertyQuery();
+  const { i18n } = useTranslation();
+  const { data: units = [] ,isLoading} = useGetPropertyQuery({ lang: i18n.language });
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const { t } = useTranslation();
   const [searchParams, setSearchParams] = useSearchParams();
@@ -134,11 +136,11 @@ const BuyPage = () => {
               />
             </>
           ) : (
-            <div className="flex flex-col items-center justify-center py-16 text-center">
-              <p className="text-base text-[#7D8D93]">
-                No properties found in this category.
-              </p>
-            </div>
+            <EmptyState
+              title={t("destinationDetails.noProperties")}
+              actionLabel={t("filterDrawer.resetAll")}
+              onAction={resetFilters}
+            />
           )}
         </div>
 

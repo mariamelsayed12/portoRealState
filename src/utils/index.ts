@@ -21,7 +21,8 @@ export const addUnitofav = (
   return [...ShoppingFavorite, { ...favUnit }];
 };
 
-export const truncateText = (text: string, maxLength: number = 10) => {
+export const truncateText = (text: string | undefined, maxLength: number = 10) => {
+  if (!text) return "";
   if (text.length <= maxLength) return text;
 
   return `${text.slice(0, maxLength)}...`;

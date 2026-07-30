@@ -6,11 +6,13 @@ import UnitCardSkeleton from "../UnitCardSkeleton";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useGetPropertyQuery } from "../../app/services/crudproperties";
+import EmptyState from "../Ui/EmptyState";
 
 const CuratedPropertiesSection = () => {
-  const { data, isLoading } = useGetPropertyQuery();
   const { t, i18n } = useTranslation();
   const isRtl = i18n.language === "ar";
+  const { data, isLoading } = useGetPropertyQuery({ lang: i18n.language });
+
   const scrollerRef = useRef<HTMLDivElement | null>(null);
   const navigate = useNavigate();
 
@@ -60,10 +62,10 @@ const CuratedPropertiesSection = () => {
                 <UnitCard key={card._id} card={card} />
               ))
             ) : (
-              <div className="flex flex-col items-center justify-center py-12 text-center w-full bg-white border border-[#d4d5d8] rounded-[16px] mr-6 sm:mr-12 lg:mr-[120px] p-6">
-                <p className="text-base text-[#7D8D93] font-['Poppins']">
-                  {t("curatedProperties.noUnits", "No properties available at the moment.")}
-                </p>
+              <div className="flex flex-col items-center justify-center w-full bg-white border border-[#d4d5d8] rounded-[16px] mr-6 sm:mr-12 lg:mr-[120px] p-6">
+                <EmptyState
+                  title={t("curatedProperties.noUnits", "No properties available at the moment.")}
+                />
               </div>
             )}
           </div>

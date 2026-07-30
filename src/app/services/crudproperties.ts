@@ -54,7 +54,7 @@ export interface ISinglePropertyResponse {
 
 export const propertyApiSlice = createApi({
   reducerPath: "ApiProperty",
-  tagTypes: ["Property"],
+  tagTypes: ["properties"],
   baseQuery: fetchBaseQuery({
     baseUrl: import.meta.env.VITE_API_URL,
     prepareHeaders: (headers) => {
@@ -64,10 +64,10 @@ export const propertyApiSlice = createApi({
   }),
   endpoints: (builder) => ({
     //----------------------------- Get =>get---------------------
-    getProperty: builder.query<IProperty[], void>({
+    getProperty: builder.query<IProperty[], { lang: string }>({
       query: () => {
         return {
-          url: "properties",
+          url: "properties?limit=1000",
         };
       },
       transformResponse: (response: IpropertyResponse) => response.data,
@@ -75,24 +75,24 @@ export const propertyApiSlice = createApi({
         result
           ? [
               ...result.map(({ _id }) => ({
-                type: "Property" as const,
+                type: "properties" as const,
                 id: _id,
               })),
-              { type: "Property", id: "LIST" },
+              { type: "properties", id: "LIST" },
             ]
-          : [{ type: "Property", id: "LIST" }],
+          : [{ type: "properties", id: "LIST" }],
     }),
 
     //--------------------- Get single property by ID ---------------------
-    getPropertyById: builder.query<IProperty, string>({
-      query: (id) => ({
+    getPropertyById: builder.query<IProperty, { id: string; lang: string }>({
+      query: ({ id}) => ({
         url: `properties/${id}`,
       }),
 
       transformResponse: (response: ISinglePropertyResponse) => response.data,
 
-      providesTags: (_result, _error, id) => [
-        { type: "Property", id },
+      providesTags: (_result, _error, {id}) => [
+        { type: "properties", id },
       ],
     }),
   }),

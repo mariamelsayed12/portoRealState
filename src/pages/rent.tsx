@@ -9,10 +9,12 @@ import FilterDrawer from "../components/filterCcomponents/FilterDrawer";
 import FilterIcon from "../components/icons/Filter";
 import SortIcon from "../components/icons/SortIcon";
 import { useTranslation } from "react-i18next";
+import EmptyState from "../components/Ui/EmptyState";
 
 const RentPage = () => {
-  const { data: units = [], isLoading } = useGetPropertyQuery();
-  const { t } = useTranslation();
+    const { t ,i18n} = useTranslation();
+
+  const { data: units = [], isLoading } = useGetPropertyQuery({ lang: i18n.language });
   const [activeTab, setActiveTab] = useState<
     "All" | "Available" | "Available soon"
   >("All");
@@ -198,11 +200,11 @@ const RentPage = () => {
               </AnimatePresence>
             </motion.div>
           ) : (
-            <div className="flex flex-col items-center justify-center py-16 text-center">
-              <p className="text-base text-[#7D8D93]">
-                {t("rent.noProperties")}
-              </p>
-            </div>
+            <EmptyState
+              title={t("rent.noProperties")}
+              actionLabel={t("filterDrawer.resetAll")}
+              onAction={resetFilters}
+            />
           )}
         </div>
 

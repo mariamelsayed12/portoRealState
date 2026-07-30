@@ -3,6 +3,8 @@ import { useSelector } from "react-redux";
 import { AnimatePresence, motion } from "framer-motion";
 import { Heart, ChevronLeft, ChevronRight } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
+import EmptyState from "../components/Ui/EmptyState";
 
 import type { RootState } from "../app/store";
 import UnitCard from "../components/UnitCard";
@@ -17,8 +19,9 @@ import FilterIcon from "../components/icons/Filter";
 import SortIcon from "../components/icons/SortIcon";
 
 const FavoritesPage = () => {
-  const { data: units = [], isLoading } = useGetPropertyQuery();
-  const { t, i18n } = useTranslation();
+    const { t, i18n } = useTranslation();
+  const { data: units = [], isLoading } = useGetPropertyQuery({ lang: i18n.language });
+  const navigate = useNavigate();
   const isRtl = i18n.language === "ar";
   const { favUnite } = useSelector((state: RootState) => state.favUnit);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
@@ -35,6 +38,11 @@ const FavoritesPage = () => {
     [t],
   );
 
+  // Filter out any corrupted or incomplete persisted favorite units
+  const validFavUnite = useMemo(() => {
+    return favUnite.filter((unit) => unit && unit._id && unit.name);
+  }, [favUnite]);
+
   // Apply sidebar filters on top of favorite properties
   const {
     tempFilters,
@@ -43,7 +51,7 @@ const FavoritesPage = () => {
     resetFilters,
     filteredUnits,
     tempFilteredCount,
-  } = useUnitsFilter(favUnite);
+  } = useUnitsFilter(validFavUnite);
 
   // Sort the currently filtered properties
   const { activeSort, setActiveSort, sortedUnits } =
@@ -51,11 +59,11 @@ const FavoritesPage = () => {
 
   // Generate recommendations based on the latest saved property
   const recommendedProperties = useMemo(() => {
-    if (favUnite.length === 0) return [];
-    const latestFav = favUnite[favUnite.length - 1];
-    const excludeIds = favUnite.map((u) => u._id);
+    if (validFavUnite.length === 0) return [];
+    const latestFav = validFavUnite[validFavUnite.length - 1];
+    const excludeIds = validFavUnite.map((u) => u._id);
     return getRecommendedProperties(latestFav, units, excludeIds);
-  }, [favUnite]);
+  }, [validFavUnite, units]);
 
   const scrollerRef = useRef<HTMLDivElement | null>(null);
   const canScroll = useMemo(
@@ -71,7 +79,7 @@ const FavoritesPage = () => {
     container.scrollBy({ left: amount, behavior: "smooth" });
   };
 
-  if (favUnite.length === 0) {
+  if (validFavUnite.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center py-20 text-center">
         <Heart className="h-16 w-16 text-[#7D8D93] mb-4 opacity-50" />
@@ -180,9 +188,9 @@ const FavoritesPage = () => {
                 className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 justify-items-stretch transition-all duration-300"
               >
                 <AnimatePresence mode="popLayout">
-                  {sortedUnits.map((unit) => (
+                  {sortedUnits.map((unit, index) => (
                     <motion.div
-                      key={unit._id}
+                      key={unit?._id || `fav-${index}`}
                       layout
                       initial={{ opacity: 0, scale: 0.92 }}
                       animate={{ opacity: 1, scale: 1 }}
@@ -200,11 +208,11 @@ const FavoritesPage = () => {
                 </AnimatePresence>
               </motion.div>
             ) : (
-              <div className="flex flex-col items-center justify-center py-16 text-center">
-                <p className="text-base text-[#7D8D93]">
-                  {t("favorites.noProperties")}
-                </p>
-              </div>
+              <EmptyState
+                title={t("favorites.noProperties")}
+                actionLabel={validFavUnite.length > 0 ? t("filterDrawer.resetAll") : t("curatedProperties.viewAll")}
+                onAction={validFavUnite.length > 0 ? resetFilters : () => navigate("/buy")}
+              />
             )}
           </div>
 
@@ -269,8 +277,8 @@ const FavoritesPage = () => {
                   <UnitCardSkeleton key={idx} />
                 ))
               ) : (
-                recommendedProperties.map((unit) => (
-                  <UnitCard key={unit._id} card={unit} />
+                recommendedProperties.map((unit, index) => (
+                  <UnitCard key={unit?._id || `rec-${index}`} card={unit} />
                 ))
               )}
             </div>

@@ -53,7 +53,7 @@ export const VillageApiSlice=createApi({
     }),   
         endpoints:(builder)=>({
              //----------------------------- Get =>get---------------------
-        getVillage:builder.query<IVillage[], void>({
+        getVillage:builder.query<IVillage[], { lang: string }>({
             query:()=>{
                 return{
                     url:"villages"
@@ -74,14 +74,14 @@ export const VillageApiSlice=createApi({
 }),
 
   //--------------------- Get single village  by ID ---------------------
-    getVillageById: builder.query<IVillage, string>({
-      query: (id) => ({
+    getVillageById: builder.query<IVillage, { id: string; lang: string }>({
+      query: ({ id }) => ({
         url: `villages/${id}`,
       }),
 
       transformResponse: (response: ISingleVillageResponse) => response.data,
 
-      providesTags: (_result, _error, id) => [
+      providesTags: (_result, _error,{id}) => [
         { type: "Village", id },
       ],
     }),

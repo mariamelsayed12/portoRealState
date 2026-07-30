@@ -3,7 +3,8 @@ import type { IProperty } from "../app/services/crudproperties";
 /**
  * Helper to parse property type from property name or finishingStatus
  */
-const getPropertyType = (u: IProperty): string => {
+const getPropertyType = (u: IProperty | undefined): string => {
+  if (!u || !u.name) return "";
   const lowerName = u.name.toLowerCase();
   if (lowerName.includes("penthouse")) return "penthouse";
   if (lowerName.includes("villa")) return "villa";
@@ -15,22 +16,22 @@ const getPropertyType = (u: IProperty): string => {
 /**
  * Helper to parse price as a numeric value
  */
-const getPrice = (u: IProperty): number => {
-  return u.installmentPrice || 0;
+const getPrice = (u: IProperty | undefined): number => {
+  return u?.installmentPrice || 0;
 };
 
 /**
  * Helper to get bedroom count
  */
-const getBedrooms = (u: IProperty): number => {
-  return u.bedrooms || 0;
+const getBedrooms = (u: IProperty | undefined): number => {
+  return u?.bedrooms || 0;
 };
 
 /**
  * Helper to parse area as a numeric value
  */
-const getArea = (u: IProperty): number => {
-  return u.area || 0;
+const getArea = (u: IProperty | undefined): number => {
+  return u?.area || 0;
 };
 
 /**
@@ -45,13 +46,15 @@ const getArea = (u: IProperty): number => {
  * and then other available properties if there are not enough close matches.
  */
 export const getRecommendedProperties = (
-  currentProperty: IProperty,
-  allProperties: IProperty[],
+  currentProperty: IProperty | undefined,
+  allProperties: IProperty[] = [],
   excludeIds: string[] = [],
 ): IProperty[] => {
+  if (!currentProperty || !allProperties) return [];
+
   // Exclude the current property and any other specified IDs (e.g. other saved favorites)
   const candidates = allProperties.filter(
-    (u) => u._id !== currentProperty._id && !excludeIds.includes(u._id),
+    (u) => u && u._id !== currentProperty._id && !excludeIds.includes(u._id),
   );
 
   const currentType = getPropertyType(currentProperty);
