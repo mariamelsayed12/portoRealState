@@ -1,8 +1,7 @@
 import { useState, useMemo } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import type { DestinationData } from "../../interfaces";
-import { destinations } from "../../data";
 import { useGetPropertyQuery } from "../../app/services/crudproperties";
+import { useGetVillageQuery } from "../../app/services/crudVillage";
 import UnitCard from "../../components/UnitCard";
 import UnitCardSkeleton from "../../components/UnitCardSkeleton";
 import { useUnitsFilter } from "../../hooks/useUnitsFilter";
@@ -26,11 +25,14 @@ const SORT_OPTIONS: { labelKey: string; value: SortOption }[] = [
 
 const DestinationDetailsContent = ({ destinationSlug }: DestinationDetailsContentProps) => {
 	const { data: units = [], isLoading } = useGetPropertyQuery();
+	const { data: villages = [], isLoading: isVillagesLoading } = useGetVillageQuery();
 	const { t } = useTranslation();
-	const destination = destinations.find((item) => item.slug === destinationSlug) as DestinationData | undefined;
+	const destination = villages.find((item) => item.slug === destinationSlug);
 	const [activeTab, setActiveTab] = useState("All");
 	const [isFilterOpen, setIsFilterOpen] = useState(false);
 	const [isSortOpen, setIsSortOpen] = useState(false);
+
+	const showContentLoading = isLoading || isVillagesLoading;
 
 	// First filter units by destination and active tab
 	const activeTabUnits = useMemo(() => {
@@ -41,7 +43,7 @@ const DestinationDetailsContent = ({ destinationSlug }: DestinationDetailsConten
 			if (activeTab === "All") return true;
 			return unit.listingType?.toLowerCase() === activeTab.toLowerCase();
 		});
-	}, [destinationSlug, activeTab]);
+	}, [destinationSlug, activeTab, units]);
 
 	// Apply sidebar filters on top of destination and tab filtered units
 	const {
@@ -60,6 +62,14 @@ const DestinationDetailsContent = ({ destinationSlug }: DestinationDetailsConten
 		sortedUnits,
 	} = useUnitsSort(filteredUnits);
 
+	if (isVillagesLoading) {
+		return (
+			<div className="mx-auto max-w-7xl px-6 py-16 sm:px-8 lg:px-12 text-center text-text-darker">
+				{t("common.loading", "Loading...")}
+			</div>
+		);
+	}
+
 	if (!destination) {
 		return null;
 	}
@@ -71,10 +81,10 @@ const DestinationDetailsContent = ({ destinationSlug }: DestinationDetailsConten
 				<div className="mb-6 flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
 					<div>
 						<h2 className="text-3xl font-semibold tracking-tight text-text-secondary sm:text-[40px]">
-							{t("destinationDetails.exploreProperties", { title: destination.titleKey ? t(destination.titleKey) : destination.title })}
+							{t("destinationDetails.exploreProperties", { title: destination.name })}
 						</h2>
 						<p className="mt-3 max-w-2xl text-sm leading-relaxed text-text-darker sm:text-base">
-							{destination.descriptionKey ? t(destination.descriptionKey) : destination.description}
+							{t(`destinations.${destination.slug === 'porto-marina' ? 'portoMarina' : destination.slug}.description`)}
 						</p>
 					</div>
 					
@@ -169,7 +179,7 @@ const DestinationDetailsContent = ({ destinationSlug }: DestinationDetailsConten
 				<div className="flex flex-col lg:flex-row gap-8 items-start relative">
 					{/* Units Grid */}
 					<div className="flex-1 w-full overflow-hidden pb-3">
-						{isLoading ? (
+						{showContentLoading ? (
 							<div className="grid grid-cols-1 gap-6 sm:grid-cols-2 justify-items-stretch transition-all duration-300 lg:grid-cols-3">
 								{Array.from({ length: 6 }).map((_, idx) => (
 									<UnitCardSkeleton key={idx} className="w-full" />

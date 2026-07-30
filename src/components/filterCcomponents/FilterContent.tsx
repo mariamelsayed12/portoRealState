@@ -1,4 +1,4 @@
-import { destinations } from "../../data";
+import { useGetVillageQuery } from "../../app/services/crudVillage";
 import type { FilterState } from "../../hooks/useUnitsFilter";
 import Button from "../Ui/Button";
 import Input from "../Ui/Input";
@@ -24,6 +24,7 @@ const FilterContent = ({
   stickyFooter = true,
   displayMode = "drawer",
 }: FilterContentProps) => {
+  const{data:destinations}=useGetVillageQuery();
   const { t } = useTranslation();
 
   const handleTogglePropertyType = (type: string) => {
@@ -179,24 +180,24 @@ const FilterContent = ({
             )}
           </div>
           <div className="flex flex-wrap gap-2">
-            {destinations.map(({title, titleKey}) => {
+            {destinations?.map(({name}) => {
              const isSelected =
               (tempFilters.location || "")
                 .toLowerCase()
                 .split(",")
-                .includes(title.toLowerCase());
+                .includes(name.toLowerCase());
               return (
                 <button
-                  key={title}
+                  key={name}
                   type="button"
-                  onClick={() => handleToggleLocation(title)}
+                  onClick={() => handleToggleLocation(name)}
                   className={`rounded-full px-4 py-2 text-xs font-semibold border transition-all ${
                     isSelected
                       ? "bg-[#E9F4F7] border-primary text-[#141414]"
                       : "bg-white border-[#D9E1E4] text-[#58696F] hover:border-gray-300"
                   }`}
                 >
-                  {titleKey ? t(titleKey) : title}
+                  {name}
                 </button>
               );
             })}

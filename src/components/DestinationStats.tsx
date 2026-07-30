@@ -2,10 +2,9 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 
 interface DestinationStatsProps {
-  startingPrice: string;
-  rentalYield: string;
-  availableListings: string;
-  developer: string;
+  startingPrice: number;
+  rentalYield: number;
+  developerName: string;
 }
 
 const StatCard = ({ label, value }: { label: string; value: string }) => (
@@ -22,21 +21,16 @@ const StatCard = ({ label, value }: { label: string; value: string }) => (
 const DestinationStats: React.FC<DestinationStatsProps> = ({
   startingPrice,
   rentalYield,
-  availableListings,
-  developer,
+  developerName,
 }) => {
   const { t } = useTranslation();
 
-  const formatStartingPrice = (price: string) => {
-    return price.replace("EGP", t("search.egp"));
+  const formatStartingPrice = (price: number) => {
+    return `${price.toLocaleString()} ${t("search.egp")}`;
   };
   
-  const formatRentalYield = (yieldVal: string) => {
-    return yieldVal.replace("Up to", t("destinations.upTo"));
-  };
-
-  const formatAvailableListings = (listings: string) => {
-    return listings.replace("More than", t("destinations.moreThan"));
+  const formatRentalYield = (yieldVal: number) => {
+    return `${t("destinations.upTo")} ${yieldVal}%`;
   };
 
   const formatDeveloper = (dev: string) => {
@@ -47,8 +41,7 @@ const DestinationStats: React.FC<DestinationStatsProps> = ({
     <div className="grid grid-cols-2 sm:flex sm:flex-wrap sm:items-center gap-[16px] sm:gap-[24px] w-full">
       <StatCard label={t("destinationDetails.startingPrice")} value={formatStartingPrice(startingPrice)} />
       <StatCard label={t("destinationDetails.rentalYield")} value={formatRentalYield(rentalYield)} />
-      <StatCard label={t("destinationDetails.availableListing")} value={formatAvailableListings(availableListings)} />
-      <StatCard label={t("destinationDetails.developer")} value={formatDeveloper(developer)} />
+      <StatCard label={t("destinationDetails.developer")} value={formatDeveloper(developerName)} />
     </div>
   );
 };

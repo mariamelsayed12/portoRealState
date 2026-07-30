@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { PanelFooter } from "./PanelFooter";
-import { destinations } from "../../data";
+import { useGetVillageQuery } from "../../app/services/crudVillage";
 
 interface LocationPanelProps {
   selected: string; // Comma-separated string
@@ -10,8 +10,10 @@ interface LocationPanelProps {
 }
 
 const LocationPanel = ({ selected, onSelect, onCancel, onApply }: LocationPanelProps) => {
+
+  const {data:destinations}=useGetVillageQuery();
   // Extract unique destination titles
-  const locationOptions = Array.from(new Set(destinations.map((d) => d.title)));
+  const locationOptions = Array.from(new Set(destinations?.map((d) => d.name)));
 
   // Parse initial selected values
   const initialSet = new Set(

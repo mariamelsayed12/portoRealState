@@ -46,31 +46,31 @@ export interface ContactUsFormValues {
   description: string;
 }
 
-export interface DestinationData {
-  id: number;
-  slug: string;
-  title: string;
-  titleKey?: string;
-  breadcrumbLabel?: string;
-  breadcrumbLabelKey?: string;
-  image: string;
-  images?: string[];
-  description: string;
-  descriptionKey?: string;
-  developer: string;
-  developerKey?: string;
-  price: string;
-  startingPrice: string;
-  rentalYield: string;
-  availableListings: string;
-  hasArrowBadge: boolean;
-  address?: string;
-  addressKey?: string;
-  phone?: string;
-  email?: string;
-  coordinates?: {
-    lat: number;
-    lng: number;
-  };
-  googleMapsUrl?: string;
-}
+// export interface DestinationData {
+//   id: number;
+//   slug: string;
+//   title: string;
+//   titleKey?: string;
+//   breadcrumbLabel?: string;
+//   breadcrumbLabelKey?: string;
+//   image: string;
+//   images?: string[];
+//   description: string;
+//   descriptionKey?: string;
+//   developer: string;
+//   developerKey?: string;
+//   price: string;
+//   startingPrice: string;
+//   rentalYield: string;
+//   availableListings: string;
+//   hasArrowBadge: boolean;
+//   address?: string;
+//   addressKey?: string;
+//   phone?: string;
+//   email?: string;
+//   coordinates?: {
+//     lat: number;
+//     lng: number;
+//   };
+//   googleMapsUrl?: string;
+// }

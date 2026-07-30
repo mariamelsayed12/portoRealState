@@ -8,9 +8,10 @@ import LocationPanel from "./LocationPanel";
 import PropertyTypePanel, { PROPERTY_TYPE_KEYS } from "./PropertyTypePanel";
 import BedsAndBathsPanel from "./BedsAndBathsPanel";
 import PriceRangePanel from "./PriceRangePanel";
-import { destinations } from "../../data";
+import { useGetVillageQuery } from "../../app/services/crudVillage";
 
 const SearchSection = () => {
+  const{data:destinations}=useGetVillageQuery()
   const navigate = useNavigate();
   const { t } = useTranslation();
 
@@ -42,8 +43,8 @@ const SearchSection = () => {
       .split(",")
       .map((loc) => {
         const trimmed = loc.trim();
-        const dest = destinations.find((d) => d.title === trimmed);
-        return dest?.titleKey ? t(dest.titleKey) : trimmed;
+        const dest = destinations?.find((d) => d.name === trimmed);
+        return dest?.name || trimmed;
       })
       .join(", ");
   };

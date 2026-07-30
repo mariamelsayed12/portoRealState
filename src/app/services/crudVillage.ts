@@ -11,7 +11,7 @@ export interface IVillage {
   startingPrice:number;
   rentalYield:number;
   coverImage:string;
-  galleryImages:string [];
+  galleryImages:string[];
   amenities:string[];
   googleMapsUrl:string;
   latitude:number;
@@ -32,6 +32,13 @@ export interface IVillageResponse {
     next?: number;
   };
   data: IVillage[];
+}
+
+export interface ISingleVillageResponse {
+  status: string;
+  code: number;
+  message: string;
+  data: IVillage;
 }
 
 export const VillageApiSlice=createApi({
@@ -66,6 +73,19 @@ export const VillageApiSlice=createApi({
        
 }),
 
+  //--------------------- Get single village  by ID ---------------------
+    getVillageById: builder.query<IVillage, string>({
+      query: (id) => ({
+        url: `villages/${id}`,
+      }),
+
+      transformResponse: (response: ISingleVillageResponse) => response.data,
+
+      providesTags: (_result, _error, id) => [
+        { type: "Village", id },
+      ],
+    }),
+
         
 
 
@@ -74,6 +94,6 @@ export const VillageApiSlice=createApi({
 
 })
 
-export const { useGetVillageQuery } = VillageApiSlice;
+export const { useGetVillageQuery ,useGetVillageByIdQuery} = VillageApiSlice;
 
 

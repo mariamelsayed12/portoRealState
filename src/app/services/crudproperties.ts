@@ -45,6 +45,13 @@ export interface IpropertyResponse {
   data: IProperty[];
 }
 
+export interface ISinglePropertyResponse {
+  status: string;
+  code: number;
+  message: string;
+  data: IProperty;
+}
+
 export const propertyApiSlice = createApi({
   reducerPath: "ApiProperty",
   tagTypes: ["Property"],
@@ -75,7 +82,20 @@ export const propertyApiSlice = createApi({
             ]
           : [{ type: "Property", id: "LIST" }],
     }),
+
+    //--------------------- Get single property by ID ---------------------
+    getPropertyById: builder.query<IProperty, string>({
+      query: (id) => ({
+        url: `properties/${id}`,
+      }),
+
+      transformResponse: (response: ISinglePropertyResponse) => response.data,
+
+      providesTags: (_result, _error, id) => [
+        { type: "Property", id },
+      ],
+    }),
   }),
 });
 
-export const { useGetPropertyQuery } = propertyApiSlice;
+export const { useGetPropertyQuery , useGetPropertyByIdQuery } = propertyApiSlice;

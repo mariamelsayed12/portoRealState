@@ -1,6 +1,5 @@
 import React, { useState, useMemo, useRef } from "react";
 import { useParams, Link } from "react-router-dom";
-import { destinations } from "../data";
 import { useGetPropertyQuery } from "../app/services/crudproperties";
 import { useSelector } from "react-redux";
 import { useAppDispatch, type RootState } from "../app/store";
@@ -28,6 +27,7 @@ import AmenitiesSection from "../components/Ui/AmenitiesSection";
 import DestinationBreadcrumb from "../components/HomeCompoents/DestinationBreadcrumb";
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
+import { useGetVillageQuery } from "../app/services/crudVillage";
 
 const PropertyDetails: React.FC = () => {
   const { t, i18n } = useTranslation();
@@ -125,10 +125,11 @@ const PropertyDetails: React.FC = () => {
   };
 
   const { data: units = [] } = useGetPropertyQuery();
+  const {data:destinations} =useGetVillageQuery();
 
   // Find destination and property unit dynamically
   const destination = useMemo(() => {
-    return destinations.find((d) => d.slug === destinationSlug);
+    return destinations?.find((d) => d.name === destinationSlug);
   }, [destinationSlug]);
 
   const property = useMemo(() => {
@@ -227,7 +228,7 @@ const PropertyDetails: React.FC = () => {
   // Description copy
   const descriptionText =
     property.description ||
-    t("propertyDetails.descriptionDefault", { bedSpec, destinationTitle: getTranslatedDestinationName(destination.title) });
+    t("propertyDetails.descriptionDefault", { bedSpec, destinationTitle: getTranslatedDestinationName(destination.name) });
 
   // Specs Cards config for clean mapping
   const specsConfig = [
@@ -250,7 +251,7 @@ const PropertyDetails: React.FC = () => {
         {/* Breadcrumb Navigation */}
         <div className="mb-6">
           <DestinationBreadcrumb
-            title={getTranslatedDestinationName(destination.title)}
+            title={getTranslatedDestinationName(destination.name)}
             propertyTitle={getTranslatedPropertyTitle(property.name)}
             destinationSlug={destination.slug}
             variant="light"
@@ -367,13 +368,13 @@ const PropertyDetails: React.FC = () => {
               <div className="flex items-center gap-[8px]">
                 <MapPin className="w-[20px] h-[20px] text-[#464646]" />
                 <span className="font-['Poppins'] font-normal text-[14px] text-[#464646]">
-                  {getTranslatedDestinationName(destination.title)}
+                  {getTranslatedDestinationName(destination.name)}
                 </span>
               </div>
 
               {/* Property Title */}
               <h1 className="font-['Poppins'] font-medium text-[19px] text-[#141414] leading-tight">
-                {t("propertyDetails.titleTemplate", { propertyTitle: getTranslatedPropertyTitle(property.name), destinationTitle: getTranslatedDestinationName(destination.title) })}
+                {t("propertyDetails.titleTemplate", { propertyTitle: getTranslatedPropertyTitle(property.name), destinationTitle: getTranslatedDestinationName(destination.name) })}
               </h1>
             </div>
 
@@ -496,7 +497,7 @@ const PropertyDetails: React.FC = () => {
               {/* WhatsApp Button */}
               <a
                 href={`https://wa.me/20113333333?text=${encodeURIComponent(
-                  t("propertyDetails.whatsappMsg", { propertyTitle: getTranslatedPropertyTitle(property.name), destinationTitle: getTranslatedDestinationName(destination.title) })
+                  t("propertyDetails.whatsappMsg", { propertyTitle: getTranslatedPropertyTitle(property.name), destinationTitle: getTranslatedDestinationName(destination.name) })
                 )}`}
                 target="_blank"
                 rel="noopener noreferrer"
