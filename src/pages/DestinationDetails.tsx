@@ -18,7 +18,7 @@ const DestinationDetails = () => {
   const { slug } = useParams<{ slug: string }>();
   const { i18n } = useTranslation();
 
-    const { data: village, isLoading } = useGetVillageByIdQuery({ id: slug, lang: i18n.language });
+    const { data: village, isLoading } = useGetVillageByIdQuery({ id: slug || "", lang: i18n.language });
 
   const mappedAmenities = useMemo(() => {
     return village?.amenities ? mapAmenitiesToFeatures(village.amenities) : [];
