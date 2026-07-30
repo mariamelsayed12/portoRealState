@@ -61,8 +61,8 @@ const UnitCard = ({
       ? getCashPrice()
       : `${(card.installmentPrice || 0).toLocaleString()} EGP${card.listingType === "Rent" ? " /month" : ""}`;
 
-  const dpPct = card.downPaymentPercentage ?? 5;
-  const period = card.installmentPeriod || "5";
+  const dpPct = card.downPaymentPercentage ?? 2;
+  const period = card.installmentPeriod || "2";
   const yearsVal = parseInt(period.replace(/[a-zA-Z\s]/g, "")) || 5;
   const instValue = card.installmentValue || (card.installmentPrice ? Math.round((card.installmentPrice * (1 - dpPct / 100)) / (yearsVal * 4)) : 0);
 

@@ -1,6 +1,6 @@
-import React, { useState, useMemo, useRef } from "react";
-import { useParams, Link } from "react-router-dom";
-import { useGetPropertyQuery } from "../app/services/crudproperties";
+import React, { useState, useMemo, useRef, useEffect } from "react";
+import { useParams,useNavigate } from "react-router-dom";
+import { useGetPropertyByIdQuery, useGetPropertyQuery } from "../app/services/crudproperties";
 import { useSelector } from "react-redux";
 import { useAppDispatch, type RootState } from "../app/store";
 import { addToFavAction, removeFromFavAction } from "../app/feature/favoriteUnitSlice";
@@ -29,11 +29,13 @@ import DestinationBreadcrumb from "../components/HomeCompoents/DestinationBreadc
 import Loading from "../components/Ui/loading/loading";
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
-import { useGetVillageQuery } from "../app/services/crudVillage";
+import { useGetVillageByIdQuery } from "../app/services/crudVillage";
+import EmptyState from "../components/Ui/EmptyState";
 
 const PropertyDetails: React.FC = () => {
   const { t, i18n } = useTranslation();
   const isRtl = i18n.language === "ar";
+  const navigate = useNavigate();
   const { destinationSlug, propertySlug } = useParams<{
     destinationSlug: string;
     propertySlug: string;
@@ -56,86 +58,46 @@ const PropertyDetails: React.FC = () => {
     }
   };
 
-  const getTranslatedDestinationName = (name: string) => {
-    switch (name) {
-      case "Porto Golf":
-        return t("destinations.portoGolf");
-      case "Porto Marina":
-        return t("destinations.portoMarina");
-      case "Porto Beach":
-        return t("destinations.portoBeach");
-      case "Porto Lagoon":
-        return t("destinations.portoLagoon");
-      case "Porto Coast":
-        return t("destinations.portoCoast");
-      default:
-        return name;
-    }
-  };
 
-  const getTranslatedPropertyTitle = (title: string) => {
-    switch (title.toLowerCase()) {
-      case "sea view challet":
-      case "sea view chalet":
-        return t("unitCard.title.seaViewChalet");
-      case "luxury beachfront chalet":
-        return t("unitCard.title.luxuryBeachfrontChalet");
-      case "marina view penthouse":
-        return t("unitCard.title.marinaViewPenthouse");
-      case "sea shore chalet":
-        return t("unitCard.title.seaShoreChalet");
-      case "front row chalet":
-        return t("unitCard.title.frontRowChalet");
-      case "lagoon side chalet":
-        return t("unitCard.title.lagoonSideChalet");
-      case "crystal lagoon chalet":
-        return t("unitCard.title.crystalLagoonChalet");
-      case "yacht harbour chalet":
-        return t("unitCard.title.yachtHarbourChalet");
-      case "panoramic promenade chalet":
-        return t("unitCard.title.panoramicPromenadeChalet");
-      case "premium sea-breeze chalet":
-        return t("unitCard.title.premiumSeaBreezeChalet");
-      case "infinity view chalet":
-        return t("unitCard.title.infinityViewChalet");
-      default:
-        return title;
-    }
-  };
-
-
-
-  const { data: units = [], isLoading: isUnitsLoading } = useGetPropertyQuery({lang:i18n.language});
-  const {data:destinations, isLoading: isDestinationsLoading} =useGetVillageQuery({lang:i18n.language});
-
-  // Find destination and property unit dynamically
-  const destination = useMemo(() => {
-    return destinations?.find((d) => d.slug === destinationSlug || d.name === destinationSlug);
-  }, [destinations, destinationSlug]);
+  const { data: property, isLoading: isUnitLoading } = useGetPropertyByIdQuery({id:propertySlug || "",lang:i18n.language});
+  const { data: allProperties = [] } = useGetPropertyQuery({lang:i18n.language});
+  const {data:destination, isLoading: isDestinationLoading} =useGetVillageByIdQuery({id:destinationSlug || "",lang:i18n.language});
 
   const mappedAmenities = useMemo(() => {
-    return destination?.amenities ? mapAmenitiesToFeatures(destination.amenities) : [];
-  }, [destination?.amenities]);
-
-  const property = useMemo(() => {
-    return units.find((u) => u._id === propertySlug);
-  }, [units, propertySlug]);
+    return property?.amenities ? mapAmenitiesToFeatures(property.amenities) : [];
+  }, [property?.amenities]);
 
   // Pricing tab selector state ("Installment" | "Cash")
   const [pricingMode, setPricingMode] = useState<"Installment" | "Cash">("Installment");
 
-  // Fallback gallery images if none exist on property
-  const galleryImages = useMemo(() => {
-    if (property?.images && property.images.length > 0) {
-      return property.images;
+  // Sync pricingMode with backend property data
+  useEffect(() => {
+    if (property) {
+      if (property.paymentModel?.toLowerCase() === "cash") {
+        setPricingMode("Cash");
+      } else {
+        setPricingMode("Installment");
+      }
     }
-    // Generate beautiful visual gallery defaults
-    return [
-      property?.coverImage || "",
-      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80",
-      "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=800&q=80",
-      "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=800&q=80",
-    ].filter(Boolean);
+  }, [property]);
+
+  const hasInstallment = property ? property.paymentModel?.toLowerCase() !== "cash" : true;
+  const hasCash = property ? property.paymentModel?.toLowerCase() !== "installment" : true;
+
+  // Combine coverImage and gallery images, avoiding duplicates, with fallback to coverImage
+  const galleryImages = useMemo(() => {
+    const list: string[] = [];
+    if (property?.coverImage) {
+      list.push(property.coverImage);
+    }
+    if (property?.images && Array.isArray(property.images)) {
+      property.images.forEach((img) => {
+        if (img && typeof img === "string" && !list.includes(img)) {
+          list.push(img);
+        }
+      });
+    }
+    return list;
   }, [property]);
 
   const [activeImageIndex, setActiveImageIndex] = useState(0);
@@ -166,6 +128,7 @@ const PropertyDetails: React.FC = () => {
 
   // Gallery Navigation
   const scrollThumbnails = (direction: "up" | "down") => {
+    if (galleryImages.length === 0) return;
     if (direction === "up") {
       setActiveImageIndex((prev) => (prev > 0 ? prev - 1 : galleryImages.length - 1));
     } else {
@@ -176,12 +139,12 @@ const PropertyDetails: React.FC = () => {
   // Find related units (other units from same destination, cap at 4)
   const relatedProperties = useMemo(() => {
     if (!property) return [];
-    return units
+    return allProperties
       .filter((u) => u.village?.slug === destinationSlug && u._id !== property._id)
       .slice(0, 4);
-  }, [destinationSlug, property]);
+  }, [destinationSlug, property, allProperties]);
 
-  if (isUnitsLoading || isDestinationsLoading) {
+  if (isUnitLoading || isDestinationLoading) {
     return (
       <div className="flex items-center justify-center w-full h-[100vh]">
         <Loading />
@@ -192,16 +155,11 @@ const PropertyDetails: React.FC = () => {
   if (!destination || !property) {
     return (
       <div className="mx-auto max-w-7xl px-6 py-24 sm:px-8 lg:px-12 text-center">
-        <h2 className="text-2xl font-bold text-text-secondary">{t("propertyDetails.notFound.title")}</h2>
-        <p className="mt-2 text-sm text-[#7D8D93]">
-          {t("propertyDetails.notFound.description")}
-        </p>
-        <Link
-          to="/home"
-          className="mt-6 inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-opacity-95 transition-colors cursor-pointer"
-        >
-          {t("propertyDetails.notFound.backBtn")}
-        </Link>
+        <EmptyState
+          title={t("propertyDetails.notFound.description")}
+          actionLabel={t("propertyDetails.notFound.backBtn")}
+          onAction={() => navigate("/home")}
+        />
       </div>
     );
   }
@@ -214,25 +172,23 @@ const PropertyDetails: React.FC = () => {
     return dateStr;
   };
 
-  // Extract specs details, leveraging actual unit data with standard defaults
-  const areaSpec = property.area ? `${property.area} sqm` : t("propertyDetails.specs.areaDefault");
-  const bedSpec = property.bedrooms ? `${property.bedrooms}` : "3";
-  const bathSpec = property.bathrooms ? `${property.bathrooms}` : "3";
-  const finishingSpec = property.finishingStatus || t("propertyDetails.specs.finishingDefault");
-  const deliverySpec = getDeliveryYear(property.deliveryDate) || "2030";
-  const orientationSpec = property.orientation || t("propertyDetails.specs.orientationDefault");
+  // Extract specs details, leveraging actual unit data with NO static defaults
+  const areaSpec = property.area ? `${property.area} sqm` : "";
+  const bedSpec = property.bedrooms ? `${property.bedrooms}` : "";
+  const bathSpec = property.bathrooms ? `${property.bathrooms}` : "";
+  const finishingSpec = property.finishingStatus || "";
+  const deliverySpec = getDeliveryYear(property.deliveryDate) || "";
+  const orientationSpec = property.orientation || "";
 
-  // Derived or default pricing fields
-  const downPayment = property.downPaymentAmount ? `${property.downPaymentAmount.toLocaleString()} EGP` : "200,000 EGP";
-  const monthlyInstallment = property.installmentValue ? `${property.installmentValue.toLocaleString()} EGP` : "125,000 EGP";
-  const installmentYears = property.installmentPeriod || t("propertyDetails.pricing.installmentYearsDefault");
+  // Derived pricing fields with NO static defaults
+  const downPayment = property.downPaymentAmount ? `${property.downPaymentAmount.toLocaleString()} EGP` : "";
+  const monthlyInstallment = property.installmentValue ? `${property.installmentValue.toLocaleString()} EGP` : "";
+  const installmentYears = property.installmentPeriod || "";
 
-  // Description copy
-  const descriptionText =
-    property.description ||
-    t("propertyDetails.descriptionDefault", { bedSpec, destinationTitle: getTranslatedDestinationName(destination.name) });
+  // Description copy (NO static fallback template)
+  const descriptionText = property.description || "";
 
-  // Specs Cards config for clean mapping
+  // Specs Cards config for clean mapping, filtering out empty values
   const specsConfig = [
     { value: areaSpec, label: t("propertyDetails.specs.labels.area"), icon: Ruler },
     { value: bedSpec, label: t("propertyDetails.specs.labels.bedrooms"), icon: BedDouble },
@@ -240,7 +196,7 @@ const PropertyDetails: React.FC = () => {
     { value: finishingSpec, label: t("propertyDetails.specs.labels.finishing"), icon: Layers },
     { value: deliverySpec, label: t("propertyDetails.specs.labels.delivery"), icon: Home },
     { value: orientationSpec, label: t("propertyDetails.specs.labels.orientation"), icon: Compass },
-  ];
+  ].filter((spec) => Boolean(spec.value));
 
   return (
     <motion.div
@@ -253,8 +209,8 @@ const PropertyDetails: React.FC = () => {
         {/* Breadcrumb Navigation */}
         <div className="mb-6">
           <DestinationBreadcrumb
-            title={getTranslatedDestinationName(destination.name)}
-            propertyTitle={getTranslatedPropertyTitle(property.name)}
+            title={destination.name}
+            propertyTitle={property.name}
             destinationSlug={destination.slug}
             variant="light"
           />
@@ -266,7 +222,7 @@ const PropertyDetails: React.FC = () => {
           <div className="relative w-full lg:flex-1 h-[240px] sm:h-[350px] lg:h-[365px] rounded-[12px] overflow-hidden bg-[#dfeef1] group shrink-0 lg:shrink">
             <Image
               imageurl={galleryImages[activeImageIndex]}
-              alt={getTranslatedPropertyTitle(property.name)}
+              alt={property.name}
               className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.01]"
             />
             {/* Gallery Top Badges */}
@@ -367,20 +323,22 @@ const PropertyDetails: React.FC = () => {
               <div className="flex items-center gap-[8px]">
                 <MapPin className="w-[20px] h-[20px] text-[#464646]" />
                 <span className="font-['Poppins'] font-normal text-[14px] text-[#464646]">
-                  {getTranslatedDestinationName(destination.name)}
+                  {destination.name}
                 </span>
               </div>
 
               {/* Property Title */}
               <h1 className="font-['Poppins'] font-medium text-[19px] text-[#141414] leading-tight">
-                {t("propertyDetails.titleTemplate", { propertyTitle: getTranslatedPropertyTitle(property.name), destinationTitle: getTranslatedDestinationName(destination.name) })}
+                {property.name} - {destination.name}
               </h1>
             </div>
 
             {/* Description Paragraph */}
-            <p className="font-['Poppins'] font-normal text-[16px] text-[#464646] leading-relaxed w-full">
-              {descriptionText}
-            </p>
+            {descriptionText && (
+              <p className="font-['Poppins'] font-normal text-[16px] text-[#464646] leading-relaxed w-full">
+                {descriptionText}
+              </p>
+            )}
 
             {/* Specs Grid */}
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-[16px] w-full">
@@ -411,28 +369,30 @@ const PropertyDetails: React.FC = () => {
                   <span className="font-['Poppins'] font-medium text-[16px] text-[#141414]">
                     {t("propertyDetails.pricing.pricingHeader", "Pricing")}
                   </span>
-                  <div className="border border-[#d4d5d8] flex h-[32px] items-center rounded-[12px] bg-white overflow-hidden p-0.5">
-                    <button
-                      onClick={() => setPricingMode("Installment")}
-                      className={`h-[28px] flex items-center justify-center px-[8px] rounded-[10px] font-['Poppins'] font-medium text-[14px] md:text-[16px] transition-all cursor-pointer ${
-                        pricingMode === "Installment"
-                          ? "bg-[#edeff2] text-[#141414]"
-                          : "text-[#141414] hover:text-primary"
-                      }`}
-                    >
-                      {t("propertyDetails.pricing.installmentTab")}
-                    </button>
-                    <button
-                      onClick={() => setPricingMode("Cash")}
-                      className={`h-[28px] flex items-center justify-center px-[8px] rounded-[10px] font-['Poppins'] font-medium text-[14px] md:text-[16px] transition-all cursor-pointer ${
-                        pricingMode === "Cash"
-                          ? "bg-[#edeff2] text-[#141414]"
-                          : "text-[#141414] hover:text-primary"
-                      }`}
-                    >
-                      {t("propertyDetails.pricing.cashTab")}
-                    </button>
-                  </div>
+                  {hasInstallment && hasCash && (
+                    <div className="border border-[#d4d5d8] flex h-[32px] items-center rounded-[12px] bg-white overflow-hidden p-0.5">
+                      <button
+                        onClick={() => setPricingMode("Installment")}
+                        className={`h-[28px] flex items-center justify-center px-[8px] rounded-[10px] font-['Poppins'] font-medium text-[14px] md:text-[16px] transition-all cursor-pointer ${
+                          pricingMode === "Installment"
+                            ? "bg-[#edeff2] text-[#141414]"
+                            : "text-[#141414] hover:text-primary"
+                        }`}
+                      >
+                        {t("propertyDetails.pricing.installmentTab")}
+                      </button>
+                      <button
+                        onClick={() => setPricingMode("Cash")}
+                        className={`h-[28px] flex items-center justify-center px-[8px] rounded-[10px] font-['Poppins'] font-medium text-[14px] md:text-[16px] transition-all cursor-pointer ${
+                          pricingMode === "Cash"
+                            ? "bg-[#edeff2] text-[#141414]"
+                            : "text-[#141414] hover:text-primary"
+                        }`}
+                      >
+                        {t("propertyDetails.pricing.cashTab")}
+                      </button>
+                    </div>
+                  )}
                 </div>
                 <span className="font-['Poppins'] font-medium text-[16px] text-[#464646]">
                   {pricingMode === "Installment" ? installmentYears : t("propertyDetails.pricing.immediatePayment")}
@@ -452,28 +412,36 @@ const PropertyDetails: React.FC = () => {
                         {property.installmentPrice ? `${property.installmentPrice.toLocaleString()} EGP` : "Contact for Price"}
                       </span>
                     </div>
-                    {/* Separator */}
-                    <div className="w-[1px] h-[40px] bg-[#d4d5d8]" />
                     {/* Down Payment */}
-                    <div className="flex-1 flex flex-col items-center text-center">
-                      <span className="font-['Poppins'] font-medium text-[16px] text-[#464646] mb-2">
-                        {t("propertyDetails.pricing.downPayment")}
-                      </span>
-                      <span className="font-['Poppins'] font-medium text-[16px] text-[#141414]">
-                        {downPayment}
-                      </span>
-                    </div>
-                    {/* Separator */}
-                    <div className="w-[1px] h-[40px] bg-[#d4d5d8]" />
+                    {downPayment && (
+                      <>
+                        {/* Separator */}
+                        <div className="w-[1px] h-[40px] bg-[#d4d5d8]" />
+                        <div className="flex-1 flex flex-col items-center text-center">
+                          <span className="font-['Poppins'] font-medium text-[16px] text-[#464646] mb-2">
+                            {t("propertyDetails.pricing.downPayment")}
+                          </span>
+                          <span className="font-['Poppins'] font-medium text-[16px] text-[#141414]">
+                            {downPayment}
+                          </span>
+                        </div>
+                      </>
+                    )}
                     {/* Monthly Installment */}
-                    <div className="flex-1 flex flex-col items-center text-center">
-                      <span className="font-['Poppins'] font-medium text-[16px] text-[#464646] mb-2">
-                        {t("propertyDetails.pricing.monthly")}
-                      </span>
-                      <span className="font-['Poppins'] font-medium text-[16px] text-[#141414]">
-                        {monthlyInstallment}
-                      </span>
-                    </div>
+                    {monthlyInstallment && (
+                      <>
+                        {/* Separator */}
+                        <div className="w-[1px] h-[40px] bg-[#d4d5d8]" />
+                        <div className="flex-1 flex flex-col items-center text-center">
+                          <span className="font-['Poppins'] font-medium text-[16px] text-[#464646] mb-2">
+                            {t("propertyDetails.pricing.monthly")}
+                          </span>
+                          <span className="font-['Poppins'] font-medium text-[16px] text-[#141414]">
+                            {monthlyInstallment}
+                          </span>
+                        </div>
+                      </>
+                    )}
                   </>
                 ) : (
                   <div className="w-full flex flex-col items-center text-center py-2">
@@ -496,7 +464,7 @@ const PropertyDetails: React.FC = () => {
               {/* WhatsApp Button */}
               <a
                 href={`https://wa.me/20113333333?text=${encodeURIComponent(
-                  t("propertyDetails.whatsappMsg", { propertyTitle: getTranslatedPropertyTitle(property.name), destinationTitle: getTranslatedDestinationName(destination.name) })
+                  t("propertyDetails.whatsappMsg", { propertyTitle:  property.name, destinationTitle: destination.name })
                 )}`}
                 target="_blank"
                 rel="noopener noreferrer"

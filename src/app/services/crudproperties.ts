@@ -29,6 +29,7 @@ export interface IProperty {
     locationText: string;
     coverImage: string;
   };
+  amenities:string[]
 }
 
 export interface IpropertyResponse {
