@@ -11,9 +11,9 @@ import PriceRangePanel from "./PriceRangePanel";
 import { useGetVillageQuery } from "../../app/services/crudVillage";
 
 const SearchSection = () => {
-  const{data:destinations}=useGetVillageQuery()
+  const { t ,i18n} = useTranslation();
+  const{data:destinations}=useGetVillageQuery({lang:i18n.language})
   const navigate = useNavigate();
-  const { t } = useTranslation();
 
   // Local filter states before applying search
   const [location, setLocation] = useState("");

@@ -24,13 +24,13 @@ interface SellFormData {
 const phoneCodes = ["+20", "+971", "+966", "+44", "+1"];
 
 const SellPage = () => {
+  const { t ,i18n} = useTranslation();
 
-  const {data}=useGetVillageQuery();
+  const {data}=useGetVillageQuery({lang:i18n.language});
 	console.log(data);
 	useEffect(() => {
 		
 	}, [data])
-  const { t } = useTranslation();
   const [prefix, setPrefix] = useState("+20");
   const [isSubmitting, setIsSubmitting] = useState(false);
 

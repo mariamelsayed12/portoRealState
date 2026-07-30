@@ -24,8 +24,9 @@ const FilterContent = ({
   stickyFooter = true,
   displayMode = "drawer",
 }: FilterContentProps) => {
-  const{data:destinations}=useGetVillageQuery();
-  const { t } = useTranslation();
+    const { t ,i18n} = useTranslation();
+
+  const{data:destinations}=useGetVillageQuery({lang:i18n.language});
 
   const handleTogglePropertyType = (type: string) => {
   setTempFilters((prev) => {

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { PanelFooter } from "./PanelFooter";
 import { useGetVillageQuery } from "../../app/services/crudVillage";
+import { useTranslation } from "react-i18next";
 
 interface LocationPanelProps {
   selected: string; // Comma-separated string
@@ -10,8 +11,9 @@ interface LocationPanelProps {
 }
 
 const LocationPanel = ({ selected, onSelect, onCancel, onApply }: LocationPanelProps) => {
-
-  const {data:destinations}=useGetVillageQuery();
+ 
+  const{i18n}=useTranslation()
+  const {data:destinations}=useGetVillageQuery({lang:i18n.language});
   // Extract unique destination titles
   const locationOptions = Array.from(new Set(destinations?.map((d) => d.name)));
 
