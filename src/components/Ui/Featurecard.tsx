@@ -18,8 +18,12 @@ const { colors } = FEATURE_MARQUEE_TOKENS;
  * accent shape, and a title on the left.
  */
 function FeatureCardBase({ feature, className = "" }: FeatureCardProps) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const Icon = feature.icon;
+
+  const displayTitle = feature.titleKey && i18n.exists(feature.titleKey)
+    ? t(feature.titleKey)
+    : feature.title;
 
   return (
     <div
@@ -37,7 +41,7 @@ function FeatureCardBase({ feature, className = "" }: FeatureCardProps) {
     >
       {/* Title — capped width so long labels wrap nicely exactly like Figma */}
       <p className="relative z-10 font-medium text-text-secondary leading-snug break-normal pl-4 pr-2 rtl:pr-4 rtl:pl-2 text-[13px] sm:text-[16px] lg:text-[19px] max-w-[75px] sm:max-w-[95px] lg:max-w-[125px]">
-        {feature.titleKey ? t(feature.titleKey) : feature.title}
+        {displayTitle}
       </p>
 
       {/* Accent shape + icon, pinned to the right edge in LTR, left edge in RTL */}
@@ -46,6 +50,7 @@ function FeatureCardBase({ feature, className = "" }: FeatureCardProps) {
           className="absolute inset-0 h-full w-full text-secondary transition-colors duration-300 group-hover:text-[#A7D1DE] rtl:-scale-x-100"
         />
         <Icon
+          strokeWidth={1.6}
           className="relative z-10 h-6 w-6 sm:h-7 sm:w-7 lg:h-9 lg:w-9 text-text-secondary shrink-0 transition-transform duration-300 group-hover:scale-110"
         />
       </div>

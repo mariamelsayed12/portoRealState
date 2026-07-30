@@ -24,7 +24,9 @@ import {
 } from "lucide-react";
 import { FaHeart, FaRegHeart, FaWhatsapp } from "react-icons/fa6";
 import AmenitiesSection from "../components/Ui/AmenitiesSection";
+import { mapAmenitiesToFeatures } from "../utils";
 import DestinationBreadcrumb from "../components/HomeCompoents/DestinationBreadcrumb";
+import Loading from "../components/Ui/loading/loading";
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import { useGetVillageQuery } from "../app/services/crudVillage";
@@ -124,17 +126,21 @@ const PropertyDetails: React.FC = () => {
     }
   };
 
-  const { data: units = [] } = useGetPropertyQuery();
-  const {data:destinations} =useGetVillageQuery();
+  const { data: units = [], isLoading: isUnitsLoading } = useGetPropertyQuery({lang:i18n.language});
+  const {data:destinations, isLoading: isDestinationsLoading} =useGetVillageQuery({lang:i18n.language});
 
   // Find destination and property unit dynamically
   const destination = useMemo(() => {
-    return destinations?.find((d) => d.name === destinationSlug);
-  }, [destinationSlug]);
+    return destinations?.find((d) => d.slug === destinationSlug || d.name === destinationSlug);
+  }, [destinations, destinationSlug]);
+
+  const mappedAmenities = useMemo(() => {
+    return destination?.amenities ? mapAmenitiesToFeatures(destination.amenities) : [];
+  }, [destination?.amenities]);
 
   const property = useMemo(() => {
     return units.find((u) => u._id === propertySlug);
-  }, [propertySlug]);
+  }, [units, propertySlug]);
 
   // Pricing tab selector state ("Installment" | "Cash")
   const [pricingMode, setPricingMode] = useState<"Installment" | "Cash">("Installment");
@@ -186,6 +192,14 @@ const PropertyDetails: React.FC = () => {
       .filter((u) => u.village?.slug === destinationSlug && u._id !== property._id)
       .slice(0, 4);
   }, [destinationSlug, property]);
+
+  if (isUnitsLoading || isDestinationsLoading) {
+    return (
+      <div className="flex items-center justify-center w-full h-[100vh]">
+        <Loading />
+      </div>
+    );
+  }
 
   if (!destination || !property) {
     return (
@@ -521,7 +535,7 @@ const PropertyDetails: React.FC = () => {
 
         {/* Amenities Section */}
         <div className="px-6 py-12">
-          <AmenitiesSection />
+          <AmenitiesSection features={mappedAmenities} />
         </div>
       </div> {/* Close main constrained container */}
 

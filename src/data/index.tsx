@@ -9,9 +9,8 @@ import northcost from "../assets/HomePage/northcost.jpg";
 // import aboutpage from "../assets/aboutpage.jpg";
 // import mangamentPage from "../assets/mangamentPage.jpg";
 // import unite from "../assets/unite.jpg";
-import { Mail, Phone } from "lucide-react";
+import { Baby, Building2, Car, Coffee, Dumbbell, Mail, Phone, Sparkles, Store, Trees, UtensilsCrossed, Waves } from "lucide-react";
 import HotelsIcon from "../components/icons/hotels";
-import GolfIcon from "../components/icons/golf";
 import PoolIcon from "../components/icons/pools";
 import Security from "../components/icons/security";
 import MediacalServiceIcon from "../components/icons/MedicalService";
@@ -798,47 +797,117 @@ export const FEATURE_MARQUEE_TOKENS = {
   },
 } as const;
 
-export const villageFeatures: Feature[] = [
-  {
-    id: "Hotels",
-    title: "Hotels",
-    titleKey: "amenities.hotels",
-    icon: HotelsIcon,
-  },
-  {
-    id: "Golf",
-    title: "Golf",
-    titleKey: "amenities.golf",
-    icon: GolfIcon,
-  },
-  {
-    id: "Private-Beach",
-    title: "Private Beach",
-    titleKey: "amenities.privateBeach",
-    icon: BeachIcon,
-  },
-  {
-    id: "Pools",
+
+
+export const amenityConfig: Record<
+  string,
+  Omit<Feature, "id">
+> = {
+  Pools: {
     title: "Pools",
     titleKey: "amenities.pools",
     icon: PoolIcon,
   },
-  {
-    id: "Security",
-    title: "24/7 Security",
-    titleKey: "amenities.security",
-    icon: Security,
-  },
-  {
-    id: "Marina",
+
+  Marina: {
     title: "Marina",
     titleKey: "amenities.marina",
     icon: Marina,
   },
-  {
-    id: "Medical-Service",
-    title: "Medical Service",
-    titleKey: "amenities.medicalService",
+
+  Cafes: {
+    title: "Cafes",
+    titleKey: "amenities.cafes",
+    icon: Coffee,
+  },
+
+  Beaches: {
+    title: "Private Beach",
+    titleKey: "amenities.privateBeach",
+    icon: BeachIcon,
+  },
+
+  Restaurants: {
+    title: "Restaurants",
+    titleKey: "amenities.restaurants",
+    icon: UtensilsCrossed,
+  },
+
+  "Hotel Services": {
+    title: "Hotel Services",
+    titleKey: "amenities.hotelServices",
+    icon: HotelsIcon,
+  },
+
+  Security: {
+    title: "24/7 Security",
+    titleKey: "amenities.security",
+    icon: Security,
+  },
+
+  "Medical Services": {
+    title: "Medical Services",
+    titleKey: "amenities.medicalServices",
     icon: MediacalServiceIcon,
   },
-];
+
+  "Sports Facilities": {
+    title: "Sports Facilities",
+    titleKey: "amenities.sportsFacilities",
+    icon: Dumbbell,
+  },
+
+  Gyms: {
+    title: "Gyms",
+    titleKey: "amenities.gyms",
+    icon: Dumbbell,
+  },
+
+  Spas: {
+    title: "Spas",
+    titleKey: "amenities.spas",
+    icon: Sparkles,
+  },
+
+  Clubhouse: {
+    title: "Clubhouse",
+    titleKey: "amenities.clubhouse",
+    icon: Building2,
+  },
+
+  "Commercial Area": {
+    title: "Commercial Area",
+    titleKey: "amenities.commercialArea",
+    icon: Store,
+  },
+
+  "Green Areas": {
+    title: "Green Areas",
+    titleKey: "amenities.greenAreas",
+    icon: Trees,
+  },
+
+  "Kids Area": {
+    title: "Kids Area",
+    titleKey: "amenities.kidsArea",
+    icon: Baby,
+  },
+
+  "Underground Parking": {
+    title: "Underground Parking",
+    titleKey: "amenities.undergroundParking",
+    icon: Car,
+  },
+
+  "Lagoon View": {
+    title: "Lagoon View",
+    titleKey: "amenities.lagoonView",
+    icon: Waves,
+  },
+
+  "Private Garden": {
+    title: "Private Garden",
+    titleKey: "amenities.privateGarden",
+    icon: Trees,
+  },
+};

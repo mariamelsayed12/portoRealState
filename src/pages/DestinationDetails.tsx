@@ -1,4 +1,6 @@
+import { useMemo } from "react";
 import { useParams } from "react-router-dom";
+import { mapAmenitiesToFeatures } from "../utils";
 import DestinationStats from "../components/DestinationStats";
 import DestinationDetailsContent from "./home/DestinationDetailsContent";
 import DestinationNotFound from "../components/HomeCompoents/DestinationNotFound";
@@ -17,6 +19,10 @@ const DestinationDetails = () => {
   const { i18n } = useTranslation();
 
     const { data: village, isLoading } = useGetVillageByIdQuery({ id: slug, lang: i18n.language });
+
+  const mappedAmenities = useMemo(() => {
+    return village?.amenities ? mapAmenitiesToFeatures(village.amenities) : [];
+  }, [village?.amenities]);
 
   if (isLoading) {
     return (
@@ -76,7 +82,7 @@ const DestinationDetails = () => {
       </div>
       {/* AmenitiesSection */}
       <div className="mx-auto max-w-7xl px-6 sm:px-8 lg:px-12 py-12 sm:py-16">
-        <AmenitiesSection />
+        <AmenitiesSection features={mappedAmenities} />
       </div>
 
       <section className="w-full lg:pt-10 md:pt-8 pt-5">

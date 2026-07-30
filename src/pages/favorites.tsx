@@ -13,6 +13,7 @@ import { useUnitsFilter } from "../hooks/useUnitsFilter";
 import { useUnitsSort, type SortOption } from "../hooks/useUnitsSort";
 import AmenitiesSection from "../components/Ui/AmenitiesSection";
 import { useGetPropertyQuery } from "../app/services/crudproperties";
+import { mapAmenitiesToFeatures } from "../utils";
 import { getRecommendedProperties } from "../utils/recommendations";
 import FilterDrawer from "../components/filterCcomponents/FilterDrawer";
 import FilterIcon from "../components/icons/Filter";
@@ -64,6 +65,32 @@ const FavoritesPage = () => {
     const excludeIds = validFavUnite.map((u) => u._id);
     return getRecommendedProperties(latestFav, units, excludeIds);
   }, [validFavUnite, units]);
+
+  // List of all 15 backend enums for Amenities
+  const backendAmenitiesEnum = useMemo(
+    () => [
+      "Pools",
+      "Marina",
+      "Cafes",
+      "Beaches",
+      "Restaurants",
+      "Hotel Services",
+      "Security",
+      "Medical Services",
+      "Sports Facilities",
+      "Gyms",
+      "Spas",
+      "Clubhouse",
+      "Commercial Area",
+      "Green Areas",
+      "Kids Area",
+    ],
+    [],
+  );
+
+  const allFeatures = useMemo(() => {
+    return mapAmenitiesToFeatures(backendAmenitiesEnum);
+  }, [backendAmenitiesEnum]);
 
   const scrollerRef = useRef<HTMLDivElement | null>(null);
   const canScroll = useMemo(
@@ -229,7 +256,7 @@ const FavoritesPage = () => {
         </div>
 
         <div className="lg:py-16 py-8 md:py-12">
-          <AmenitiesSection />
+          <AmenitiesSection features={allFeatures} />
         </div>
 
         {/* Recommended Properties Slider Section */}
