@@ -8,10 +8,10 @@ import {
 } from "../app/feature/favoriteUnitSlice";
 import { FaHeart, FaRegHeart } from "react-icons/fa6";
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import type { IProperty } from "../app/services/crudproperties";
-import { truncateText } from "../utils";
+import { truncateText, formatDeliveryStatus, getTranslatedBadge } from "../utils";
 
 const statIconMap = {
   location: MapPin,
@@ -77,18 +77,13 @@ const UnitCard = ({
     card.listingType !== "Rent" &&
     (card.paymentModel?.toLowerCase() === "both" || !card.paymentModel);
 
-  const getDeliveryYear = (dateStr?: string) => {
-    if (!dateStr) return "";
-    if (dateStr.includes("-")) {
-      return dateStr.split("-")[0];
-    }
-    return dateStr;
-  };
-
-  const badges = [
-    card.listingType,
-    card.deliveryDate ? `Delivery in ${getDeliveryYear(card.deliveryDate)}` : "",
-  ].filter(Boolean);
+  const badges = useMemo(() => {
+    const rawDelivery = formatDeliveryStatus(card.deliveryDate);
+    return [
+      card.listingType ? getTranslatedBadge(card.listingType, t) : "",
+      rawDelivery ? getTranslatedBadge(rawDelivery, t) : "",
+    ].filter(Boolean);
+  }, [card.listingType, card.deliveryDate, t]);
 
   const locationText = card.village
     ? `${card.village.name} • ${card.village.locationText}`

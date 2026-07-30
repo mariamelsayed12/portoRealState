@@ -101,3 +101,4 @@ const DestinationDetails = () => {
 };
 
 export default DestinationDetails;
+

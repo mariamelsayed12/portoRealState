@@ -70,3 +70,58 @@ export const mapAmenitiesToFeatures = (amenities: string[] = []): Feature[] => {
     };
   });
 };
+
+/**
+ * Formats the delivery status/badge text.
+ * - Date/period values containing a 4-digit year (e.g. "2027", "Q4 2026") are returned as "Delivery in {date}".
+ * - Text/status values (e.g. "Ready to Move", "Delivered") are returned as-is.
+ */
+export const formatDeliveryStatus = (deliveryDate?: string): string => {
+  if (!deliveryDate) return "";
+  
+  const trimmed = deliveryDate.trim();
+  
+  // Checks if the string contains a 4-digit year starting with 19, 20, or 21
+  const hasYear = /\b(19|20|21)\d{2}\b/.test(trimmed);
+  
+  if (hasYear) {
+    let displayDate = trimmed;
+    // Extract year part if it is a full date string like "2027-12-01"
+    if (trimmed.includes("-")) {
+      displayDate = trimmed.split("-")[0];
+    }
+    return `Delivery in ${displayDate}`;
+  }
+  
+  return trimmed;
+};
+
+/**
+ * Translates unit card badges cleanly using i18n instance.
+ */
+export const getTranslatedBadge = (badge: string, t: (key: string, options?: any) => string): string => {
+  if (badge.startsWith("Delivery in ")) {
+    const year = badge.replace("Delivery in ", "");
+    return t("unitCard.badge.deliveryIn", { year });
+  }
+  switch (badge.toLowerCase()) {
+    case "resale":
+      return t("unitCard.badge.resale");
+    case "developer":
+      return t("unitCard.badge.developer");
+    case "rent":
+      return t("unitCard.badge.rent");
+    case "sale":
+      return t("unitCard.badge.sale");
+    case "available":
+      return t("unitCard.badge.available");
+    case "available soon":
+      return t("unitCard.badge.availableSoon");
+    case "ready to move":
+      return t("unitCard.badge.readyToMove");
+    case "delivered":
+      return t("unitCard.badge.delivered");
+    default:
+      return badge;
+  }
+};

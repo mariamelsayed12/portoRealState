@@ -24,7 +24,7 @@ import {
 } from "lucide-react";
 import { FaHeart, FaRegHeart, FaWhatsapp } from "react-icons/fa6";
 import AmenitiesSection from "../components/Ui/AmenitiesSection";
-import { mapAmenitiesToFeatures } from "../utils";
+import { mapAmenitiesToFeatures, formatDeliveryStatus, getTranslatedBadge } from "../utils";
 import DestinationBreadcrumb from "../components/HomeCompoents/DestinationBreadcrumb";
 import Loading from "../components/Ui/loading/loading";
 import { motion } from "framer-motion";
@@ -103,28 +103,7 @@ const PropertyDetails: React.FC = () => {
     }
   };
 
-  const getTranslatedBadge = (badge: string) => {
-    if (badge.startsWith("Delivery in ")) {
-      const year = badge.replace("Delivery in ", "");
-      return t("unitCard.badge.deliveryIn", { year });
-    }
-    switch (badge.toLowerCase()) {
-      case "resale":
-        return t("unitCard.badge.resale");
-      case "developer":
-        return t("unitCard.badge.developer");
-      case "rent":
-        return t("unitCard.badge.rent");
-      case "sale":
-        return t("unitCard.badge.sale");
-      case "available":
-        return t("unitCard.badge.available");
-      case "available soon":
-        return t("unitCard.badge.availableSoon");
-      default:
-        return badge;
-    }
-  };
+
 
   const { data: units = [], isLoading: isUnitsLoading } = useGetPropertyQuery({lang:i18n.language});
   const {data:destinations, isLoading: isDestinationsLoading} =useGetVillageQuery({lang:i18n.language});
@@ -166,6 +145,15 @@ const PropertyDetails: React.FC = () => {
     if (!property) return false;
     return favUnite.some((item) => item._id === property._id);
   }, [property, favUnite]);
+
+  const detailBadges = useMemo(() => {
+    if (!property) return [];
+    const rawDelivery = formatDeliveryStatus(property.deliveryDate);
+    return [
+      property.listingType ? getTranslatedBadge(property.listingType, t) : "",
+      rawDelivery ? getTranslatedBadge(rawDelivery, t) : "",
+    ].filter(Boolean);
+  }, [property, t]);
 
   const handleFavoriteToggle = () => {
     if (!property) return;
@@ -283,15 +271,12 @@ const PropertyDetails: React.FC = () => {
             />
             {/* Gallery Top Badges */}
             <div className="absolute top-[16px] left-[16px] flex flex-wrap gap-[8px] z-10">
-              {[
-                property.listingType,
-                property.deliveryDate ? `Delivery in ${getDeliveryYear(property.deliveryDate)}` : "",
-              ].filter(Boolean).map((badge) => (
+              {detailBadges.map((badge) => (
                 <span
                   key={badge}
                   className="bg-[rgba(9,1,1,0.25)] backdrop-blur-sm px-[16px] py-[8px] rounded-[99px] text-[#edeff2] font-['Poppins'] font-medium text-[14px] leading-none"
                 >
-                  {getTranslatedBadge(badge)}
+                  {badge}
                 </span>
               ))}
             </div>

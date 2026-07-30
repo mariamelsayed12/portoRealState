@@ -183,6 +183,8 @@
     "unitCard.badge.available": "Available",
     "unitCard.badge.availableSoon": "Available soon",
     "unitCard.badge.deliveryIn": "Delivery in {{year}}",
+    "unitCard.badge.readyToMove": "Ready to Move",
+    "unitCard.badge.delivered": "Delivered",
     "unitCard.title.seaViewChalet": "Sea view Challet",
     "unitCard.title.luxuryBeachfrontChalet": "Luxury Beachfront Chalet",
     "unitCard.title.marinaViewPenthouse": "Marina View Penthouse",
