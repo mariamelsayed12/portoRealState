@@ -87,7 +87,7 @@ const UnitCard = ({
   }, [card.listingType, card.deliveryDate, t]);
 
   const locationText = card.village
-    ? `${card.village.name} • ${card.village.locationText}`
+    ? `${card.village.name} • ${card.propertyType}`
     : "";
 
 

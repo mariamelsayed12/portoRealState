@@ -42,9 +42,13 @@ const FilterContent = ({
     const areas = units.map(u => u.area).filter((a): a is number => typeof a === 'number' && !isNaN(a));
     const prices = units.map(u => u.installmentPrice).filter((p): p is number => typeof p === 'number' && !isNaN(p));
     
-    const minA = areas.length ? Math.min(...areas) : 0;
+    // const minA = areas.length ? Math.min(...areas) : 0;
+        const minA = 0;
+
     const maxA = areas.length ? Math.max(...areas) : 1000;
-    const minP = prices.length ? Math.min(...prices) : 0;
+    // const minP = prices.length ? Math.min(...prices) : 0;
+        const minP = 0;
+
     const maxP = prices.length ? Math.max(...prices) : 10000000;
     
     return { minArea: minA, maxArea: maxA, minPrice: minP, maxPrice: maxP };
