@@ -210,6 +210,7 @@ const RentPage = () => {
 
         {/* Sidebar Drawer */}
         <FilterDrawer
+          units={activeTabUnits}
           displayMode="drawer"
           isOpen={isFilterOpen}
           onClose={() => setIsFilterOpen(false)}

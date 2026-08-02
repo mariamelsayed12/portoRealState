@@ -35,6 +35,7 @@ const UnitCard = ({
   const [paymentMode, setPaymentMode] = useState<"installment" | "cash">(defaultMode);
 
   const isFavorite = favUnite.some((item) => item._id === card._id);
+  const isRent = card.listingType?.toLowerCase() === "rent";
 
   const handleFavorite = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -244,7 +245,7 @@ const UnitCard = ({
                   >
                     {t("unitCard.installment")}
                   </button>
-
+                  <div className="w-[1px] h-full bg-[#d4d5d8]" />
                   <button
                     type="button"
                     onClick={() => setPaymentMode("cash")}
@@ -260,12 +261,29 @@ const UnitCard = ({
               )}
             </div>
 
-            {/* Payment Note */}
-            {showPaymentNote && (
-              <p className="text-[12px] sm:text-[14px] text-[#464646] font-['Poppins'] leading-relaxed whitespace-pre-line">
-                {translatePaymentNote(paymentNoteRaw)}
-              </p>
-            )}
+            {/* Supporting details with a consistent min-height for uniform card height */}
+            <div className="min-h-[40px] sm:min-h-[48px] flex items-center w-full">
+              {isRent ? (
+                <p className="text-[12px] sm:text-[14px] text-[#464646] font-['Poppins'] leading-relaxed">
+                  {t("unitCard.paymentNote.insurance", { months: 1 })}
+                </p>
+              ) : paymentMode === "cash" ? (
+                <div className="flex flex-wrap gap-[8px] w-full">
+                  <span className="rounded-[99px] bg-[#EAF7EC] text-[#2B7A1C] px-[12px] py-[4px] text-[12px] sm:text-[14px] font-medium font-['Poppins'] leading-none">
+                    {t("unitCard.saveMore", "Save more")}
+                  </span>
+                  <span className="rounded-[99px] bg-[#E9F4F7] text-[#141414] px-[12px] py-[4px] text-[12px] sm:text-[14px] font-medium font-['Poppins'] leading-none">
+                    {t("unitCard.higherInvestment", "Higher investment")}
+                  </span>
+                </div>
+              ) : (
+                showPaymentNote && (
+                  <p className="text-[12px] sm:text-[14px] text-[#464646] font-['Poppins'] leading-relaxed whitespace-pre-line">
+                    {translatePaymentNote(paymentNoteRaw)}
+                  </p>
+                )
+              )}
+            </div>
           </div>
         </div>
       </article>

@@ -55,43 +55,22 @@ export const matchUnit = (
 ): boolean => {
   // 1. Property Type Filter
   if (filterState.propertyType) {
-    const lowerName = unit.name.toLowerCase();
-    let unitType = "chalet";
-    if (lowerName.includes("penthouse")) unitType = "penthouse";
-    else if (lowerName.includes("villa")) unitType = "villa";
-    else if (lowerName.includes("apartment")) unitType = "apartment";
-    else if (lowerName.includes("twin house")) unitType = "twin house";
-    else if (unit.finishingStatus) unitType = unit.finishingStatus.toLowerCase();
-
     const selectedTypes = filterState.propertyType.split(",").map(t => t.trim().toLowerCase());
+    const unitType = (unit.propertyType || "").toLowerCase();
 
-    const isChalet = (t: string) =>
-      t === "chalet" || t === "challet" || t === "chalets" || t === "challets";
-
-    let matchesType = false;
-    for (const targetType of selectedTypes) {
+    const matchesType = selectedTypes.some(targetType => {
+      const isChalet = (t: string) => t === "chalet" || t === "challet" || t === "chalets" || t === "challets";
       if (isChalet(targetType)) {
-        if (isChalet(unitType)) matchesType = true;
-      } else if (targetType === "twin house" || targetType === "twinhouse") {
-        if (
-          unitType === "twin house" ||
-          unitType === "townhouse" ||
-          unitType === "town house"
-        ) {
-          matchesType = true;
-        }
-      } else if (targetType === "apartment") {
-        if (
-          unitType === "apartment" ||
-          unitType === "studio" ||
-          unitType === "penthouse"
-        ) {
-          matchesType = true;
-        }
-      } else {
-        if (unitType === targetType) matchesType = true;
+        return isChalet(unitType);
       }
-    }
+      if (targetType === "twin house" || targetType === "twinhouse" || targetType === "townhouse" || targetType === "town house") {
+        return (
+          unitType.includes("twin") ||
+          unitType.includes("town")
+        );
+      }
+      return unitType === targetType || unitType.includes(targetType);
+    });
 
     if (!matchesType) return false;
   }

@@ -1,10 +1,13 @@
+import { useState, useMemo } from "react";
 import { useGetVillageQuery } from "../../app/services/crudVillage";
 import type { FilterState } from "../../hooks/useUnitsFilter";
+import type { IProperty } from "../../app/services/crudproperties";
 import Button from "../Ui/Button";
 import Input from "../Ui/Input";
 import { useTranslation } from "react-i18next";
 
 interface FilterContentProps {
+  units?: IProperty[];
   tempFilters: FilterState;
   setTempFilters: React.Dispatch<React.SetStateAction<FilterState>>;
   handleReset: () => void;
@@ -16,6 +19,7 @@ interface FilterContentProps {
 }
  
 const FilterContent = ({
+  units = [],
   tempFilters,
   setTempFilters,
   handleReset,
@@ -27,6 +31,70 @@ const FilterContent = ({
     const { t ,i18n} = useTranslation();
 
   const{data:destinations}=useGetVillageQuery({lang:i18n.language});
+
+  const [activeAreaThumb, setActiveAreaThumb] = useState<"min" | "max">("min");
+  const [activePriceThumb, setActivePriceThumb] = useState<"min" | "max">("min");
+
+  const { minArea, maxArea, minPrice, maxPrice } = useMemo(() => {
+    if (!units || units.length === 0) {
+      return { minArea: 0, maxArea: 1000, minPrice: 0, maxPrice: 10000000 };
+    }
+    const areas = units.map(u => u.area).filter((a): a is number => typeof a === 'number' && !isNaN(a));
+    const prices = units.map(u => u.installmentPrice).filter((p): p is number => typeof p === 'number' && !isNaN(p));
+    
+    const minA = areas.length ? Math.min(...areas) : 0;
+    const maxA = areas.length ? Math.max(...areas) : 1000;
+    const minP = prices.length ? Math.min(...prices) : 0;
+    const maxP = prices.length ? Math.max(...prices) : 10000000;
+    
+    return { minArea: minA, maxArea: maxA, minPrice: minP, maxPrice: maxP };
+  }, [units]);
+
+  const currentAreaFrom = tempFilters.areaFrom !== "" ? Number(tempFilters.areaFrom) : minArea;
+  const currentAreaTo = tempFilters.areaTo !== "" ? Number(tempFilters.areaTo) : maxArea;
+
+  const currentPriceFrom = tempFilters.priceFrom !== "" ? Number(tempFilters.priceFrom) : minPrice;
+  const currentPriceTo = tempFilters.priceTo !== "" ? Number(tempFilters.priceTo) : maxPrice;
+
+  const handleAreaMinChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const val = Math.min(Number(e.target.value), currentAreaTo);
+    setTempFilters(prev => ({
+      ...prev,
+      areaFrom: val === minArea ? "" : String(val)
+    }));
+  };
+
+  const handleAreaMaxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const val = Math.max(Number(e.target.value), currentAreaFrom);
+    setTempFilters(prev => ({
+      ...prev,
+      areaTo: val === maxArea ? "" : String(val)
+    }));
+  };
+
+  const handlePriceMinChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const val = Math.min(Number(e.target.value), currentPriceTo);
+    setTempFilters(prev => ({
+      ...prev,
+      priceFrom: val === minPrice ? "" : String(val)
+    }));
+  };
+
+  const handlePriceMaxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const val = Math.max(Number(e.target.value), currentPriceFrom);
+    setTempFilters(prev => ({
+      ...prev,
+      priceTo: val === maxPrice ? "" : String(val)
+    }));
+  };
+
+  const areaDenom = maxArea - minArea || 1;
+  const areaMinPct = ((currentAreaFrom - minArea) / areaDenom) * 100;
+  const areaMaxPct = ((currentAreaTo - minArea) / areaDenom) * 100;
+
+  const priceDenom = maxPrice - minPrice || 1;
+  const priceMinPct = ((currentPriceFrom - minPrice) / priceDenom) * 100;
+  const priceMaxPct = ((currentPriceTo - minPrice) / priceDenom) * 100;
 
   const handleTogglePropertyType = (type: string) => {
   setTempFilters((prev) => {
@@ -334,16 +402,43 @@ const FilterContent = ({
             </div>
           </div>
  
-          {/* Mock Range Slider */}
+          {/* Real Area Range Slider */}
           <div className="mt-6 px-1">
-            <div className="relative h-1 bg-[#E8EFF1] rounded-full">
-              <div className="absolute left-[15%] right-[55%] h-full bg-[#0A2540] rounded-full" />
-              <div className="absolute left-[15%] top-1/2 -translate-y-1/2 w-4 h-4 bg-white border-2 border-primary rounded-full shadow cursor-pointer hover:scale-110 transition-transform" />
-              <div className="absolute right-[55%] top-1/2 -translate-y-1/2 w-4 h-4 bg-white border-2 border-primary rounded-full shadow cursor-pointer hover:scale-110 transition-transform" />
+            <div className="relative w-full h-4 flex items-center double-range-slider">
+              <div className="absolute inset-x-0 h-1 bg-[#E8EFF1] rounded-full" />
+              <div
+                className="absolute h-1 bg-[#0A2540] rounded-full"
+                style={{
+                  left: `${areaMinPct}%`,
+                  right: `${100 - areaMaxPct}%`
+                }}
+              />
+              <input
+                type="range"
+                min={minArea}
+                max={maxArea}
+                value={currentAreaFrom}
+                onChange={handleAreaMinChange}
+                onMouseDown={() => setActiveAreaThumb("min")}
+                onTouchStart={() => setActiveAreaThumb("min")}
+                style={{ zIndex: activeAreaThumb === "min" ? 40 : 30 }}
+                className="w-full"
+              />
+              <input
+                type="range"
+                min={minArea}
+                max={maxArea}
+                value={currentAreaTo}
+                onChange={handleAreaMaxChange}
+                onMouseDown={() => setActiveAreaThumb("max")}
+                onTouchStart={() => setActiveAreaThumb("max")}
+                style={{ zIndex: activeAreaThumb === "max" ? 40 : 30 }}
+                className="w-full"
+              />
             </div>
             <div className="mt-3 flex justify-between text-[10px] font-semibold text-[#7D8D93]">
-              <span>{t("filterDrawer.m2Value", { val: 0 })}</span>
-              <span>{t("filterDrawer.m2Value", { val: 100 })}</span>
+              <span>{t("filterDrawer.m2Value", { val: currentAreaFrom })}</span>
+              <span>{t("filterDrawer.m2Value", { val: currentAreaTo })}</span>
             </div>
           </div>
         </div>
@@ -402,16 +497,43 @@ const FilterContent = ({
             </div>
           </div>
  
-          {/* Mock Range Slider */}
+          {/* Real Price Range Slider */}
           <div className="mt-6 px-1">
-            <div className="relative h-1 bg-[#E8EFF1] rounded-full">
-              <div className="absolute left-[10%] right-[60%] h-full bg-[#0A2540] rounded-full" />
-              <div className="absolute left-[10%] top-1/2 -translate-y-1/2 w-4 h-4 bg-white border-2 border-primary rounded-full shadow cursor-pointer hover:scale-110 transition-transform" />
-              <div className="absolute right-[60%] top-1/2 -translate-y-1/2 w-4 h-4 bg-white border-2 border-primary rounded-full shadow cursor-pointer hover:scale-110 transition-transform" />
+            <div className="relative w-full h-4 flex items-center double-range-slider">
+              <div className="absolute inset-x-0 h-1 bg-[#E8EFF1] rounded-full" />
+              <div
+                className="absolute h-1 bg-[#0A2540] rounded-full"
+                style={{
+                  left: `${priceMinPct}%`,
+                  right: `${100 - priceMaxPct}%`
+                }}
+              />
+              <input
+                type="range"
+                min={minPrice}
+                max={maxPrice}
+                value={currentPriceFrom}
+                onChange={handlePriceMinChange}
+                onMouseDown={() => setActivePriceThumb("min")}
+                onTouchStart={() => setActivePriceThumb("min")}
+                style={{ zIndex: activePriceThumb === "min" ? 40 : 30 }}
+                className="w-full"
+              />
+              <input
+                type="range"
+                min={minPrice}
+                max={maxPrice}
+                value={currentPriceTo}
+                onChange={handlePriceMaxChange}
+                onMouseDown={() => setActivePriceThumb("max")}
+                onTouchStart={() => setActivePriceThumb("max")}
+                style={{ zIndex: activePriceThumb === "max" ? 40 : 30 }}
+                className="w-full"
+              />
             </div>
             <div className="mt-3 flex justify-between text-[10px] font-semibold text-[#7D8D93]">
-              <span>{t("filterDrawer.egpValue", { val: 0 })}</span>
-              <span>{t("filterDrawer.egpValue", { val: 100 })}</span>
+              <span>{t("filterDrawer.egpValue", { val: currentPriceFrom.toLocaleString() })}</span>
+              <span>{t("filterDrawer.egpValue", { val: currentPriceTo.toLocaleString() })}</span>
             </div>
           </div>
         </div>
@@ -580,6 +702,52 @@ const FilterContent = ({
           </Button>
         </div>
       )}
+
+      <style>{`
+        .double-range-slider input[type="range"] {
+          -webkit-appearance: none;
+          -moz-appearance: none;
+          appearance: none;
+          pointer-events: none;
+          position: absolute;
+          width: 100%;
+          height: 4px;
+          background: transparent;
+          outline: none;
+          margin: 0;
+          left: 0;
+        }
+        .double-range-slider input[type="range"]::-webkit-slider-thumb {
+          -webkit-appearance: none;
+          appearance: none;
+          pointer-events: auto;
+          width: 16px;
+          height: 16px;
+          border-radius: 50%;
+          background: #ffffff;
+          border: 2px solid #1E8CAB;
+          box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+          cursor: pointer;
+          transition: transform 0.15s ease;
+        }
+        .double-range-slider input[type="range"]::-webkit-slider-thumb:hover {
+          transform: scale(1.15);
+        }
+        .double-range-slider input[type="range"]::-moz-range-thumb {
+          pointer-events: auto;
+          width: 16px;
+          height: 16px;
+          border-radius: 50%;
+          background: #ffffff;
+          border: 2px solid #1E8CAB;
+          box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+          cursor: pointer;
+          transition: transform 0.15s ease;
+        }
+        .double-range-slider input[type="range"]::-moz-range-thumb:hover {
+          transform: scale(1.15);
+        }
+      `}</style>
     </>
   );
 };

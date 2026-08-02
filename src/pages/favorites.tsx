@@ -245,6 +245,7 @@ const FavoritesPage = () => {
 
           {/* Sidebar drawer */}
           <FilterDrawer
+            units={validFavUnite}
             isOpen={isFilterOpen}
             onClose={() => setIsFilterOpen(false)}
             tempFilters={tempFilters}

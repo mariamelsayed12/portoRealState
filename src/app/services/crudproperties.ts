@@ -15,6 +15,7 @@ export interface IProperty {
   orientation: string;
   deliveryDate: string;
   paymentModel: string;
+  propertyType: string;
   installmentPrice: number;
   downPaymentPercentage: number;
   downPaymentAmount: number;
@@ -29,7 +30,7 @@ export interface IProperty {
     locationText: string;
     coverImage: string;
   };
-  amenities:string[]
+  amenities: string[];
 }
 
 export interface IpropertyResponse {
@@ -86,17 +87,16 @@ export const propertyApiSlice = createApi({
 
     //--------------------- Get single property by ID ---------------------
     getPropertyById: builder.query<IProperty, { id: string; lang: string }>({
-      query: ({ id}) => ({
+      query: ({ id }) => ({
         url: `properties/${id}`,
       }),
 
       transformResponse: (response: ISinglePropertyResponse) => response.data,
 
-      providesTags: (_result, _error, {id}) => [
-        { type: "properties", id },
-      ],
+      providesTags: (_result, _error, { id }) => [{ type: "properties", id }],
     }),
   }),
 });
 
-export const { useGetPropertyQuery , useGetPropertyByIdQuery } = propertyApiSlice;
+export const { useGetPropertyQuery, useGetPropertyByIdQuery } =
+  propertyApiSlice;

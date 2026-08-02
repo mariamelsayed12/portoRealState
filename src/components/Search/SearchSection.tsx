@@ -1,18 +1,20 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { MapPin, Home, Briefcase, Banknote } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import SearchFilterDropdown from "./SearchFilterDropdown";
 import SearchButton from "./SearchButton";
 import LocationPanel from "./LocationPanel";
-import PropertyTypePanel, { PROPERTY_TYPE_KEYS } from "./PropertyTypePanel";
+import PropertyTypePanel from "./PropertyTypePanel";
 import BedsAndBathsPanel from "./BedsAndBathsPanel";
 import PriceRangePanel from "./PriceRangePanel";
 import { useGetVillageQuery } from "../../app/services/crudVillage";
+import { useGetPropertyQuery } from "../../app/services/crudproperties";
 
 const SearchSection = () => {
   const { t ,i18n} = useTranslation();
-  const{data:destinations}=useGetVillageQuery({lang:i18n.language})
+  const { data: destinations } = useGetVillageQuery({ lang: i18n.language });
+  const { data: properties = [], isLoading: isPropertiesLoading, isError: isPropertiesError } = useGetPropertyQuery({ lang: i18n.language });
   const navigate = useNavigate();
 
   // Local filter states before applying search
@@ -22,6 +24,13 @@ const SearchSection = () => {
   const [baths, setBaths] = useState("");
   const [priceFrom, setPriceFrom] = useState<number | null>(null);
   const [priceTo, setPriceTo] = useState<number | null>(null);
+
+  // Derive maximum property price from backend properties
+  const maxPriceValue = useMemo(() => {
+    if (!properties || properties.length === 0) return 10_000_000;
+    const prices = properties.map((p) => p.installmentPrice).filter((p): p is number => typeof p === "number" && !isNaN(p));
+    return prices.length ? Math.max(...prices) : 10_000_000;
+  }, [properties]);
 
   // Navigate to Properties page (/buy) with filters applied to URL query params
   const handleSearch = () => {
@@ -53,11 +62,7 @@ const SearchSection = () => {
     if (!propertyType) return "";
     return propertyType
       .split(",")
-      .map((type) => {
-        const trimmed = type.trim();
-        const key = PROPERTY_TYPE_KEYS[trimmed] || trimmed;
-        return t(key);
-      })
+      .map((type) => type.trim())
       .join(", ");
   };
 
@@ -70,11 +75,11 @@ const SearchSection = () => {
 
   const getPriceLabel = () => {
     if (priceFrom === null && priceTo === null) return "";
-    const fromVal = priceFrom ?? 1_000_000;
-    const toVal = priceTo ?? 2_000_000;
+    const fromVal = priceFrom ?? 0;
+    const toVal = priceTo ?? maxPriceValue;
     return t("search.priceFormatted", {
-      from: (fromVal / 1_000_000).toFixed(0),
-      to: (toVal / 1_000_000).toFixed(0),
+      from: (fromVal / 1_000_000).toFixed(1).replace(".0", ""),
+      to: (toVal / 1_000_000).toFixed(1).replace(".0", ""),
     });
   };
 
@@ -98,6 +103,9 @@ const SearchSection = () => {
               className="rounded-t-[12px] sm:rounded-tr-none sm:rounded-l-[12px] rtl:sm:rounded-l-none rtl:sm:rounded-r-[12px] rtl:sm:rounded-tl-none"
               panelContent={(onClose) => (
                 <LocationPanel
+                  units={properties}
+                  isLoading={isPropertiesLoading}
+                  isError={isPropertiesError}
                   selected={location}
                   onSelect={setLocation}
                   onCancel={onClose}
@@ -119,6 +127,9 @@ const SearchSection = () => {
               value={getPropertyTypeLabel()}
               panelContent={(onClose) => (
                 <PropertyTypePanel
+                  units={properties}
+                  isLoading={isPropertiesLoading}
+                  isError={isPropertiesError}
                   selected={propertyType}
                   onSelect={setPropertyType}
                   onCancel={onClose}
@@ -164,8 +175,9 @@ const SearchSection = () => {
               className="rounded-b-[12px] sm:rounded-bl-none sm:rounded-r-[12px] rtl:sm:rounded-r-none rtl:sm:rounded-l-[12px] rtl:sm:rounded-br-none"
               panelContent={(onClose) => (
                 <PriceRangePanel
-                  from={priceFrom ?? 1_000_000}
-                  to={priceTo ?? 2_000_000}
+                  from={priceFrom ?? 0}
+                  to={priceTo ?? maxPriceValue}
+                  maxPrice={maxPriceValue}
                   onFromChange={setPriceFrom}
                   onToChange={setPriceTo}
                   onCancel={onClose}
@@ -184,11 +196,10 @@ const SearchSection = () => {
 
       {/* Mobile full-width Search Button at bottom */}
       <div className="block sm:hidden w-full mt-[4px]">
-        <SearchButton  onClick={handleSearch} mobile={true} />
+        <SearchButton onClick={handleSearch} mobile={true} />
       </div>
     </div>
   );
 };
 
 export default SearchSection;
-

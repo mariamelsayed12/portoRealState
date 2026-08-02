@@ -84,6 +84,7 @@ const BuyPage = () => {
         {/* Sidebar (Overlay on mobile/tablet, sticky inline on desktop) */}
         {/* Desktop: static sidebar always visible */}
         <FilterDrawer
+          units={units}
           displayMode="static"
           className="hidden lg:flex w-[370px]"
           tempFilters={tempFilters}
@@ -146,6 +147,7 @@ const BuyPage = () => {
 
         {/* Mobile/Tablet: drawer that opens on button click */}
         <FilterDrawer
+          units={units}
           displayMode="drawer"
           isOpen={isFilterOpen}
           onClose={() => setIsFilterOpen(false)}

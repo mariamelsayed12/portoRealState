@@ -1,11 +1,13 @@
 import { useEffect, useRef } from "react";
 import type { FilterState } from "../../hooks/useUnitsFilter";
+import type { IProperty } from "../../app/services/crudproperties";
 import FilterContent from "./FilterContent";
 import {motion,AnimatePresence} from "framer-motion"
 import { X } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
 interface FilterDrawerProps {
+  units?: IProperty[];
   /** Only relevant to displayMode="drawer". Controls whether the drawer is open. */
   isOpen?: boolean;
   onClose?: () => void;
@@ -25,6 +27,7 @@ interface FilterDrawerProps {
 }
  
 const FilterDrawer = ({
+  units = [],
   isOpen = false,
   onClose,
   tempFilters,
@@ -92,6 +95,7 @@ const FilterDrawer = ({
         `}
       >
         <FilterContent
+          units={units}
           tempFilters={tempFilters}
           setTempFilters={setTempFilters}
           handleReset={handleReset}
@@ -143,6 +147,7 @@ const FilterDrawer = ({
             </div>
  
             <FilterContent
+              units={units}
               tempFilters={tempFilters}
               setTempFilters={setTempFilters}
               handleReset={handleReset}

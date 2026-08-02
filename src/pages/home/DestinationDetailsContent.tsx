@@ -211,6 +211,7 @@ const DestinationDetailsContent = ({ village }: DestinationDetailsContentProps) 
 
 					{/* Sidebar (Overlay on mobile/tablet, sticky inline on desktop) */}
 					<FilterDrawer
+						units={activeTabUnits}
 						isOpen={isFilterOpen}
 						onClose={() => setIsFilterOpen(false)}
 						tempFilters={tempFilters}
