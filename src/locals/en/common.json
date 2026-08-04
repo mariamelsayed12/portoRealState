@@ -28,6 +28,8 @@
     "common.apply": "Apply",
     "common.previous": "Previous",
     "common.next": "Next",
+    "common.loadMore": "Load More",
+    "common.loading": "Loading...",
     "search.propertyTypes.chalet": "Chalet",
     "search.propertyTypes.villa": "Villa",
     "search.propertyTypes.apartment": "Apartment",

@@ -31,6 +31,8 @@
     "common.apply": "تطبيق",
     "common.previous": "السابق",
     "common.next": "التالي",
+    "common.loadMore": "تحميل المزيد",
+    "common.loading": "جاري التحميل...",
     "search.propertyTypes.chalet": "شاليه",
     "search.propertyTypes.villa": "فيلا",
     "search.propertyTypes.apartment": "شقة",

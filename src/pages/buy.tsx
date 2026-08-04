@@ -7,8 +7,6 @@ import { useGetPropertyQuery } from "../app/services/crudproperties";
 import FilterDrawer from "../components/filterCcomponents/FilterDrawer";
 import { SlidersHorizontal } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { useSearchParams } from "react-router-dom";
-import { Pagination } from "../components/Pagination";
 import EmptyState from "../components/Ui/EmptyState";
 
 const ITEMS_PER_PAGE = 6;
@@ -18,7 +16,6 @@ const BuyPage = () => {
   const { data: units = [] ,isLoading} = useGetPropertyQuery({ lang: i18n.language });
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const { t } = useTranslation();
-  const [searchParams, setSearchParams] = useSearchParams();
 
   // Apply sidebar filters on top of destination and tab filtered units
   const {
@@ -30,33 +27,29 @@ const BuyPage = () => {
     tempFilteredCount,
   } = useUnitsFilter(units);
 
-  const pageParam = searchParams.get("page");
-  const currentPage = pageParam ? parseInt(pageParam, 10) : 1;
+  const [visiblePages, setVisiblePages] = useState(1);
+  const [isMoreLoading, setIsMoreLoading] = useState(false);
 
   const totalPages = Math.ceil(filteredUnits.length / ITEMS_PER_PAGE);
-  const activePage = Math.min(Math.max(1, currentPage), totalPages || 1);
 
   const paginatedUnits = useMemo(() => {
-    const startIndex = (activePage - 1) * ITEMS_PER_PAGE;
-    return filteredUnits.slice(startIndex, startIndex + ITEMS_PER_PAGE);
-  }, [filteredUnits, activePage]);
+    return filteredUnits.slice(0, visiblePages * ITEMS_PER_PAGE);
+  }, [filteredUnits, visiblePages]);
 
-  const handlePageChange = (page: number) => {
-    const params = new URLSearchParams(searchParams);
-    if (page === 1) {
-      params.delete("page");
-    } else {
-      params.set("page", page.toString());
-    }
-    setSearchParams(params, { replace: true });
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
-
+  // Reset pagination when filters are applied (i.e. filtered units update)
   useEffect(() => {
-    if (currentPage > totalPages && totalPages > 0) {
-      handlePageChange(totalPages);
+    setVisiblePages(1);
+  }, [filteredUnits]);
+
+  const handleLoadMore = () => {
+    if (visiblePages < totalPages && !isMoreLoading) {
+      setIsMoreLoading(true);
+      setTimeout(() => {
+        setVisiblePages((prev) => prev + 1);
+        setIsMoreLoading(false);
+      }, 600);
     }
-  }, [currentPage, totalPages]);
+  };
 
   return (
     <div className="">
@@ -129,12 +122,19 @@ const BuyPage = () => {
                 </AnimatePresence>
               </motion.div>
 
-              {/* Pagination */}
-              <Pagination
-                currentPage={activePage}
-                totalPages={totalPages}
-                onPageChange={handlePageChange}
-              />
+              {/* Load More Button */}
+              {visiblePages < totalPages && (
+                <div className="flex justify-center mt-12 py-4">
+                  <button
+                    type="button"
+                    onClick={handleLoadMore}
+                    disabled={isMoreLoading}
+                    className="inline-flex items-center justify-center rounded-xl bg-primary px-8 py-3 text-sm font-semibold text-white shadow-md hover:bg-[#156d85] transition-all active:scale-95 disabled:opacity-75 disabled:pointer-events-none cursor-pointer select-none"
+                  >
+                    {isMoreLoading ? t("common.loading", "Loading...") : t("common.loadMore", "Load More")}
+                  </button>
+                </div>
+              )}
             </>
           ) : (
             <EmptyState

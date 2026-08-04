@@ -230,7 +230,7 @@ const PropertyDetails: React.FC = () => {
               {detailBadges.map((badge) => (
                 <span
                   key={badge}
-                  className="bg-[rgba(9,1,1,0.25)] backdrop-blur-sm px-[16px] py-[8px] rounded-[99px] text-[#edeff2] font-['Poppins'] font-medium text-[14px] leading-none"
+                  className="bg-[rgba(9,1,1,0.45)] backdrop-blur-sm px-[16px] py-[8px] rounded-[99px] text-[#edeff2] font-['Poppins'] font-medium text-[14px] leading-none"
                 >
                   {badge}
                 </span>

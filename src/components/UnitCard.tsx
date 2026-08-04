@@ -163,7 +163,7 @@ const UnitCard = ({
               {badges.map((badge) => (
                 <span
                   key={badge}
-                  className="rounded-[99px] bg-black/25 px-[8px] py-[6px] text-[12px] sm:text-[14px] font-medium text-[#edeff2] leading-[normal] font-['Poppins'] backdrop-blur-sm"
+                  className="rounded-[99px] bg-black/45 px-[8px] py-[6px] text-[12px] sm:text-[14px] font-medium text-[#edeff2] leading-[normal] font-['Poppins'] backdrop-blur-sm"
                 >
                   {badge}
                 </span>
@@ -194,7 +194,7 @@ const UnitCard = ({
           {/* Title */}
           <h3 className="text-[15px] sm:text-[16px] font-medium text-[#141414] font-['Poppins'] group-hover:text-primary transition-colors leading-tight line-clamp-2">
             <Link to={`/home/${card.village?.slug || ""}/properties/${card._id}`}>
-              {truncateText(card.name,39)}
+              {truncateText(card.name,35)}
             </Link>
           </h3>
 

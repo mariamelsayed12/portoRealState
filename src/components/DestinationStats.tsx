@@ -8,7 +8,7 @@ interface DestinationStatsProps {
 }
 
 const StatCard = ({ label, value }: { label: string; value: string }) => (
-  <div className="bg-[rgba(255,255,255,0.1)] backdrop-blur-[12px] rounded-[12px] p-[8px] flex flex-col gap-[8px] items-start w-full sm:w-[181px] h-[75px] shrink-0 border border-white/10">
+  <div className="bg-[rgba(9,1,1,0.25)] backdrop-blur-[12px] rounded-[12px] p-[8px] flex flex-col gap-[8px] items-start w-full sm:w-[181px] h-[75px] shrink-0 border border-white/10">
     <span className="text-[16px] font-normal text-[#edeff2] font-['Poppins'] leading-[normal]">
       {label}
     </span>

@@ -11,7 +11,7 @@ interface CardProps {
 
 const WhatWeOfferCard = ({ label, highlight }: CardProps) => {
   return (
-    <div className="bg-white/10 border border-white/10 backdrop-blur-[2.9px] rounded-[12px] p-[8px] h-[74px] w-full max-w-[181px] flex flex-col justify-center shrink-0">
+    <div className="bg-[rgba(9,1,1,0.25)] border border-white/10 backdrop-blur-[2.9px] rounded-[12px] p-[8px] h-[74px] w-full max-w-[181px] flex flex-col justify-center shrink-0">
       <div className="w-[134px] mx-auto text-left flex flex-col justify-center">
         <p className="font-['Poppins'] font-medium text-[19px] leading-[20px] text-[#EDEFF2] select-none">
           {label}
