@@ -24,6 +24,7 @@ interface FilterDrawerProps {
   displayMode?: "drawer" | "static";
   /** Optional className for the static container (e.g. width/positioning on the page). */
   className?: string;
+  hideLocation?: boolean;
 }
  
 const FilterDrawer = ({
@@ -37,6 +38,7 @@ const FilterDrawer = ({
   tempFilteredCount,
   displayMode = "drawer",
   className = "",
+  hideLocation = false,
 }: FilterDrawerProps) => {
   const { t } = useTranslation();
   const drawerRef = useRef<HTMLDivElement>(null);
@@ -103,6 +105,7 @@ const FilterDrawer = ({
           tempFilteredCount={tempFilteredCount}
           stickyFooter={false}
           displayMode={displayMode}
+          hideLocation={hideLocation}
         />
       </div>
     );
@@ -155,6 +158,7 @@ const FilterDrawer = ({
               tempFilteredCount={tempFilteredCount}
               stickyFooter
               displayMode={displayMode}
+              hideLocation={hideLocation}
             />
           </motion.div>
         </>

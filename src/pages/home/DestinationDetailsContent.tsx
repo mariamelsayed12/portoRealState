@@ -219,6 +219,7 @@ const DestinationDetailsContent = ({ village }: DestinationDetailsContentProps) 
 						applyFilters={applyFilters}
 						resetFilters={resetFilters}
 						tempFilteredCount={tempFilteredCount}
+						hideLocation={true}
 					/>
 				</div>
 			</div>

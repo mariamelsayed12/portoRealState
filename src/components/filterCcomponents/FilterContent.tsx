@@ -16,6 +16,7 @@ interface FilterContentProps {
   /** Whether the footer buttons should be visually "sticky" (drawer) or in normal flow (static). */
   stickyFooter?: boolean;
   displayMode?: "drawer" | "static";
+  hideLocation?: boolean;
 }
  
 const FilterContent = ({
@@ -27,6 +28,7 @@ const FilterContent = ({
   tempFilteredCount,
   stickyFooter = true,
   displayMode = "drawer",
+  hideLocation = false,
 }: FilterContentProps) => {
     const { t ,i18n} = useTranslation();
 
@@ -237,45 +239,47 @@ const FilterContent = ({
  
 
         {/* location */}
-        <div className="bg-white rounded-md border border-border p-5 shadow-[0_2px_8px_rgba(73,95,104,0.04)]">
-          <div className="flex justify-between items-center mb-3">
-            <h3 className="text-[15px] font-bold text-text-secondary">
-             {t("filterDrawer.location")}
-            </h3>
-            {displayMode === "static" && (
-              <button
-                type="button"
-                onClick={() => setTempFilters((prev) => ({ ...prev, location: "" }))}
-                className="text-xs font-semibold text-[#1E8CAB] hover:underline cursor-pointer"
-              >
-                {t("filterDrawer.reset")}
-              </button>
-            )}
-          </div>
-          <div className="flex flex-wrap gap-2">
-            {destinations?.map(({name}) => {
-             const isSelected =
-              (tempFilters.location || "")
-                .toLowerCase()
-                .split(",")
-                .includes(name.toLowerCase());
-              return (
+        {!hideLocation && (
+          <div className="bg-white rounded-md border border-border p-5 shadow-[0_2px_8px_rgba(73,95,104,0.04)]">
+            <div className="flex justify-between items-center mb-3">
+              <h3 className="text-[15px] font-bold text-text-secondary">
+               {t("filterDrawer.location")}
+              </h3>
+              {displayMode === "static" && (
                 <button
-                  key={name}
                   type="button"
-                  onClick={() => handleToggleLocation(name)}
-                  className={`rounded-full px-4 py-2 text-xs font-semibold border transition-all ${
-                    isSelected
-                      ? "bg-[#E9F4F7] border-primary text-[#141414]"
-                      : "bg-white border-[#D9E1E4] text-[#58696F] hover:border-gray-300"
-                  }`}
+                  onClick={() => setTempFilters((prev) => ({ ...prev, location: "" }))}
+                  className="text-xs font-semibold text-[#1E8CAB] hover:underline cursor-pointer"
                 >
-                  {name}
+                  {t("filterDrawer.reset")}
                 </button>
-              );
-            })}
+              )}
+            </div>
+            <div className="flex flex-wrap gap-2">
+              {destinations?.map(({name}) => {
+               const isSelected =
+                (tempFilters.location || "")
+                  .toLowerCase()
+                  .split(",")
+                  .includes(name.toLowerCase());
+                return (
+                  <button
+                    key={name}
+                    type="button"
+                    onClick={() => handleToggleLocation(name)}
+                    className={`rounded-full px-4 py-2 text-xs font-semibold border transition-all ${
+                      isSelected
+                        ? "bg-[#E9F4F7] border-primary text-[#141414]"
+                        : "bg-white border-[#D9E1E4] text-[#58696F] hover:border-gray-300"
+                    }`}
+                  >
+                    {name}
+                  </button>
+                );
+              })}
+            </div>
           </div>
-        </div>
+        )}
 
 
         {/* Bedrooms Card */}
