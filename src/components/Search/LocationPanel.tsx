@@ -74,7 +74,7 @@ const LocationPanel = ({
           {t("search.noOptions", "No locations available")}
         </div>
       ) : (
-        <ul className="flex flex-col gap-[4px] max-h-[240px] overflow-y-auto scrollbar-none">
+        <ul className="flex flex-col gap-[4px] max-h-[240px] overflow-y-auto custom-scrollbar pr-[4px]">
           {locationOptions.map((opt) => {
             const isChecked = tempSelected.has(opt);
             return (

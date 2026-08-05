@@ -44,13 +44,9 @@ const FilterContent = ({
     const areas = units.map(u => u.area).filter((a): a is number => typeof a === 'number' && !isNaN(a));
     const prices = units.map(u => u.installmentPrice).filter((p): p is number => typeof p === 'number' && !isNaN(p));
     
-    // const minA = areas.length ? Math.min(...areas) : 0;
-        const minA = 0;
-
+    const minA = 0;
     const maxA = areas.length ? Math.max(...areas) : 1000;
-    // const minP = prices.length ? Math.min(...prices) : 0;
-        const minP = 0;
-
+    const minP = prices.length ? Math.min(...prices) : 0;
     const maxP = prices.length ? Math.max(...prices) : 10000000;
     
     return { minArea: minA, maxArea: maxA, minPrice: minP, maxPrice: maxP };
@@ -95,12 +91,12 @@ const FilterContent = ({
   };
 
   const areaDenom = maxArea - minArea || 1;
-  const areaMinPct = ((currentAreaFrom - minArea) / areaDenom) * 100;
-  const areaMaxPct = ((currentAreaTo - minArea) / areaDenom) * 100;
+  const areaMinPct = Math.min(Math.max(((currentAreaFrom - minArea) / areaDenom) * 100, 0), 100);
+  const areaMaxPct = Math.min(Math.max(((currentAreaTo - minArea) / areaDenom) * 100, 0), 100);
 
   const priceDenom = maxPrice - minPrice || 1;
-  const priceMinPct = ((currentPriceFrom - minPrice) / priceDenom) * 100;
-  const priceMaxPct = ((currentPriceTo - minPrice) / priceDenom) * 100;
+  const priceMinPct = Math.min(Math.max(((currentPriceFrom - minPrice) / priceDenom) * 100, 0), 100);
+  const priceMaxPct = Math.min(Math.max(((currentPriceTo - minPrice) / priceDenom) * 100, 0), 100);
 
   const handleTogglePropertyType = (type: string) => {
   setTempFilters((prev) => {
@@ -425,7 +421,7 @@ const FilterContent = ({
                 type="range"
                 min={minArea}
                 max={maxArea}
-                value={currentAreaFrom}
+                value={Math.min(Math.max(currentAreaFrom, minArea), maxArea)}
                 onChange={handleAreaMinChange}
                 onMouseDown={() => setActiveAreaThumb("min")}
                 onTouchStart={() => setActiveAreaThumb("min")}
@@ -436,7 +432,7 @@ const FilterContent = ({
                 type="range"
                 min={minArea}
                 max={maxArea}
-                value={currentAreaTo}
+                value={Math.min(Math.max(currentAreaTo, minArea), maxArea)}
                 onChange={handleAreaMaxChange}
                 onMouseDown={() => setActiveAreaThumb("max")}
                 onTouchStart={() => setActiveAreaThumb("max")}
@@ -520,7 +516,7 @@ const FilterContent = ({
                 type="range"
                 min={minPrice}
                 max={maxPrice}
-                value={currentPriceFrom}
+                value={Math.min(Math.max(currentPriceFrom, minPrice), maxPrice)}
                 onChange={handlePriceMinChange}
                 onMouseDown={() => setActivePriceThumb("min")}
                 onTouchStart={() => setActivePriceThumb("min")}
@@ -531,7 +527,7 @@ const FilterContent = ({
                 type="range"
                 min={minPrice}
                 max={maxPrice}
-                value={currentPriceTo}
+                value={Math.min(Math.max(currentPriceTo, minPrice), maxPrice)}
                 onChange={handlePriceMaxChange}
                 onMouseDown={() => setActivePriceThumb("max")}
                 onTouchStart={() => setActivePriceThumb("max")}

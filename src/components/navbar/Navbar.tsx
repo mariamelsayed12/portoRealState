@@ -75,7 +75,7 @@ const Navbar = ({ variant = "transparent" }: NavbarProps) => {
         className={`fixed left-1/2 transform -translate-x-1/2 w-[calc(100%-2rem)] md:w-[calc(100%-4rem)] max-w-7xl z-40 transition-all duration-300 rounded-[99px] border border-transparent top-0 ${
           isNavbarLight
             ? "bg-[#f5f9fa] shadow-[0px_2px_6.3px_1px_rgba(0,0,0,0.14)] backdrop-blur-[2.9px]"
-            : "bg-[rgba(245,249,250,0.05)] backdrop-blur-[2.9px]"
+            : "bg-[rgba(245,249,250,0.05)] backdrop-blur-[8px]"
         }`}
       >
         <div className="w-full px-6 md:px-[32px] py-4 md:py-[22px] flex items-center justify-between">

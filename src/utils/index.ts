@@ -36,12 +36,26 @@ const DefaultAmenityIcon = Building2;
 const normalizeAmenityKey = (amenity: string): string => {
   const normalized = amenity.trim().toLowerCase();
   
-  if (normalized.includes("security")) return "Security";
+  // Flexible substring match for the 15 property amenities
+  if (normalized.includes("pool")) return "Private Pool";
   if (normalized.includes("garden") || normalized.includes("green")) return "Private Garden";
-  if (normalized.includes("parking")) return "Underground Parking";
-  if (normalized.includes("lagoon") || normalized.includes("lake") || normalized.includes("sea")) return "Lagoon View";
+  if (normalized.includes("balcony") || normalized.includes("terrace")) return "Balcony";
+  if (normalized.includes("sea")) return "Sea View";
+  if (normalized.includes("lake")) return "Lake View";
+  if (normalized.includes("street")) return "Main Street View";
+  if (normalized.includes("smart")) return "Smart Home";
+  if (normalized.includes("air conditioning") || normalized.includes("a/c") || normalized.includes("ac")) return "Central A/C";
+  if (normalized.includes("kitchen") || normalized.includes("appliance")) return "Kitchen Appliances";
+  if (normalized.includes("closet") || normalized.includes("wardrobe")) return "Walk-in Closet";
+  if (normalized.includes("security")) return "Security";
+  if (normalized.includes("parking")) return "Covered Parking";
+  if (normalized.includes("maid")) return "Maids Room";
+  if (normalized.includes("pet")) return "Pets Allowed";  
+  if (normalized.includes("barbecue") || normalized.includes("bbq")) return "Barbecue Area";
+
+  // Substring matching fallbacks for community/village level amenities
+  if (normalized.includes("lagoon")) return "Lagoon View";
   if (normalized.includes("clubhouse")) return "Clubhouse";
-  if (normalized.includes("pools") || normalized.includes("pool")) return "Pools";
   if (normalized.includes("marina")) return "Marina";
   if (normalized.includes("cafe")) return "Cafes";
   if (normalized.includes("beach")) return "Beaches";

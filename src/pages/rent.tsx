@@ -12,9 +12,11 @@ import { useTranslation } from "react-i18next";
 import EmptyState from "../components/Ui/EmptyState";
 
 const RentPage = () => {
-    const { t ,i18n} = useTranslation();
+  const { t, i18n } = useTranslation();
 
-  const { data: units = [], isLoading } = useGetPropertyQuery({ lang: i18n.language });
+  const { data: units = [], isLoading } = useGetPropertyQuery({
+    lang: i18n.language,
+  });
   const [activeTab, setActiveTab] = useState<
     "All" | "Available" | "Available soon"
   >("All");
