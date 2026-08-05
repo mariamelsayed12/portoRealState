@@ -57,67 +57,36 @@ export const getRecommendedProperties = (
     (u) => u && u._id !== currentProperty._id && !excludeIds.includes(u._id),
   );
 
-  const currentType = getPropertyType(currentProperty);
-  const currentPrice = getPrice(currentProperty);
-  const currentBeds = getBedrooms(currentProperty);
-  const currentArea = getArea(currentProperty);
-
-  // Score candidates
   const scoredCandidates = candidates.map((candidate) => {
     let score = 0;
 
-    // 1. Same Destination (base score of 1000 to ensure destination takes absolute priority)
-    const isSameDestination =
-      candidate.village?.slug === currentProperty.village?.slug;
-    if (isSameDestination) {
-      score += 1000;
-    }
+    // 1. Same Listing Type (+10 pts)
+    const sameListingType = 
+      candidate.listingType && 
+      currentProperty.listingType && 
+      candidate.listingType.trim().toLowerCase() === currentProperty.listingType.trim().toLowerCase();
+    if (sameListingType) score += 10;
 
-    // 2. Same Property Type
-    const candidateType = getPropertyType(candidate);
-    if (currentType && candidateType && candidateType === currentType) {
-      score += 100;
-    }
+    // 2. Same Village (+3 pts)
+    const sameVillage = 
+      (candidate.village?._id && currentProperty.village?._id && candidate.village._id === currentProperty.village._id) ||
+      (candidate.village?.slug && currentProperty.village?.slug && candidate.village.slug === currentProperty.village.slug);
+    if (sameVillage) score += 3;
 
-    // 3. Similar Price Range
-    const candidatePrice = getPrice(candidate);
-    if (currentPrice > 0 && candidatePrice > 0) {
-      const priceDiffRatio =
-        Math.abs(candidatePrice - currentPrice) / currentPrice;
-      if (priceDiffRatio <= 0.25) {
-        score += 50;
-      } else if (priceDiffRatio <= 0.5) {
-        score += 20;
-      }
-    }
-
-    // 4. Similar Number of Bedrooms
-    const candidateBeds = getBedrooms(candidate);
-    if (currentBeds > 0 && candidateBeds > 0) {
-      if (candidateBeds === currentBeds) {
-        score += 30;
-      } else if (Math.abs(candidateBeds - currentBeds) === 1) {
-        score += 10;
-      }
-    }
-
-    // 5. Similar Area
-    const candidateArea = getArea(candidate);
-    if (currentArea > 0 && candidateArea > 0) {
-      const areaDiffRatio = Math.abs(candidateArea - currentArea) / currentArea;
-      if (areaDiffRatio <= 0.2) {
-        score += 10;
-      } else if (areaDiffRatio <= 0.4) {
-        score += 5;
-      }
-    }
+    // 3. Same Price (+2 pts)
+    const samePrice = 
+      candidate.installmentPrice !== undefined && 
+      currentProperty.installmentPrice !== undefined && 
+      candidate.installmentPrice === currentProperty.installmentPrice;
+    if (samePrice) score += 2;
 
     return { candidate, score };
   });
 
-  // Sort candidates by score descending
-  scoredCandidates.sort((a, b) => b.score - a.score);
-
-  // Return the top recommended properties (slice between 4 and 6, we use 6)
-  return scoredCandidates.slice(0, 6).map((item) => item.candidate);
+  // Sort candidates by score descending and filter out 0 score
+  return scoredCandidates
+    .filter((item) => item.score > 0)
+    .sort((a, b) => b.score - a.score)
+    .map((item) => item.candidate)
+    .slice(0, 6);
 };
