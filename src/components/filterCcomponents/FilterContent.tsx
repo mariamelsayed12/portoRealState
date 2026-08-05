@@ -5,6 +5,7 @@ import type { IProperty } from "../../app/services/crudproperties";
 import Button from "../Ui/Button";
 import Input from "../Ui/Input";
 import { useTranslation } from "react-i18next";
+import { formatDeliveryStatus, getTranslatedBadge } from "../../utils";
 
 interface FilterContentProps {
   units?: IProperty[];
@@ -51,6 +52,51 @@ const FilterContent = ({
     
     return { minArea: minA, maxArea: maxA, minPrice: minP, maxPrice: maxP };
   }, [units]);
+
+  const deliveryDateOptions = useMemo(() => {
+    if (!units || units.length === 0) return [];
+    const dates = units
+      .map(u => u.deliveryDate)
+      .filter((date): date is string => typeof date === 'string' && date.trim() !== "");
+    
+    const mapped = dates.map(date => {
+      const trimmed = date.trim();
+      const hasYear = /\b(19|20|21)\d{2}\b/.test(trimmed);
+      if (hasYear) {
+        return trimmed.includes("-") ? trimmed.split("-")[0] : trimmed;
+      }
+      return trimmed;
+    });
+
+    const uniqueDates = Array.from(new Set(mapped));
+    
+    uniqueDates.sort((a, b) => {
+      const getYear = (s: string) => {
+        const match = /\b(19|20|21)\d{2}\b/.exec(s);
+        return match ? parseInt(match[0], 10) : null;
+      };
+      const yearA = getYear(a);
+      const yearB = getYear(b);
+      if (yearA !== null && yearB !== null) {
+        return yearA - yearB;
+      }
+      if (yearA !== null) return 1;
+      if (yearB !== null) return -1;
+      return a.localeCompare(b);
+    });
+    
+    return uniqueDates;
+  }, [units]);
+
+  const getDisplayLabel = (date: string) => {
+    const trimmed = date.trim();
+    const isYear = /^\b(19|20|21)\d{2}\b/.test(trimmed);
+    if (isYear) {
+      return trimmed;
+    }
+    const formatted = formatDeliveryStatus(trimmed);
+    return getTranslatedBadge(formatted, t);
+  };
 
   const currentAreaFrom = tempFilters.areaFrom !== "" ? Number(tempFilters.areaFrom) : minArea;
   const currentAreaTo = tempFilters.areaTo !== "" ? Number(tempFilters.areaTo) : maxArea;
@@ -614,7 +660,7 @@ const FilterContent = ({
             )}
           </div>
           <div className="flex flex-wrap gap-2">
-            {["Ready", "2027", "2028", "2029", "2030", "2031", "2032"].map(
+            {deliveryDateOptions.map(
               (date) => {
                 const isSelected =
                   (tempFilters.deliveryDate || "").toLowerCase() ===
@@ -630,7 +676,7 @@ const FilterContent = ({
                         : "bg-white border-[#D9E1E4] text-[#58696F] hover:border-gray-300"
                     }`}
                   >
-                    {date.toLowerCase() === "ready" ? t("filterDrawer.ready") : date}
+                    {getDisplayLabel(date)}
                   </button>
                 );
               },

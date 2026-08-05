@@ -135,18 +135,16 @@ export const matchUnit = (
 
   // 7. Delivery Date Filter
   if (filterState.deliveryDate) {
-    let deliveryYear = 0;
-    if (unit.deliveryDate) {
-      deliveryYear = unit.deliveryDate.includes("-")
-        ? parseInt(unit.deliveryDate.split("-")[0], 10)
-        : parseInt(unit.deliveryDate, 10);
-    }
+    if (!unit.deliveryDate) return false;
+    const cleanUnitDate = unit.deliveryDate.trim().toLowerCase();
+    const cleanFilterDate = filterState.deliveryDate.trim().toLowerCase();
 
-    if (filterState.deliveryDate.toLowerCase() === "ready") {
-      if (deliveryYear && deliveryYear > 2026) return false;
+    const isYearFilter = /^\b(19|20|21)\d{2}\b/.test(cleanFilterDate);
+    if (isYearFilter) {
+      const unitYear = cleanUnitDate.includes("-") ? cleanUnitDate.split("-")[0] : cleanUnitDate;
+      if (unitYear !== cleanFilterDate) return false;
     } else {
-      const targetYear = parseInt(filterState.deliveryDate, 10);
-      if (deliveryYear !== targetYear) return false;
+      if (cleanUnitDate !== cleanFilterDate) return false;
     }
   }
 
