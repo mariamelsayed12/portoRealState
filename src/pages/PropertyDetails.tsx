@@ -136,11 +136,45 @@ const PropertyDetails: React.FC = () => {
     }
   };
 
-  // Find related units (other units from same destination, cap at 4)
+  // Find related units based on hierarchical similarity scoring:
+  // Same Listing Type: +10 pts (Primary)
+  // Same Village: +3 pts (Secondary)
+  // Same Price: +2 pts (Tertiary)
   const relatedProperties = useMemo(() => {
     if (!property) return [];
     return allProperties
-      .filter((u) => u.village?.slug === destinationSlug && u._id !== property._id)
+      .map((u) => {
+        // Exclude the current property itself
+        if (u._id === property._id) return { property: u, score: 0 };
+
+        let score = 0;
+
+        // 1. Same Listing Type (+10 pts)
+        const sameListingType = 
+          u.listingType && 
+          property.listingType && 
+          u.listingType.trim().toLowerCase() === property.listingType.trim().toLowerCase();
+        if (sameListingType) score += 10;
+
+        // 2. Same Village (+3 pts)
+        const sameVillage = 
+          (u.village?._id && property.village?._id && u.village._id === property.village._id) ||
+          (u.village?.slug && property.village?.slug && u.village.slug === property.village.slug) ||
+          (u.village?.slug && u.village.slug === destinationSlug);
+        if (sameVillage) score += 3;
+
+        // 3. Same Price (+2 pts)
+        const samePrice = 
+          u.installmentPrice !== undefined && 
+          property.installmentPrice !== undefined && 
+          u.installmentPrice === property.installmentPrice;
+        if (samePrice) score += 2;
+
+        return { property: u, score };
+      })
+      .filter((item) => item.score > 0)
+      .sort((a, b) => b.score - a.score)
+      .map((item) => item.property)
       .slice(0, 4);
   }, [destinationSlug, property, allProperties]);
 

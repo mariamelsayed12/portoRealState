@@ -182,7 +182,7 @@ const ManagementPage = () => {
                     className={`h-[48px] rounded-[8px] border px-[12px] text-[16px] font-['Poppins'] ${
                       errors.fullName
                         ? "border-red-500 focus:border-red-500"
-                        : "border-[#1E8CAB] focus:border-[#1E8CAB]"
+                        : "border-[#D4D5D8] focus:border-[#1E8CAB]"
                     }`}
                   />
                   <InputErrorMessage msg={getValidationError(errors.fullName?.message)} />
