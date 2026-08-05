@@ -43,11 +43,11 @@ const EmptyState: React.FC<EmptyStateProps> = ({
       </div>
 
       {/* Text content */}
-      <h3 className="text-lg sm:text-xl md:text-2xl font-semibold text-text-secondary font-['Poppins'] mb-2">
+      <h3 className="text-lg sm:text-xl text-[#141414] md:text-2xl font-medium font-['Poppins'] mb-2">
         {title}
       </h3>
       {description && (
-        <p className="text-sm sm:text-base text-text-darker font-['Poppins'] max-w-sm mb-6 leading-relaxed">
+        <p className="text-sm sm:text-base text-[#464646] font-['Poppins'] max-w-sm mb-6 leading-relaxed">
           {description}
         </p>
       )}

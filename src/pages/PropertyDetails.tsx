@@ -219,7 +219,7 @@ const PropertyDetails: React.FC = () => {
         {/* Gallery Section */}
         <div className="flex flex-col lg:flex-row gap-[16px] lg:gap-[24px] items-start w-full">
           {/* Main Large Hero Image */}
-          <div className="relative w-full lg:flex-1 h-[240px] sm:h-[350px] lg:h-[365px] rounded-[12px] overflow-hidden bg-[#dfeef1] group shrink-0 lg:shrink">
+          <div className="relative w-full lg:flex-1 h-[240px] sm:h-[350px] lg:h-[456px] rounded-[12px] overflow-hidden bg-[#dfeef1] group shrink-0 lg:shrink">
             <Image
               imageurl={galleryImages[activeImageIndex]}
               alt={property.name}
