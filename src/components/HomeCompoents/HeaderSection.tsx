@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 
 const HeaderSection = () => {
   const { t } = useTranslation();
+  console.log("Header Mounted");
 
   return (
     <div className="w-full flex flex-col sm:block pb-[16px] sm:pb-0">
