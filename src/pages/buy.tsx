@@ -1,7 +1,7 @@
 import { useState } from "react";
 import UnitCard from "../components/UnitCard";
 import UnitCardSkeleton from "../components/UnitCardSkeleton";
-import { AnimatePresence, motion } from "framer-motion";
+import { motion } from "framer-motion";
 import { useBuyProperties } from "../hooks/useBuyProperties";
 import FilterDrawer from "../components/filterCcomponents/FilterDrawer";
 import { SlidersHorizontal } from "lucide-react";
@@ -17,7 +17,6 @@ const BuyPage = () => {
   const {
     properties,
     isFetching,
-    isLoading,
     hasNextPage,
     page,
     setPage,
@@ -27,9 +26,9 @@ const BuyPage = () => {
     resetFilters,
     tempFilteredCount,
     checkCanTrigger,
+    showInitialLoading,
+    showEmptyState,
   } = useBuyProperties();
-
-  const showInitialLoading = isLoading && properties.length === 0;
 
   // Contract variables: the filter drawer receives 'units' (mapped to the loaded properties)
   const units = properties;
@@ -78,30 +77,22 @@ const BuyPage = () => {
             </div>
           ) : properties.length > 0 ? (
             <>
-              <motion.div
-                layout
-                className="grid grid-cols-1 gap-6 sm:grid-cols-2 justify-items-stretch transition-all duration-300 lg:grid-cols-2 xl:grid-cols-2"
-              >
-                <AnimatePresence mode="popLayout">
-                  {properties.map((unit) => (
-                    <motion.div
-                      key={unit._id}
-                      layout
-                      initial={{ opacity: 0, scale: 0.92 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      exit={{ opacity: 0, scale: 0.92 }}
-                      transition={{
-                        type: "spring",
-                        damping: 25,
-                        stiffness: 220,
-                      }}
-                      className="w-full"
-                    >
-                      <UnitCard card={unit} className="w-full" />
-                    </motion.div>
-                  ))}
-                </AnimatePresence>
-              </motion.div>
+              <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 justify-items-stretch lg:grid-cols-2 xl:grid-cols-2">
+                {properties.map((unit) => (
+                  <motion.div
+                    key={unit._id}
+                    initial={{ opacity: 0, y: 24 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{
+                      duration: 0.3,
+                      ease: "easeOut",
+                    }}
+                    className="w-full"
+                  >
+                    <UnitCard card={unit} className="w-full" />
+                  </motion.div>
+                ))}
+              </div>
 
               {/* Skeleton/Loading for next page */}
               {isFetching && page > 1 && (
@@ -120,12 +111,19 @@ const BuyPage = () => {
                 checkCanTrigger={checkCanTrigger}
               />
             </>
-          ) : (
+          ) : showEmptyState ? (
             <EmptyState
               title={t("destinationDetails.noProperties")}
               actionLabel={t("filterDrawer.resetAll")}
               onAction={resetFilters}
             />
+          ) : (
+            // Fallback skeleton during the single tick before state updates
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 justify-items-stretch transition-all duration-300 lg:grid-cols-2 xl:grid-cols-2">
+              {Array.from({ length: 4 }).map((_, idx) => (
+                <UnitCardSkeleton key={idx} className="w-full" />
+              ))}
+            </div>
           )}
         </div>
 

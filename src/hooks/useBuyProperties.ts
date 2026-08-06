@@ -174,6 +174,19 @@ export const useBuyProperties = () => {
       page === lastAppendedPage
   );
 
+  const showInitialLoading =
+    destinations.length === 0 ||
+    isLoading ||
+    (isFetching && properties.length === 0);
+
+  // Show empty state ONLY when loading is fully complete and we have confirmation of 0 results
+  const showEmptyState =
+    !showInitialLoading &&
+    !isFetching &&
+    properties.length === 0 &&
+    data !== undefined &&
+    data.data.length === 0;
+
   return {
     properties,
     isFetching,
@@ -187,5 +200,7 @@ export const useBuyProperties = () => {
     resetFilters,
     tempFilteredCount,
     checkCanTrigger: () => userScrolledRef.current,
+    showInitialLoading,
+    showEmptyState,
   };
 };
