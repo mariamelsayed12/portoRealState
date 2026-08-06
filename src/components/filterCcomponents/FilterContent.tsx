@@ -1,7 +1,7 @@
 import { useState, useMemo } from "react";
 import { useGetVillageQuery } from "../../app/services/crudVillage";
 import type { FilterState } from "../../hooks/useUnitsFilter";
-import type { IProperty } from "../../app/services/crudproperties";
+import { useGetPropertyQuery, type IProperty } from "../../app/services/crudproperties";
 import Button from "../Ui/Button";
 import Input from "../Ui/Input";
 import { useTranslation } from "react-i18next";
@@ -36,6 +36,7 @@ const FilterContent = ({
     const { t ,i18n} = useTranslation();
 
   const { data: destinations, isLoading: isLocationsLoading } = useGetVillageQuery({ lang: i18n.language });
+  const { data: allProperties = [] } = useGetPropertyQuery({ lang: i18n.language });
 
   const [visibleLocationsCount, setVisibleLocationsCount] = useState(6);
 
@@ -56,12 +57,21 @@ const FilterContent = ({
   const [activeAreaThumb, setActiveAreaThumb] = useState<"min" | "max">("min");
   const [activePriceThumb, setActivePriceThumb] = useState<"min" | "max">("min");
 
+  // Determine the correct list of properties for computing stable filter metadata
+  const sourceProperties = useMemo(() => {
+    const isRentPage = units.some(u => u.listingType?.toLowerCase() === "rent");
+    const targetProperties = isRentPage
+      ? allProperties.filter(u => u.listingType?.toLowerCase() === "rent")
+      : allProperties.filter(u => u.listingType?.toLowerCase() !== "rent");
+    return targetProperties.length > 0 ? targetProperties : units;
+  }, [allProperties, units]);
+
   const { minArea, maxArea, minPrice, maxPrice } = useMemo(() => {
-    if (!units || units.length === 0) {
+    if (!sourceProperties || sourceProperties.length === 0) {
       return { minArea: 0, maxArea: 1000, minPrice: 0, maxPrice: 60000000 };
     }
-    const areas = units.map(u => u.area).filter((a): a is number => typeof a === 'number' && !isNaN(a));
-    const prices = units.map(u => u.installmentPrice).filter((p): p is number => typeof p === 'number' && !isNaN(p));
+    const areas = sourceProperties.map(u => u.area).filter((a): a is number => typeof a === 'number' && !isNaN(a));
+    const prices = sourceProperties.map(u => u.installmentPrice).filter((p): p is number => typeof p === 'number' && !isNaN(p));
     
     const minA = 0;
     const maxA = areas.length ? Math.max(...areas) : 1000;
@@ -69,13 +79,13 @@ const FilterContent = ({
     const maxP = prices.length ? Math.max(...prices) : 60000000;
     
     return { minArea: minA, maxArea: maxA, minPrice: minP, maxPrice: maxP };
-  }, [units]);
+  }, [sourceProperties]);
 
   const deliveryDateOptions = useMemo(() => {
-    if (!units || units.length === 0) {
+    if (!sourceProperties || sourceProperties.length === 0) {
       return ["Ready to Move", "2026", "2027", "2028", "2029"];
     }
-    const dates = units
+    const dates = sourceProperties
       .map(u => u.deliveryDate)
       .filter((date): date is string => typeof date === 'string' && date.trim() !== "");
     
@@ -106,7 +116,7 @@ const FilterContent = ({
     });
     
     return uniqueDates;
-  }, [units]);
+  }, [sourceProperties]);
 
   const getDisplayLabel = (date: string) => {
     const trimmed = date.trim();
