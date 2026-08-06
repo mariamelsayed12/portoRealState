@@ -24,7 +24,7 @@ import {
 } from "lucide-react";
 import { FaHeart, FaRegHeart, FaWhatsapp } from "react-icons/fa6";
 import AmenitiesSection from "../components/Ui/AmenitiesSection";
-import { mapAmenitiesToFeatures, formatDeliveryStatus, getTranslatedBadge } from "../utils";
+import { mapAmenitiesToFeatures, formatDeliveryStatus, getTranslatedBadge, isRentListing } from "../utils";
 import DestinationBreadcrumb from "../components/HomeCompoents/DestinationBreadcrumb";
 import Loading from "../components/Ui/loading/loading";
 import { motion } from "framer-motion";
@@ -412,7 +412,7 @@ const PropertyDetails: React.FC = () => {
                     {t("propertyDetails.pricing.pricingHeader", "Pricing")}
                   </span>
                   {/* Switcher: only show if Buy property AND has both payment models */}
-                  {property.listingType?.toLowerCase() !== "rent" && hasInstallment && hasCash && (
+                  {!isRentListing(property.listingType) && hasInstallment && hasCash && (
                     <div className="border border-[#d4d5d8] flex h-[32px] items-center rounded-[12px] bg-white overflow-hidden p-0.5">
                       <button
                         onClick={() => setPricingMode("Installment")}
@@ -438,7 +438,7 @@ const PropertyDetails: React.FC = () => {
                   )}
                 </div>
                 {/* Right side tag/label */}
-                {property.listingType?.toLowerCase() === "rent" ? (
+                {isRentListing(property.listingType) ? (
                   null
                 ) : pricingMode === "Cash" ? (
                   <div className="bg-[#edf6eb] flex items-center px-[8px] py-[4px] rounded-[12px] shrink-0">
@@ -454,7 +454,7 @@ const PropertyDetails: React.FC = () => {
               </div>
 
               {/* Pricing Details Display Container */}
-              {property.listingType?.toLowerCase() === "rent" ? (
+              {isRentListing(property.listingType) ? (
                 /* Rent Property Layout */
                 <div className="bg-[#f5f9fa] border border-[#d4d5d8] rounded-[12px] p-[12px] flex gap-[12px] items-center justify-center w-full">
                   <div className="flex-1 flex flex-col items-center justify-center text-center">

@@ -5,7 +5,7 @@ import { useGetPropertyQuery, type IProperty } from "../../app/services/crudprop
 import Button from "../Ui/Button";
 import Input from "../Ui/Input";
 import { useTranslation } from "react-i18next";
-import { formatDeliveryStatus, getTranslatedBadge } from "../../utils";
+import { formatDeliveryStatus, getTranslatedBadge, isRentListing } from "../../utils";
 
 interface FilterContentProps {
   units?: IProperty[];
@@ -59,10 +59,10 @@ const FilterContent = ({
 
   // Determine the correct list of properties for computing stable filter metadata
   const sourceProperties = useMemo(() => {
-    const isRentPage = units.some(u => u.listingType?.toLowerCase() === "rent");
+    const isRentPage = units.some(u => isRentListing(u.listingType));
     const targetProperties = isRentPage
-      ? allProperties.filter(u => u.listingType?.toLowerCase() === "rent")
-      : allProperties.filter(u => u.listingType?.toLowerCase() !== "rent");
+      ? allProperties.filter(u => isRentListing(u.listingType))
+      : allProperties.filter(u => !isRentListing(u.listingType));
     return targetProperties.length > 0 ? targetProperties : units;
   }, [allProperties, units]);
 

@@ -139,3 +139,12 @@ export const getTranslatedBadge = (badge: string, t: (key: string, options?: any
       return badge;
   }
 };
+
+/**
+ * Helper to check if a listing type represents Rent in both English and Arabic.
+ */
+export const isRentListing = (listingType?: string): boolean => {
+  if (!listingType) return false;
+  const clean = listingType.trim().toLowerCase();
+  return clean === "rent" || clean === "إيجار" || clean === "للإيجار";
+};

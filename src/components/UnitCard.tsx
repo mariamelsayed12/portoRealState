@@ -11,7 +11,7 @@ import { Link } from "react-router-dom";
 import { useState, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import type { IProperty } from "../app/services/crudproperties";
-import { truncateText, formatDeliveryStatus, getTranslatedBadge } from "../utils";
+import { truncateText, formatDeliveryStatus, getTranslatedBadge, isRentListing } from "../utils";
 
 const statIconMap = {
   location: MapPin,
@@ -35,7 +35,7 @@ const UnitCard = ({
   const [paymentMode, setPaymentMode] = useState<"installment" | "cash">(defaultMode);
 
   const isFavorite = favUnite.some((item) => item._id === card._id);
-  const isRent = card.listingType?.toLowerCase() === "rent";
+  const isRent = isRentListing(card.listingType);
 
   const handleFavorite = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -60,7 +60,7 @@ const UnitCard = ({
   const currentPrice =
     paymentMode === "cash"
       ? getCashPrice()
-      : `${(card.installmentPrice || 0).toLocaleString()} EGP${card.listingType === "Rent" ? " /month" : ""}`;
+      : `${(card.installmentPrice || 0).toLocaleString()} EGP${isRentListing(card.listingType) ? " /month" : ""}`;
 
   const dpPct = card.downPaymentPercentage ?? 2;
   const period = card.installmentPeriod || "2";
@@ -68,14 +68,14 @@ const UnitCard = ({
   const instValue = card.installmentValue || (card.installmentPrice ? Math.round((card.installmentPrice * (1 - dpPct / 100)) / (yearsVal * 4)) : 0);
 
   const paymentNoteRaw =
-    card.listingType !== "Rent" && (card.installmentPrice || 0) > 0
+    !isRentListing(card.listingType) && (card.installmentPrice || 0) > 0
       ? `${dpPct}% Down payment\n${instValue.toLocaleString()} Quarterly /${period}${period.toLowerCase().includes("year") || period.toLowerCase().includes("y") ? "" : " y"}`
       : "";
 
   const showPaymentNote = paymentMode === "installment" && !!paymentNoteRaw;
 
   const hasBothModes =
-    card.listingType !== "Rent" &&
+    !isRentListing(card.listingType) &&
     (card.paymentModel?.toLowerCase() === "both" || !card.paymentModel);
 
   const badges = useMemo(() => {
@@ -227,7 +227,7 @@ const UnitCard = ({
           <div className="w-full h-[1px] bg-[#d4d5d8]" />
 
           {/* Price + Payment Modes */}
-          <div className="flex flex-col gap-[8px] w-full">
+          <div className="flex flex-col h-[88px] gap-[8px] w-full">
             <div className="flex items-center justify-between gap-[8px] w-full flex-wrap">
               <p className="text-[15px] sm:text-[16px] font-medium text-[#141414] font-['Poppins'] whitespace-nowrap">
                 {formatPrice(currentPrice)}

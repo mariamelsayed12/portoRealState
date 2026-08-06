@@ -1,5 +1,6 @@
 import { useState, useMemo } from "react";
 import { motion } from "framer-motion";
+import { isRentListing } from "../utils";
 import UnitCard from "../components/UnitCard";
 import UnitCardSkeleton from "../components/UnitCardSkeleton";
 import { useUnitsFilter } from "../hooks/useUnitsFilter";
@@ -37,7 +38,7 @@ const RentPage = () => {
   // Filter units by rental type and active tab/availability status
   const activeTabUnits = useMemo(() => {
     return units.filter((unit) => {
-      const isRent = unit.listingType?.toLowerCase() === "rent";
+      const isRent = isRentListing(unit.listingType);
       if (!isRent) return false;
 
       if (activeTab === "All") return true;
