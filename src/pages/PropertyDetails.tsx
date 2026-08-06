@@ -26,7 +26,7 @@ import { FaHeart, FaRegHeart, FaWhatsapp } from "react-icons/fa6";
 import AmenitiesSection from "../components/Ui/AmenitiesSection";
 import { mapAmenitiesToFeatures, formatDeliveryStatus, getTranslatedBadge, isRentListing } from "../utils";
 import DestinationBreadcrumb from "../components/HomeCompoents/DestinationBreadcrumb";
-import Loading from "../components/Ui/loading/loading";
+import PropertyDetailsSkeleton from "../components/PropertyDetailsSkeleton";
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import { useGetVillageByIdQuery } from "../app/services/crudVillage";
@@ -187,11 +187,7 @@ const PropertyDetails: React.FC = () => {
   }, [destinationSlug, property, allProperties]);
 
   if (isUnitLoading || isDestinationLoading) {
-    return (
-      <div className="flex items-center justify-center w-full h-[100vh]">
-        <Loading />
-      </div>
-    );
+    return <PropertyDetailsSkeleton />;
   }
 
   if (!destination || !property) {

@@ -10,7 +10,7 @@ import LocationSection from "../components/Location/LocationSection";
 import { motion } from "framer-motion";
 import ImageGallery from "../components/Ui/ImageGallery";
 import { useGetVillageByIdQuery } from "../app/services/crudVillage";
-import Loading from "../components/Ui/loading/loading";
+import DestinationDetailsSkeleton from "../components/DestinationDetailsSkeleton";
 import { useTranslation } from "react-i18next";
 
 
@@ -25,11 +25,7 @@ const DestinationDetails = () => {
   }, [village?.amenities]);
 
   if (isLoading) {
-    return (
-      <div className="flex items-center justify-center w-full h-[100vh]">
-             <Loading />    
-       </div>
-    );
+    return <DestinationDetailsSkeleton />;
   }
 
   if (!village) {
