@@ -40,7 +40,7 @@ const FilterContent = ({
 
   const { minArea, maxArea, minPrice, maxPrice } = useMemo(() => {
     if (!units || units.length === 0) {
-      return { minArea: 0, maxArea: 1000, minPrice: 0, maxPrice: 10000000 };
+      return { minArea: 0, maxArea: 1000, minPrice: 0, maxPrice: 60000000 };
     }
     const areas = units.map(u => u.area).filter((a): a is number => typeof a === 'number' && !isNaN(a));
     const prices = units.map(u => u.installmentPrice).filter((p): p is number => typeof p === 'number' && !isNaN(p));
@@ -48,13 +48,15 @@ const FilterContent = ({
     const minA = 0;
     const maxA = areas.length ? Math.max(...areas) : 1000;
     const minP = prices.length ? Math.min(...prices) : 0;
-    const maxP = prices.length ? Math.max(...prices) : 10000000;
+    const maxP = prices.length ? Math.max(...prices) : 60000000;
     
     return { minArea: minA, maxArea: maxA, minPrice: minP, maxPrice: maxP };
   }, [units]);
 
   const deliveryDateOptions = useMemo(() => {
-    if (!units || units.length === 0) return [];
+    if (!units || units.length === 0) {
+      return ["Ready to Move", "2026", "2027", "2028", "2029"];
+    }
     const dates = units
       .map(u => u.deliveryDate)
       .filter((date): date is string => typeof date === 'string' && date.trim() !== "");

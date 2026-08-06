@@ -85,6 +85,33 @@ export const propertyApiSlice = createApi({
           : [{ type: "properties", id: "LIST" }],
     }),
 
+    getPaginatedProperties: builder.query<IpropertyResponse, Record<string, string | number | undefined>>({
+      query: (params) => {
+        // Filter out undefined values to avoid appending them as empty strings in URL
+        const cleanParams = Object.keys(params).reduce((acc, key) => {
+          if (params[key] !== undefined) {
+            acc[key] = params[key]!;
+          }
+          return acc;
+        }, {} as Record<string, string | number>);
+
+        return {
+          url: "properties",
+          params: cleanParams,
+        };
+      },
+      providesTags: (result) =>
+        result?.data
+          ? [
+              ...result.data.map(({ _id }) => ({
+                type: "properties" as const,
+                id: _id,
+              })),
+              { type: "properties", id: "LIST" },
+            ]
+          : [{ type: "properties", id: "LIST" }],
+    }),
+
     //--------------------- Get single property by ID ---------------------
     getPropertyById: builder.query<IProperty, { id: string; lang: string }>({
       query: ({ id }) => ({
@@ -98,5 +125,8 @@ export const propertyApiSlice = createApi({
   }),
 });
 
-export const { useGetPropertyQuery, useGetPropertyByIdQuery } =
-  propertyApiSlice;
+export const {
+  useGetPropertyQuery,
+  useGetPaginatedPropertiesQuery,
+  useGetPropertyByIdQuery,
+} = propertyApiSlice;

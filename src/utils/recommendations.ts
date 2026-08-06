@@ -1,40 +1,6 @@
 import type { IProperty } from "../app/services/crudproperties";
 
 /**
- * Helper to parse property type from property name or finishingStatus
- */
-const getPropertyType = (u: IProperty | undefined): string => {
-  if (!u || !u.name) return "";
-  const lowerName = u.name.toLowerCase();
-  if (lowerName.includes("penthouse")) return "penthouse";
-  if (lowerName.includes("villa")) return "villa";
-  if (lowerName.includes("apartment")) return "apartment";
-  if (lowerName.includes("twin house")) return "twin house";
-  return u.finishingStatus?.toLowerCase() || "";
-};
-
-/**
- * Helper to parse price as a numeric value
- */
-const getPrice = (u: IProperty | undefined): number => {
-  return u?.installmentPrice || 0;
-};
-
-/**
- * Helper to get bedroom count
- */
-const getBedrooms = (u: IProperty | undefined): number => {
-  return u?.bedrooms || 0;
-};
-
-/**
- * Helper to parse area as a numeric value
- */
-const getArea = (u: IProperty | undefined): number => {
-  return u?.area || 0;
-};
-
-/**
  * Computes recommended properties dynamically using rule-based criteria:
  * 1. Same Destination (highest priority)
  * 2. Same Property Type

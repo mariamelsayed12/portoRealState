@@ -53,7 +53,7 @@ export const VillageApiSlice = createApi({
     getVillage: builder.query<IVillage[], { lang: string }>({
       query: () => {
         return {
-          url: "villages",
+          url: "villages?limit=1000",
         };
       },
       transformResponse: (response: IVillageResponse) => response.data,

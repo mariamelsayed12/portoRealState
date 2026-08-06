@@ -1,55 +1,38 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState } from "react";
 import UnitCard from "../components/UnitCard";
 import UnitCardSkeleton from "../components/UnitCardSkeleton";
 import { AnimatePresence, motion } from "framer-motion";
-import { useUnitsFilter } from "../hooks/useUnitsFilter";
-import { useGetPropertyQuery } from "../app/services/crudproperties";
+import { useBuyProperties } from "../hooks/useBuyProperties";
 import FilterDrawer from "../components/filterCcomponents/FilterDrawer";
 import { SlidersHorizontal } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import EmptyState from "../components/Ui/EmptyState";
-
-const ITEMS_PER_PAGE = 6;
+import InfiniteScrollObserver from "../components/Ui/InfiniteScrollObserver";
 
 const BuyPage = () => {
-  const { i18n } = useTranslation();
-  const { data: units = [] ,isLoading} = useGetPropertyQuery({ lang: i18n.language });
-  const [isFilterOpen, setIsFilterOpen] = useState(false);
   const { t } = useTranslation();
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
 
-  // Apply sidebar filters on top of destination and tab filtered units
+  // Separate data fetching, filters, and state management into custom hook
   const {
+    properties,
+    isFetching,
+    isLoading,
+    hasNextPage,
+    page,
+    setPage,
     tempFilters,
     setTempFilters,
     applyFilters,
     resetFilters,
-    filteredUnits,
     tempFilteredCount,
-  } = useUnitsFilter(units);
+    checkCanTrigger,
+  } = useBuyProperties();
 
-  const [visiblePages, setVisiblePages] = useState(1);
-  const [isMoreLoading, setIsMoreLoading] = useState(false);
+  const showInitialLoading = isLoading && properties.length === 0;
 
-  const totalPages = Math.ceil(filteredUnits.length / ITEMS_PER_PAGE);
-
-  const paginatedUnits = useMemo(() => {
-    return filteredUnits.slice(0, visiblePages * ITEMS_PER_PAGE);
-  }, [filteredUnits, visiblePages]);
-
-  // Reset pagination when filters are applied (i.e. filtered units update)
-  useEffect(() => {
-    setVisiblePages(1);
-  }, [filteredUnits]);
-
-  const handleLoadMore = () => {
-    if (visiblePages < totalPages && !isMoreLoading) {
-      setIsMoreLoading(true);
-      setTimeout(() => {
-        setVisiblePages((prev) => prev + 1);
-        setIsMoreLoading(false);
-      }, 600);
-    }
-  };
+  // Contract variables: the filter drawer receives 'units' (mapped to the loaded properties)
+  const units = properties;
 
   return (
     <div className="">
@@ -58,7 +41,6 @@ const BuyPage = () => {
           {t("buy.title")}
         </h3>
       </div>
-      {/* Tabs Navigation */}
 
       <div className="flex py-4 lg:hidden items-center justify-end gap-3 self-start sm:self-auto shrink-0 z-20">
         <motion.button
@@ -74,8 +56,7 @@ const BuyPage = () => {
       </div>
 
       <div className="flex flex-col lg:flex-row gap-8 items-start relative">
-        {/* Sidebar (Overlay on mobile/tablet, sticky inline on desktop) */}
-        {/* Desktop: static sidebar always visible */}
+        {/* Sidebar (Desktop inline) */}
         <FilterDrawer
           units={units}
           displayMode="static"
@@ -89,20 +70,20 @@ const BuyPage = () => {
 
         {/* Units Grid */}
         <div className="flex-1 w-full overflow-hidden lg:pb-7 md:pb-5 pb-3">
-          {isLoading ? (
+          {showInitialLoading ? (
             <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 justify-items-stretch transition-all duration-300 lg:grid-cols-2 xl:grid-cols-2">
               {Array.from({ length: 4 }).map((_, idx) => (
                 <UnitCardSkeleton key={idx} className="w-full" />
               ))}
             </div>
-          ) : paginatedUnits.length > 0 ? (
+          ) : properties.length > 0 ? (
             <>
               <motion.div
                 layout
                 className="grid grid-cols-1 gap-6 sm:grid-cols-2 justify-items-stretch transition-all duration-300 lg:grid-cols-2 xl:grid-cols-2"
               >
                 <AnimatePresence mode="popLayout">
-                  {paginatedUnits.map((unit) => (
+                  {properties.map((unit) => (
                     <motion.div
                       key={unit._id}
                       layout
@@ -122,19 +103,22 @@ const BuyPage = () => {
                 </AnimatePresence>
               </motion.div>
 
-              {/* Load More Button */}
-              {visiblePages < totalPages && (
-                <div className="flex justify-center mt-12 py-4">
-                  <button
-                    type="button"
-                    onClick={handleLoadMore}
-                    disabled={isMoreLoading}
-                    className="inline-flex items-center justify-center rounded-xl bg-primary px-8 py-3 text-sm font-semibold text-white shadow-md hover:bg-[#156d85] transition-all active:scale-95 disabled:opacity-75 disabled:pointer-events-none cursor-pointer select-none"
-                  >
-                    {isMoreLoading ? t("common.loading", "Loading...") : t("common.loadMore", "Load More")}
-                  </button>
+              {/* Skeleton/Loading for next page */}
+              {isFetching && page > 1 && (
+                <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 justify-items-stretch transition-all duration-300 lg:grid-cols-2 xl:grid-cols-2 mt-6">
+                  {Array.from({ length: 2 }).map((_, idx) => (
+                    <UnitCardSkeleton key={idx} className="w-full" />
+                  ))}
                 </div>
               )}
+
+              {/* Decoupled reusable observer component */}
+              <InfiniteScrollObserver
+                hasNextPage={hasNextPage}
+                isFetching={isFetching}
+                onLoadMore={() => setPage((prev) => prev + 1)}
+                checkCanTrigger={checkCanTrigger}
+              />
             </>
           ) : (
             <EmptyState
@@ -145,7 +129,7 @@ const BuyPage = () => {
           )}
         </div>
 
-        {/* Mobile/Tablet: drawer that opens on button click */}
+        {/* Mobile/Tablet drawer */}
         <FilterDrawer
           units={units}
           displayMode="drawer"
