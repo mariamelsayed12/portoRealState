@@ -1,5 +1,5 @@
 import { useState, useMemo } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { motion } from "framer-motion";
 import UnitCard from "../components/UnitCard";
 import UnitCardSkeleton from "../components/UnitCardSkeleton";
 import { useUnitsFilter } from "../hooks/useUnitsFilter";
@@ -43,7 +43,7 @@ const RentPage = () => {
       if (activeTab === "All") return true;
       return unit.status?.toLowerCase() === activeTab.toLowerCase();
     });
-  }, [activeTab]);
+  }, [units, activeTab]);
 
   // Apply sidebar filters on top of rental and tab filtered units
   const {
@@ -181,26 +181,22 @@ const RentPage = () => {
               ))}
             </div>
           ) : sortedUnits.length > 0 ? (
-            <motion.div
-              layout
-              className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 justify-items-center sm:justify-items-stretch transition-all duration-300"
-            >
-              <AnimatePresence mode="popLayout">
-                {sortedUnits.map((unit) => (
-                  <motion.div
-                    key={unit._id}
-                    layout
-                    initial={{ opacity: 0, scale: 0.92 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.92 }}
-                    transition={{ type: "spring", damping: 25, stiffness: 220 }}
-                    className="w-full"
-                  >
-                    <UnitCard card={unit} className="w-full" />
-                  </motion.div>
-                ))}
-              </AnimatePresence>
-            </motion.div>
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 justify-items-center sm:justify-items-stretch transition-all duration-300">
+              {sortedUnits.map((unit) => (
+                <motion.div
+                  key={unit._id}
+                  initial={{ opacity: 0, y: 24 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{
+                    duration: 0.3,
+                    ease: "easeOut",
+                  }}
+                  className="w-full"
+                >
+                  <UnitCard card={unit} className="w-full" />
+                </motion.div>
+              ))}
+            </div>
           ) : (
             <EmptyState
               title={t("rent.noProperties")}
