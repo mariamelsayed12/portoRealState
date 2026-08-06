@@ -117,6 +117,14 @@ const PropertyDetails: React.FC = () => {
     ].filter(Boolean);
   }, [property, t]);
 
+  const displayCashPrice = useMemo(() => {
+    if (!property) return "";
+    if (property.paymentModel?.toLowerCase() === "cash") {
+      return property.installmentPrice ? `${property.installmentPrice.toLocaleString()} EGP` : "Contact for Price";
+    }
+    return property.installmentPrice ? `${Math.round(property.installmentPrice * 0.85).toLocaleString()} EGP` : "Contact for Price";
+  }, [property]);
+
   const handleFavoriteToggle = () => {
     if (!property) return;
     if (isFavorite) {
@@ -395,7 +403,7 @@ const PropertyDetails: React.FC = () => {
           </div>
 
           {/* Right Block: Pricing Actions Widget */}
-          <div className="lg:col-span-5 bg-white border border-[#EDEFF2] rounded-[12px] p-[16px] shadow-[0px_2px_6.3px_1px_rgba(0,0,0,0.14)]  lg:top-36 flex flex-col gap-[40px]">
+          <div className="lg:col-span-5 bg-white border border-[#EDEFF2] rounded-[12px] p-[16px] shadow-[0px_2px_6.3px_1px_rgba(0,0,0,0.14)] lg:top-36 flex flex-col gap-[40px]">
             {/* Header / Switcher row */}
             <div className="flex flex-col gap-[32px] w-full">
               <div className="flex items-center justify-between w-full">
@@ -403,7 +411,8 @@ const PropertyDetails: React.FC = () => {
                   <span className="font-['Poppins'] font-medium text-[16px] text-[#141414]">
                     {t("propertyDetails.pricing.pricingHeader", "Pricing")}
                   </span>
-                  {hasInstallment && hasCash && (
+                  {/* Switcher: only show if Buy property AND has both payment models */}
+                  {property.listingType?.toLowerCase() !== "rent" && hasInstallment && hasCash && (
                     <div className="border border-[#d4d5d8] flex h-[32px] items-center rounded-[12px] bg-white overflow-hidden p-0.5">
                       <button
                         onClick={() => setPricingMode("Installment")}
@@ -428,69 +437,104 @@ const PropertyDetails: React.FC = () => {
                     </div>
                   )}
                 </div>
-                <span className="font-['Poppins'] font-medium text-[16px] text-[#464646]">
-                  {pricingMode === "Installment" ? installmentYears : t("propertyDetails.pricing.immediatePayment")}
-                </span>
+                {/* Right side tag/label */}
+                {property.listingType?.toLowerCase() === "rent" ? (
+                  null
+                ) : pricingMode === "Cash" ? (
+                  <div className="bg-[#edf6eb] flex items-center px-[8px] py-[4px] rounded-[12px] shrink-0">
+                    <span className="font-['Poppins'] font-medium text-[14px] text-[#141414]">
+                      {t("propertyDetails.pricing.higherProfit", "Higher profit")}
+                    </span>
+                  </div>
+                ) : (
+                  <span className="font-['Poppins'] font-medium text-[16px] text-[#464646]">
+                    {installmentYears}
+                  </span>
+                )}
               </div>
 
               {/* Pricing Details Display Container */}
-              <div className="bg-[#f5f9fa] border border-[#d4d5d8] rounded-[12px] p-[12px] flex justify-between items-center w-full">
-                {pricingMode === "Installment" ? (
-                  <>
-                    {/* Price */}
-                    <div className="flex-1 flex flex-col items-center text-center">
-                      <span className="font-['Poppins'] font-medium text-[16px] text-[#464646] mb-2">
-                        {t("propertyDetails.pricing.price")}
-                      </span>
-                      <span className="font-['Poppins'] font-medium text-[16px] text-[#141414]">
-                        {property.installmentPrice ? `${property.installmentPrice.toLocaleString()} EGP` : "Contact for Price"}
-                      </span>
-                    </div>
-                    {/* Down Payment */}
-                    {downPayment && (
-                      <>
-                        {/* Separator */}
-                        <div className="w-[1px] h-[40px] bg-[#d4d5d8]" />
-                        <div className="flex-1 flex flex-col items-center text-center">
-                          <span className="font-['Poppins'] font-medium text-[16px] text-[#464646] mb-2">
-                            {t("propertyDetails.pricing.downPayment")}
-                          </span>
-                          <span className="font-['Poppins'] font-medium text-[16px] text-[#141414]">
-                            {downPayment}
-                          </span>
-                        </div>
-                      </>
-                    )}
-                    {/* Monthly Installment */}
-                    {monthlyInstallment && (
-                      <>
-                        {/* Separator */}
-                        <div className="w-[1px] h-[40px] bg-[#d4d5d8]" />
-                        <div className="flex-1 flex flex-col items-center text-center">
-                          <span className="font-['Poppins'] font-medium text-[16px] text-[#464646] mb-2">
-                            {t("propertyDetails.pricing.monthly")}
-                          </span>
-                          <span className="font-['Poppins'] font-medium text-[16px] text-[#141414]">
-                            {monthlyInstallment}
-                          </span>
-                        </div>
-                      </>
-                    )}
-                  </>
-                ) : (
-                  <div className="w-full flex flex-col items-center text-center py-2">
+              {property.listingType?.toLowerCase() === "rent" ? (
+                /* Rent Property Layout */
+                <div className="bg-[#f5f9fa] border border-[#d4d5d8] rounded-[12px] p-[12px] flex gap-[12px] items-center justify-center w-full">
+                  <div className="flex-1 flex flex-col items-center justify-center text-center">
                     <span className="font-['Poppins'] font-medium text-[16px] text-[#464646] mb-2">
-                      {t("propertyDetails.pricing.cashPrice")}
+                      {t("propertyDetails.pricing.monthlyRent", "Monthly Rent")}
                     </span>
                     <span className="font-['Poppins'] font-medium text-[19px] text-[#141414]">
-                      {property.installmentPrice ? `${Math.round(property.installmentPrice * 0.85).toLocaleString()} EGP` : "Contact for Price"}
-                    </span>
-                    <span className="text-[12px] text-[#464646] mt-2">
-                      {t("propertyDetails.pricing.cashNote")}
+                      {property.installmentPrice ? `${property.installmentPrice.toLocaleString()} EGP` : "Contact for Price"}
                     </span>
                   </div>
-                )}
-              </div>
+                  {/* Vertical separator */}
+                  <div className="w-[1px] h-[69px] bg-[#d4d5d8] shrink-0" />
+                  <div className="flex-1 flex flex-col items-center justify-center text-center">
+                    <span className="font-['Poppins'] font-medium text-[16px] text-[#464646] mb-2">
+                      {t("propertyDetails.pricing.insurance", "Insurance")}
+                    </span>
+                    <span className="font-['Poppins'] font-medium text-[19px] text-[#141414]">
+                      {property.installmentPrice ? `${property.installmentPrice.toLocaleString()} EGP` : "Contact for Price"}
+                    </span>
+                  </div>
+                </div>
+              ) : pricingMode === "Installment" ? (
+                /* Installment Layout */
+                <div className="bg-[#f5f9fa] border border-[#d4d5d8] rounded-[12px] p-[12px] flex justify-between items-center w-full">
+                  {/* Price */}
+                  <div className="flex-1 flex flex-col items-center text-center">
+                    <span className="font-['Poppins'] font-medium text-[16px] text-[#464646] mb-2">
+                      {t("propertyDetails.pricing.price")}
+                    </span>
+                    <span className="font-['Poppins'] font-medium text-[16px] text-[#141414]">
+                      {property.installmentPrice ? `${property.installmentPrice.toLocaleString()} EGP` : "Contact for Price"}
+                    </span>
+                  </div>
+                  {/* Down Payment */}
+                  {downPayment && (
+                    <>
+                      {/* Separator */}
+                      <div className="w-[1px] h-[40px] bg-[#d4d5d8]" />
+                      <div className="flex-1 flex flex-col items-center text-center">
+                        <span className="font-['Poppins'] font-medium text-[16px] text-[#464646] mb-2">
+                          {t("propertyDetails.pricing.downPayment")}
+                        </span>
+                        <span className="font-['Poppins'] font-medium text-[16px] text-[#141414]">
+                          {downPayment}
+                        </span>
+                      </div>
+                    </>
+                  )}
+                  {/* Monthly Installment */}
+                  {monthlyInstallment && (
+                    <>
+                      {/* Separator */}
+                      <div className="w-[1px] h-[40px] bg-[#d4d5d8]" />
+                      <div className="flex-1 flex flex-col items-center text-center">
+                        <span className="font-['Poppins'] font-medium text-[16px] text-[#464646] mb-2">
+                          {t("propertyDetails.pricing.monthly")}
+                        </span>
+                        <span className="font-['Poppins'] font-medium text-[16px] text-[#141414]">
+                          {monthlyInstallment}
+                        </span>
+                      </div>
+                    </>
+                  )}
+                </div>
+              ) : (
+                /* Cash Only / Cash Mode Layout */
+                <div className="bg-[#f5f9fa] border border-[#d4d5d8] rounded-[12px] p-[12px] flex flex-col gap-2 w-full">
+                  <div className="flex justify-between items-center w-full">
+                    <span className="font-['Poppins'] font-medium text-[16px] text-[#464646]">
+                      {t("propertyDetails.pricing.totalPrice", "Total Price")}
+                    </span>
+                    <span className="font-['Poppins'] font-medium text-[19px] text-[#141414]">
+                      {displayCashPrice}
+                    </span>
+                  </div>
+                  <div className="text-[12px] text-[#464646] text-center mt-2 w-full">
+                    {t("propertyDetails.pricing.cashNote")}
+                  </div>
+                </div>
+              )}
             </div>
 
             {/* Call Actions Row */}

@@ -399,5 +399,9 @@
     "propertyDetails.relatedTitle": "قد يعجبك أيضاً",
     "propertyDetails.pricing.pricingHeader": "الأسعار",
     "filterDrawer.showMore": "عرض المزيد",
-    "filterDrawer.showLess": "عرض أقل"
+    "filterDrawer.showLess": "عرض أقل",
+    "propertyDetails.pricing.totalPrice": "السعر الإجمالي",
+    "propertyDetails.pricing.higherProfit": "عائد أعلى",
+    "propertyDetails.pricing.monthlyRent": "الإيجار الشهري",
+    "propertyDetails.pricing.insurance": "مبلغ التأمين"
 }

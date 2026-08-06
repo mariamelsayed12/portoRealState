@@ -399,5 +399,9 @@
     "propertyDetails.relatedTitle": "You may also like",
     "propertyDetails.pricing.pricingHeader": "Pricing",
     "filterDrawer.showMore": "Show More",
-    "filterDrawer.showLess": "Show Less"
+    "filterDrawer.showLess": "Show Less",
+    "propertyDetails.pricing.totalPrice": "Total Price",
+    "propertyDetails.pricing.higherProfit": "Higher profit",
+    "propertyDetails.pricing.monthlyRent": "Monthly Rent",
+    "propertyDetails.pricing.insurance": "Insurance"
 }
