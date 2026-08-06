@@ -1,42 +1,8 @@
 import { Link } from "react-router-dom";
 import { FaFacebookF, FaInstagram, FaTiktok } from "react-icons/fa6";
+import { Mail, Phone, MapPin } from "lucide-react";
 import Logo from "../icons/Logo";
 import { useTranslation } from "react-i18next";
-
-type FooterLinkGroup = {
-  titleKey: string;
-  links: Array<{ labelKey: string; to: string }>;
-};
-
-const footerLinkGroups: FooterLinkGroup[] = [
-  {
-    titleKey: "footer.group.navigation",
-    links: [
-      { labelKey: "footer.link.home", to: "/" },
-      { labelKey: "footer.link.aboutUs", to: "/about" },
-      { labelKey: "footer.link.favourites", to: "/favorites" },
-      { labelKey: "footer.link.search", to: "/" },
-    ],
-  },
-  {
-    titleKey: "footer.group.services",
-    links: [
-      { labelKey: "footer.link.propertySales", to: "/buy" },
-      { labelKey: "footer.link.sellYourProperty", to: "/sell" },
-      { labelKey: "footer.link.specialRentals", to: "/rent" },
-      { labelKey: "footer.link.rentalManagement", to: "/management" },
-    ],
-  },
-  {
-    titleKey: "footer.group.navigation",
-    links: [
-      { labelKey: "footer.link.home", to: "/" },
-      { labelKey: "footer.link.aboutUs", to: "/about" },
-      { labelKey: "footer.link.favourites", to: "/" },
-      { labelKey: "footer.link.search", to: "/" },
-    ],
-  },
-];
 
 const socialLinks = [
   { label: "TikTok", icon: FaTiktok, href: "#" },
@@ -77,25 +43,77 @@ const Footer = () => {
             </div>
           </div>
 
-          {/* Links Columns */}
-          {footerLinkGroups.map((group, groupIdx) => (
-            <div key={`${group.titleKey}-${groupIdx}`} className="flex flex-col gap-[16px] min-w-[120px]">
-              <p className="font-['Poppins'] font-medium text-[16px] text-[#464646]">
-                {t(group.titleKey)}
-              </p>
-              <div className="flex flex-col gap-[16px]">
-                {group.links.map((link) => (
-                  <Link
-                    key={link.labelKey}
-                    to={link.to}
-                    className="font-['Poppins'] font-normal text-[16px] text-[#141414] transition-colors hover:text-primary"
-                  >
-                    {t(link.labelKey)}
-                  </Link>
-                ))}
+          {/* Navigation Column */}
+          <div className="flex flex-col gap-[16px] min-w-[120px]">
+            <p className="font-['Poppins'] font-medium text-[16px] text-[#464646]">
+              {t("footer.group.navigation")}
+            </p>
+            <div className="flex flex-col gap-[16px]">
+              <Link to="/" className="font-['Poppins'] font-normal text-[16px] text-[#141414] transition-colors hover:text-primary">
+                {t("footer.link.home")}
+              </Link>
+              <Link to="/about" className="font-['Poppins'] font-normal text-[16px] text-[#141414] transition-colors hover:text-primary">
+                {t("footer.link.aboutUs")}
+              </Link>
+              <Link to="/favorites" className="font-['Poppins'] font-normal text-[16px] text-[#141414] transition-colors hover:text-primary">
+                {t("footer.link.favourites")}
+              </Link>
+              <Link to="/" className="font-['Poppins'] font-normal text-[16px] text-[#141414] transition-colors hover:text-primary">
+                {t("footer.link.search")}
+              </Link>
+            </div>
+          </div>
+
+          {/* Services Column */}
+          <div className="flex flex-col gap-[16px] min-w-[120px]">
+            <p className="font-['Poppins'] font-medium text-[16px] text-[#464646]">
+              {t("footer.group.services")}
+            </p>
+            <div className="flex flex-col gap-[16px]">
+              <Link to="/buy" className="font-['Poppins'] font-normal text-[16px] text-[#141414] transition-colors hover:text-primary">
+                {t("footer.link.propertySales")}
+              </Link>
+              <Link to="/sell" className="font-['Poppins'] font-normal text-[16px] text-[#141414] transition-colors hover:text-primary">
+                {t("footer.link.sellYourProperty")}
+              </Link>
+              <Link to="/rent" className="font-['Poppins'] font-normal text-[16px] text-[#141414] transition-colors hover:text-primary">
+                {t("footer.link.specialRentals")}
+              </Link>
+              <Link to="/management" className="font-['Poppins'] font-normal text-[16px] text-[#141414] transition-colors hover:text-primary">
+                {t("footer.link.rentalManagement")}
+              </Link>
+            </div>
+          </div>
+
+          {/* Contact Column */}
+          <div className="flex flex-col gap-[16px] min-w-[120px]">
+            <p className="font-['Poppins'] font-medium text-[16px] text-[#464646]">
+              {t("footer.group.contact")}
+            </p>
+            <div className="flex flex-col gap-[16px]">
+              {/* Email */}
+              <div className="flex gap-[8px] items-center text-[#141414]">
+                <Mail className="w-[24px] h-[24px] text-primary shrink-0" />
+                <span className="font-['Poppins'] font-normal text-[16px]">
+                  {t("footer.contact.email")}
+                </span>
+              </div>
+              {/* Phone */}
+              <div className="flex gap-[8px] items-center text-[#141414]">
+                <Phone className="w-[24px] h-[24px] text-primary shrink-0" />
+                <span className="font-['Poppins'] font-normal text-[16px]" dir="ltr">
+                  {t("footer.contact.phone")}
+                </span>
+              </div>
+              {/* Location */}
+              <div className="flex gap-[8px] items-start text-[#141414] max-w-[220px]">
+                <MapPin className="w-[24px] h-[24px] text-primary shrink-0 mt-0.5" />
+                <span className="font-['Poppins'] font-normal text-[16px] leading-[1.3]">
+                  {t("footer.contact.location")}
+                </span>
               </div>
             </div>
-          ))}
+          </div>
         </div>
 
         {/* Bottom Section */}
@@ -108,3 +126,4 @@ const Footer = () => {
 };
 
 export default Footer;
+

@@ -403,5 +403,9 @@
     "propertyDetails.pricing.totalPrice": "Total Price",
     "propertyDetails.pricing.higherProfit": "Higher profit",
     "propertyDetails.pricing.monthlyRent": "Monthly Rent",
-    "propertyDetails.pricing.insurance": "Insurance"
+    "propertyDetails.pricing.insurance": "Insurance",
+    "footer.group.contact": "Contact",
+    "footer.contact.email": "user@email.com",
+    "footer.contact.phone": "+20 113 333 3333",
+    "footer.contact.location": "7155 State Rt 12 S, Lowville NY 13367"
 }

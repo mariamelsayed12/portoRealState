@@ -403,5 +403,9 @@
     "propertyDetails.pricing.totalPrice": "السعر الإجمالي",
     "propertyDetails.pricing.higherProfit": "عائد أعلى",
     "propertyDetails.pricing.monthlyRent": "الإيجار الشهري",
-    "propertyDetails.pricing.insurance": "مبلغ التأمين"
+    "propertyDetails.pricing.insurance": "مبلغ التأمين",
+    "footer.group.contact": "اتصل بنا",
+    "footer.contact.email": "user@email.com",
+    "footer.contact.phone": "+20 113 333 3333",
+    "footer.contact.location": "7155 طريق الولاية 12 جنوب، لوفيل نيويورك 13367"
 }
