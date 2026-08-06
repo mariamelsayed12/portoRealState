@@ -65,6 +65,7 @@ const BuyPage = () => {
           applyFilters={applyFilters}
           resetFilters={resetFilters}
           tempFilteredCount={tempFilteredCount}
+          isLoading={isFetching}
         />
 
         {/* Units Grid */}
@@ -138,6 +139,7 @@ const BuyPage = () => {
           applyFilters={applyFilters}
           resetFilters={resetFilters}
           tempFilteredCount={tempFilteredCount}
+          isLoading={isFetching}
         />
       </div>
     </div>

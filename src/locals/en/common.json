@@ -397,5 +397,7 @@
     "propertyDetails.actions.whatsapp": "Chat on WhatsApp",
     "propertyDetails.actions.callUs": "Call Us",
     "propertyDetails.relatedTitle": "You may also like",
-    "propertyDetails.pricing.pricingHeader": "Pricing"
+    "propertyDetails.pricing.pricingHeader": "Pricing",
+    "filterDrawer.showMore": "Show More",
+    "filterDrawer.showLess": "Show Less"
 }

@@ -397,5 +397,7 @@
     "propertyDetails.actions.whatsapp": "تواصل عبر واتساب",
     "propertyDetails.actions.callUs": "اتصل بنا",
     "propertyDetails.relatedTitle": "قد يعجبك أيضاً",
-    "propertyDetails.pricing.pricingHeader": "الأسعار"
+    "propertyDetails.pricing.pricingHeader": "الأسعار",
+    "filterDrawer.showMore": "عرض المزيد",
+    "filterDrawer.showLess": "عرض أقل"
 }

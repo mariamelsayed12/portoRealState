@@ -217,6 +217,7 @@ const RentPage = () => {
           applyFilters={applyFilters}
           resetFilters={resetFilters}
           tempFilteredCount={tempFilteredCount}
+          isLoading={isLoading}
         />
       </div>
     </div>

@@ -18,6 +18,7 @@ interface FilterContentProps {
   stickyFooter?: boolean;
   displayMode?: "drawer" | "static";
   hideLocation?: boolean;
+  isLoading?: boolean;
 }
  
 const FilterContent = ({
@@ -30,10 +31,27 @@ const FilterContent = ({
   stickyFooter = true,
   displayMode = "drawer",
   hideLocation = false,
+  isLoading = false,
 }: FilterContentProps) => {
     const { t ,i18n} = useTranslation();
 
-  const{data:destinations}=useGetVillageQuery({lang:i18n.language});
+  const { data: destinations, isLoading: isLocationsLoading } = useGetVillageQuery({ lang: i18n.language });
+
+  const [visibleLocationsCount, setVisibleLocationsCount] = useState(6);
+
+  const visibleDestinations = useMemo(() => {
+    if (!destinations) return [];
+    
+    // Parse selected locations from tempFilters to ensure they always stay visible
+    const selectedNames = tempFilters.location
+      ? tempFilters.location.split(",").map(name => name.trim().toLowerCase())
+      : [];
+      
+    return destinations.filter((dest, index) => {
+      const isSelected = selectedNames.includes(dest.name.toLowerCase());
+      return index < visibleLocationsCount || isSelected;
+    });
+  }, [destinations, visibleLocationsCount, tempFilters.location]);
 
   const [activeAreaThumb, setActiveAreaThumb] = useState<"min" | "max">("min");
   const [activePriceThumb, setActivePriceThumb] = useState<"min" | "max">("min");
@@ -299,29 +317,61 @@ const FilterContent = ({
                 </button>
               )}
             </div>
-            <div className="flex flex-wrap gap-2">
-              {destinations?.map(({name}) => {
-               const isSelected =
-                (tempFilters.location || "")
-                  .toLowerCase()
-                  .split(",")
-                  .includes(name.toLowerCase());
-                return (
-                  <button
-                    key={name}
-                    type="button"
-                    onClick={() => handleToggleLocation(name)}
-                    className={`rounded-full px-4 py-2 text-xs font-semibold border transition-all ${
-                      isSelected
-                        ? "bg-[#E9F4F7] border-primary text-[#141414]"
-                        : "bg-white border-[#D9E1E4] text-[#58696F] hover:border-gray-300"
-                    }`}
-                  >
-                    {name}
-                  </button>
-                );
-              })}
-            </div>
+            {isLocationsLoading ? (
+              <div className="flex flex-wrap gap-2 animate-pulse">
+                {Array.from({ length: 6 }).map((_, idx) => (
+                  <div
+                    key={idx}
+                    className="h-8 bg-[#E8EFF1] rounded-full w-24 sm:w-28 border border-[#E8EFF1]"
+                  />
+                ))}
+              </div>
+            ) : (
+              <>
+                <div className="flex flex-wrap gap-2">
+                  {visibleDestinations.map(({ name }) => {
+                    const isSelected =
+                      (tempFilters.location || "")
+                        .toLowerCase()
+                        .split(",")
+                        .includes(name.toLowerCase());
+                    return (
+                      <button
+                        key={name}
+                        type="button"
+                        onClick={() => handleToggleLocation(name)}
+                        className={`rounded-full px-4 py-2 text-xs font-semibold border transition-all ${
+                          isSelected
+                            ? "bg-[#E9F4F7] border-primary text-[#141414]"
+                            : "bg-white border-[#D9E1E4] text-[#58696F] hover:border-gray-300"
+                        }`}
+                      >
+                        {name}
+                      </button>
+                    );
+                  })}
+                </div>
+                {destinations && destinations.length > 6 && (
+                  <div className="mt-3 flex justify-start">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        if (visibleLocationsCount < destinations.length) {
+                          setVisibleLocationsCount((prev) => prev + 6);
+                        } else {
+                          setVisibleLocationsCount(6);
+                        }
+                      }}
+                      className="text-xs font-semibold text-primary hover:underline flex items-center gap-1 cursor-pointer animate-fade-in"
+                    >
+                      {visibleLocationsCount < destinations.length
+                        ? t("filterDrawer.showMore")
+                        : t("filterDrawer.showLess")}
+                    </button>
+                  </div>
+                )}
+              </>
+            )}
           </div>
         )}
 
@@ -661,29 +711,40 @@ const FilterContent = ({
               </button>
             )}
           </div>
-          <div className="flex flex-wrap gap-2">
-            {deliveryDateOptions.map(
-              (date) => {
-                const isSelected =
-                  (tempFilters.deliveryDate || "").toLowerCase() ===
-                  date.toLowerCase();
-                return (
-                  <button
-                    key={date}
-                    type="button"
-                    onClick={() => handleToggleDeliveryDate(date)}
-                    className={`rounded-full px-4 py-2 text-xs font-semibold border transition-all ${
-                      isSelected
-                        ? "bg-[#E9F4F7] border-primary text-[#141414]"
-                        : "bg-white border-[#D9E1E4] text-[#58696F] hover:border-gray-300"
-                    }`}
-                  >
-                    {getDisplayLabel(date)}
-                  </button>
-                );
-              },
-            )}
-          </div>
+          {isLoading ? (
+            <div className="flex flex-wrap gap-2 animate-pulse">
+              {Array.from({ length: 5 }).map((_, idx) => (
+                <div
+                  key={idx}
+                  className="h-8 bg-[#E8EFF1] rounded-full w-16 sm:w-20 border border-[#E8EFF1]"
+                />
+              ))}
+            </div>
+          ) : (
+            <div className="flex flex-wrap gap-2">
+              {deliveryDateOptions.map(
+                (date) => {
+                  const isSelected =
+                    (tempFilters.deliveryDate || "").toLowerCase() ===
+                    date.toLowerCase();
+                  return (
+                    <button
+                      key={date}
+                      type="button"
+                      onClick={() => handleToggleDeliveryDate(date)}
+                      className={`rounded-full px-4 py-2 text-xs font-semibold border transition-all ${
+                        isSelected
+                          ? "bg-[#E9F4F7] border-primary text-[#141414]"
+                          : "bg-white border-[#D9E1E4] text-[#58696F] hover:border-gray-300"
+                      }`}
+                    >
+                      {getDisplayLabel(date)}
+                    </button>
+                  );
+                },
+              )}
+            </div>
+          )}
         </div>
  
         {/* Finishing Card */}

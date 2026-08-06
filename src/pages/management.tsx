@@ -128,7 +128,7 @@ const ManagementPage = () => {
             {services.map((service) => (
               <span
                 key={service}
-                className="bg-white/20 backdrop-blur-sm rounded-[12px] px-[8px] py-[8px] text-[14px] sm:text-[19px] font-medium text-[#EDEFF2] font-['Poppins'] leading-normal"
+                className="bg-white/10 backdrop-blur-[12px] rounded-[12px] px-[8px] py-[8px] text-[14px] sm:text-[19px] font-medium text-[#EDEFF2] font-['Poppins'] leading-normal"
               >
                 {getServiceLabel(service)}
               </span>
