@@ -93,21 +93,21 @@ const Footer = () => {
             <div className="flex flex-col gap-[16px]">
               {/* Email */}
               <div className="flex gap-[8px] items-center text-[#141414]">
-                <Mail className="w-[24px] h-[24px] text-primary shrink-0" />
+                <Mail className="w-[24px] h-[24px] text-[#464646] shrink-0" />
                 <span className="font-['Poppins'] font-normal text-[16px]">
                   {t("footer.contact.email")}
                 </span>
               </div>
               {/* Phone */}
               <div className="flex gap-[8px] items-center text-[#141414]">
-                <Phone className="w-[24px] h-[24px] text-primary shrink-0" />
+                <Phone className="w-[24px] h-[24px] text-[#464646] shrink-0" />
                 <span className="font-['Poppins'] font-normal text-[16px]" dir="ltr">
                   {t("footer.contact.phone")}
                 </span>
               </div>
               {/* Location */}
               <div className="flex gap-[8px] items-start text-[#141414] max-w-[220px]">
-                <MapPin className="w-[24px] h-[24px] text-primary shrink-0 mt-0.5" />
+                <MapPin className="w-[24px] h-[24px] text-[#464646] shrink-0 mt-0.5" />
                 <span className="font-['Poppins'] font-normal text-[16px] leading-[1.3]">
                   {t("footer.contact.location")}
                 </span>
