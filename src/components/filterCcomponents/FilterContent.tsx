@@ -40,6 +40,17 @@ const FilterContent = ({
   const { data: allProperties = [] } = useGetPropertyQuery({ lang: i18n.language });
 
   const [visibleLocationsCount, setVisibleLocationsCount] = useState(6);
+  const [visiblePropertyTypesCount, setVisiblePropertyTypesCount] = useState(4);
+
+  const visiblePropertyTypes = useMemo(() => {
+    const selectedTypes = tempFilters.propertyType
+      ? tempFilters.propertyType.split(",").map(t => t.trim().toLowerCase())
+      : [];
+    return PROPERTY_TYPES.filter((type, index) => {
+      const isSelected = selectedTypes.includes(type.toLowerCase());
+      return index < visiblePropertyTypesCount || isSelected;
+    });
+  }, [visiblePropertyTypesCount, tempFilters.propertyType]);
 
   const visibleDestinations = useMemo(() => {
     if (!destinations) return [];
@@ -289,7 +300,7 @@ const FilterContent = ({
             )}
           </div>
           <div className="flex flex-wrap gap-2">
-            {PROPERTY_TYPES.map((type) => {
+            {visiblePropertyTypes.map((type) => {
               const isSelected =
                 (tempFilters.propertyType || "")
                   .toLowerCase()
@@ -311,6 +322,25 @@ const FilterContent = ({
               );
             })}
           </div>
+          {PROPERTY_TYPES.length > 4 && (
+            <div className="mt-3 flex justify-start">
+              <button
+                type="button"
+                onClick={() => {
+                  if (visiblePropertyTypesCount < PROPERTY_TYPES.length) {
+                    setVisiblePropertyTypesCount(PROPERTY_TYPES.length);
+                  } else {
+                    setVisiblePropertyTypesCount(4);
+                  }
+                }}
+                className="text-xs font-semibold text-primary hover:underline flex items-center gap-1 cursor-pointer animate-fade-in"
+              >
+                {visiblePropertyTypesCount < PROPERTY_TYPES.length
+                  ? t("filterDrawer.showMore")
+                  : t("filterDrawer.showLess")}
+              </button>
+            </div>
+          )}
         </div>
  
 

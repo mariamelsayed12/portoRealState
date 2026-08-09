@@ -12,6 +12,8 @@ import { useGetVillageQuery } from "../../app/services/crudVillage";
 import { useGetPropertyQuery } from "../../app/services/crudproperties";
 import { isRentListing, getTranslatedPropertyType } from "../../utils";
 
+
+
 const SearchSection = () => {
   const { t ,i18n} = useTranslation();
   const { data: destinations } = useGetVillageQuery({ lang: i18n.language });
