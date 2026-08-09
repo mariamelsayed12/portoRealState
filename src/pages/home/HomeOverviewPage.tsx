@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { motion } from "framer-motion";
 import ContactUsSection from "../../components/HomeCompoents/ContactUsSection";
 import CuratedPropertiesSection from "../../components/HomeCompoents/CuratedPropertiesSection";
@@ -7,9 +8,13 @@ import PrestigiousDestinations from "../../components/HomeCompoents/PrestigiousD
 import WhatWeOffer from "../../components/HomeCompoents/WhatWeOffer";
 
 const HomeOverviewPage = () => {
+  useEffect(() => {
+    console.log("HomeOverviewPage Mounted");
+    return () => console.log("HomeOverviewPage Unmounted");
+  }, []);
 
-console.log("HomeOverview Mounted");
-	return (
+  console.log("HomeOverview Mounted");
+  return (
 		<motion.div
 			// initial={{ opacity: 0, y: 10 }}
 			// animate={{ opacity: 1, y: 0 }}

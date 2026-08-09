@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Outlet, useLocation } from "react-router-dom";
 import Navbar from "../components/navbar/Navbar";
 import Footer from "../components/footer/Footer";
@@ -5,6 +6,11 @@ import { FaWhatsapp } from "react-icons/fa6";
 
 const RootLayout = () => {
   const location = useLocation();
+
+  useEffect(() => {
+    console.log("RootLayout Mounted");
+    return () => console.log("RootLayout Unmounted");
+  }, []);
   const isHomePage =
     location.pathname === "/" ||
     location.pathname.startsWith("/home") ||

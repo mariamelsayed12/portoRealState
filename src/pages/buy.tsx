@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import UnitCard from "../components/UnitCard";
 import UnitCardSkeleton from "../components/UnitCardSkeleton";
 import { motion } from "framer-motion";
@@ -10,6 +10,10 @@ import EmptyState from "../components/Ui/EmptyState";
 import InfiniteScrollObserver from "../components/Ui/InfiniteScrollObserver";
 
 const BuyPage = () => {
+  useEffect(() => {
+    console.log("BuyPage Mounted");
+    return () => console.log("BuyPage Unmounted");
+  }, []);
   const { t } = useTranslation();
   const [isFilterOpen, setIsFilterOpen] = useState(false);
 

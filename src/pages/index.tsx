@@ -5,14 +5,15 @@ const HomePage = () => {
   const location = useLocation();
 
   useEffect(() => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    window.scrollTo(0, 0);
   }, [location.pathname]);
 
-  // const isDetailsPage = location.pathname !== "/home" && location.pathname !== "/";
- 
-  return (
-        // <div className={isDetailsPage ? "pb-0" : "pb-24"}>
+  useEffect(() => {
+    console.log("HomePage Mounted");
+    return () => console.log("HomePage Unmounted");
+  }, []);
 
+  return (
     <div >
       <Outlet />
     </div>
