@@ -10,6 +10,7 @@ import BedsAndBathsPanel from "./BedsAndBathsPanel";
 import PriceRangePanel from "./PriceRangePanel";
 import { useGetVillageQuery } from "../../app/services/crudVillage";
 import { useGetPropertyQuery } from "../../app/services/crudproperties";
+import { isRentListing } from "../../utils";
 
 const SearchSection = () => {
   const { t ,i18n} = useTranslation();
@@ -28,7 +29,15 @@ const SearchSection = () => {
   // Derive maximum property price from backend properties
   const maxPriceValue = useMemo(() => {
     if (!properties || properties.length === 0) return 10_000_000;
-    const prices = properties.map((p) => p.installmentPrice).filter((p): p is number => typeof p === "number" && !isNaN(p));
+    const prices = properties.map((p) => {
+      if (isRentListing(p.listingType)) {
+        return p.insurance;
+      }
+      if (p.paymentModel?.toLowerCase() === "cash") {
+        return p.cashPrice;
+      }
+      return p.installmentPrice;
+    }).filter((p): p is number => typeof p === "number" && !isNaN(p));
     return prices.length ? Math.max(...prices) : 10_000_000;
   }, [properties]);
 

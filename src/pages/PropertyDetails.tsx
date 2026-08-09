@@ -119,10 +119,7 @@ const PropertyDetails: React.FC = () => {
 
   const displayCashPrice = useMemo(() => {
     if (!property) return "";
-    if (property.paymentModel?.toLowerCase() === "cash") {
-      return property.installmentPrice ? `${property.installmentPrice.toLocaleString()} EGP` : "Contact for Price";
-    }
-    return property.installmentPrice ? `${Math.round(property.installmentPrice * 0.85).toLocaleString()} EGP` : "Contact for Price";
+    return property.cashPrice ? `${property.cashPrice.toLocaleString()} EGP` : "Contact for Price";
   }, [property]);
 
   const handleFavoriteToggle = () => {
@@ -172,10 +169,18 @@ const PropertyDetails: React.FC = () => {
         if (sameVillage) score += 3;
 
         // 3. Same Price (+2 pts)
-        const samePrice = 
-          u.installmentPrice !== undefined && 
-          property.installmentPrice !== undefined && 
-          u.installmentPrice === property.installmentPrice;
+        let samePrice = false;
+        if (isRentListing(property.listingType)) {
+          samePrice = u.insurance !== undefined && property.insurance !== undefined && u.insurance === property.insurance;
+        } else {
+          const isCurrentCash = property.paymentModel?.toLowerCase() === "cash";
+          const isCandidateCash = u.paymentModel?.toLowerCase() === "cash";
+          if (isCurrentCash && isCandidateCash) {
+            samePrice = u.cashPrice !== undefined && property.cashPrice !== undefined && u.cashPrice === property.cashPrice;
+          } else if (!isCurrentCash && !isCandidateCash) {
+            samePrice = u.installmentPrice !== undefined && property.installmentPrice !== undefined && u.installmentPrice === property.installmentPrice;
+          }
+        }
         if (samePrice) score += 2;
 
         return { property: u, score };
@@ -458,7 +463,7 @@ const PropertyDetails: React.FC = () => {
                       {t("propertyDetails.pricing.monthlyRent", "Monthly Rent")}
                     </span>
                     <span className="font-['Poppins'] font-medium text-[19px] text-[#141414]">
-                      {property.installmentPrice ? `${property.installmentPrice.toLocaleString()} EGP` : "Contact for Price"}
+                      Contact for Price
                     </span>
                   </div>
                   {/* Vertical separator */}
@@ -468,7 +473,7 @@ const PropertyDetails: React.FC = () => {
                       {t("propertyDetails.pricing.insurance", "Insurance")}
                     </span>
                     <span className="font-['Poppins'] font-medium text-[19px] text-[#141414]">
-                      {property.installmentPrice ? `${property.installmentPrice.toLocaleString()} EGP` : "Contact for Price"}
+                      {property.insurance ? `${property.insurance.toLocaleString()} EGP` : "Contact for Price"}
                     </span>
                   </div>
                 </div>

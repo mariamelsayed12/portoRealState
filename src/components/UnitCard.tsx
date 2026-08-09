@@ -47,20 +47,18 @@ const UnitCard = ({
     }
   };
 
-  // Helper to calculate fallback cash price (15% discount) if not explicitly provided
+  // Helper to get the cash price
   const getCashPrice = () => {
-    if (card.paymentModel?.toLowerCase() === "cash") {
-      const priceNum = card.installmentPrice || card.downPaymentAmount || 0;
-      return `${priceNum.toLocaleString()} EGP`;
-    }
-    const priceNum = card.installmentPrice || 0;
-    return `${Math.round(priceNum * 0.85).toLocaleString()} EGP`;
+    return card.cashPrice ? `${card.cashPrice.toLocaleString()} EGP` : "Contact for Price";
   };
 
-  const currentPrice =
-    paymentMode === "cash"
+  const currentPrice = isRent
+    ? "Contact for Price"
+    : paymentMode === "cash"
       ? getCashPrice()
-      : `${(card.installmentPrice || 0).toLocaleString()} EGP${isRentListing(card.listingType) ? " /month" : ""}`;
+      : card.installmentPrice
+        ? `${card.installmentPrice.toLocaleString()} EGP`
+        : "Contact for Price";
 
   const dpPct = card.downPaymentPercentage ?? 2;
   const period = card.installmentPeriod || "2";
@@ -68,14 +66,14 @@ const UnitCard = ({
   const instValue = card.installmentValue || (card.installmentPrice ? Math.round((card.installmentPrice * (1 - dpPct / 100)) / (yearsVal * 4)) : 0);
 
   const paymentNoteRaw =
-    !isRentListing(card.listingType) && (card.installmentPrice || 0) > 0
+    !isRent && (card.installmentPrice || 0) > 0
       ? `${dpPct}% Down payment\n${instValue.toLocaleString()} Quarterly /${period}${period.toLowerCase().includes("year") || period.toLowerCase().includes("y") ? "" : " y"}`
       : "";
 
   const showPaymentNote = paymentMode === "installment" && !!paymentNoteRaw;
 
   const hasBothModes =
-    !isRentListing(card.listingType) &&
+    !isRent &&
     (card.paymentModel?.toLowerCase() === "both" || !card.paymentModel);
 
   const badges = useMemo(() => {
@@ -265,7 +263,9 @@ const UnitCard = ({
             <div className="min-h-[40px] sm:min-h-[48px] flex items-center w-full">
               {isRent ? (
                 <p className="text-[12px] sm:text-[14px] text-[#464646] font-['Poppins'] leading-relaxed">
-                  {t("unitCard.paymentNote.insurance", { months: 1 })}
+                  {card.insurance
+                    ? `${t("propertyDetails.pricing.insurance")}: ${card.insurance.toLocaleString()} EGP`
+                    : t("unitCard.paymentNote.insurance", { months: 1 })}
                 </p>
               ) : paymentMode === "cash" ? (
                 <div className="flex flex-wrap gap-[8px] w-full">

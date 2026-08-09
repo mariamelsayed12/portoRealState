@@ -16,6 +16,8 @@ export interface IProperty {
   deliveryDate: string;
   paymentModel: string;
   propertyType: string;
+  cashPrice:number;
+  insurance:number;
   installmentPrice: number;
   downPaymentPercentage: number;
   downPaymentAmount: number;

@@ -1,4 +1,5 @@
 import type { IProperty } from "../app/services/crudproperties";
+import { isRentListing } from "./index";
 
 /**
  * Computes recommended properties dynamically using rule-based criteria:
@@ -40,10 +41,27 @@ export const getRecommendedProperties = (
     if (sameVillage) score += 3;
 
     // 3. Same Price (+2 pts)
-    const samePrice = 
-      candidate.installmentPrice !== undefined && 
-      currentProperty.installmentPrice !== undefined && 
-      candidate.installmentPrice === currentProperty.installmentPrice;
+    let samePrice = false;
+    if (isRentListing(currentProperty.listingType)) {
+      samePrice =
+        candidate.insurance !== undefined &&
+        currentProperty.insurance !== undefined &&
+        candidate.insurance === currentProperty.insurance;
+    } else {
+      const isCurrentCash = currentProperty.paymentModel?.toLowerCase() === "cash";
+      const isCandidateCash = candidate.paymentModel?.toLowerCase() === "cash";
+      if (isCurrentCash && isCandidateCash) {
+        samePrice =
+          candidate.cashPrice !== undefined &&
+          currentProperty.cashPrice !== undefined &&
+          candidate.cashPrice === currentProperty.cashPrice;
+      } else if (!isCurrentCash && !isCandidateCash) {
+        samePrice =
+          candidate.installmentPrice !== undefined &&
+          currentProperty.installmentPrice !== undefined &&
+          candidate.installmentPrice === currentProperty.installmentPrice;
+      }
+    }
     if (samePrice) score += 2;
 
     return { candidate, score };

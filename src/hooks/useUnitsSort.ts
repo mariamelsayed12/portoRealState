@@ -1,6 +1,8 @@
 import { useState, useMemo } from "react";
 import type { IProperty } from "../app/services/crudproperties";
 
+import { isRentListing } from "../utils";
+
 export type SortOption =
   | "max-price"
   | "min-price"
@@ -17,7 +19,15 @@ export const useUnitsSort = (units: IProperty[]) => {
 
     const sorted = [...units];
 
-    const getPrice = (unit: IProperty) => unit.installmentPrice || 0;
+    const getPrice = (unit: IProperty) => {
+      if (isRentListing(unit.listingType)) {
+        return unit.insurance || 0;
+      }
+      if (unit.paymentModel?.toLowerCase() === "cash") {
+        return unit.cashPrice || 0;
+      }
+      return unit.installmentPrice || 0;
+    };
 
     const getDeliveryYear = (unit: IProperty) => {
       if (!unit.deliveryDate) return 0;
