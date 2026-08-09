@@ -6,6 +6,10 @@ import { Provider } from 'react-redux'
 import store from './app/store.ts'
 import "./i18n";
 
+if (typeof window !== "undefined" && "scrollRestoration" in window.history) {
+  window.history.scrollRestoration = "manual";
+}
+
 createRoot(document.getElementById('root')!).render(
     <Provider store={store}>
   <StrictMode>

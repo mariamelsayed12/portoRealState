@@ -20,7 +20,7 @@ const Footer = () => {
         <div className="flex flex-col md:flex-row flex-wrap md:justify-between gap-10 md:gap-8 lg:gap-12">
           {/* Logo and Socials Column */}
           <div className="flex flex-col gap-[40px] items-start shrink-0">
-            <Link to="/" className="inline-flex items-center justify-start">
+            <Link to="/home" className="inline-flex items-center justify-start">
               <Logo className="h-[52px] w-auto transition-transform hover:scale-102 duration-200" />
             </Link>
 
@@ -49,7 +49,7 @@ const Footer = () => {
               {t("footer.group.navigation")}
             </p>
             <div className="flex flex-col gap-[16px]">
-              <Link to="/" className="font-['Poppins'] font-normal text-[16px] text-[#141414] transition-colors hover:text-primary">
+              <Link to="/home" className="font-['Poppins'] font-normal text-[16px] text-[#141414] transition-colors hover:text-primary">
                 {t("footer.link.home")}
               </Link>
               <Link to="/about" className="font-['Poppins'] font-normal text-[16px] text-[#141414] transition-colors hover:text-primary">
@@ -58,7 +58,7 @@ const Footer = () => {
               <Link to="/favorites" className="font-['Poppins'] font-normal text-[16px] text-[#141414] transition-colors hover:text-primary">
                 {t("footer.link.favourites")}
               </Link>
-              <Link to="/" className="font-['Poppins'] font-normal text-[16px] text-[#141414] transition-colors hover:text-primary">
+              <Link to="/home" className="font-['Poppins'] font-normal text-[16px] text-[#141414] transition-colors hover:text-primary">
                 {t("footer.link.search")}
               </Link>
             </div>

@@ -81,7 +81,7 @@ const Navbar = ({ variant = "transparent" }: NavbarProps) => {
         <div className="w-full px-6 md:px-[32px] py-4 md:py-[22px] flex items-center justify-between">
           {/* Logo Section */}
           <div className="flex items-center gap-[24px]">
-            <Link to="/" className="flex items-center space-x-2 rtl:space-x-reverse flex-shrink-0">
+            <Link to="/home" className="flex items-center space-x-2 rtl:space-x-reverse flex-shrink-0">
               <Logo className="h-[36px] w-[180px] transition-transform hover:scale-102 duration-200" />
             </Link>
 
