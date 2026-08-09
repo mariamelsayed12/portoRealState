@@ -256,15 +256,22 @@ export const useUnitsFilter = (units: IProperty[]) => {
       }
     }
 
-    setSearchParams(params, { replace: true });
+    // Only update searchParams if they actually changed to prevent infinite rendering loop during page transitions
+    const newParamsStr = params.toString();
+    const currentParamsStr = searchParams.toString();
+    if (newParamsStr !== currentParamsStr) {
+      setSearchParams(params, { replace: true });
+    }
   }, [tempFilters, parseParams, searchParams, setSearchParams]);
 
   // Reset both temporary and committed filters and URL
   const resetFilters = useCallback(() => {
     setFilters(initialFilterState);
     setTempFilters(initialFilterState);
-    setSearchParams({}, { replace: true });
-  }, [setSearchParams]);
+    if (searchParams.toString() !== "") {
+      setSearchParams({}, { replace: true });
+    }
+  }, [searchParams, setSearchParams]);
 
   return {
     filters,
