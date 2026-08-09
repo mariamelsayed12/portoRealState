@@ -1,5 +1,4 @@
 import { useEffect } from "react";
-import { motion } from "framer-motion";
 import ContactUsSection from "../../components/HomeCompoents/ContactUsSection";
 import CuratedPropertiesSection from "../../components/HomeCompoents/CuratedPropertiesSection";
 import HeaderSection from "../../components/HomeCompoents/HeaderSection";
@@ -15,19 +14,15 @@ const HomeOverviewPage = () => {
 
   console.log("HomeOverview Mounted");
   return (
-		<motion.div
-			// initial={{ opacity: 0, y: 10 }}
-			// animate={{ opacity: 1, y: 0 }}
-			// transition={{ duration: 0.25 }}
-		>
-			<HeaderSection />
-			<WhatWeOffer />
-			<PrestigiousDestinations />
-			<CuratedPropertiesSection />
-			<NorthCoastInvestmentSection />
-			<ContactUsSection />
-		</motion.div>
-	);
+    <div>
+      <HeaderSection />
+      <WhatWeOffer />
+      <PrestigiousDestinations />
+      <CuratedPropertiesSection />
+      <NorthCoastInvestmentSection />
+      <ContactUsSection />
+    </div>
+  );
 };
 
 export default HomeOverviewPage;
