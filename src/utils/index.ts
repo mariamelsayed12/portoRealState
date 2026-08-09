@@ -148,3 +148,38 @@ export const isRentListing = (listingType?: string): boolean => {
   const clean = listingType.trim().toLowerCase();
   return clean === "rent" || clean === "إيجار" || clean === "للإيجار";
 };
+
+/**
+ * Helper to translate a Property Type cleanly using the translation function.
+ */
+export const getTranslatedPropertyType = (type: string, t: any): string => {
+  const clean = type.trim().toLowerCase();
+  switch (clean) {
+    case "chalet":
+      return t("search.propertyTypes.chalet", "Chalet");
+    case "villa":
+      return t("search.propertyTypes.villa", "Villa");
+    case "twin house":
+    case "twinhouse":
+      return t("search.propertyTypes.twinHouse", "Twin House");
+    case "town house":
+    case "townhouse":
+      return t("search.propertyTypes.townhouse", "Town House");
+    case "standalone villa":
+    case "standalonevilla":
+      return t("search.propertyTypes.standaloneVilla", "Standalone Villa");
+    case "apartment":
+      return t("search.propertyTypes.apartment", "Apartment");
+    case "duplex":
+      return t("search.propertyTypes.duplex", "Duplex");
+    case "penthouse":
+      return t("search.propertyTypes.penthouse", "Penthouse");
+    case "studio":
+      return t("search.propertyTypes.studio", "Studio");
+    case "ground floor":
+    case "groundfloor":
+      return t("search.propertyTypes.groundFloor", "Ground Floor");
+    default:
+      return type;
+  }
+};

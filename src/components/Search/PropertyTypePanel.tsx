@@ -1,8 +1,10 @@
-import { useState, useMemo } from "react";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { PanelFooter } from "./PanelFooter";
 import Loading from "../Ui/loading/loading";
 import type { IProperty } from "../../app/services/crudproperties";
+import { PROPERTY_TYPES } from "../../data";
+import { getTranslatedPropertyType } from "../../utils";
 
 interface PropertyTypePanelProps {
   units?: IProperty[];
@@ -15,7 +17,7 @@ interface PropertyTypePanelProps {
 }
 
 const PropertyTypePanel = ({
-  units = [],
+  units: _units = [],
   isLoading = false,
   isError = false,
   selected,
@@ -25,13 +27,7 @@ const PropertyTypePanel = ({
 }: PropertyTypePanelProps) => {
   const { t } = useTranslation();
 
-  // Extract unique property type names from units
-  const propertyTypeOptions = useMemo(() => {
-    const types = units
-      .map((u) => u.propertyType)
-      .filter((type): type is string => typeof type === "string" && type.trim() !== "");
-    return Array.from(new Set(types)).sort();
-  }, [units]);
+  const propertyTypeOptions = PROPERTY_TYPES;
 
   // Parse initial selected values
   const initialSet = new Set(
@@ -110,7 +106,7 @@ const PropertyTypePanel = ({
                       </svg>
                     )}
                   </div>
-                  <span>{opt}</span>
+                  <span>{getTranslatedPropertyType(opt, t)}</span>
                 </button>
               </li>
             );

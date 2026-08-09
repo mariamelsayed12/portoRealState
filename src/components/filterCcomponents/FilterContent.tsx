@@ -5,7 +5,8 @@ import { useGetPropertyQuery, type IProperty } from "../../app/services/crudprop
 import Button from "../Ui/Button";
 import Input from "../Ui/Input";
 import { useTranslation } from "react-i18next";
-import { formatDeliveryStatus, getTranslatedBadge, isRentListing } from "../../utils";
+import { formatDeliveryStatus, getTranslatedBadge, isRentListing, getTranslatedPropertyType } from "../../utils";
+import { PROPERTY_TYPES } from "../../data";
 
 interface FilterContentProps {
   units?: IProperty[];
@@ -288,29 +289,24 @@ const FilterContent = ({
             )}
           </div>
           <div className="flex flex-wrap gap-2">
-            {[
-              { id: "Chalet", labelKey: "search.propertyTypes.chalet" },
-              { id: "Villa", labelKey: "search.propertyTypes.villa" },
-              { id: "Apartment", labelKey: "search.propertyTypes.apartment" },
-              { id: "Twin house", labelKey: "search.propertyTypes.twinHouse" }
-            ].map((type) => {
+            {PROPERTY_TYPES.map((type) => {
               const isSelected =
                 (tempFilters.propertyType || "")
                   .toLowerCase()
                   .split(",")
-                  .includes(type.id.toLowerCase());
+                  .includes(type.toLowerCase());
               return (
                 <button
-                  key={type.id}
+                  key={type}
                   type="button"
-                  onClick={() => handleTogglePropertyType(type.id)}
+                  onClick={() => handleTogglePropertyType(type)}
                   className={`rounded-full px-4 py-2 text-xs font-semibold border transition-all ${
                     isSelected
                       ? "bg-[#E9F4F7] border-primary text-[#141414]"
                       : "bg-white border-[#D9E1E4] text-[#58696F] hover:border-gray-300"
                   }`}
                 >
-                  {t(type.labelKey)}
+                  {getTranslatedPropertyType(type, t)}
                 </button>
               );
             })}

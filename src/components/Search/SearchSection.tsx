@@ -10,7 +10,7 @@ import BedsAndBathsPanel from "./BedsAndBathsPanel";
 import PriceRangePanel from "./PriceRangePanel";
 import { useGetVillageQuery } from "../../app/services/crudVillage";
 import { useGetPropertyQuery } from "../../app/services/crudproperties";
-import { isRentListing } from "../../utils";
+import { isRentListing, getTranslatedPropertyType } from "../../utils";
 
 const SearchSection = () => {
   const { t ,i18n} = useTranslation();
@@ -71,7 +71,7 @@ const SearchSection = () => {
     if (!propertyType) return "";
     return propertyType
       .split(",")
-      .map((type) => type.trim())
+      .map((type) => getTranslatedPropertyType(type.trim(), t))
       .join(", ");
   };
 
