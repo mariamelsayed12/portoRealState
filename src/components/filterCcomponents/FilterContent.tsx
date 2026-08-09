@@ -7,6 +7,7 @@ import Input from "../Ui/Input";
 import { useTranslation } from "react-i18next";
 import { formatDeliveryStatus, getTranslatedBadge, isRentListing, getTranslatedPropertyType } from "../../utils";
 import { PROPERTY_TYPES } from "../../data";
+import { useLocation } from "react-router-dom";
 
 interface FilterContentProps {
   units?: IProperty[];
@@ -69,14 +70,18 @@ const FilterContent = ({
   const [activeAreaThumb, setActiveAreaThumb] = useState<"min" | "max">("min");
   const [activePriceThumb, setActivePriceThumb] = useState<"min" | "max">("min");
 
+  const { pathname } = useLocation();
+  const isRentPage = useMemo(() => {
+    return pathname.includes("/rent") || units.some(u => isRentListing(u.listingType));
+  }, [pathname, units]);
+
   // Determine the correct list of properties for computing stable filter metadata
   const sourceProperties = useMemo(() => {
-    const isRentPage = units.some(u => isRentListing(u.listingType));
     const targetProperties = isRentPage
       ? allProperties.filter(u => isRentListing(u.listingType))
       : allProperties.filter(u => !isRentListing(u.listingType));
     return targetProperties.length > 0 ? targetProperties : units;
-  }, [allProperties, units]);
+  }, [allProperties, units, isRentPage]);
 
   const { minArea, maxArea, minPrice, maxPrice } = useMemo(() => {
     if (!sourceProperties || sourceProperties.length === 0) {
@@ -685,59 +690,61 @@ const FilterContent = ({
         </div>
  
         {/* Payments Card */}
-        <div className="bg-white rounded-md border border-border p-5 shadow-[0_2px_8px_rgba(73,95,104,0.04)]">
-          <div className="flex justify-between items-center mb-4">
-            <h3 className="text-[15px] font-bold text-text-secondary">
-              {t("filterDrawer.payments")}
-              <span className="text-xs font-normal text-[#7D8D93]">{t("filterDrawer.currencyUnit")}</span>
-            </h3>
-            {displayMode === "static" && (
-              <button
-                type="button"
-                onClick={() => setTempFilters((prev) => ({ ...prev, downPayment: "", monthlyInstallment: "" }))}
-                className="text-xs font-semibold text-[#1E8CAB] hover:underline cursor-pointer"
-              >
-                {t("filterDrawer.reset")}
-              </button>
-            )}
-          </div>
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <label className="block text-[11px] font-semibold text-[#7D8D93] mb-1.5">
-                {t("filterDrawer.downPayment")}
-              </label>
-              <Input
-                type="number"
-                value={tempFilters.downPayment}
-                onChange={(e) =>
-                  setTempFilters((prev) => ({
-                    ...prev,
-                    downPayment: e.target.value,
-                  }))
-                }
-                className="h-10 text-xs border-[#D9E1E4]"
-                placeholder={t("filterDrawer.placeholder.zero")}
-              />
+        {!isRentPage && (
+          <div className="bg-white rounded-md border border-border p-5 shadow-[0_2px_8px_rgba(73,95,104,0.04)]">
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="text-[15px] font-bold text-text-secondary">
+                {t("filterDrawer.payments")}
+                <span className="text-xs font-normal text-[#7D8D93]">{t("filterDrawer.currencyUnit")}</span>
+              </h3>
+              {displayMode === "static" && (
+                <button
+                  type="button"
+                  onClick={() => setTempFilters((prev) => ({ ...prev, downPayment: "", monthlyInstallment: "" }))}
+                  className="text-xs font-semibold text-[#1E8CAB] hover:underline cursor-pointer"
+                >
+                  {t("filterDrawer.reset")}
+                </button>
+              )}
             </div>
-            <div>
-              <label className="block text-[11px] font-semibold text-[#7D8D93] mb-1.5">
-                {t("filterDrawer.monthlyInstallment")}
-              </label>
-              <Input
-                type="number"
-                value={tempFilters.monthlyInstallment}
-                onChange={(e) =>
-                  setTempFilters((prev) => ({
-                    ...prev,
-                    monthlyInstallment: e.target.value,
-                  }))
-                }
-                className="h-10 text-xs border-[#D9E1E4]"
-                placeholder={t("filterDrawer.placeholder.zero")}
-              />
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="block text-[11px] font-semibold text-[#7D8D93] mb-1.5">
+                  {t("filterDrawer.downPayment")}
+                </label>
+                <Input
+                  type="number"
+                  value={tempFilters.downPayment}
+                  onChange={(e) =>
+                    setTempFilters((prev) => ({
+                      ...prev,
+                      downPayment: e.target.value,
+                    }))
+                  }
+                  className="h-10 text-xs border-[#D9E1E4]"
+                  placeholder={t("filterDrawer.placeholder.zero")}
+                />
+              </div>
+              <div>
+                <label className="block text-[11px] font-semibold text-[#7D8D93] mb-1.5">
+                  {t("filterDrawer.monthlyInstallment")}
+                </label>
+                <Input
+                  type="number"
+                  value={tempFilters.monthlyInstallment}
+                  onChange={(e) =>
+                    setTempFilters((prev) => ({
+                      ...prev,
+                      monthlyInstallment: e.target.value,
+                    }))
+                  }
+                  className="h-10 text-xs border-[#D9E1E4]"
+                  placeholder={t("filterDrawer.placeholder.zero")}
+                />
+              </div>
             </div>
           </div>
-        </div>
+        )}
  
         {/* Delivery Date Card */}
         <div className="bg-white rounded-md border border-border p-5 shadow-[0_2px_8px_rgba(73,95,104,0.04)]">
