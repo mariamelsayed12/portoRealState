@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import DestinationCard from "./DestinationCard";
 import { useTranslation } from "react-i18next";
@@ -11,8 +11,13 @@ import EmptyState from "../Ui/EmptyState";
 const PrestigiousDestinations = () => {
 	const { t, i18n } = useTranslation();
 	const isRtl = i18n.language === "ar";
+	const [isMounted, setIsMounted] = useState(false);
+	useEffect(() => {
+		setIsMounted(true);
+	}, []);
 
-	const { data, isLoading } = useGetVillageQuery({ lang: i18n.language });
+	const { data, isLoading, isUninitialized } = useGetVillageQuery({ lang: i18n.language }, { skip: !isMounted });
+	const showSkeleton = isLoading || isUninitialized;
 	
 	const scrollerRef = useRef<HTMLDivElement | null>(null);
 
@@ -41,7 +46,7 @@ const PrestigiousDestinations = () => {
 				</div>
 
 				{/* Cards Container with horizontal scrolling / Skeleton / Empty State */}
-				{isLoading ? (
+				{showSkeleton ? (
 					<div className="pl-6 sm:pl-12 md:pl-16 lg:pl-[120px] pr-0 rtl:pl-0 rtl:pr-6 rtl:sm:pr-12 rtl:md:pr-16 rtl:lg:pr-[120px]">
 						<div
 							ref={scrollerRef}

@@ -5,6 +5,7 @@ import { PanelFooter } from "./PanelFooter";
 interface PriceRangePanelProps {
   from: number;
   to: number;
+  minPrice?: number;
   maxPrice?: number;
   onFromChange: (v: number) => void;
   onToChange: (v: number) => void;
@@ -25,6 +26,7 @@ const formatPriceMillions = (val: number) => {
 const PriceRangePanel = ({
   from,
   to,
+  minPrice = 0,
   maxPrice = 10_000_000,
   onFromChange,
   onToChange,
@@ -32,7 +34,7 @@ const PriceRangePanel = ({
   onApply,
 }: PriceRangePanelProps) => {
   const { t, i18n } = useTranslation();
-  const MIN = 0;
+  const MIN = minPrice;
   const MAX = maxPrice;
 
   const [tempFrom, setTempFrom] = useState(from);
@@ -70,6 +72,10 @@ const PriceRangePanel = ({
   const toLabelStyle = isRtl
     ? { right: `${toPct}%`, transform: "translateX(50%)" }
     : { left: `${toPct}%`, transform: "translateX(-50%)" };
+
+  const fromLabelStyle = isRtl
+    ? { right: `${fromPct}%`, transform: "translateX(50%)" }
+    : { left: `${fromPct}%`, transform: "translateX(-50%)" };
 
   const handleApply = () => {
     onFromChange(tempFrom);
@@ -177,9 +183,12 @@ const PriceRangePanel = ({
 
           {/* Labels row — separate from the track layer to avoid clipping */}
           <div className="relative h-[18px] mt-[4px]">
-            {/* Min label — always at far left/right */}
-            <span className={`absolute top-0 text-[12px] font-normal text-[#464646] font-['Inter'] whitespace-nowrap ${isRtl ? "right-0" : "left-0"}`}>
-              0 {t("search.egp")}
+            {/* Min label — follows the "from" thumb */}
+            <span
+              className="absolute top-0 text-[12px] font-normal text-[#464646] font-['Inter'] whitespace-nowrap"
+              style={fromLabelStyle}
+            >
+              {formatPriceMillions(tempFrom)} {t("search.egp")}
             </span>
             {/* Max label — follows the "to" thumb */}
             <span

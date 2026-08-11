@@ -2,7 +2,6 @@ import { useState, useMemo } from "react";
 import { PanelFooter } from "./PanelFooter";
 import type { IProperty } from "../../app/services/crudproperties";
 import { useTranslation } from "react-i18next";
-import Spinner from "../Ui/LoadingSpinner";
 
 interface LocationPanelProps {
   units?: IProperty[];
@@ -62,9 +61,18 @@ const LocationPanel = ({
   return (
     <div className="flex flex-col gap-[24px] p-[12px] min-w-[240px] bg-white rounded-[12px]">
       {isLoading ? (
-        <div className="flex items-center justify-center py-[24px]">
-          <Spinner />
-        </div>
+        <ul className="flex flex-col gap-[4px] max-h-[240px] overflow-y-auto custom-scrollbar pr-[4px] animate-pulse">
+          {Array.from({ length: 4 }).map((_, idx) => (
+            <li key={idx}>
+              <div className="w-full flex items-center gap-[12px] px-[12px] py-[8px]">
+                {/* Custom Checkbox Skeleton */}
+                <div className="size-[20px] rounded-[4px] bg-[#E8EFF1] shrink-0" />
+                {/* Text Skeleton */}
+                <div className="h-[16px] bg-[#E8EFF1] rounded w-24" />
+              </div>
+            </li>
+          ))}
+        </ul>
       ) : isError ? (
         <div className="text-center py-[24px] text-[14px] font-normal font-['Poppins'] text-red-500">
           {t("search.errorLoading", "Failed to load locations")}

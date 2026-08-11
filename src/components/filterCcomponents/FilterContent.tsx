@@ -37,8 +37,12 @@ const FilterContent = ({
 }: FilterContentProps) => {
     const { t ,i18n} = useTranslation();
 
-  const { data: destinations, isLoading: isLocationsLoading } = useGetVillageQuery({ lang: i18n.language });
-  const { data: allProperties = [] } = useGetPropertyQuery({ lang: i18n.language });
+  const { data: destinations, isLoading: isLocationsLoading, isFetching: isLocationsFetching, isError: isLocationsError } = useGetVillageQuery({ lang: i18n.language });
+  const { data: allProperties = [], isLoading: isAllPropertiesLoading, isFetching: isAllPropertiesFetching, isError: isAllPropertiesError } = useGetPropertyQuery({ lang: i18n.language });
+
+  const isLocationsLoadingOrFetching = isLocationsLoading || isLocationsFetching;
+  const isDeliveryLoadingOrFetching = isLoading || isAllPropertiesLoading || isAllPropertiesFetching;
+  const isDeliveryError = isAllPropertiesError;
 
   const [visibleLocationsCount, setVisibleLocationsCount] = useState(6);
   const [visiblePropertyTypesCount, setVisiblePropertyTypesCount] = useState(4);
@@ -366,7 +370,7 @@ const FilterContent = ({
                 </button>
               )}
             </div>
-            {isLocationsLoading ? (
+            {isLocationsLoadingOrFetching ? (
               <div className="flex flex-wrap gap-2 animate-pulse">
                 {Array.from({ length: 6 }).map((_, idx) => (
                   <div
@@ -374,6 +378,14 @@ const FilterContent = ({
                     className="h-8 bg-[#E8EFF1] rounded-full w-24 sm:w-28 border border-[#E8EFF1]"
                   />
                 ))}
+              </div>
+            ) : isLocationsError ? (
+              <div className="text-xs text-red-500 font-semibold py-2">
+                {t("search.errorLoading", "Failed to load locations")}
+              </div>
+            ) : visibleDestinations.length === 0 ? (
+              <div className="text-xs text-text-secondary font-semibold py-2">
+                {t("search.noOptions", "No locations available")}
               </div>
             ) : (
               <>
@@ -531,7 +543,7 @@ const FilterContent = ({
                   }))
                 }
                 className="h-10 text-xs border-[#D9E1E4]"
-                placeholder={t("filterDrawer.placeholder.zero")}
+                placeholder={String(minArea)}
               />
             </div>
             <div>
@@ -548,7 +560,7 @@ const FilterContent = ({
                   }))
                 }
                 className="h-10 text-xs border-[#D9E1E4]"
-                placeholder={t("filterDrawer.placeholder.any")}
+                placeholder={String(maxArea)}
               />
             </div>
           </div>
@@ -626,7 +638,7 @@ const FilterContent = ({
                   }))
                 }
                 className="h-10 text-xs border-[#D9E1E4]"
-                placeholder={t("filterDrawer.placeholder.min")}
+                placeholder={String(minPrice)}
               />
             </div>
             <div>
@@ -643,7 +655,7 @@ const FilterContent = ({
                   }))
                 }
                 className="h-10 text-xs border-[#D9E1E4]"
-                placeholder={t("filterDrawer.placeholder.max")}
+                placeholder={String(maxPrice)}
               />
             </div>
           </div>
@@ -762,7 +774,7 @@ const FilterContent = ({
               </button>
             )}
           </div>
-          {isLoading ? (
+          {isDeliveryLoadingOrFetching ? (
             <div className="flex flex-wrap gap-2 animate-pulse">
               {Array.from({ length: 5 }).map((_, idx) => (
                 <div
@@ -770,6 +782,14 @@ const FilterContent = ({
                   className="h-8 bg-[#E8EFF1] rounded-full w-16 sm:w-20 border border-[#E8EFF1]"
                 />
               ))}
+            </div>
+          ) : isDeliveryError ? (
+            <div className="text-xs text-red-500 font-semibold py-2">
+              {t("search.errorLoading", "Failed to load delivery dates")}
+            </div>
+          ) : deliveryDateOptions.length === 0 ? (
+            <div className="text-xs text-text-secondary font-semibold py-2">
+              {t("search.noOptions", "No delivery dates available")}
             </div>
           ) : (
             <div className="flex flex-wrap gap-2">

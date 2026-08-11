@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { MapPin, Home, Briefcase, Banknote } from "lucide-react";
 import { useTranslation } from "react-i18next";
@@ -16,8 +16,14 @@ import { isRentListing, getTranslatedPropertyType } from "../../utils";
 
 const SearchSection = () => {
   const { t ,i18n} = useTranslation();
-  const { data: destinations } = useGetVillageQuery({ lang: i18n.language });
-  const { data: properties = [], isLoading: isPropertiesLoading, isError: isPropertiesError } = useGetPropertyQuery({ lang: i18n.language });
+  const [isMounted, setIsMounted] = useState(false);
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  const { data: destinations } = useGetVillageQuery({ lang: i18n.language }, { skip: !isMounted });
+  const { data: properties = [], isLoading: isPropertiesLoading, isUninitialized: isPropertiesUninitialized, isError: isPropertiesError } = useGetPropertyQuery({ lang: i18n.language }, { skip: !isMounted });
+  const isSearchLoading = isPropertiesLoading || isPropertiesUninitialized;
   const navigate = useNavigate();
 
   // Local filter states before applying search
@@ -28,9 +34,11 @@ const SearchSection = () => {
   const [priceFrom, setPriceFrom] = useState<number | null>(null);
   const [priceTo, setPriceTo] = useState<number | null>(null);
 
-  // Derive maximum property price from backend properties
-  const maxPriceValue = useMemo(() => {
-    if (!properties || properties.length === 0) return 10_000_000;
+  // Derive minimum and maximum property prices from backend properties
+  const { minPriceValue, maxPriceValue } = useMemo(() => {
+    if (!properties || properties.length === 0) {
+      return { minPriceValue: 0, maxPriceValue: 10_000_000 };
+    }
     const prices = properties.map((p) => {
       if (isRentListing(p.listingType)) {
         return p.insurance;
@@ -40,7 +48,10 @@ const SearchSection = () => {
       }
       return p.installmentPrice;
     }).filter((p): p is number => typeof p === "number" && !isNaN(p));
-    return prices.length ? Math.max(...prices) : 10_000_000;
+    return {
+      minPriceValue: prices.length ? Math.min(...prices) : 0,
+      maxPriceValue: prices.length ? Math.max(...prices) : 10_000_000,
+    };
   }, [properties]);
 
   // Navigate to Properties page (/buy) with filters applied to URL query params
@@ -86,7 +97,7 @@ const SearchSection = () => {
 
   const getPriceLabel = () => {
     if (priceFrom === null && priceTo === null) return "";
-    const fromVal = priceFrom ?? 0;
+    const fromVal = priceFrom ?? minPriceValue;
     const toVal = priceTo ?? maxPriceValue;
     return t("search.priceFormatted", {
       from: (fromVal / 1_000_000).toFixed(1).replace(".0", ""),
@@ -115,7 +126,7 @@ const SearchSection = () => {
               panelContent={(onClose) => (
                 <LocationPanel
                   units={properties}
-                  isLoading={isPropertiesLoading}
+                  isLoading={isSearchLoading}
                   isError={isPropertiesError}
                   selected={location}
                   onSelect={setLocation}
@@ -139,7 +150,7 @@ const SearchSection = () => {
               panelContent={(onClose) => (
                 <PropertyTypePanel
                   units={properties}
-                  isLoading={isPropertiesLoading}
+                  isLoading={isSearchLoading}
                   isError={isPropertiesError}
                   selected={propertyType}
                   onSelect={setPropertyType}
@@ -186,8 +197,9 @@ const SearchSection = () => {
               className="rounded-b-[12px] sm:rounded-bl-none sm:rounded-r-[12px] rtl:sm:rounded-r-none rtl:sm:rounded-l-[12px] rtl:sm:rounded-br-none"
               panelContent={(onClose) => (
                 <PriceRangePanel
-                  from={priceFrom ?? 0}
+                  from={priceFrom ?? minPriceValue}
                   to={priceTo ?? maxPriceValue}
+                  minPrice={minPriceValue}
                   maxPrice={maxPriceValue}
                   onFromChange={setPriceFrom}
                   onToChange={setPriceTo}

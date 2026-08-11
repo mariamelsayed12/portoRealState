@@ -1,6 +1,6 @@
-import { useState, useMemo, useCallback, useEffect } from "react";
+import { useState, useMemo, useCallback, useEffect, useRef } from "react";
 import type { IProperty } from "../app/services/crudproperties";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, useLocation } from "react-router-dom";
 
 import { isRentListing } from "../utils";
 
@@ -181,6 +181,8 @@ export const matchUnit = (
 
 export const useUnitsFilter = (units: IProperty[]) => {
   const [searchParams, setSearchParams] = useSearchParams();
+  const { pathname } = useLocation();
+  const initialPathname = useRef(pathname);
 
   // Parse search params to FilterState
   const parseParams = useCallback((): FilterState => {
@@ -208,6 +210,9 @@ export const useUnitsFilter = (units: IProperty[]) => {
 
   // Sync state when URL params change (e.g. on navigation)
   useEffect(() => {
+    if (pathname !== initialPathname.current) {
+      return;
+    }
     const parsed = parseParams();
     setFilters((prev) => {
       const changed = Object.keys(parsed).some(
@@ -221,7 +226,7 @@ export const useUnitsFilter = (units: IProperty[]) => {
       );
       return changed ? parsed : prev;
     });
-  }, [parseParams]);
+  }, [parseParams, pathname]);
 
   // Memoized filtered units based on committed filters
   const filteredUnits = useMemo(() => {

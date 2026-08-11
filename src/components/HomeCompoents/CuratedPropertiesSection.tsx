@@ -1,4 +1,4 @@
-import { useMemo, useRef } from "react";
+import { useMemo, useRef, useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 import UnitCard from "../UnitCard";
@@ -11,7 +11,13 @@ import EmptyState from "../Ui/EmptyState";
 const CuratedPropertiesSection = () => {
   const { t, i18n } = useTranslation();
   const isRtl = i18n.language === "ar";
-  const { data, isLoading } = useGetPropertyQuery({ lang: i18n.language });
+  const [isMounted, setIsMounted] = useState(false);
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  const { data, isLoading, isUninitialized } = useGetPropertyQuery({ lang: i18n.language }, { skip: !isMounted });
+  const showSkeleton = isLoading || isUninitialized;
 
   const scrollerRef = useRef<HTMLDivElement | null>(null);
   const navigate = useNavigate();
@@ -53,7 +59,7 @@ const CuratedPropertiesSection = () => {
             ref={scrollerRef}
             className="flex gap-[24px] overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden w-full pb-2"
           >
-            {isLoading ? (
+            {showSkeleton ? (
               Array.from({ length: 4 }).map((_, idx) => (
                 <UnitCardSkeleton key={idx} />
               ))

@@ -3,6 +3,7 @@ import { FaFacebookF, FaInstagram, FaTiktok } from "react-icons/fa6";
 import { Mail, Phone, MapPin } from "lucide-react";
 import Logo from "../icons/Logo";
 import { useTranslation } from "react-i18next";
+import { useGetProfileQuery } from "../../app/services/crudeProfile";
 
 const socialLinks = [
   { label: "TikTok", icon: FaTiktok, href: "#" },
@@ -12,6 +13,8 @@ const socialLinks = [
 
 const Footer = () => {
   const { t } = useTranslation();
+  const { data: profile ,isLoading} = useGetProfileQuery();
+  console.log(profile)
 
   return (
     <footer className="bg-white text-[#141414] border-t border-[#EDEFF2]">
@@ -95,21 +98,32 @@ const Footer = () => {
               <div className="flex gap-[8px] items-center text-[#141414]">
                 <Mail className="w-[24px] h-[24px] text-[#464646] shrink-0" />
                 <span className="font-['Poppins'] font-normal text-[16px]">
-                  {t("footer.contact.email")}
+                  {/* {t("footer.contact.email")} */}
+                  {
+                    isLoading?(<div className="w-[100px] h-[20px] bg-gray-200 animate-pulse"> </div>):
+                    profile?.email|| t("footer.contact.email")
+                  }
                 </span>
               </div>
               {/* Phone */}
               <div className="flex gap-[8px] items-center text-[#141414]">
                 <Phone className="w-[24px] h-[24px] text-[#464646] shrink-0" />
                 <span className="font-['Poppins'] font-normal text-[16px]" dir="ltr">
-                  {t("footer.contact.phone")}
+                  {/* {t("footer.contact.phone")} */}
+                  {isLoading?(<div className="w-[100px] h-[20px] bg-gray-200 animate-pulse"> </div>):
+                  profile?.phoneNumber || t("footer.contact.phone")}
                 </span>
               </div>
               {/* Location */}
               <div className="flex gap-[8px] items-start text-[#141414] max-w-[220px]">
                 <MapPin className="w-[24px] h-[24px] text-[#464646] shrink-0 mt-0.5" />
                 <span className="font-['Poppins'] font-normal text-[16px] leading-[1.3]">
-                  {t("footer.contact.location")}
+                  {/* {t("footer.contact.location")} */}
+                  {isLoading ? (
+                    <div className="w-[100px] h-[20px] bg-gray-200 animate-pulse"> </div>
+                  ) : (
+                    profile?.companyLocation || t("footer.contact.location")
+                  )}
                 </span>
               </div>
             </div>

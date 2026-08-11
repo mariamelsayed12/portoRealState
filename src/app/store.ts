@@ -5,6 +5,7 @@ import favoriteUnitReducer from "./feature/favoriteUnitSlice";
 import createWebStorage from "redux-persist/es/storage/createWebStorage";
 import {  VillageApiSlice } from "./services/crudVillage";
 import { propertyApiSlice } from "./services/crudproperties";
+import { ProfileApiSlice } from "./services/crudeProfile";
 
 
 const storage = createWebStorage("local");
@@ -28,6 +29,7 @@ export const store = configureStore({
     favUnit: persistedFavUnitReducer,
     [VillageApiSlice.reducerPath]: VillageApiSlice.reducer,
     [propertyApiSlice.reducerPath]: propertyApiSlice.reducer,
+    [ProfileApiSlice.reducerPath]: ProfileApiSlice.reducer,
   },
 
   middleware: (getDefaultMiddleware) =>
@@ -36,7 +38,8 @@ export const store = configureStore({
     })
      .concat(
       VillageApiSlice.middleware,
-      propertyApiSlice.middleware
+      propertyApiSlice.middleware,
+      ProfileApiSlice.middleware,
 
      ),
 });

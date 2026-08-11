@@ -9,10 +9,10 @@ interface DestinationStatsProps {
 
 const StatCard = ({ label, value }: { label: string; value: string }) => (
   <div className="bg-white/10 backdrop-blur-[12px] rounded-[12px] p-[8px] flex flex-col gap-[8px] items-start w-full sm:w-[181px] h-[75px] shrink-0 border border-white/10">
-    <span className="text-[16px] font-normal text-[#edeff2] font-['Poppins'] leading-[normal]">
+    <span className="md:text-[16px] text-[10px] font-normal text-[#edeff2] font-['Poppins'] leading-[normal]">
       {label}
     </span>
-    <span className="text-[19px] font-medium text-[#edeff2] font-['Poppins'] leading-[normal] truncate w-full">
+    <span className="md:text-[19px] text-[13px] font-medium text-[#edeff2] font-['Poppins'] leading-[normal] truncate w-full">
       {value}
     </span>
   </div>

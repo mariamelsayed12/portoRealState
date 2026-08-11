@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { PanelFooter } from "./PanelFooter";
-import Loading from "../Ui/loading/loading";
 import type { IProperty } from "../../app/services/crudproperties";
 import { PROPERTY_TYPES } from "../../data";
 import { getTranslatedPropertyType } from "../../utils";
+import Spinner from "../Ui/LoadingSpinner";
 
 interface PropertyTypePanelProps {
   units?: IProperty[];
@@ -59,7 +59,7 @@ const PropertyTypePanel = ({
     <div className="flex flex-col gap-[24px] p-[12px] min-w-[240px] bg-white rounded-[12px]">
       {isLoading ? (
         <div className="flex items-center justify-center py-[24px]">
-          <Loading />
+          < Spinner />
         </div>
       ) : isError ? (
         <div className="text-center py-[24px] text-[14px] font-normal font-['Poppins'] text-red-500">

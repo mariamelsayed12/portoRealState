@@ -11,7 +11,12 @@ import { Link } from "react-router-dom";
 import { useState, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import type { IProperty } from "../app/services/crudproperties";
-import { truncateText, formatDeliveryStatus, getTranslatedBadge, isRentListing } from "../utils";
+import {
+  truncateText,
+  formatDeliveryStatus,
+  getTranslatedBadge,
+  isRentListing,
+} from "../utils";
 
 const statIconMap = {
   location: MapPin,
@@ -31,8 +36,11 @@ const UnitCard = ({
   const isRtl = i18n.language === "ar";
   const dispatch = useAppDispatch();
   const { favUnite } = useSelector((state: RootState) => state.favUnit);
-  const defaultMode = card.paymentModel?.toLowerCase() === "cash" ? "cash" : "installment";
-  const [paymentMode, setPaymentMode] = useState<"installment" | "cash">(defaultMode);
+  const defaultMode =
+    card.paymentModel?.toLowerCase() === "cash" ? "cash" : "installment";
+  const [paymentMode, setPaymentMode] = useState<"installment" | "cash">(
+    defaultMode,
+  );
 
   const isFavorite = favUnite.some((item) => item._id === card._id);
   const isRent = isRentListing(card.listingType);
@@ -49,7 +57,9 @@ const UnitCard = ({
 
   // Helper to get the cash price
   const getCashPrice = () => {
-    return card.cashPrice ? `${card.cashPrice.toLocaleString()} EGP` : "Contact for Price";
+    return card.cashPrice
+      ? `${card.cashPrice.toLocaleString()} EGP`
+      : "Contact for Price";
   };
 
   const currentPrice = isRent
@@ -63,7 +73,11 @@ const UnitCard = ({
   const dpPct = card.downPaymentPercentage ?? 2;
   const period = card.installmentPeriod || "2";
   const yearsVal = parseInt(period.replace(/[a-zA-Z\s]/g, "")) || 5;
-  const instValue = card.installmentValue || (card.installmentPrice ? Math.round((card.installmentPrice * (1 - dpPct / 100)) / (yearsVal * 4)) : 0);
+  const instValue =
+    card.installmentValue ||
+    (card.installmentPrice
+      ? Math.round((card.installmentPrice * (1 - dpPct / 100)) / (yearsVal * 4))
+      : 0);
 
   const paymentNoteRaw =
     !isRent && (card.installmentPrice || 0) > 0
@@ -87,8 +101,6 @@ const UnitCard = ({
   const locationText = card.village
     ? `${card.village.name} • ${card.propertyType}`
     : "";
-
-
 
   const formatPrice = (price: string) => {
     if (!price) return "";
@@ -190,9 +202,11 @@ const UnitCard = ({
           </div>
 
           {/* Title */}
-          <h3 className="text-[15px] sm:text-[16px] font-medium text-[#141414] font-['Poppins'] group-hover:text-primary transition-colors leading-tight line-clamp-2">
-            <Link to={`/home/${card.village?.slug || ""}/properties/${card._id}`}>
-              {truncateText(card.name,35)}
+          <h3 className="text-[13px] sm:text-[16px] font-medium text-[#141414] font-['Poppins'] group-hover:text-primary transition-colors leading-tight line-clamp-2 sm:line-clamp-none sm:truncate sm:whitespace-nowrap lg:line-clamp-2 lg:whitespace-normal">
+            <Link
+              to={`/home/${card.village?.slug || ""}/properties/${card._id}`}
+            >
+              {truncateText(card.name, 35)}
             </Link>
           </h3>
 
@@ -226,8 +240,8 @@ const UnitCard = ({
 
           {/* Price + Payment Modes */}
           <div className="flex flex-col h-[88px] gap-[8px] w-full">
-            <div className="flex items-center justify-between gap-[8px] w-full flex-wrap">
-              <p className="text-[15px] sm:text-[16px] font-medium text-[#141414] font-['Poppins'] whitespace-nowrap">
+            <div className="flex items-center justify-between gap-[8px] w-full flex-wrap sm:flex-nowrap lg:flex-wrap">
+              <p className="text-[13px] sm:text-[16px] font-medium text-[#141414] font-['Poppins'] whitespace-nowrap sm:truncate sm:min-w-0 lg:overflow-visible">
                 {formatPrice(currentPrice)}
               </p>
               {hasBothModes && (
