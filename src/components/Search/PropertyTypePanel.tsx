@@ -70,7 +70,7 @@ const PropertyTypePanel = ({
           {t("search.noOptions", "No property types available")}
         </div>
       ) : (
-        <ul className="flex flex-col gap-[4px] max-h-[240px] overflow-y-auto scrollbar-none">
+        <ul className="flex flex-col gap-[4px] max-h-[240px] overflow-y-auto custom-scrollbar pr-[4px]">
           {propertyTypeOptions.map((opt) => {
             const isChecked = tempSelected.has(opt);
             return (
