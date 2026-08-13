@@ -75,7 +75,8 @@ export const useBuyProperties = () => {
   const [searchParams] = useSearchParams();
 
   // Fetch villages/destinations for mapping location names to IDs
-  const { data: destinations = [] } = useGetVillageQuery({ lang: i18n.language });
+  const { data: destinationsData, isLoading: isDestinationsLoading } = useGetVillageQuery({ lang: i18n.language });
+  const destinations = destinationsData ?? [];
 
   // Get active filters and URL synchronization
   const {
@@ -130,7 +131,7 @@ export const useBuyProperties = () => {
 
   // Main list fetch
   const { data, isFetching, isLoading } = useGetPaginatedPropertiesQuery(backendFilters, {
-    skip: destinations.length === 0,
+    skip: isDestinationsLoading,
   });
 
   // Query backend with tempFilters to get the matching count for the drawer apply button
@@ -145,7 +146,7 @@ export const useBuyProperties = () => {
   }, [tempFilters, destinations]);
 
   const { data: tempCountData } = useGetPaginatedPropertiesQuery(tempBackendFilters, {
-    skip: destinations.length === 0,
+    skip: isDestinationsLoading,
   });
   const tempFilteredCount = tempCountData?.results ?? 0;
 
@@ -175,7 +176,7 @@ export const useBuyProperties = () => {
   );
 
   const showInitialLoading =
-    destinations.length === 0 ||
+    isDestinationsLoading ||
     isLoading ||
     (isFetching && properties.length === 0);
 

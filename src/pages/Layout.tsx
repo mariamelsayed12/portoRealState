@@ -3,9 +3,23 @@ import { Outlet, useLocation } from "react-router-dom";
 import Navbar from "../components/navbar/Navbar";
 import Footer from "../components/footer/Footer";
 import { FaWhatsapp } from "react-icons/fa6";
+import { useGetPropertyQuery } from "../app/services/crudproperties";
+import { useAppDispatch } from "../app/store";
+import { syncFavoritesAction } from "../app/feature/favoriteUnitSlice";
+import { useTranslation } from "react-i18next";
 
 const RootLayout = () => {
   const location = useLocation();
+  const { i18n } = useTranslation();
+  const { data: units = [], isSuccess } = useGetPropertyQuery({ lang: i18n.language });
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    if (isSuccess && units) {
+      const validIds = units.map((u) => u._id);
+      dispatch(syncFavoritesAction(validIds));
+    }
+  }, [isSuccess, units, dispatch]);
 
   useEffect(() => {
     console.log("RootLayout Mounted");

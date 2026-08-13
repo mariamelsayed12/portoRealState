@@ -44,7 +44,7 @@ const DestinationCard = ({ destination }: DestinationCardProps) => {
 			{/* Badges container at the bottom */}
 			<div className="relative z-10 flex items-start justify-between gap-2 sm:gap-4 w-full">
 				{/* Left Glass Badge */}
-				<div className="bg-white/10 backdrop-blur-md rounded-[12px] p-2 flex flex-col items-start min-w-[90px] sm:min-w-[120px] flex-1 border border-white/15">
+				<div className="bg-white/10 backdrop-blur-md rounded-[12px] p-2 flex flex-col items-start min-w-[90px] sm:min-w-[120px]  border border-white/15">
 					<h3 className="text-[#edeff2] text-[13px] sm:text-[19px] font-medium font-['Poppins'] leading-tight break-words w-full">
 						{destination.name}
 					</h3>

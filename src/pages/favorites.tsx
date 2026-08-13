@@ -1,4 +1,4 @@
-import { useState, useMemo, useRef } from "react";
+import { useState, useMemo, useRef, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { AnimatePresence, motion } from "framer-motion";
 import { Heart, ChevronLeft, ChevronRight } from "lucide-react";
@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import EmptyState from "../components/Ui/EmptyState";
 
-import type { RootState } from "../app/store";
+import { type RootState, useAppDispatch } from "../app/store";
 import UnitCard from "../components/UnitCard";
 import UnitCardSkeleton from "../components/UnitCardSkeleton";
 import { useUnitsFilter } from "../hooks/useUnitsFilter";
@@ -18,15 +18,25 @@ import { getRecommendedProperties } from "../utils/recommendations";
 import FilterDrawer from "../components/filterCcomponents/FilterDrawer";
 import FilterIcon from "../components/icons/Filter";
 import SortIcon from "../components/icons/SortIcon";
+import { syncFavoritesAction } from "../app/feature/favoriteUnitSlice";
 
 const FavoritesPage = () => {
-    const { t, i18n } = useTranslation();
-  const { data: units = [], isLoading } = useGetPropertyQuery({ lang: i18n.language });
+  const { t, i18n } = useTranslation();
+  const { data: units = [], isLoading, isSuccess } = useGetPropertyQuery({ lang: i18n.language });
   const navigate = useNavigate();
   const isRtl = i18n.language === "ar";
+  const dispatch = useAppDispatch();
   const { favUnite } = useSelector((state: RootState) => state.favUnit);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [isSortOpen, setIsSortOpen] = useState(false);
+
+  // Sync favorites in the Redux store with latest backend properties
+  useEffect(() => {
+    if (isSuccess && units) {
+      const validIds = units.map((u) => u._id);
+      dispatch(syncFavoritesAction(validIds));
+    }
+  }, [isSuccess, units, dispatch]);
 
   const SORT_OPTIONS: { label: string; value: SortOption }[] = useMemo(
     () => [
@@ -39,10 +49,15 @@ const FavoritesPage = () => {
     [t],
   );
 
-  // Filter out any corrupted or incomplete persisted favorite units
+  // Filter out any corrupted or incomplete persisted favorite units and validate against backend
   const validFavUnite = useMemo(() => {
-    return favUnite.filter((unit) => unit && unit._id && unit.name);
-  }, [favUnite]);
+    const verified = favUnite.filter((unit) => unit && unit._id && unit.name);
+    if (isSuccess && units) {
+      const backendIds = new Set(units.map((u) => u._id));
+      return verified.filter((unit) => backendIds.has(unit._id));
+    }
+    return verified;
+  }, [favUnite, units, isSuccess]);
 
   // Apply sidebar filters on top of favorite properties
   const {
@@ -105,6 +120,29 @@ const FavoritesPage = () => {
     const amount = direction === "left" ? -cardWidth * 1.15 : cardWidth * 1.15;
     container.scrollBy({ left: amount, behavior: "smooth" });
   };
+
+  if (isLoading) {
+    return (
+      <section className="bg-background pb-14 sm:pb-16 overflow-x-hidden">
+        <div className="mx-auto max-w-7xl">
+          {/* Skeleton Header */}
+          <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between animate-pulse">
+            <div>
+              <div className="h-10 bg-[#E8EFF1] rounded w-48 mb-2" />
+              <div className="h-4 bg-[#E8EFF1] rounded w-32" />
+            </div>
+            <div className="h-10 bg-[#E8EFF1] rounded w-28 self-start sm:self-auto" />
+          </div>
+          {/* Skeleton Grid */}
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 justify-items-stretch">
+            {Array.from({ length: 6 }).map((_, idx) => (
+              <UnitCardSkeleton key={idx} className="w-full" />
+            ))}
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   if (validFavUnite.length === 0) {
     return (
