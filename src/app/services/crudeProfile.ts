@@ -28,7 +28,7 @@ export const ProfileApiSlice = createApi({
 
   endpoints: (builder) => ({
     // ----------------------------- Get Profile -----------------------------
-    getProfile: builder.query<IProfile, void>({
+    getProfile: builder.query<IProfile, { lang: string }>({
       query: () => ({
         url: "admin/profile",
         method: "GET",

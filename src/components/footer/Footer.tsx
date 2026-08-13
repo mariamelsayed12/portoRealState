@@ -12,8 +12,8 @@ const socialLinks = [
 ];
 
 const Footer = () => {
-  const { t } = useTranslation();
-  const { data: profile ,isLoading} = useGetProfileQuery();
+  const { t,i18n } = useTranslation();
+  const { data: profile ,isLoading} = useGetProfileQuery({lang:i18n.language});
   console.log(profile)
 
   return (

@@ -12,11 +12,15 @@ import ImageGallery from "../components/Ui/ImageGallery";
 import { useGetVillageByIdQuery } from "../app/services/crudVillage";
 import DestinationDetailsSkeleton from "../components/DestinationDetailsSkeleton";
 import { useTranslation } from "react-i18next";
+import { useGetProfileQuery } from "../app/services/crudeProfile";
 
 
 const DestinationDetails = () => {
   const { slug } = useParams<{ slug: string }>();
-  const { i18n } = useTranslation();
+    const { i18n } = useTranslation();
+    const { data: profile } = useGetProfileQuery({lang:i18n.language});
+  
+
 
     const { data: village, isLoading } = useGetVillageByIdQuery({ id: slug || "", lang: i18n.language });
 
@@ -89,7 +93,7 @@ const DestinationDetails = () => {
       </section>
 
       {/* Location Section */}
-      <LocationSection destination={village} />
+      <LocationSection destination={village} profile={profile} />
       
       
     </motion.div>

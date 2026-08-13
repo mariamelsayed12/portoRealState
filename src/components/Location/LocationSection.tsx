@@ -4,14 +4,16 @@ import type { IVillage } from "../../app/services/crudVillage";
 import LocationItem from "./LocationItem";
 import GoogleMap from "./GoogleMap";
 import { useTranslation } from "react-i18next";
+import type { IProfile } from "../../app/services/crudeProfile";
 
 interface LocationSectionProps {
   destination: IVillage;
+  profile?: IProfile;
 }
 
-const LocationSection: React.FC<LocationSectionProps> = ({ destination }) => {
+const LocationSection: React.FC<LocationSectionProps> = ({ destination,profile }) => {
   const { t } = useTranslation();
-  const { name, locationText, latitude, longitude, googleMapsUrl } = destination;
+  const { name,latitude, longitude, googleMapsUrl } = destination;
 
   const coordinates = { lat: latitude, lng: longitude };
 
@@ -19,17 +21,17 @@ const LocationSection: React.FC<LocationSectionProps> = ({ destination }) => {
   const locationItems = [
     {
       icon: MapPin,
-      label: locationText || t("locationSection.addressNotAvailable"),
+      label: profile?.companyLocation || t("locationSection.addressNotAvailable"),
       href: googleMapsUrl,
     },
     {
       icon: Phone,
-      label: t("locationSection.phoneNotAvailable"),
+      label: profile?.phoneNumber || t("locationSection.phoneNotAvailable"),
       href: undefined,
     },
     {
       icon: Mail,
-      label: t("locationSection.emailNotAvailable"),
+      label:profile?.email || t("locationSection.emailNotAvailable"),
       href: undefined,
     },
   ];
