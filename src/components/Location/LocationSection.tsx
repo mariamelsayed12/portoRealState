@@ -21,7 +21,7 @@ const LocationSection: React.FC<LocationSectionProps> = ({ destination,profile }
   const locationItems = [
     {
       icon: MapPin,
-      label: profile?.companyLocation || t("locationSection.addressNotAvailable"),
+      label: destination.locationText|| t("locationSection.addressNotAvailable"),
       href: googleMapsUrl,
     },
     {

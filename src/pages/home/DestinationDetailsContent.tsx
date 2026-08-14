@@ -74,12 +74,12 @@ const DestinationDetailsContent = ({ village }: DestinationDetailsContentProps) 
 				{/* Section Header */}
 				<div className="mb-6 flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
 					<div>
-						<h2 className="text-3xl font-semibold tracking-tight text-text-secondary sm:text-[40px]">
+						<h2 className="text-3xl pb-3 font-semibold tracking-tight text-text-secondary sm:text-[40px]">
 							{t("destinationDetails.exploreProperties", { title: village.name })}
 						</h2>
-						<p className="mt-3 max-w-2xl text-sm leading-relaxed text-text-darker sm:text-base">
+						{/* <p className="mt-3 max-w-2xl text-sm leading-relaxed text-text-darker sm:text-base">
 							{t(`destinations.${village.slug === 'porto-marina' ? 'portoMarina' : village.slug}.description`)}
-						</p>
+						</p> */}
 					</div>
 					
 					{/* Action Buttons: Filter & Sort */}
