@@ -183,3 +183,21 @@ export const getTranslatedPropertyType = (type: string, t: any): string => {
       return type;
   }
 };
+
+/**
+ * Centralized helper to get the price of a property:
+ * - Rent -> cashPrice
+ * - Cash/non-installment property -> cashPrice
+ * - Installment property -> installmentPrice
+ */
+export const getPropertyPrice = (unit: IProperty): number => {
+  if (!unit) return 0;
+  if (isRentListing(unit.listingType)) {
+    return unit.cashPrice || 0;
+  }
+  if (unit.paymentModel?.toLowerCase() === "cash") {
+    return unit.cashPrice || 0;
+  }
+  return unit.installmentPrice || 0;
+};
+

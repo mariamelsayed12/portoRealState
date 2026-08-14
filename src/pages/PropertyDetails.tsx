@@ -171,7 +171,7 @@ const PropertyDetails: React.FC = () => {
         // 3. Same Price (+2 pts)
         let samePrice = false;
         if (isRentListing(property.listingType)) {
-          samePrice = u.insurance !== undefined && property.insurance !== undefined && u.insurance === property.insurance;
+          samePrice = u.cashPrice !== undefined && property.cashPrice !== undefined && u.cashPrice === property.cashPrice;
         } else {
           const isCurrentCash = property.paymentModel?.toLowerCase() === "cash";
           const isCandidateCash = u.paymentModel?.toLowerCase() === "cash";
@@ -463,7 +463,7 @@ const PropertyDetails: React.FC = () => {
                       {t("propertyDetails.pricing.monthlyRent", "Monthly Rent")}
                     </span>
                     <span className="font-['Poppins'] font-medium text-[19px] text-[#141414]">
-                      Contact for Price
+                      {property.cashPrice ? `${property.cashPrice.toLocaleString()} EGP` : "Contact for Price"}
                     </span>
                   </div>
                   {/* Vertical separator */}

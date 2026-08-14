@@ -44,9 +44,9 @@ export const getRecommendedProperties = (
     let samePrice = false;
     if (isRentListing(currentProperty.listingType)) {
       samePrice =
-        candidate.insurance !== undefined &&
-        currentProperty.insurance !== undefined &&
-        candidate.insurance === currentProperty.insurance;
+        candidate.cashPrice !== undefined &&
+        currentProperty.cashPrice !== undefined &&
+        candidate.cashPrice === currentProperty.cashPrice;
     } else {
       const isCurrentCash = currentProperty.paymentModel?.toLowerCase() === "cash";
       const isCandidateCash = candidate.paymentModel?.toLowerCase() === "cash";

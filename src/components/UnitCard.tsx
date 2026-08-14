@@ -55,20 +55,22 @@ const UnitCard = ({
     }
   };
 
-  // Helper to get the cash price
-  const getCashPrice = () => {
-    return card.cashPrice
-      ? `${card.cashPrice.toLocaleString()} EGP`
-      : "Contact for Price";
+  const getPriceVal = () => {
+    if (isRent) {
+      return card.cashPrice || 0;
+    }
+    if (paymentMode === "cash") {
+      return card.cashPrice || 0;
+    }
+    return card.installmentPrice || 0;
   };
 
-  const currentPrice = isRent
-    ? "Contact for Price"
-    : paymentMode === "cash"
-      ? getCashPrice()
-      : card.installmentPrice
-        ? `${card.installmentPrice.toLocaleString()} EGP`
-        : "Contact for Price";
+  const price = getPriceVal();
+  const currentPrice = price > 0
+    ? isRent
+      ? `${price.toLocaleString()} EGP/month`
+      : `${price.toLocaleString()} EGP`
+    : "Contact for Price";
 
   const dpPct = card.downPaymentPercentage ?? 2;
   const period = card.installmentPeriod || "2";

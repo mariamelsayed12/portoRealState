@@ -10,7 +10,7 @@ import BedsAndBathsPanel from "./BedsAndBathsPanel";
 import PriceRangePanel from "./PriceRangePanel";
 import { useGetVillageQuery } from "../../app/services/crudVillage";
 import { useGetPropertyQuery } from "../../app/services/crudproperties";
-import { isRentListing, getTranslatedPropertyType } from "../../utils";
+import { getTranslatedPropertyType, getPropertyPrice } from "../../utils";
 
 
 
@@ -39,15 +39,7 @@ const SearchSection = () => {
     if (!properties || properties.length === 0) {
       return { minPriceValue: 0, maxPriceValue: 10_000_000 };
     }
-    const prices = properties.map((p) => {
-      if (isRentListing(p.listingType)) {
-        return p.insurance;
-      }
-      if (p.paymentModel?.toLowerCase() === "cash") {
-        return p.cashPrice;
-      }
-      return p.installmentPrice;
-    }).filter((p): p is number => typeof p === "number" && !isNaN(p));
+    const prices = properties.map((p) => getPropertyPrice(p)).filter((p): p is number => typeof p === "number" && !isNaN(p));
     return {
       minPriceValue: prices.length ? Math.min(...prices) : 0,
       maxPriceValue: prices.length ? Math.max(...prices) : 10_000_000,

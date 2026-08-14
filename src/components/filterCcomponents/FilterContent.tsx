@@ -5,7 +5,7 @@ import { useGetPropertyQuery, type IProperty } from "../../app/services/crudprop
 import Button from "../Ui/Button";
 import Input from "../Ui/Input";
 import { useTranslation } from "react-i18next";
-import { formatDeliveryStatus, getTranslatedBadge, isRentListing, getTranslatedPropertyType } from "../../utils";
+import { formatDeliveryStatus, getTranslatedBadge, isRentListing, getTranslatedPropertyType, getPropertyPrice } from "../../utils";
 import { PROPERTY_TYPES } from "../../data";
 import { useLocation } from "react-router-dom";
 
@@ -92,15 +92,7 @@ const FilterContent = ({
       return { minArea: 0, maxArea: 1000, minPrice: 0, maxPrice: 60000000 };
     }
     const areas = sourceProperties.map(u => u.area).filter((a): a is number => typeof a === 'number' && !isNaN(a));
-    const prices = sourceProperties.map(u => {
-      if (isRentListing(u.listingType)) {
-        return u.insurance;
-      }
-      if (u.paymentModel?.toLowerCase() === "cash") {
-        return u.cashPrice;
-      }
-      return u.installmentPrice;
-    }).filter((p): p is number => typeof p === 'number' && !isNaN(p));
+    const prices = sourceProperties.map(u => getPropertyPrice(u)).filter((p): p is number => typeof p === 'number' && !isNaN(p));
     
     const minA = 0;
     const maxA = areas.length ? Math.max(...areas) : 1000;

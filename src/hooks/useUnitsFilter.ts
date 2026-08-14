@@ -2,7 +2,7 @@ import { useState, useMemo, useCallback, useEffect, useRef } from "react";
 import type { IProperty } from "../app/services/crudproperties";
 import { useSearchParams, useLocation } from "react-router-dom";
 
-import { isRentListing } from "../utils";
+import { getPropertyPrice } from "../utils";
 
 export interface FilterState {
   propertyType: string;
@@ -112,17 +112,7 @@ export const matchUnit = (
       return false;
   }
 
-  // 5. Price Range Filter
-  const getPrice = (u: IProperty) => {
-    if (isRentListing(u.listingType)) {
-      return u.insurance || 0;
-    }
-    if (u.paymentModel?.toLowerCase() === "cash") {
-      return u.cashPrice || 0;
-    }
-    return u.installmentPrice || 0;
-  };
-  const priceValue = getPrice(unit);
+  const priceValue = getPropertyPrice(unit);
   if (filterState.priceFrom) {
     if (priceValue < parseFloat(filterState.priceFrom))
       return false;
