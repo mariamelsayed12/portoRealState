@@ -69,13 +69,23 @@ const PriceRangePanel = ({
     ? { right: `${toPct}%`, transform: "translate(50%, -50%)" }
     : { left: `${toPct}%`, transform: "translate(-50%, -50%)" };
 
-  const toLabelStyle = isRtl
-    ? { right: `${toPct}%`, transform: "translateX(50%)" }
-    : { left: `${toPct}%`, transform: "translateX(-50%)" };
+  const getLabelStyle = (percentage: number) => {
+    const visiblePercentage = isRtl ? 100 - percentage : percentage;
+    const clampedPercentage = Math.max(0, Math.min(100, visiblePercentage));
 
-  const fromLabelStyle = isRtl
-    ? { right: `${fromPct}%`, transform: "translateX(50%)" }
-    : { left: `${fromPct}%`, transform: "translateX(-50%)" };
+    return {
+      left:
+        clampedPercentage <= 15
+          ? "0"
+          : clampedPercentage >= 85
+            ? "calc(100% - 58px)"
+            : `calc(${clampedPercentage}% - 29px)`,
+      transform: "none",
+    };
+  };
+
+  const toLabelStyle = getLabelStyle(toPct);
+  const fromLabelStyle = getLabelStyle(fromPct);
 
   const handleApply = () => {
     onFromChange(tempFrom);
