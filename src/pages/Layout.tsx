@@ -57,7 +57,7 @@ const RootLayout = () => {
     isFavoritesPage ||
     isBuyPage ||
     (isDestinationDetailsPage ? !(isVillageSuccess && village) : false);
-  const whatsappNumber = normalizePhoneForWhatsApp(profile?.phoneNumber);
+  const whatsappNumber = normalizePhoneForWhatsApp(profile?.whatsapp || profile?.phone);
 
   return (
     <div className="bg-background text-text-darker min-h-screen flex flex-col">

@@ -2,9 +2,16 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import i18n from "../../i18n";
 
 export interface IProfile {
+  _id?: string;
+  name?: string;
   email: string;
-  phoneNumber: string;
+  phone: string;
+  phoneNumber?: string;
+  whatsapp?: string;
   companyLocation: string;
+  facebook?: string;
+  instagram?: string;
+  tiktok?: string;
 }
 
 export interface IProfileResponse {

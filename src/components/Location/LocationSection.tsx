@@ -26,7 +26,7 @@ const LocationSection: React.FC<LocationSectionProps> = ({ destination,profile }
     },
     {
       icon: Phone,
-      label: profile?.phoneNumber || t("locationSection.phoneNotAvailable"),
+      label: profile?.phone || profile?.phoneNumber || t("locationSection.phoneNotAvailable"),
       href: undefined,
     },
     {

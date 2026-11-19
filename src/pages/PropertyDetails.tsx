@@ -64,7 +64,7 @@ const PropertyDetails: React.FC = () => {
   const { data: allProperties = [] } = useGetPropertyQuery({lang:i18n.language});
   const {data:destination, isLoading: isDestinationLoading} =useGetVillageByIdQuery({id:destinationSlug || "",lang:i18n.language});
   const { data: profile } = useGetProfileQuery({ lang: i18n.language });
-  const whatsappNumber = normalizePhoneForWhatsApp(profile?.phoneNumber);
+  const whatsappNumber = normalizePhoneForWhatsApp(profile?.whatsapp || profile?.phone);
 
   const mappedAmenities = useMemo(() => {
     return property?.amenities ? mapAmenitiesToFeatures(property.amenities) : [];
@@ -564,9 +564,9 @@ const PropertyDetails: React.FC = () => {
 
               {/* Call Us Button */}
               <a
-                href={profile?.phoneNumber ? `tel:${profile.phoneNumber}` : undefined}
+                href={profile?.phone ? `tel:${profile.phone}` : undefined}
                 onClick={(event) => {
-                  if (!profile?.phoneNumber) event.preventDefault();
+                  if (!profile?.phone) event.preventDefault();
                 }}
                 className="bg-[#1e8cab] flex-1 flex gap-[8px] h-[48px] items-center justify-center px-[24px] py-[8px] rounded-[12px] text-[#f5f6fa] text-[16px] font-['Poppins'] font-medium hover:bg-[#1a7a96] transition-all cursor-pointer text-center whitespace-nowrap"
               >

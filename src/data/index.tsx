@@ -144,13 +144,9 @@ export type ContactFieldConfig =
 export const contactItems = [
   {
     icon: Phone,
-    label: "+20113333333",
-    href: "tel:+20113333333",
   },
   {
     icon: Mail,
-    label: "elahdd@email.com",
-    href: "mailto:elahdd@email.com",
   },
 ];
 

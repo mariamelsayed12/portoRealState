@@ -12,6 +12,7 @@ import Textarea from "../components/Ui/Textarea";
 import Button from "../components/Ui/Button";
 import InputErrorMessage from "../components/Ui/InputErrorMessage";
 import { ContactUs_Schema } from "../validation";
+import { useGetProfileQuery } from "../app/services/crudeProfile";
 
 interface ContactUsFormData {
   fullName: string;
@@ -21,7 +22,9 @@ interface ContactUsFormData {
 }
 
 const NeedHelpPage = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const { data: profile, isLoading: isProfileLoading } =
+    useGetProfileQuery({ lang: i18n.language });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const {
@@ -125,27 +128,41 @@ const NeedHelpPage = () => {
             <div className="flex flex-col sm:flex-row gap-6 sm:gap-10 lg:gap-[93px] justify-center items-center w-full">
               {/* Phone Link */}
               <a
-                href="tel:+20113333333"
+                href={profile?.phone ? `tel:${profile.phone}` : undefined}
                 className="flex gap-[12px] items-center select-none hover:opacity-80 transition-opacity cursor-pointer group"
+                onClick={(event) => {
+                  if (!profile?.phone) event.preventDefault();
+                }}
               >
                 <div className="bg-[#B9DBE5] rounded-[99px] size-[44px] flex items-center justify-center text-[#141414] group-hover:bg-[#a3ccd9] transition-colors shrink-0">
                   <Phone className="w-[20px] h-[20px]" />
                 </div>
                 <p className="font-['Poppins'] font-normal text-[16px] text-[#141414] select-none">
-                  +20113333333
+                  {isProfileLoading ? (
+                    <span className="block w-[140px] h-[20px] bg-gray-200 animate-pulse rounded" />
+                  ) : (
+                    profile?.phone
+                  )}
                 </p>
               </a>
 
               {/* Email Link */}
               <a
-                href="mailto:elahdd@email.com"
+                href={profile?.email ? `mailto:${profile.email}` : undefined}
                 className="flex gap-[12px] items-center select-none hover:opacity-80 transition-opacity cursor-pointer group"
+                onClick={(event) => {
+                  if (!profile?.email) event.preventDefault();
+                }}
               >
                 <div className="bg-[#B9DBE5] rounded-[99px] size-[44px] flex items-center justify-center text-[#141414] group-hover:bg-[#a3ccd9] transition-colors shrink-0">
                   <Mail className="w-[20px] h-[20px]" />
                 </div>
                 <p className="font-['Poppins'] font-normal text-[16px] text-[#141414] select-none">
-                  elahdd@email.com
+                  {isProfileLoading ? (
+                    <span className="block w-[180px] h-[20px] bg-gray-200 animate-pulse rounded" />
+                  ) : (
+                    profile?.email
+                  )}
                 </p>
               </a>
             </div>

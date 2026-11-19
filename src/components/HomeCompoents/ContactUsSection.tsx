@@ -7,11 +7,14 @@ import InputErrorMessage from "../Ui/InputErrorMessage";
 import type { ContactUsFormValues } from "../../interfaces";
 import { ContactUs_Schema } from "../../validation";
 import { useTranslation } from "react-i18next";
+import { useGetProfileQuery } from "../../app/services/crudeProfile";
 
 const phoneCodes = ["Eg +000", "+20", "+971"];
 
 const ContactUsSection = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const { data: profile, isLoading: isProfileLoading } =
+    useGetProfileQuery({ lang: i18n.language });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const {
     register,
@@ -19,7 +22,7 @@ const ContactUsSection = () => {
     formState: { errors },
     reset,
   } = useForm<ContactUsFormValues>({
-    resolver: yupResolver(ContactUs_Schema) as any,
+    resolver: yupResolver(ContactUs_Schema) ,
     mode: "onSubmit",
     defaultValues: {
       fullName: "",
@@ -83,10 +86,17 @@ const ContactUsSection = () => {
                 <Phone className="size-[20px]" />
               </div>
               <a
-                href="tel:+20113333333"
+                href={profile?.phone ? `tel:${profile.phone}` : undefined}
                 className="text-[16px] font-normal text-[#141414] font-['Poppins'] leading-[normal] hover:underline"
+                onClick={(event) => {
+                  if (!profile?.phone) event.preventDefault();
+                }}
               >
-                +20113333333
+                {isProfileLoading ? (
+                  <span className="block w-[140px] h-[20px] bg-gray-200 animate-pulse rounded" />
+                ) : (
+                  profile?.phone
+                )}
               </a>
             </div>
 
@@ -96,10 +106,17 @@ const ContactUsSection = () => {
                 <Mail className="size-[20px]" />
               </div>
               <a
-                href="mailto:elahdd@email.com"
+                href={profile?.email ? `mailto:${profile.email}` : undefined}
                 className="text-[16px] font-normal text-[#141414] font-['Poppins'] leading-[normal] hover:underline"
+                onClick={(event) => {
+                  if (!profile?.email) event.preventDefault();
+                }}
               >
-                elahdd@email.com
+                {isProfileLoading ? (
+                  <span className="block w-[180px] h-[20px] bg-gray-200 animate-pulse rounded" />
+                ) : (
+                  profile?.email
+                )}
               </a>
             </div>
           </div>

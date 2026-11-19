@@ -5,16 +5,15 @@ import Logo from "../icons/Logo";
 import { useTranslation } from "react-i18next";
 import { useGetProfileQuery } from "../../app/services/crudeProfile";
 
-const socialLinks = [
-  { label: "TikTok", icon: FaTiktok, href: "#" },
-  { label: "Facebook", icon: FaFacebookF, href: "#" },
-  { label: "Instagram", icon: FaInstagram, href: "#" },
-];
-
 const Footer = () => {
-  const { t,i18n } = useTranslation();
-  const { data: profile ,isLoading} = useGetProfileQuery({lang:i18n.language});
-  console.log(profile)
+  const { t, i18n } = useTranslation();
+  const { data: profile, isLoading } = useGetProfileQuery({ lang: i18n.language });
+
+  const socialLinks = [
+    { label: "TikTok", icon: FaTiktok, href: profile?.tiktok },
+    { label: "Facebook", icon: FaFacebookF, href: profile?.facebook },
+    { label: "Instagram", icon: FaInstagram, href: profile?.instagram },
+  ].filter((socialLink) => Boolean(socialLink.href));
 
   return (
     <footer className="bg-white text-[#141414] border-t border-[#EDEFF2]">
@@ -37,6 +36,8 @@ const Footer = () => {
                     key={label}
                     href={href}
                     aria-label={label}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="grid h-[32px] w-[32px] place-items-center rounded-full bg-[#e9f4f7] text-[#5E6870] transition-colors hover:bg-primary hover:text-white"
                   >
                     <Icon className="h-4 w-4" />
@@ -97,22 +98,29 @@ const Footer = () => {
               {/* Email */}
               <div className="flex gap-[8px] items-center text-[#141414]">
                 <Mail className="w-[24px] h-[24px] text-[#464646] shrink-0" />
-                <span className="font-['Poppins'] font-normal text-[16px]">
+                <a
+                  href={`mailto:${profile?.email || "porto@admin.com"}`}
+                  className="font-['Poppins'] font-normal text-[16px] hover:text-primary hover:underline"
+                >
                   {/* {t("footer.contact.email")} */}
                   {
                     isLoading?(<div className="w-[100px] h-[20px] bg-gray-200 animate-pulse"> </div>):
                     profile?.email|| t("footer.contact.email")
                   }
-                </span>
+                </a>
               </div>
               {/* Phone */}
               <div className="flex gap-[8px] items-center text-[#141414]">
                 <Phone className="w-[24px] h-[24px] text-[#464646] shrink-0" />
-                <span className="font-['Poppins'] font-normal text-[16px]" dir="ltr">
+                <a
+                  href={`tel:${profile?.phone || profile?.phoneNumber || ""}`}
+                  className="font-['Poppins'] font-normal text-[16px] hover:text-primary hover:underline"
+                  dir="ltr"
+                >
                   {/* {t("footer.contact.phone")} */}
                   {isLoading?(<div className="w-[100px] h-[20px] bg-gray-200 animate-pulse"> </div>):
-                  profile?.phoneNumber || t("footer.contact.phone")}
-                </span>
+                  profile?.phone || profile?.phoneNumber || t("footer.contact.phone")}
+                </a>
               </div>
               {/* Location */}
               <div className="flex gap-[8px] items-start text-[#141414] max-w-[220px]">
@@ -140,4 +148,3 @@ const Footer = () => {
 };
 
 export default Footer;
-
