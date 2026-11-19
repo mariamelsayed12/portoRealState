@@ -13,6 +13,7 @@ import Button from "../components/Ui/Button";
 import InputErrorMessage from "../components/Ui/InputErrorMessage";
 import { ContactUs_Schema } from "../validation";
 import { useGetProfileQuery } from "../app/services/crudeProfile";
+import { openWhatsAppChat } from "../utils";
 
 interface ContactUsFormData {
   fullName: string;
@@ -45,9 +46,23 @@ const NeedHelpPage = () => {
   const onSubmit = async (data: ContactUsFormData) => {
     setIsSubmitting(true);
     try {
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1500));
-      console.log("Contact form submitted:", data);
+      const message = [
+        t("needHelp.hero.title"),
+        "",
+        `${t("needHelp.form.fullName")}: ${data.fullName}`,
+        `${t("needHelp.form.phoneNumber")}: ${data.phoneCountryCode} ${data.phoneNumber}`,
+        `${t("needHelp.form.description")}: ${data.description}`,
+      ].join("\n");
+
+      const opened = openWhatsAppChat(
+        profile?.whatsapp || profile?.phone,
+        message
+      );
+      if (!opened) {
+        toast.error(t("needHelp.errorMessage"));
+        return;
+      }
+
       toast.success(t("needHelp.successMessage"));
       reset();
     } catch (error) {

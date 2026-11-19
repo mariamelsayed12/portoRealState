@@ -13,6 +13,8 @@ import Button from "../components/Ui/Button";
 import InputErrorMessage from "../components/Ui/InputErrorMessage";
 import { sellFormSchema } from "../validation";
 import vectorImage from "../assets/Vector.svg";
+import { useGetProfileQuery } from "../app/services/crudeProfile";
+import { openWhatsAppChat } from "../utils";
 
 interface ManagementFormData {
   fullName: string;
@@ -30,7 +32,8 @@ const services = [
 ];
 
 const ManagementPage = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const { data: profile } = useGetProfileQuery({ lang: i18n.language });
   const [prefix, setPrefix] = useState("+20");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -47,8 +50,23 @@ const ManagementPage = () => {
   const onSubmit = async (data: ManagementFormData) => {
     setIsSubmitting(true);
     try {
-      await new Promise((resolve) => setTimeout(resolve, 1500));
-      console.log("Submit data:", { ...data, countryCode: prefix });
+      const message = [
+        t("management.agents.title"),
+        "",
+        `${t("management.form.fullName")}: ${data.fullName}`,
+        `${t("management.form.phoneNumber")}: ${prefix} ${data.phoneNumber}`,
+        `${t("management.form.description")}: ${data.description}`,
+      ].join("\n");
+
+      const opened = openWhatsAppChat(
+        profile?.whatsapp || profile?.phone,
+        message
+      );
+      if (!opened) {
+        toast.error(t("management.errorMessage"));
+        return;
+      }
+
       toast.success(t("management.successMessage"));
       reset();
     } catch (error) {

@@ -8,6 +8,7 @@ import type { ContactUsFormValues } from "../../interfaces";
 import { ContactUs_Schema } from "../../validation";
 import { useTranslation } from "react-i18next";
 import { useGetProfileQuery } from "../../app/services/crudeProfile";
+import { openWhatsAppChat } from "../../utils";
 
 const phoneCodes = ["Eg +000", "+20", "+971"];
 
@@ -54,10 +55,18 @@ const ContactUsSection = () => {
     }
   };
 
-  const onSubmit: SubmitHandler<ContactUsFormValues> = async () => {
+  const onSubmit: SubmitHandler<ContactUsFormValues> = async (data) => {
     try {
       setIsSubmitting(true);
-      await new Promise((resolve) => setTimeout(resolve, 500));
+      const message = [
+        t("contactUs.heading"),
+        "",
+        `${t("contactUs.fullName")}: ${data.fullName}`,
+        `${t("contactUs.phoneNumber")}: ${data.phoneCountryCode} ${data.phoneNumber}`,
+        `${t("contactUs.description")}: ${data.description}`,
+      ].join("\n");
+
+      openWhatsAppChat(profile?.whatsapp || profile?.phone, message);
       reset();
     } finally {
       setIsSubmitting(false);

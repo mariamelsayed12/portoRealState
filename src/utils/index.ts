@@ -162,6 +162,21 @@ export const normalizePhoneForWhatsApp = (phone?: string): string => {
   return digits;
 };
 
+export const openWhatsAppChat = (
+  whatsappNumber: string | undefined,
+  message: string
+) => {
+  const normalizedNumber = normalizePhoneForWhatsApp(whatsappNumber);
+  if (!normalizedNumber) return false;
+
+  window.open(
+    `https://wa.me/${normalizedNumber}?text=${encodeURIComponent(message)}`,
+    "_blank",
+    "noopener,noreferrer"
+  );
+  return true;
+};
+
 /**
  * Helper to translate a Property Type cleanly using the translation function.
  */
