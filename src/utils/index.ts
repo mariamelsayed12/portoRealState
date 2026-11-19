@@ -149,6 +149,19 @@ export const isRentListing = (listingType?: string): boolean => {
   return clean === "rent" || clean === "إيجار" || clean === "للإيجار";
 };
 
+export const normalizePhoneForWhatsApp = (phone?: string): string => {
+  if (!phone) return "";
+
+  let digits = phone.replace(/\D/g, "");
+  if (digits.startsWith("00")) {
+    digits = digits.slice(2);
+  } else if (digits.startsWith("0")) {
+    digits = `20${digits.slice(1)}`;
+  }
+
+  return digits;
+};
+
 /**
  * Helper to translate a Property Type cleanly using the translation function.
  */
@@ -200,4 +213,3 @@ export const getPropertyPrice = (unit: IProperty): number => {
   }
   return unit.installmentPrice || 0;
 };
-

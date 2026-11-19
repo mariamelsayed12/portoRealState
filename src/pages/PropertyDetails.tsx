@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useRef, useEffect } from "react";
+import React, { useState, useMemo, useRef } from "react";
 import { useParams,useNavigate } from "react-router-dom";
 import { useGetPropertyByIdQuery, useGetPropertyQuery } from "../app/services/crudproperties";
 import { useSelector } from "react-redux";
@@ -24,13 +24,14 @@ import {
 } from "lucide-react";
 import { FaHeart, FaRegHeart, FaWhatsapp } from "react-icons/fa6";
 import AmenitiesSection from "../components/Ui/AmenitiesSection";
-import { mapAmenitiesToFeatures, formatDeliveryStatus, getTranslatedBadge, isRentListing } from "../utils";
+import { mapAmenitiesToFeatures, formatDeliveryStatus, getTranslatedBadge, isRentListing, normalizePhoneForWhatsApp } from "../utils";
 import DestinationBreadcrumb from "../components/HomeCompoents/DestinationBreadcrumb";
 import PropertyDetailsSkeleton from "../components/PropertyDetailsSkeleton";
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import { useGetVillageByIdQuery } from "../app/services/crudVillage";
 import EmptyState from "../components/Ui/EmptyState";
+import { useGetProfileQuery } from "../app/services/crudeProfile";
 
 const PropertyDetails: React.FC = () => {
   const { t, i18n } = useTranslation();
@@ -62,24 +63,29 @@ const PropertyDetails: React.FC = () => {
   const { data: property, isLoading: isUnitLoading } = useGetPropertyByIdQuery({id:propertySlug || "",lang:i18n.language});
   const { data: allProperties = [] } = useGetPropertyQuery({lang:i18n.language});
   const {data:destination, isLoading: isDestinationLoading} =useGetVillageByIdQuery({id:destinationSlug || "",lang:i18n.language});
+  const { data: profile } = useGetProfileQuery({ lang: i18n.language });
+  const whatsappNumber = normalizePhoneForWhatsApp(profile?.phoneNumber);
 
   const mappedAmenities = useMemo(() => {
     return property?.amenities ? mapAmenitiesToFeatures(property.amenities) : [];
-  }, [property?.amenities]);
-
-  // Pricing tab selector state ("Installment" | "Cash")
-  const [pricingMode, setPricingMode] = useState<"Installment" | "Cash">("Installment");
-
-  // Sync pricingMode with backend property data
-  useEffect(() => {
-    if (property) {
-      if (property.paymentModel?.toLowerCase() === "cash") {
-        setPricingMode("Cash");
-      } else {
-        setPricingMode("Installment");
-      }
-    }
   }, [property]);
+
+  // Keep the user's tab choice locally, scoped to the current property.
+  // Derive the initial tab from the property instead of resetting state in an effect.
+  const defaultPricingMode: "Installment" | "Cash" =
+    property?.paymentModel?.toLowerCase() === "cash" ? "Cash" : "Installment";
+  const [pricingSelection, setPricingSelection] = useState<{
+    propertyId: string;
+    mode: "Installment" | "Cash";
+  } | null>(null);
+  const propertyId = property?._id ?? "";
+  const pricingMode =
+    pricingSelection?.propertyId === propertyId
+      ? pricingSelection.mode
+      : defaultPricingMode;
+  const setPricingMode = (mode: "Installment" | "Cash") => {
+    setPricingSelection({ propertyId, mode });
+  };
 
   const hasInstallment = property ? property.paymentModel?.toLowerCase() !== "cash" : true;
   const hasCash = property ? property.paymentModel?.toLowerCase() !== "installment" : true;
@@ -542,11 +548,14 @@ const PropertyDetails: React.FC = () => {
             <div className="flex gap-[15px] items-center w-full">
               {/* WhatsApp Button */}
               <a
-                href={`https://wa.me/20113333333?text=${encodeURIComponent(
+                href={whatsappNumber ? `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
                   t("propertyDetails.whatsappMsg", { propertyTitle:  property.name, destinationTitle: destination.name })
-                )}`}
+                )}` : undefined}
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={(event) => {
+                  if (!whatsappNumber) event.preventDefault();
+                }}
                 className="border border-[#747474] flex-1 flex gap-[8px] h-[48px] items-center justify-center px-[24px] py-[8px] rounded-[12px] text-[#44992e] text-[16px] font-['Poppins'] font-medium hover:bg-[#44992e]/5 hover:border-[#44992e] transition-all cursor-pointer text-center whitespace-nowrap"
               >
                 <FaWhatsapp className="w-[24px] h-[24px] text-[#44992e]" />
@@ -555,7 +564,10 @@ const PropertyDetails: React.FC = () => {
 
               {/* Call Us Button */}
               <a
-                href="tel:+20113333333"
+                href={profile?.phoneNumber ? `tel:${profile.phoneNumber}` : undefined}
+                onClick={(event) => {
+                  if (!profile?.phoneNumber) event.preventDefault();
+                }}
                 className="bg-[#1e8cab] flex-1 flex gap-[8px] h-[48px] items-center justify-center px-[24px] py-[8px] rounded-[12px] text-[#f5f6fa] text-[16px] font-['Poppins'] font-medium hover:bg-[#1a7a96] transition-all cursor-pointer text-center whitespace-nowrap"
               >
                 <Phone className="w-[24px] h-[24px] text-[#f5f6fa] fill-current" />

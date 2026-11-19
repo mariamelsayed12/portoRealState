@@ -8,10 +8,13 @@ import { useAppDispatch } from "../app/store";
 import { syncFavoritesAction } from "../app/feature/favoriteUnitSlice";
 import { useTranslation } from "react-i18next";
 import { useGetVillageByIdQuery } from "../app/services/crudVillage";
+import { useGetProfileQuery } from "../app/services/crudeProfile";
+import { normalizePhoneForWhatsApp } from "../utils";
 
 const RootLayout = () => {
   const location = useLocation();
   const { i18n } = useTranslation();
+  const { data: profile } = useGetProfileQuery({ lang: i18n.language });
   const { slug } = useParams<{ slug: string }>();
   const { data: units = [], isSuccess } = useGetPropertyQuery({ lang: i18n.language });
   const dispatch = useAppDispatch();
@@ -54,6 +57,7 @@ const RootLayout = () => {
     isFavoritesPage ||
     isBuyPage ||
     (isDestinationDetailsPage ? !(isVillageSuccess && village) : false);
+  const whatsappNumber = normalizePhoneForWhatsApp(profile?.phoneNumber);
 
   return (
     <div className="bg-background text-text-darker min-h-screen flex flex-col">
@@ -64,15 +68,17 @@ const RootLayout = () => {
       <main className={isHomePage ? "flex-1" : "pt-36 px-5 max-w-7xl mx-auto w-full flex-1"}>
         <Outlet />
       </main>
-      <a
-  href="https://wa.me/#"
-  target="_blank"
-  rel="noopener noreferrer"
-  className="fixed bottom-5 right-5 z-50 w-12 h-12 rounded-full bg-[#25D366] flex items-center justify-center text-white shadow-md hover:bg-[#20ba59] transition-all duration-300 hover:scale-110"
-  aria-label="Contact us on WhatsApp"
->
-  <FaWhatsapp className="text-background w-5 h-5" />
-    </a>
+      {whatsappNumber && (
+        <a
+          href={`https://wa.me/${whatsappNumber}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="fixed bottom-5 right-5 z-50 w-12 h-12 rounded-full bg-[#25D366] flex items-center justify-center text-white shadow-md hover:bg-[#20ba59] transition-all duration-300 hover:scale-110"
+          aria-label="Contact us on WhatsApp"
+        >
+          <FaWhatsapp className="text-background w-5 h-5" />
+        </a>
+      )}
 
       <Footer />
     </div>
