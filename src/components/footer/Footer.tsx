@@ -140,7 +140,7 @@ const Footer = () => {
 
         {/* Bottom Section */}
         <div className="text-center font-['Poppins'] font-normal text-[16px] text-[#141414] border-t border-[#EDEFF2] pt-8">
-          {t("footer.copyright")}
+          {t("footer.copyright", { year: new Date().getFullYear() })}
         </div>
       </div>
     </footer>

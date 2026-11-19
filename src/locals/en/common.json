@@ -87,7 +87,7 @@
     "contactUs.validation.phoneNumberLong": "Phone number is too long",
     "contactUs.validation.descriptionRequired": "Description is required",
     "footer.followUs": "Follow us",
-    "footer.copyright": "© Copyright 2026 - Porto",
+    "footer.copyright": "© Copyright {{year}} - Porto",
     "footer.group.navigation": "Navigation",
     "footer.group.services": "Services",
     "footer.link.home": "Home",

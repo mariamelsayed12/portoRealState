@@ -87,7 +87,7 @@
     "contactUs.validation.phoneNumberLong": "رقم الهاتف طويل جداً",
     "contactUs.validation.descriptionRequired": "الوصف مطلوب",
     "footer.followUs": "تابعنا",
-    "footer.copyright": "© حقوق النشر 2026 - بورتو",
+    "footer.copyright": "© حقوق النشر {{year}} - بورتو",
     "footer.group.navigation": "روابط سريعة",
     "footer.group.services": "الخدمات",
     "footer.link.home": "الرئيسية",
